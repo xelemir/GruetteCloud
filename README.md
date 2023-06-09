@@ -1,10 +1,12 @@
 <p align="center">
   <a href="" rel="noopener">
-    <img width=200px0px src="static/GrütteChat.png" alt="GrütteChat logo">
+    <img width=80% src="static/marketing/ad2.png" alt="GrütteChat Ad">
+    <!--<img width=200px src="static/GrütteChat.png" alt="GrütteChat logo">-->
   </a>
 </p>
+<br>
 
-<h3 align="center">GrütteChat</h3>
+<h1 align="center">GrütteChat</h1>
 
 <div align="center">
 
@@ -45,21 +47,21 @@ GrütteChat is a web chat app. Messages are saved in a SQL database. New message
 ## 🎉 Screenshots <a name = "screenshots"></a>
 <br>
 <p align="center">
-<img width=100% src="static/marketing/ad.png" alt="GrütteChat ad"><br>
+<img width=80% src="static/marketing/ad.png" alt="GrütteChat ad"><br>
 An ad for GrütteChat.<br><br>
 </p>
 <br>
 <p align="center">
-  <img width=200px src="static/marketing/img1.png" alt="GrütteChat" style="padding:10px;">
-  <img width=200px src="static/marketing/img2.png" alt="GrütteChat" style="padding:10px;">
-  <img width=200px src="static/marketing/img3.png" alt="GrütteChat" style="padding:10px;"><
+  <img width=200px src="static/marketing/img1.png" alt="GrütteChat" style="padding:30px;">
+  <img width=200px src="static/marketing/img2.png" alt="GrütteChat" style="padding:30px;">
+  <img width=200px src="static/marketing/img3.png" alt="GrütteChat" style="padding:30px;">
   <br> The login page, MyAI chat bot with the pirate personality (with dark mode) and chat layout on mobile.<br><br>
 </p>
 <p align="center">
-  <img width=100% src="static/marketing/img5.png" alt="GrütteChat">
+  <img width=80% src="static/marketing/img5.png" alt="GrütteChat">
   <br> The chat on desktop.<br><br>
 </p>
 <p align="center">
-  <img width=100% src="static/marketing/img4.png" alt="GrütteChat">
+  <img width=80% src="static/marketing/img4.png" alt="GrütteChat">
   <br> The login page on desktop.
 </p>
