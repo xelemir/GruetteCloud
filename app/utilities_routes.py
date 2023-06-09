@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, session, make_response, Blueprint
 
-from pythonHelper import SQLHelper, EncryptionHelper
+from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
+from credentials import gmail_mail
 
 
 utilities_route = Blueprint("Utilities", "Utilities", template_folder='templates')
@@ -194,6 +195,26 @@ def about():
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
     return redirect("/help")
+
+@utilities_route.route("/support", methods=["GET"])
+def support():
+    return render_template("support.html")
+
+@utilities_route.route("/support", methods=["POST"])
+def send_support():
+    if "username" not in session:
+        return redirect("/")
+    
+    name = str(request.form["name"])
+    username = str(request.form["username"])
+    email = str(request.form["mail"])
+    message = str(request.form["message"])
+    
+    mail = MailHelper.MailHelper()
+    mail.send_support_mail(name, username, email, message)
+    
+    return render_template("support.html", error="Your message has been sent!")
+    
     
     
     

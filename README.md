@@ -42,21 +42,21 @@ GrütteChat is a web chat app. Messages are saved in a SQL database. New message
 ## 🎉 Screenshots <a name = "screenshots"></a>
 <br>
 <p align="center">
-<img width=100% src="static/ad.png" alt="GrütteChat ad"><br>
+<img width=100% src="static/marketing/ad.png" alt="GrütteChat ad"><br>
 An ad for GrütteChat.<br><br>
 </p>
 <br>
 <p align="center">
-  <img width=200px src="static/img1.png" alt="GrütteChat" style="padding:10px;">
-  <img width=200px src="static/img2.png" alt="GrütteChat" style="padding:10px;">
-  <img width=200px src="static/img3.png" alt="GrütteChat" style="padding:10px;"><
+  <img width=200px src="static/marketing/img1.png" alt="GrütteChat" style="padding:10px;">
+  <img width=200px src="static/marketing/img2.png" alt="GrütteChat" style="padding:10px;">
+  <img width=200px src="static/marketing/img3.png" alt="GrütteChat" style="padding:10px;"><
   <br> The login page, MyAI chat bot with the pirate personality (with dark mode) and chat layout on mobile.<br><br>
 </p>
 <p align="center">
-  <img width=100% src="static/img5.png" alt="GrütteChat">
+  <img width=100% src="static/marketing/img5.png" alt="GrütteChat">
   <br> The chat on desktop.<br><br>
 </p>
 <p align="center">
-  <img width=100% src="static/img4.png" alt="GrütteChat">
+  <img width=100% src="static/marketing/img4.png" alt="GrütteChat">
   <br> The login page on desktop.
 </p>

@@ -52,16 +52,6 @@ def login():
     else:
         return render_template('login.html', error='Invalid login credentials')
 
-# TODO Implement
-@loginSignUp_route.route('/reset', methods=['GET'])
-def reset():
-    """ Send a password reset email to the user's email address
-
-    Returns:
-        str: The template to render
-    """    
-    return render_template('login.html', error="Sorry, we can't help you with that yet :/")
-
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
     if 'username' in session:

@@ -29,10 +29,13 @@ class EncryptionHelper:
         return encrypted_message_number
 
     def decrypt_message(self, encrypted_message_number):
-        cipher_suite = Fernet(self.key)
-        encrypted_message = self.number_to_string(encrypted_message_number)
-        decrypted_message = cipher_suite.decrypt(bytes(encrypted_message, 'utf-8')).decode()
-        return decrypted_message
+        try:
+            cipher_suite = Fernet(self.key)
+            encrypted_message = self.number_to_string(encrypted_message_number)
+            decrypted_message = cipher_suite.decrypt(bytes(encrypted_message, 'utf-8')).decode()
+            return decrypted_message
+        except Exception as e:
+            return False
     
     def string_to_number(self, string):    
         encoded_string = string.decode('utf-8')

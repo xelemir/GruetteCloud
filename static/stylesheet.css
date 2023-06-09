@@ -28,7 +28,13 @@
     --purple: #BF5AF2;
 }
 
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url('Nunito/static/Nunito-Bold.ttf') format('truetype');
+}
+
 * {
+    font-family: 'Nunito Sans', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -140,7 +146,6 @@ h1 {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
-    font-family: 'Nunito Sans', sans-serif;
     word-wrap: break-word;
     overflow-wrap: break-word;
     position: relative;
@@ -223,7 +228,6 @@ input[type="text"] {
     border: none;
     background-color: var(--secondary-color);
     color: var(--text-color-light);
-    font-family: 'Nunito Sans', sans-serif;
     margin-right: 10px;
     resize: horizontal;
     width: calc(100% - 120px);
@@ -235,7 +239,6 @@ input[type="text"] {
     color: var(--white-color);
     border: none;
     border-radius: 5px;
-    font-family: 'Nunito', sans-serif;
     cursor: pointer;
     width: 100px;
 }
@@ -253,7 +256,6 @@ input[type="text"] {
     color: var(--text-color);
     border: none;
     border-radius: 5px;
-    font-family: 'Nunito', sans-serif;
     cursor: pointer;
     margin-bottom: 20px;
     margin-left: auto;
@@ -271,7 +273,6 @@ input[type="text"] {
     color: var(--white-color);
     border: none;
     border-radius: 5px;
-    font-family: 'Nunito', sans-serif;
     cursor: pointer;
     margin-top:20px;
     margin-left: 20px;
@@ -287,7 +288,6 @@ input[type="text"] {
     border: none;
     background-color: var(--secondary-color);
     color: var(--text-color-light);
-    font-family: 'Nunito Sans', sans-serif;
     resize: horizontal;
     min-width: 100%;
 }
@@ -298,7 +298,6 @@ input[type="text"] {
     color: var(--white-color);
     border: none;
     border-radius: 5px;
-    font-family: 'Nunito', sans-serif;
     cursor: pointer;
     margin-top:20px;
     margin-left: 20px;
@@ -313,7 +312,6 @@ input[type="text"] {
     color: var(--white-color);
     border: none;
     border-radius: 5px;
-    font-family: 'Nunito', sans-serif;
     cursor: pointer;
     margin-top:20px;
     margin-left: 20px;
@@ -328,7 +326,6 @@ input[type="text"] {
     color: var(--white-color);
     border: none;
     border-radius: 5px;
-    font-family: 'Nunito', sans-serif;
     cursor: pointer;
     width: 160px
 }
@@ -376,7 +373,6 @@ input[type="text"] {
     border: none;
     background-color: var(--secondary-color);
     color: var(--text-color-light);
-    font-family: 'Nunito Sans', sans-serif;
     resize: horizontal;
     width: 100%;
     margin-top: 20px;

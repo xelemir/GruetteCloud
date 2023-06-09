@@ -1,10 +1,9 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import sys
 
-#from credentials import gmail_mail, gmail_app_password
-gmail_mail = "notifications.jan.gtn@gmail.com"
-gmail_app_password = "wvkscaxijtudauwu"
+from credentials import gmail_mail, gmail_app_password
 
 class MailHelper:
 
@@ -277,8 +276,59 @@ class MailHelper:
         '''
         self.send_email(recipient_email, "Tip received", html)
 
+    def send_support_mail(self, name, username, email, message):
+        html = f'''
+            <html>
+                <head>
+                    <style>
+                        body {{
+                            background-color: #1B1B1B;
+                            text-align: center;
+                            color: #FFFFFF;
+                        }}
+                        
+                        img {{
+                            padding: 20px;
+                            width: 100px;
+                            height: 100px;
+                            padding-bottom: 0px;
+                        }}
+
+                        .outer-div {{
+                            background-color: #282828;
+                            text-align: center;
+                            color: #FFFFFF;
+                            width: auto;
+                            height: auto;
+                            border-radius: 10px;
+                        }}
+                        
+                        h1, h2 {{
+                            color: #0A84FF;
+                        }}
+                        
+                        a {{
+                            color: #0A84FF;
+                            text-decoration: none;
+                        }}
+                    
+                    </style>
+                </head>
+                <body>
+                    <div class="outer-div">
+                        <div style="text-align: center;">
+                            <img src="https://raw.githubusercontent.com/xelemir/xelemir.github.io/master/media/Gr%C3%BCtteChat.png" alt="GrütteChat Logo" style="max-width: 50%; height: auto; margin-left: auto; margin-right: auto;" /><br>
+                        </div><br>
+                        <h1>Support request by {name},</h1>
+                        <b>Username: {username}<br>
+                        Email: {email}<br>
+                        Message: {message}<br><br>
+                    </div>
+                </body>
+            </html>
+        '''
+        self.send_email(gmail_mail, "New support ticket", html)
 
 if __name__ == "__main__":
     mail = MailHelper()
-
     #mail.send_verification_email("email@example.com", "user1", "123456")
