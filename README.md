@@ -28,12 +28,15 @@
 
 ## 🧐 About <a name = "about"></a>
 
-GrütteChat is a web chat app. Messages are saved in a SQL database. New messages are fetched from the database using AJAX. Messages as well as user passwords are encrypted using the Python cryptography library. But the key is stored on the same machine as the database so thats not really secure. To make the chat more interesting, an AI chat bot is included. The chat bot is built using the openAI GPT-3.5 API. A special bot personality can be used if the signed in GrütteChat user has bought an upgraded version of GrütteChat - GrütteChat PLUS. Currently the PayPal sandbox API is used to process the purchase (so not a real purchase).
+GrütteChat is a web chat app. Messages are saved in a SQL database. New messages are fetched from the database using AJAX. Messages as well as user passwords are encrypted using the Python cryptography library. But the key is stored on the same machine as the database so thats not really secure. To make the chat more interesting, an AI chat bot is included. The chat bot is built using the openAI GPT-3.5 API. A special bot personality can be used if the signed in GrütteChat user has bought an upgraded version of GrütteChat - GrütteChat PLUS. Currently, the PayPal rest API is used to process the purchase.
 
 ## 🚀 ToDo <a name = "todo"></a>
-- Use Flasks socketio to update the chat in real time
+- Use Flasks' socketio to update the chat in real time
+- Migrate to more a useful database platfrom (MYSQL is not really good for this use case)
+- Improve error handling, debugging needed as still lots of internal server errors occure
 - Better encryption
-- CSS needs some work
+- CSS needs some work, especially the layout for the chat homepage
+- Host Google material icons locally, as the current implementation is not GDPR compliant
 
 ## ✍️ Authors <a name = "authors"></a>
 - [@jan](https://github.com/xelemir) - Development and design
