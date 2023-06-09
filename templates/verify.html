@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Verify | GrütteChat</title>
+    <link rel="icon" href="../static/GrütteChat.png">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="../static/stylesheet.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}" />
+    <style>
+        .centered-div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: auto; /* Override width property */
+            height: auto; /* Override height property */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="dark-mode-toggle">
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+        </div>
+    </div>
+
+    {% if already_verified %}
+        <div class="centered-div" style="top: 50%;">
+            <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
+                <a href="/" style="color: var(--text-color);">
+                    <img src="../static/GrütteChat.png" style="width: 100px; height: 100px; margin-top: 20px;">
+                </a>
+                <div class="spaced-tile"><br><br></div>
+                <h1 style="font-size: 20px; font-weight: bold">{{ username }} has already verfied their email.<h1>
+                <div class="spaced-tile"></div>
+                <div class="spaced-tile"></div>
+                <a href="/" style="color: var(--text-color);">
+                    <h1 style="font-size: 20px; font-weight: bold">Back to login<h1>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {% if not already_verified %}
+        <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
+            <div class="inner-tile">
+            <div style="font-size: 20px;">A verification code has been sent to</div>
+            <div style="font-size: 20px;">{{ email }}</div>
+            </div>
+            <div class="spaced-tile"></div>
+            <form method="POST" style="flex-direction: column;"> 
+                <div id="error-message" style="display: none;">
+                    <p style="color: var(--yellow)">{{ error }}</p>
+                </div>           
+                <div style="display: inline;">
+                    <input type="text" maxlength="1" id="code0" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" maxlength="1" id="code1" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" maxlength="1" id="code2" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" maxlength="1" id="code3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" maxlength="1" id="code4" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" maxlength="1" id="code5" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                </div>
+                <input type="hidden" name="username" value="{{ username }}">
+                <div style="margin-top: 20px">
+                    <input type="submit" value="Verify account" name="login" class="signup-button">
+                </div>
+            </form>
+            <br>
+            <a href="/" style="color: var(--text-color);">Back to login</a>
+            <div class="spaced-tile"></div>
+        </div>
+    {% endif %}
+</body>
+</html>
+
+<script>
+    // Dark mode toggle functionality
+    var darkModeToggle = document.getElementById('darkModeToggle');
+    var body = document.body;
+    var isDarkMode = localStorage.getItem('darkMode');
+
+    if (isDarkMode === 'true') {
+        body.classList.add('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+    }
+
+    darkModeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'false');
+            document.documentElement.setAttribute('data-theme', 'light');
+            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
+        } else {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'true');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+        }
+    });
+
+    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+
+    // Show error message and fade out after 5 seconds
+    var errorMessage = document.getElementById('error-message');
+    {% if error %}
+        errorMessage.style.display = 'block';
+        setTimeout(function() {
+            errorMessage.style.opacity = '0';
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+                errorMessage.style.opacity = '1';
+            }, 500);
+        }, 5000);
+    {% endif %}
+</script>

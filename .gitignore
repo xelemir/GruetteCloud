@@ -1,0 +1,7 @@
+.spotipyoauthcache
+credentials.py
+__pycache__/
+encryptionkey.json
+firebase.json
+.venv/
+.DS_Store

@@ -1,0 +1,5 @@
+flask
+cryptography
+openai
+paypalrestsdk
+mysqlclient
