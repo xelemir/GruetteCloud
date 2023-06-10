@@ -14,7 +14,7 @@
     
             function loadMessages() {
                 $.ajax({
-                    url: 'get_messages',
+                    url: '{{ url_suffix }}/get_messages',
                     type: 'GET',
                     data: {
                         username: username,  // Pass the value of username as a query parameter
