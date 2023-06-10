@@ -102,7 +102,8 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration:none;
+    text-decoration: none;
+    -webkit-appearance: none;
 }
 
 .button-gray:hover {
@@ -119,6 +120,7 @@ h1 {
     text-align: center;
     float: right;
     text-decoration:none;
+    -webkit-appearance: none;
 }
 
 .button-delete:hover {
@@ -235,6 +237,7 @@ input[type="text"] {
     border-radius: 5px;
     cursor: pointer;
     width: 100px;
+    -webkit-appearance: none;
 }
 
 .cookie-button {
@@ -246,6 +249,7 @@ input[type="text"] {
     border-radius: 5px;
     cursor: pointer;
     width: 40%;
+    -webkit-appearance: none;
 }
 
 .login-left {
@@ -269,6 +273,7 @@ input[type="text"] {
     max-width: 300px;
     text-decoration: none;
     text-align: center;
+    -webkit-appearance: none;
 }
 
 
@@ -284,6 +289,7 @@ input[type="text"] {
     margin-right: 20px;
     width: 100%;
     max-width: 300px;
+    -webkit-appearance: none;
 }
 
 .settings-input {
@@ -309,6 +315,7 @@ input[type="text"] {
     margin-right: 20px;
     width: 100%;
     max-width: 300px;
+    -webkit-appearance: none;
 }
 
 .delete-account-button {
@@ -323,6 +330,7 @@ input[type="text"] {
     margin-right: 20px;
     width: 100%;
     max-width: 300px;
+    -webkit-appearance: none;
 }
 
 .signup-button {
@@ -332,7 +340,8 @@ input[type="text"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 160px
+    width: 160px;
+    -webkit-appearance: none;
 }
 
 
@@ -349,6 +358,10 @@ input[type="text"] {
 
     .message {
         font-size: 12k,hpx;
+    }
+
+    .chat-messages {
+        max-height: 80%;
     }
 }
 
@@ -392,6 +405,7 @@ input[type="text"] {
     cursor: pointer;
     text-decoration:none;
     height: 40px;
+    -webkit-appearance: none;
 }
 
 .header {
@@ -410,6 +424,7 @@ input[type="text"] {
 
 .white-button-blue-on-hover {
     color: var(--text-color);
+    -webkit-appearance: none;
 }
 
 .white-button-blue-on-hover:hover {
@@ -418,6 +433,7 @@ input[type="text"] {
 
 .white-button-purple-on-hover {
     color: var(--text-color);
+    -webkit-appearance: none;
 }
 
 .white-button-purple-on-hover:hover {
@@ -426,6 +442,7 @@ input[type="text"] {
 
 .logout {
     color: var(--text-color);
+    -webkit-appearance: none;
 }
 
 .logout:hover {
@@ -434,6 +451,7 @@ input[type="text"] {
 
 .dark-mode-toggle {
     margin-bottom: 20px;
+    -webkit-appearance: none;
 }
 
 .centered-content {

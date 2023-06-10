@@ -45,9 +45,7 @@ def get_messages():
             messages_list.append(["You", decrypted_message])
         else:
             messages_list.append([recipient, decrypted_message])
-    
-    print(messages_list)
-    
+        
     # Return the list as JSON
     return jsonify(messages=messages_list)
 

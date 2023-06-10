@@ -161,7 +161,7 @@ class MailHelper:
                         <h1>Hey {username},</h1>
                         <b>We have a new URL. Check it out!<br>
                         <h2><a href="https://jan.gruettefien.com/gruettechat">jan.gruettefien.com/gruettechat</a></h2>
-                        As a gift for being an early supporter, we have given you GrütteChat PLUS for free!<br><br>
+                        Thanks for being an early supporter!<br><br>
                         Kind regards,<br>The GrütteChat Team<br><br></b>
                     </div>
                 </body>
