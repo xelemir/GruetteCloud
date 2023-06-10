@@ -17,9 +17,9 @@ eh = EncryptionHelper.EncryptionHelper()
 @loginSignUp_route.route('/login', methods=['POST', 'GET'])
 def login():
     if "signup" in request.form:
-        return redirect('/signup')
+        return redirect(f'{url_suffix}/signup')
     elif request.method == "GET":
-        return redirect('/')
+        return redirect(f'{url_suffix}/')
     
     sql = SQLHelper.SQLHelper()
     username = str(request.form['username'])
@@ -46,7 +46,7 @@ def login():
             # Log the user in
             else:
                 session['username'] = username
-                response = redirect('/chat')
+                response = redirect(f'{url_suffix}/chat')
                 response.set_cookie('username', username)
                 return response
 
@@ -61,7 +61,7 @@ def login():
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
     if 'username' in session:
-        return redirect('/chat')
+        return redirect(f'{url_suffix}/chat')
     
     # If Method is POST
     if request.method == 'POST':
@@ -102,7 +102,7 @@ def signup():
             mail.send_verification_email(email, username, verification_code)
             
             # Redirect to verification page
-            return redirect(f"/verify/{username}")
+            return redirect(f"{url_suffix}/verify/{username}")
 
     # If Method is GET, render the signup page
     return render_template('signup.html', url_suffix = url_suffix)
@@ -110,7 +110,7 @@ def signup():
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):
     if "username" in session or username is None:
-        return redirect('/')
+        return redirect(f'{url_suffix}/')
     
     error = None
     sql = SQLHelper.SQLHelper()
@@ -118,7 +118,7 @@ def verify(username):
     
     # User does not exist
     if user == []:
-        return redirect('/')
+        return redirect(f'{url_suffix}/')
     
     # User exists
     else:
@@ -137,7 +137,7 @@ def verify(username):
             if create_entered_code == verification_code:
                 sql.writeSQL(f"UPDATE gruttechat_users SET is_verified = {True} WHERE username = '{str(username)}'")
                 session['username'] = username
-                return redirect('/chat')
+                return redirect(f'{url_suffix}/chat')
             
             # If the code is incorrect, display an error
             else:

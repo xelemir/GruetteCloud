@@ -22,12 +22,12 @@ def delete_chat(recipient):
         str: Redirect to home page
     """    
     if 'username' not in session:
-        return redirect('/')
+        return redirect(f'{url_suffix}/')
 
     username = str(session['username'])
     sql = SQLHelper.SQLHelper()
     sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}'")
-    return redirect('/')
+    return redirect(f'{url_suffix}/')
 
 @utilities_route.route('/logout')
 def logout():
@@ -37,7 +37,7 @@ def logout():
         str: Redirect to home page
     """    
     session.pop('username', None)
-    response = redirect('/')
+    response = redirect(f'{url_suffix}/')
     response.delete_cookie('username')
     return response
 
@@ -52,7 +52,7 @@ def settings(error=None):
         str: The template to render
     """    
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
@@ -70,9 +70,9 @@ def settings(error=None):
 @utilities_route.route("/change_password", methods=["GET", "POST"])
 def change_password():
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     if request.method == "GET":
-        return redirect("/settings")
+        return redirect(f"{url_suffix}/settings")
     
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
@@ -101,9 +101,9 @@ def change_password():
 @utilities_route.route("/change_email", methods=["GET", "POST"])
 def change_email():
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     if request.method == "GET":
-        return redirect("/settings")
+        return redirect(f"{url_suffix}/settings")
     
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
@@ -128,7 +128,7 @@ def change_email():
 @utilities_route.route("/change_ai_personality/<ai_personality>", methods=["GET"])
 def change_ai_personality(ai_personality):
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
 
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
@@ -144,7 +144,7 @@ def change_ai_personality(ai_personality):
 @utilities_route.route("/ai-preferences", methods=["GET"])
 def ai_preferences():
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
@@ -157,9 +157,9 @@ def ai_preferences():
 @utilities_route.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     if request.method == "GET":
-        return redirect("/settings")
+        return redirect(f"{url_suffix}/settings")
     
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
@@ -179,7 +179,7 @@ def delete_account():
     if username_db == username_form and password_db == password_form and email_db == email_form:
         sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
         session.pop('username', None)
-        response = redirect('/')
+        response = redirect(f'{url_suffix}/')
         response.delete_cookie('username')
         return response
     elif username_db != username_form:
@@ -195,11 +195,11 @@ def help():
         
 @utilities_route.route("/about", methods=["GET"])
 def about():
-    return redirect("/help")
+    return redirect(f"{url_suffix}/help")
 
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
-    return redirect("/help")
+    return redirect(f"{url_suffix}/help")
 
 @utilities_route.route("/support", methods=["GET"])
 def support():
@@ -208,7 +208,7 @@ def support():
 @utilities_route.route("/support", methods=["POST"])
 def send_support():
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     name = str(request.form["name"])
     username = str(request.form["username"])

@@ -62,7 +62,7 @@ def premium():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     # Get user from database
     sql = SQLHelper.SQLHelper()
@@ -91,7 +91,7 @@ def payment():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
 
     # Get user from database
     sql = SQLHelper.SQLHelper()
@@ -128,7 +128,7 @@ def success():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     # Get user from database
     sql = SQLHelper.SQLHelper()
@@ -170,7 +170,7 @@ def cancel():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
 
     # Payment cancelled error
     return render_template("settings.html", error="Payment cancelled.", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
@@ -179,20 +179,20 @@ def cancel():
 @premium_route.route("/tip/<recipient>", methods=["GET"])
 def tip(recipient):
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     sql = SQLHelper.SQLHelper()
     
     recipient_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if recipient_database == []:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     return render_template("tip.html", recipient=str(recipient), url_suffix=url_suffix)
 
 @premium_route.route("/tip/<recipient>/<value>", methods=["GET"])
 def tip_amount(recipient, value):
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     sql = SQLHelper.SQLHelper()
     email = MailHelper.MailHelper()
@@ -213,7 +213,7 @@ def tip_amount(recipient, value):
                 
                 recipient_database = sql.readSQL(f"SELECT username, balance, email FROM gruttechat_users WHERE username = '{str(recipient)}'")
                 if recipient_database == []:
-                    return redirect("/")
+                    return redirect(f"{url_suffix}/")
     
                 new_balance = int(recipient_database[0]["balance"]) + int(float(str((paid_amount))))
                 
@@ -230,13 +230,13 @@ def tip_amount(recipient, value):
         return render_template("tip.html", recipient=recipient, error="Payment cancelled.", url_suffix=url_suffix)
 
     elif not value.isnumeric():
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     elif int(value) not in [1, 2, 5, 10]:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
         
     recipient_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if recipient_database == []:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     paypal_response = pay_with_PayPal(amount=int(value), description=f"Tipping {recipient} on GrütteChat", success_url=f"https://jan.gruettefien.com/gruettechat/tip/{str(recipient)}/success", cancel_url=f"https://jan.gruettefien.com/gruettechat/tip/{str(recipient)}/cancel")
             

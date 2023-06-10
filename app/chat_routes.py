@@ -23,7 +23,7 @@ def get_messages():
     """
      
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username"))
@@ -64,7 +64,7 @@ def chat_with(recipient):
     """
 
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
 
     sql = SQLHelper.SQLHelper()
     username = str(session['username'])
@@ -73,12 +73,12 @@ def chat_with(recipient):
     # Check if the recipient exists
     search_recipient = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if search_recipient == []:
-        return redirect('/chat')
+        return redirect(f'{url_suffix}/chat')
     
     # Get the user from the database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     if user == []:
-        return redirect('/chat')
+        return redirect(f'{url_suffix}/chat')
     
     # Premium chat meaning that the user needs GrütteChat PLUS to chat with this user
     premium_chat = bool(search_recipient[0]["premium_chat"])
@@ -92,13 +92,13 @@ def chat_with(recipient):
         if request.form['message'] == '' or len(request.form['message']) > 1000:
             print(f"Invalid message: {request.form['message']}")
             
-            return redirect(f'/chat/{recipient}')
+            return redirect(f'{url_suffix}/chat/{recipient}')
 
         # If the message is valid, encrypt it and send it to the database 
         else:
             encypted_message = str(eh.encrypt_message(request.form['message']))
             sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
-            return redirect(f'/chat/{recipient}')
+            return redirect(f'{url_suffix}/chat/{recipient}')
 
     # Get is used to load the chat
     get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
@@ -131,7 +131,7 @@ def send(method):
     """
     
     if "username" not in session:
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
 
     ai = OpenAIWrapper.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()
@@ -142,12 +142,12 @@ def send(method):
     # Check if the method is back, clear chat history and redirect to home
     if method == "back":
         session.pop("chat_history", None)
-        return redirect("/")
+        return redirect(f"{url_suffix}/")
     
     # Check if the method is restart, clear chat history and redirect to AI chat
     elif method == "restart":
         session.pop("chat_history", None)
-        return redirect("/ai/chat")
+        return redirect(f"{url_suffix}/ai/chat")
 
     # Check if new message is sent, then append it to chat history, get AI response, and refresh page
     elif "send" in request.form and request.form["message"] != "":
@@ -173,7 +173,7 @@ def send(method):
             
         # Save chat history to session and refresh page
         session["chat_history"] = chat_history
-        return redirect("/ai/chat")
+        return redirect(f"{url_suffix}/ai/chat")
     
     # Reverse chat history to show most recent messages first and render template
     chat_history.reverse()

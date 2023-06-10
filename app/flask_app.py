@@ -23,17 +23,17 @@ eh = EncryptionHelper.EncryptionHelper()
 @app.route('/')
 def index():
     if 'username' in session:
-        return redirect('/chat')
+        return redirect(f'{url_suffix}/chat')
     elif 'username' in request.cookies:
         session['username'] = request.cookies['username']
-        return redirect('/chat')
+        return redirect(f'{url_suffix}/chat')
     else:
         return render_template("login.html", url_suffix = url_suffix)
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat(error=None):
     if 'username' not in session:
-        return redirect('/')
+        return redirect(f'{url_suffix}/')
 
     username = str(session['username'])
     active_chats = []
@@ -45,18 +45,18 @@ def chat(error=None):
 
         # Check if recipient username is valid
         if recipient is None or recipient == username or len(recipient) > 20:
-            return redirect('/chat')
+            return redirect(f'{url_suffix}/chat')
 
         # Check if recipient exists
         user_exists = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{recipient}'")
 
         if user_exists == []:
             # User does not exist
-            return redirect('/chat')
+            return redirect(f'{url_suffix}/chat')
 
         else:
             # User exists
-            return redirect(f'/chat/{recipient}')
+            return redirect(f'{url_suffix}/chat/{recipient}')
 
     # Fetch active chats from the database
     active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")    
