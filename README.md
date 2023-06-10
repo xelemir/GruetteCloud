@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="" rel="noopener">
+  <a href="" rel="https://jan.gruettefien.com/gruettechat/">
     <img width=80% src="static/marketing/ad2.png" alt="GrütteChat Ad">
     <!--<img width=200px src="static/GrütteChat.png" alt="GrütteChat logo">-->
   </a>
@@ -12,13 +12,14 @@
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-
+[![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://jan.gruettefien.com/gruettechat/)
 </div>
 
 ---
 
-<p align="center"> Python web chat app with an AI chat bot using Flask, Django, AJAX, SQL
-    <br> 
+<p align="center">
+    Python web chat app with an AI chat bot using Flask, Django, AJAX, SQL<br>
+    Check it out at <a href="https://jan.gruettefien.com/gruettechat/">jan.gruettefien.com/gruettechat/</a>
 </p>
 
 ## 📝 Table of Contents
