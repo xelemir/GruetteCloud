@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, session, make_response, Bl
 from paypalrestsdk import Payment, set_config
 
 from pythonHelper import SQLHelper, MailHelper
-import credentials
+from credentials import url_suffix, paypal_client_id, paypal_client_secret
 
 
 premium_route = Blueprint("Premium", "Premium", template_folder='templates')
@@ -10,11 +10,11 @@ premium_route = Blueprint("Premium", "Premium", template_folder='templates')
 # Configure PayPal SDK
 set_config({
     'mode': 'live',
-    'client_id': credentials.paypal_client_id,
-    'client_secret': credentials.paypal_client_secret
+    'client_id': paypal_client_id,
+    'client_secret': paypal_client_secret
 })
 
-def pay_with_PayPal(success_url="http://127.0.0.1:5000/success", cancel_url="http://127.0.0.1:5000/cancel", amount=2.99, description="GrütteChat PLUS"):
+def pay_with_PayPal(success_url="https://jan.gruettefien.com/gruettechat/success", cancel_url="https://jan.gruettefien.com/gruettechat/cancel", amount=2.99, description="GrütteChat PLUS"):
     """ Pay with PayPal
 
     Args:
@@ -65,18 +65,18 @@ def premium():
 
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False, url_suffix = url_suffix)
     
     # If good to go, check if user has premium
     else:
 
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_suffix = url_suffix)
         
         # If user does not have premium, render premium ad page
         else:
-            return render_template("premium.html")
+            return render_template("premium.html", url_suffix=url_suffix)
         
 @premium_route.route('/payment', methods=['POST'])
 def payment():
@@ -94,14 +94,14 @@ def payment():
     
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
     
     # If everything looks good, check if user has premium
     else:
         
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_suffix=url_suffix)
         
         # Else, create payment and redirect user to PayPal
         else:
@@ -113,7 +113,7 @@ def payment():
             
             # Payment creation failed
             else:
-                return render_template("premium.html", error="Payment error, please try again." )
+                return render_template("premium.html", error="Payment error, please try again.", url_suffix=url_suffix)
 
 @premium_route.route('/success')
 def success():
@@ -131,11 +131,11 @@ def success():
    
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong. Please contact customer support.", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", error="Something went wrong. Please contact customer support.", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
     
     # If good to go, check if user has premium
     if bool(user[0]["has_premium"]) == True:
-        return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+        return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_suffix=url_suffix)
     
     try:
 
@@ -147,15 +147,15 @@ def success():
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
             sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return render_template("settings.html", error="You now have GrütteChat PLUS!", selected_personality="Default", has_premium=True)
+            return render_template("settings.html", error="You now have GrütteChat PLUS!", selected_personality="Default", has_premium=True, url_suffix=url_suffix)
         
         # Else if payment failed, return error
         else:
-            return render_template("premium.html", error="Payment execution failed, please try again." )
+            return render_template("premium.html", error="Payment execution failed, please try again.", url_suffix=url_suffix)
         
     # Something went wrong
     except:
-        return render_template("settings.html", error="Something went wrong.", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", error="Something went wrong.", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
 
 @premium_route.route('/cancel')
 def cancel():
@@ -168,7 +168,7 @@ def cancel():
         return redirect("/")
 
     # Payment cancelled error
-    return render_template("settings.html", error="Payment cancelled.", selected_personality="Default", has_premium=False)
+    return render_template("settings.html", error="Payment cancelled.", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
 
 
 @premium_route.route("/tip/<recipient>", methods=["GET"])
@@ -182,7 +182,7 @@ def tip(recipient):
     if recipient_database == []:
         return redirect("/")
     
-    return render_template("tip.html", recipient=str(recipient))
+    return render_template("tip.html", recipient=str(recipient), url_suffix=url_suffix)
 
 @premium_route.route("/tip/<recipient>/<value>", methods=["GET"])
 def tip_amount(recipient, value):
@@ -215,14 +215,14 @@ def tip_amount(recipient, value):
                 sql.writeSQL(f"UPDATE gruttechat_users SET balance = {new_balance} WHERE username = '{str(recipient)}'")
                 email.send_tip_email(recipient_email=recipient_database[0]["email"], username_received=recipient_database[0]["username"], username_send=session["username"], paid_amount=paid_amount)
 
-            return render_template("tip.html", recipient=recipient, error="Payment successful! Thank you.")
+            return render_template("tip.html", recipient=recipient, error="Payment successful! Thank you.", url_suffix=url_suffix)
         
         # Else if payment failed, return error
         else:
-            return render_template("tip.html", recipient=recipient, error="Payment execution failed, please try again." )
+            return render_template("tip.html", recipient=recipient, error="Payment execution failed, please try again.", url_suffix=url_suffix)
 
     elif value == "cancel":
-        return render_template("tip.html", recipient=recipient, error="Payment cancelled.")
+        return render_template("tip.html", recipient=recipient, error="Payment cancelled.", url_suffix=url_suffix)
 
     elif not value.isnumeric():
         return redirect("/")
@@ -233,11 +233,11 @@ def tip_amount(recipient, value):
     if recipient_database == []:
         return redirect("/")
     
-    paypal_response = pay_with_PayPal(amount=int(value), description=f"Tipping {recipient} on GrütteChat", success_url=f"http://127.0.0.1:5000/tip/{str(recipient)}/success", cancel_url=f"http://127.0.0.1:5000/tip/{str(recipient)}/cancel")
+    paypal_response = pay_with_PayPal(amount=int(value), description=f"Tipping {recipient} on GrütteChat", success_url=f"https://jan.gruettefien.com/gruettechat/tip/{str(recipient)}/success", cancel_url=f"https://jan.gruettefien.com/gruettechat/tip/{str(recipient)}/cancel")
             
     if paypal_response != "Something went wrong on our end :/":
         return paypal_response
     
     # Payment creation failed
     else:
-        return render_template("tip.html", recipient=recipient, error="Payment error, please try again.")
+        return render_template("tip.html", recipient=recipient, error="Payment error, please try again.", url_suffix=url_suffix)

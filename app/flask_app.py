@@ -7,6 +7,8 @@ from utilities_routes import utilities_route
 from chat_routes import chat_route
 from premium_routes import premium_route
 
+from credentials import url_suffix
+
 
 app = Flask("GrütteChat")
 app.secret_key = 'supersecretkey'
@@ -17,6 +19,7 @@ app.register_blueprint(premium_route)
 
 eh = EncryptionHelper.EncryptionHelper()
 
+
 @app.route('/')
 def index():
     if 'username' in session:
@@ -25,7 +28,7 @@ def index():
         session['username'] = request.cookies['username']
         return redirect('/chat')
     else:
-        return render_template("login.html")
+        return render_template("login.html", url_suffix = url_suffix)
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat(error=None):
@@ -69,7 +72,7 @@ def chat(error=None):
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
     
     # Render the home page
-    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"])
+    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_suffix = url_suffix)
 
 if __name__ == '__main__':
     app.run(debug=True)

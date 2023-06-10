@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, session, Blueprint
 import random
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
+from credentials import url_suffix
 
 
 loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder='templates')
@@ -21,7 +22,7 @@ def login():
     
     # Check if input is valid
     if username == '' or password == '':
-        return render_template('login.html', error='Please enter a username and password')
+        return render_template('login.html', error='Please enter a username and password', url_suffix = url_suffix)
     
     # Search for user in database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
@@ -35,7 +36,7 @@ def login():
             
             # Check if the user has verified their account
             if bool(user[0]["is_verified"]) == False:
-                return render_template('login.html', error='Your account has not been verified yet')
+                return render_template('login.html', error='Your account has not been verified yet', url_suffix = url_suffix)
             
             # Log the user in
             else:
@@ -46,11 +47,11 @@ def login():
 
         # If password is or username is incorrect
         else:
-            return render_template('login.html', error='Invalid login credentials')
+            return render_template('login.html', error='Invalid login credentials', url_suffix = url_suffix)
         
     # If user does not exist
     else:
-        return render_template('login.html', error='Invalid login credentials')
+        return render_template('login.html', error='Invalid login credentials', url_suffix = url_suffix)
 
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -69,20 +70,20 @@ def signup():
         
         # Check if input is valid
         if password != password_confirm:
-            return render_template('signup.html', error='Passwords do not match')
+            return render_template('signup.html', error='Passwords do not match', url_suffix = url_suffix)
         elif username == '' or password == '':
-            return render_template('signup.html', error='Please enter a username and password')
+            return render_template('signup.html', error='Please enter a username and password', url_suffix = url_suffix)
         elif len(username) > 20:
-            return render_template('signup.html', error='Username must be less than 20 characters')
+            return render_template('signup.html', error='Username must be less than 20 characters', url_suffix = url_suffix)
         elif len(password) > 40 or len(password) < 8:
-            return render_template('signup.html', error='Password must be between 8 and 40 characters')
+            return render_template('signup.html', error='Password must be between 8 and 40 characters', url_suffix = url_suffix)
         elif '@' not in email or '.' not in email:
-            return render_template('signup.html', error='Please enter a valid email address')
+            return render_template('signup.html', error='Please enter a valid email address', url_suffix = url_suffix)
         
         # Check if the username already exists
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
         if search_username != []:
-            return render_template('signup.html', error='Username already exists')
+            return render_template('signup.html', error='Username already exists', url_suffix = url_suffix)
         
         # Else create new user
         else:
@@ -99,7 +100,7 @@ def signup():
             return redirect(f"/verify/{username}")
 
     # If Method is GET, render the signup page
-    return render_template('signup.html')
+    return render_template('signup.html', url_suffix = url_suffix)
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):
@@ -138,4 +139,4 @@ def verify(username):
                 error = "The code you entered is incorrect"
     
     # Render the verification page
-    return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified)
+    return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified, url_suffix = url_suffix)

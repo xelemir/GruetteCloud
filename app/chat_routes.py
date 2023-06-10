@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, session, jsonify, Blueprin
 import logging
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
+from credentials import url_suffix
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder='templates')
@@ -77,7 +78,7 @@ def chat_with(recipient):
     # Premium chat meaning that the user needs GrütteChat PLUS to chat with this user
     premium_chat = bool(search_recipient[0]["premium_chat"])
     if premium_chat and not bool(user[0]["has_premium"]):
-        return render_template('home.html', error=f"You need GrütteChat PLUS to chat with {str(recipient)}!")
+        return render_template('home.html', error=f"You need GrütteChat PLUS to chat with {str(recipient)}!", url_suffix = url_suffix)
     
     # Post is used to send a message
     if request.method == 'POST':
@@ -111,7 +112,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, premium_chat=premium_chat)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, premium_chat=premium_chat, url_suffix = url_suffix)
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):
@@ -171,4 +172,4 @@ def send(method):
     
     # Reverse chat history to show most recent messages first and render template
     chat_history.reverse()
-    return render_template("aichat.html", chat_history=chat_history)
+    return render_template("aichat.html", chat_history=chat_history, url_suffix = url_suffix)
