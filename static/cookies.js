@@ -1,20 +1,26 @@
-// Check if the cookie has been accepted
-function isCookieAccepted() {
-  return localStorage.getItem('cookieAccepted') === 'true';
+
+// Check if the cookie has been accepted or declined
+function getCookieStatus() {
+  return localStorage.getItem('cookieStatus');
 }
 
-// Set the cookie as accepted
+// Set the cookie status as accepted
 function setCookieAccepted() {
-  localStorage.setItem('cookieAccepted', 'true');
+  localStorage.setItem('cookieStatus', 'accepted');
 }
 
-// Load fonts based on cookie acceptance
+// Set the cookie status as declined
+function setCookieDeclined() {
+  localStorage.setItem('cookieStatus', 'declined');
+}
+
+// Load fonts based on cookie status
 function loadFonts() {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
 
-  if (isCookieAccepted()) {
-    link.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap';
+  if (getCookieStatus() === 'accepted') {
+    link.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap';
   } else {
     link.href = 'https://jan.gruettefien.com/static/Nunito/static/Nunito-SemiBold.ttf';
   }
@@ -26,11 +32,14 @@ function loadFonts() {
 function showCookieBanner() {
   const banner = document.getElementById('cookie-banner');
   banner.innerHTML = `
-  <div class="cookie-banner">
+    <div class="cookie-banner">
     <div class="inner-tile">
       <b>Cookie Policy</b><br>
-      <p>This website uses cookies and loads content from Google and GitHub (USA). Your IP-address will be visible to these companies. By clicking "Accept" you consent to <a href="privacy" style="color: var(--text-color);">our</a> and their privacy policies.</p><br>
-      <button id="accept-cookie" class="cookie-button">Accept</button><br>
+      <p>This website uses cookies and loads content from Google and GitHub (USA). Your IP-address will be visible to these companies. By clicking "Accept" you consent to <a href="privacy" style="color: var(--text-color);">our</a> and their privacy policies. If you decline you will have ugly icons and fonts.</p><br>
+      <div style="display: inline;">
+        <button id="accept-cookie" class="cookie-button">Accept</button>
+        <button id="decline-cookie" class="cookie-button">Decline</button>
+      </div><br>
       <div style="display: inline;">
         <a href="about" style="color: var(--text-color);">About</a> | 
         <a href="help" style="color: var(--text-color);">Help</a> | 
@@ -46,11 +55,17 @@ function showCookieBanner() {
     banner.style.display = 'none';
     loadFonts();
   });
+
+  document.getElementById('decline-cookie').addEventListener('click', () => {
+    setCookieDeclined();
+    banner.style.display = 'none';
+    loadFonts();
+  });
 }
 
-// Hide the cookie banner if cookies are already accepted
-function hideCookieBannerIfAccepted() {
-  if (isCookieAccepted()) {
+// Hide the cookie banner if cookies are already accepted or declined
+function hideCookieBannerIfAcceptedOrDeclined() {
+  if (getCookieStatus() === 'accepted' || getCookieStatus() === 'declined') {
     const banner = document.getElementById('cookie-banner');
     banner.style.display = 'none';
     loadFonts();
@@ -59,7 +74,7 @@ function hideCookieBannerIfAccepted() {
 
 // Main function to handle the cookie banner
 function handleCookieBanner() {
-  if (!isCookieAccepted()) {
+  if (getCookieStatus() !== 'accepted') {
     showCookieBanner();
   } else {
     loadFonts();
@@ -69,5 +84,5 @@ function handleCookieBanner() {
 // Call the main function to handle the cookie banner
 handleCookieBanner();
 
-// Check for cookie acceptance on page load
-hideCookieBannerIfAccepted();
+// Check for cookie acceptance or decline on page load
+hideCookieBannerIfAcceptedOrDeclined();
