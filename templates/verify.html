@@ -28,7 +28,7 @@
         <div class="centered-div" style="top: 50%;">
             <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
                 <a href="{{ url_suffix }}/" style="color: var(--text-color);">
-                    <img src="../static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;">
+                    <img src="https://jan.gruettefien.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;">
                 </a>
                 <div class="spaced-tile"><br><br></div>
                 <h1 style="font-size: 20px; font-weight: bold">{{ username }} has already verfied their email.<h1>
@@ -71,6 +71,7 @@
             <div class="spaced-tile"></div>
         </div>
     {% endif %}
+    <div id="cookie-banner"></div>
 </body>
 </html>
 
@@ -115,3 +116,5 @@
         }, 5000);
     {% endif %}
 </script>
+
+<script src="https://jan.gruettefien.com/static/cookies.js"></script>

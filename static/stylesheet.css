@@ -28,20 +28,14 @@
     --purple: #BF5AF2;
 }
 
-@font-face {
-    font-family: 'Nunito Sans';
-    src: url('https://jan.gruettefien.com/static/Nunito/static/Nunito-Bold.ttf') format('truetype');
-}
-
 * {
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: 'Nunito Sans', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     padding: 20px;
@@ -234,13 +228,24 @@ input[type="text"] {
 }
 
 .send-button {
-    padding: 10px 20px;
+    padding: 10px;
     background-color: var(--primary-color);
     color: var(--white-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: 100px;
+}
+
+.cookie-button {
+    padding: 10px;
+    font-size: 15px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
 }
 
 .login-left {
@@ -437,3 +442,19 @@ input[type="text"] {
     left: 50%;
     transform: translateX(-50%);
 }
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0; /* Adjust the distance from the bottom as desired */
+    left: 0;
+    right: 0;
+    padding: 10px;
+    text-align: center;
+    z-index: 9999; /* Ensure the banner appears above other elements */
+  }
+  
+  .cookie-banner p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+  }
