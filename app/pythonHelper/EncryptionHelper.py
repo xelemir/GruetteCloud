@@ -15,7 +15,7 @@ class EncryptionHelper:
     def get_key(self):
         try:
             if url_suffix == "/gruettechat":
-                path = "/home/gruettechat/gruettechat/encryptionkey.json"
+                path = "/home/jan/wwwroot/gruettechat/gruettechat/app/encryptionkey.json"
             else:
                 path = "encryptionkey.json"
             with open(path, 'r') as f:

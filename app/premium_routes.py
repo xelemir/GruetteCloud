@@ -5,7 +5,12 @@ from pythonHelper import SQLHelper, MailHelper
 from credentials import url_suffix, paypal_client_id, paypal_client_secret
 
 
-premium_route = Blueprint("Premium", "Premium", template_folder='templates')
+if url_suffix == "/gruettechat":
+    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
+else:
+    path_template = "templates"
+    
+premium_route = Blueprint("Premium", "Premium", template_folder=path_template)
 
 # Configure PayPal SDK
 set_config({

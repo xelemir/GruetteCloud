@@ -4,7 +4,12 @@ from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
 from credentials import url_suffix
 
 
-utilities_route = Blueprint("Utilities", "Utilities", template_folder='templates')
+if url_suffix == "/gruettechat":
+    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
+else:
+    path_template = "templates"
+    
+utilities_route = Blueprint("Utilities", "Utilities", template_folder=path_template)
 
 @utilities_route.route('/chat/delete/<recipient>')
 def delete_chat(recipient):

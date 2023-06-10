@@ -5,7 +5,12 @@ from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
 from credentials import url_suffix
 
 
-loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder='templates')
+if url_suffix == "/gruettechat":
+    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
+else:
+    path_template = "templates"
+    
+loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=path_template)
 
 eh = EncryptionHelper.EncryptionHelper()
 

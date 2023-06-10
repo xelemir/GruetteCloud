@@ -5,7 +5,12 @@ from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
 from credentials import url_suffix
 
 
-chat_route = Blueprint("Chat", "Chat", template_folder='templates')
+if url_suffix == "/gruettechat":
+    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
+else:
+    path_template = "templates"
+
+chat_route = Blueprint("Chat", "Chat", template_folder=path_template)
 
 eh = EncryptionHelper.EncryptionHelper()
 
