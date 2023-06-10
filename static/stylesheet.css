@@ -136,6 +136,7 @@ h1 {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 20px;
+    max-width: 100%;
 }
 
 .message {
