@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="https://jan.gruettefien.com/gruettechat/">
-    <img width=80% src="static/marketing/ad2.PNG" alt="GrütteChat Ad">
+    <img width=80% src="static/marketing/ad2.png" alt="GrütteChat Ad">
     <!--<img width=200px src="static/GrütteChat.png" alt="GrütteChat logo">-->
   </a>
 </p>
