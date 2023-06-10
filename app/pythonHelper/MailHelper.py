@@ -107,7 +107,7 @@ class MailHelper:
                         <h1>Hey {username},</h1>
                         <b>Thanks for signing up to GrütteChat!<br>
                         To get started, please enter the following code on the verification page:
-                        <h2><a href="http://localhost:5000/verify/{username}">{verification_code}</a></h2>
+                        <h2><a href="http://jan.gruettefien.com/gruettechat/verify/{username}">{verification_code}</a></h2>
                         Kind regards,<br>The GrütteChat Team<br><br></b>
                     </div>
                 </body>
