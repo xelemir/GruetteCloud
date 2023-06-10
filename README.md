@@ -1,7 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
-    <img width=30% src="static/GrütteChat.png" alt="GrütteChat Ad">
-    <!--<img width=200px src="static/GrütteChat.png" alt="GrütteChat logo">-->
+    <img width=200px src="static/GrütteChat.png" alt="GrütteChat logo">
   </a>
 </p>
 <br>
