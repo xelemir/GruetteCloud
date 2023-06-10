@@ -30,7 +30,7 @@
 
 @font-face {
     font-family: 'Nunito Sans';
-    src: url('Nunito/static/Nunito-Bold.ttf') format('truetype');
+    src: url('https://jan.gruettefien.com/static/Nunito/static/Nunito-Bold.ttf') format('truetype');
 }
 
 * {
