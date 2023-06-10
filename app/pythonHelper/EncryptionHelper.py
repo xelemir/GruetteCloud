@@ -1,4 +1,5 @@
 import json
+from credentials import url_suffix
 from cryptography.fernet import Fernet
 
 
@@ -13,9 +14,14 @@ class EncryptionHelper:
 
     def get_key(self):
         try:
-            with open('encryptionkey.json', 'r') as f:
+            if url_suffix == "/gruettechat":
+                path = "/home/gruettechat/gruettechat/encryptionkey.json"
+            else:
+                path = "encryptionkey.json"
+            with open(path, 'r') as f:
                 data = json.load(f)
                 return data['key']
+
         except FileNotFoundError:
             self.create_new_key()
             with open('encryptionkey.json', 'r') as f:

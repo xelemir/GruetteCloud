@@ -6,3 +6,4 @@ firebase.json
 .venv/
 .DS_Store
 lib copy/
+.wsgi
