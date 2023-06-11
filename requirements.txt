@@ -2,4 +2,6 @@ flask
 cryptography
 openai
 paypalrestsdk
-mysqlclient
+pymongo
+SQLHelper
+gunicorn
