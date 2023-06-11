@@ -41,7 +41,7 @@ def login():
             
             # Check if the user has verified their account
             if bool(user[0]["is_verified"]) == False:
-                return render_template('login.html', error='Your account has not been verified yet', url_suffix = url_suffix)
+                return redirect(f'{url_suffix}/verify/{username}')
             
             # Log the user in
             else:
