@@ -54,17 +54,18 @@
                     <p style="color: var(--yellow)">{{ error }}</p>
                 </div>           
                 <div style="display: inline;">
-                    <input type="text" maxlength="1" id="code0" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" maxlength="1" id="code1" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" maxlength="1" id="code2" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" maxlength="1" id="code3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" maxlength="1" id="code4" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" maxlength="1" id="code5" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                </div>
-                <input type="hidden" name="username" value="{{ username }}">
-                <div style="margin-top: 20px">
+                    <input type="text" id="code0" maxlength="6" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code1" maxlength="5" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code2" maxlength="4" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code3" maxlength="3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code4" maxlength="2" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code5" maxlength="1" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                  </div>
+                  <input type="hidden" name="username" value="{{ username }}">
+                  <div style="margin-top: 20px">
                     <input type="submit" value="Verify account" name="login" class="signup-button">
-                </div>
+                  </div>
+                  
             </form>
             <br>
             <a href="{{ url_suffix }}/" style="color: var(--text-color);">Back to login</a>
@@ -116,5 +117,41 @@
         }, 5000);
     {% endif %}
 </script>
+
+<script>
+    const codeFields = document.querySelectorAll('.login-input');
+  
+    codeFields.forEach((field, index) => {
+      field.addEventListener('input', (event) => {
+        const input = event.target;
+        const inputValue = input.value;
+  
+        if (inputValue.length > 0) {
+          if (index < 5) {
+            // Check if there are remaining characters to distribute
+            if (inputValue.length > 1) {
+              const remainingDigits = inputValue.slice(1);
+              input.value = inputValue[0];
+  
+              // Distribute remaining characters to subsequent fields
+              let nextIndex = index + 1;
+              for (let i = 0; i < remainingDigits.length && nextIndex < codeFields.length; i++) {
+                const nextField = codeFields[nextIndex];
+                nextField.value = remainingDigits[i];
+                nextIndex++;
+              }
+            }
+  
+            // Auto-focus to the next field
+            const nextField = codeFields[index + 1];
+            nextField.focus();
+          }
+        }
+      });
+    });
+</script>
+  
+  
+  
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
