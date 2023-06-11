@@ -17,7 +17,7 @@
 ---
 
 <p align="center">
-    Python web chat app with an AI chat bot using Flask, Django, AJAX, SQL<br>
+    Python web chat app with an AI chat bot using Python with Flask, AJAX, SQL<br>
     Check it out at <a href="https://jan.gruettefien.com/gruettechat/">jan.gruettefien.com/gruettechat/</a>
 </p>
 
