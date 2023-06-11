@@ -1,0 +1,479 @@
+:root {
+    --background-color: #F2F2F2;
+    --background-tile-color: #FFFFFF;
+    --primary-color: #007AFF;
+    --secondary-color: #E5E5E5;
+    --text-color: #000000;
+    --white-color: #FFFFFF;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+    --red: #FF3B30;
+    --yellow: #FFCC00;
+    --green: #34C759;
+    --indigo: #5856D6;
+    --purple: #AF52DE;
+}
+
+[data-theme="dark"] {
+    --background-color: #1B1B1B;
+    --background-tile-color: #282828;
+    --primary-color: #0A84FF;
+    --secondary-color: #3F3F3F;
+    --text-color: #FFFFFF;
+    --white-color: #FFFFFF;
+    --box-shadow-color: rgba(255, 255, 255, 0.1);
+    --red: #FF453A;
+    --yellow: #FFD60A;
+    --green: #30D158;
+    --indigo: #5e5ce6;
+    --purple: #BF5AF2;
+}
+
+* {
+    font-family: 'Nunito', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.centered-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: auto; /* Override width property */
+    height: auto; /* Override height property */
+}
+
+.wrapping-tile {
+    background-color: var(--background-tile-color);
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.spaced-tile {
+    margin-bottom: 20px;
+}
+
+.inner-tile {
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.premium-tile {
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: var(--purple);
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-gray {
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-appearance: none;
+}
+
+.button-gray:hover {
+    background-color: var(--primary-color);
+}
+
+.button-delete {
+    background-color: var(--secondary-color);
+    padding: 10px 20px;
+    width: 80px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    float: right;
+    text-decoration:none;
+    -webkit-appearance: none;
+}
+
+.button-delete:hover {
+    background-color: var(--red);
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: var(--background-tile-color);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+.message {
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
+}
+
+.message-meta {
+    font-size: 12px;
+    color: #888888;
+    margin-bottom: 5px;
+}
+
+.message-content {
+    margin-top: 5px;
+}
+
+.left-bubble {
+    background-color: var(--secondary-color);
+    align-self: flex-start;
+    max-width: 70%;
+    text-align: left;
+}
+
+.right-bubble {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    align-self: flex-end;
+    text-align: left;
+    align-items: flex-end;
+    max-width: 70%;
+}
+
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background-color: #B6B6B6;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background-color: var(--background-tile-color);
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);
+}
+
+.inner-tile::-webkit-scrollbar {
+    width: 8px;
+}
+
+.inner-tile::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+}
+
+.inner-tile::-webkit-scrollbar-thumb:hover {
+    background-color: #B6B6B6;
+}
+
+.inner-tile::-webkit-scrollbar-track {
+    background-color: var(--background-tile-color);
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    margin-right: 10px;
+    resize: horizontal;
+    width: calc(100% - 120px);
+}
+
+.send-button {
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+    -webkit-appearance: none;
+}
+
+.cookie-button {
+    padding: 10px;
+    font-size: 15px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 40%;
+    -webkit-appearance: none;
+}
+
+.login-left {
+    margin-right: 10px;
+}
+
+.login-right {
+    margin-left: 10px;
+}
+
+.ai-personality-button {
+    padding: 10px 20px;
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 300px;
+    text-decoration: none;
+    text-align: center;
+    -webkit-appearance: none;
+}
+
+
+.settings-button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top:20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
+    max-width: 300px;
+    -webkit-appearance: none;
+}
+
+.settings-input {
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    resize: horizontal;
+    min-width: 100%;
+}
+
+.buy-now-button {
+    padding: 10px 20px;
+    background-color: var(--purple);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top:20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
+    max-width: 300px;
+    -webkit-appearance: none;
+}
+
+.delete-account-button {
+    padding: 10px 20px;
+    background-color: var(--red);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top:20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
+    max-width: 300px;
+    -webkit-appearance: none;
+}
+
+.signup-button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 160px;
+    -webkit-appearance: none;
+}
+
+
+@media (max-width: 768px) {
+    /* Adjust chat container width for mobile devices */
+    .chat-container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .message {
+        font-size: 12k,hpx;
+    }
+
+    .chat-messages {
+        max-height: 80%;
+    }
+}
+
+@media (max-width: 1360px) {
+    .desktop-music-widget {
+        display: none;
+    }
+
+    .resize-mobile {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1360px) {
+    .desktop-music-widget {
+        display: flex;
+    }
+
+    .resize-mobile {
+        width: 60%;
+    }
+}
+
+.login-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    resize: horizontal;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.button-blue {
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration:none;
+    height: 40px;
+    -webkit-appearance: none;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sync {
+    color: var(--text-color);
+}
+
+.sync:hover {
+    color: var(--yellow);
+}
+
+.white-button-blue-on-hover {
+    color: var(--text-color);
+    -webkit-appearance: none;
+}
+
+.white-button-blue-on-hover:hover {
+    color: var(--primary-color);
+}
+
+.white-button-purple-on-hover {
+    color: var(--text-color);
+    -webkit-appearance: none;
+}
+
+.white-button-purple-on-hover:hover {
+    color: var(--purple);
+}
+
+.logout {
+    color: var(--text-color);
+    -webkit-appearance: none;
+}
+
+.logout:hover {
+    color: var(--red);
+}
+
+.dark-mode-toggle {
+    margin-bottom: 20px;
+    -webkit-appearance: none;
+}
+
+.centered-content {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0; /* Adjust the distance from the bottom as desired */
+    left: 0;
+    right: 0;
+    padding: 10px;
+    text-align: center;
+    z-index: 9999; /* Ensure the banner appears above other elements */
+}
+  
+.cookie-banner p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
