@@ -22,11 +22,11 @@ eh = EncryptionHelper.EncryptionHelper()
 
 @app.route('/')
 def index():
-    if 'username' in session:
-        return redirect(f'{url_suffix}/chat')
-    elif 'username' in request.cookies:
-        session['username'] = request.cookies['username']
-        return redirect(f'{url_suffix}/chat')
+    if "username" in session:
+        return redirect(f"{url_suffix}/chat")
+    elif "username" in request.cookies:
+        session["username"] = request.cookies["username"]
+        return redirect(f"{url_suffix}/chat")
     else:
         return render_template("login.html", url_suffix = url_suffix)
 
