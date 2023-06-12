@@ -67,43 +67,43 @@
         <div class="wrapping-tile" style="width: 50%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
             <h1>MyAI personality</h1>
             <a href="{{ url_suffix }}/change_ai_personality/Default" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'Default' or not selected_personality%}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'Default' or not selected_personality%}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Default
                 </div>
             </a>
             <a href="{{ url_suffix }}/change_ai_personality/UwuGirl" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'UwuGirl' %}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'UwuGirl' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Uwu Girl (NSFW)
                 </div>
             </a>
             <a href="{{ url_suffix }}/change_ai_personality/TaylorSwift" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'TaylorSwift' %}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'TaylorSwift' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Taylor Swift
                 </div>
             </a>
             <a href="{{ url_suffix }}/change_ai_personality/Pirate" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'Pirate' %}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'Pirate' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Pirate
                 </div>
             </a>
             <a href="{{ url_suffix }}/change_ai_personality/Pistachio" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'Pistachio' %}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'Pistachio' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Pistachio the dinosaur
                 </div>
             </a>
             <a href="{{ url_suffix }}/change_ai_personality/Backus" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'Backus' %}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'Backus' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Backus (BNF inventor)
                 </div>
             </a>
             <a href="{{ url_suffix }}/change_ai_personality/Lorde" style="text-decoration: none;">
-                <div class="ai-personality-button" style="{% if selected_personality == 'Lorde' %}background-color: var(--primary-color); color: var(--white-color); {% else %}background-color: var(--background-tile-color); {% endif %}">
+                <div class="ai-personality-button" style="{% if selected_personality == 'Lorde' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Lorde
                 </div>
             </a>
             {% if display_back_to_ai %}
                 <a href="{{ url_suffix }}/ai/chat" style="text-decoration: none;">
-                    <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color)">
+                    <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
                         Back to MyAI
                     </div>
                 </a>

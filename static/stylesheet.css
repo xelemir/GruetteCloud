@@ -264,7 +264,8 @@ input[type="text"] {
 .ai-personality-button {
     padding: 10px 20px;
     color: var(--text-color);
-    border: none;
+    border-style: solid;
+    border-color: var(--secondary-color);
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 20px;
@@ -274,6 +275,7 @@ input[type="text"] {
     max-width: 300px;
     text-decoration: none;
     text-align: center;
+    font-size: 14px;
     -webkit-appearance: none;
 }
 
