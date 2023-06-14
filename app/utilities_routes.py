@@ -232,7 +232,7 @@ def download_from_youtube():
         if platform.system() == "Windows":
             path_to_file = os.getcwd() + "\\app\\downloads\\video.mp4"
         else:
-            path_to_file = os.getcwd() + "/app/downloads/video.mp4"
+            path_to_file = os.getcwd() + "app/downloads/video.mp4"
         return send_file(path_to_file, as_attachment=True)
         #return render_template("youtubedownloader.html", path_to_file=path_to_file, url_suffix=url_suffix)
         
