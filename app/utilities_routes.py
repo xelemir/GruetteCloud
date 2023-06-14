@@ -1,8 +1,8 @@
 import os
-import platform
-from flask import render_template, request, redirect, send_file, session, make_response, Blueprint
+import datetime
+from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
-from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
+from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
 from credentials import url_suffix
 
 
@@ -221,18 +221,29 @@ def send_support():
     mail.send_support_mail(name, username, email, message)
     
     return render_template("support.html", error="Your message has been sent!", url_suffix=url_suffix)
+
     
     
-    
+
+@utilities_route.route("/youtube/<video_id>", methods=["GET"])
+def user_download(video_id):
+    try:
+        path = os.getcwd() + "/app/downloads/" + video_id + ".mp4"
+        return send_file(path, as_attachment=True)
+    except:
+        return redirect(f"{url_suffix}/youtube")
+
 @utilities_route.route("/youtube", methods=["GET", "POST"])
 def download_from_youtube():
     if request.method == "GET":
-        return render_template("youtubedownloader.html", url_suffix=url_suffix)
+        return render_template("youtube.html", url_suffix=url_suffix)
     elif request.method == "POST":
-        if platform.system() == "Windows":
-            path_to_file = os.getcwd() + "\\app\\downloads\\video.mp4"
-        else:
-            path_to_file = os.getcwd() + "app/downloads/video.mp4"
-        return send_file(path_to_file, as_attachment=True)
-        #return render_template("youtubedownloader.html", path_to_file=path_to_file, url_suffix=url_suffix)
-        
+        try:
+            video_url = str(request.form["video_url"])
+            youtube = YouTubeHelper.YouTubeHelper(url=video_url)
+        except:
+            return jsonify({"error": "Something went wrong on our end :/"})
+            
+        video_id = str(datetime.datetime.now().timestamp()).replace(".", "")
+        youtube.download(filename=video_id)
+        return jsonify({"filename": video_id})

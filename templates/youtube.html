@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .centered-div {
             position: absolute;
@@ -28,15 +30,22 @@
 
     <div class="centered-div" style="top: 25%;">
         <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-            <h1 style="font-size: 30px; font-weight: bold">Enter the YouTube URL below<h1>
+            <div id="loading-container" style="display: none;">
+                <h2 style="color: var(--yellow)"><i class="fa fa-spinner fa-spin"></i> Please wait...</h2>
+                <div class="spaced-tile"></div>
+            </div>
+            <div id="result-container" style="display: none;">
+                <h2 style="color: var(--yellow)"><span class="material-symbols-outlined">warning</span> An error occurred.</h2>
+                <div class="spaced-tile"></div>
+            </div>
         </div>
     </div>
 
     <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
-        <div id="error-message" style="display: none;">
-            <p style="color: var(--yellow)">{{ error }}</p>
-        </div>
-        <form action="{{ url_suffix }}/youtube" method="POST" style="flex-direction: column;">
+        <h1 style="font-size: 30px; font-weight: bold">YouTube downloader<h1>
+        <div class="spaced-tile"></div>
+        <h3>Please enter the URL of the YouTube video you want to download.</h3>
+        <form id="youtube-form" action="{{ url_suffix }}/youtube" method="POST" style="flex-direction: column;">
             <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;">
             <div style="margin-top: 20px">
                 <input type="submit" value="Download video" name="download" style="min-width: 200px" class="send-button">
@@ -108,3 +117,61 @@
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
+
+<script>
+    $(document).ready(function() {
+      $('#youtube-form').on('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        
+        // Show the loading animation
+        $('#loading-container').show();
+        
+        // Disable the submit button to prevent multiple submissions
+        $('input[type="submit"]').prop('disabled', true);
+  
+        // Get the form data
+        var formData = new FormData(this);
+  
+        // Make an AJAX request to initiate the file download
+        $.ajax({
+          type: 'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response) {
+            // Check if the response contains the file URL
+            if (response && response.filename) {
+              // Redirect to the file download URL
+              window.location.href = '{{ url_suffix }}/youtube/' + response.filename;
+  
+              // Hide the loading animation
+              $('#loading-container').hide();
+              
+              // Enable the submit button
+              $('input[type="submit"]').prop('disabled', false);
+            } else {
+              // Hide the loading animation
+              $('#loading-container').hide();
+              
+              // Enable the submit button
+              $('input[type="submit"]').prop('disabled', false);
+  
+              // Handle the error case
+              $('#result-container').show().delay(5000).fadeOut();
+            }
+          },
+          error: function() {
+            // Hide the loading animation
+            $('#loading-container').hide();
+            
+            // Enable the submit button
+            $('input[type="submit"]').prop('disabled', false);
+  
+            // Handle the error case
+            $('#result-container').show().delay(5000).fadeOut();
+          }
+        });
+      });
+    });
+  </script>
+  
