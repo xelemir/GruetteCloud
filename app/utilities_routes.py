@@ -223,9 +223,6 @@ def send_support():
     
     return render_template("support.html", error="Your message has been sent!", url_suffix=url_suffix)
 
-    
-    
-
 @utilities_route.route("/youtube/<video_id>", methods=["GET"])
 def user_download(video_id):
     try:

@@ -29,24 +29,27 @@
     </div>
 
     <div class="centered-div" style="top: 25%;">
-        <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
+        <div style="text-align: center; margin-bottom: 20px; min-width: 600px; height: auto;">
             <div id="loading-container" style="display: none;">
                 <h2 style="color: var(--yellow)"><i class="fa fa-spinner fa-spin"></i> Please wait...</h2>
-                <div class="spaced-tile"></div>
             </div>
-            <div id="result-container" style="display: none;">
-                <h2 style="color: var(--yellow)"><span class="material-symbols-outlined">warning</span> An error occurred.</h2>
-                <div class="spaced-tile"></div>
+            <div id="result-container" style="display: none; ">
+                <h2 style="color: var(--yellow)">An error occurred.</h2>
+            </div>
+            <div id="headline" style="display: none;">
+                <h1 style="font-size: 30px; font-weight: bold">YouTube Downloader<h1>
+                <div class="desktop-only" style="font-size: 17px;">powered by</div>
+                <div class="spaced-tile desktop-only"></div>
+                <img src="https://jan.gruettefien.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
             </div>
         </div>
     </div>
 
     <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
-        <h1 style="font-size: 30px; font-weight: bold">YouTube downloader<h1>
         <div class="spaced-tile"></div>
-        <h3>Please enter the URL of the YouTube video you want to download.</h3>
+        <h3>Please enter the YouTube link below.</h3>
         <form id="youtube-form" action="{{ url_suffix }}/youtube" method="POST" style="flex-direction: column;">
-            <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;">
+            <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
             <div style="margin-top: 20px">
                 <input type="submit" value="Download video" name="download" style="min-width: 200px" class="send-button">
             </div>
@@ -120,9 +123,15 @@
 
 <script>
     $(document).ready(function() {
+      // Show the headline initially
+      $('#headline').show();
+  
       $('#youtube-form').on('submit', function(event) {
         event.preventDefault(); // Prevent the form from submitting normally
         
+        // Hide the headline
+        $('#headline').hide();
+  
         // Show the loading animation
         $('#loading-container').show();
         
@@ -157,7 +166,12 @@
               $('input[type="submit"]').prop('disabled', false);
   
               // Handle the error case
-              $('#result-container').show().delay(5000).fadeOut();
+              $('#result-container').show().delay(5000).fadeOut(function() {
+                // Show the headline if no loading animation or error message is displayed
+                if (!$('#loading-container').is(':visible') && !$('#result-container').is(':visible')) {
+                  $('#headline').show();
+                }
+              });
             }
           },
           error: function() {
@@ -168,7 +182,12 @@
             $('input[type="submit"]').prop('disabled', false);
   
             // Handle the error case
-            $('#result-container').show().delay(5000).fadeOut();
+            $('#result-container').show().delay(5000).fadeOut(function() {
+              // Show the headline if no loading animation or error message is displayed
+              if (!$('#loading-container').is(':visible') && !$('#result-container').is(':visible')) {
+                $('#headline').show();
+              }
+            });
           }
         });
       });

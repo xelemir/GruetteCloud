@@ -35,7 +35,7 @@ function showCookieBanner() {
     <div class="cookie-banner">
     <div class="inner-tile">
       <b>Cookie Policy</b><br>
-      <p>This website uses cookies and loads content from Google and GitHub (USA). Your IP-address will be visible to these companies. By clicking "Accept" you consent to <a href="privacy" style="color: var(--text-color);">our</a> and their privacy policies. If you decline you will have ugly icons and fonts.</p><br>
+      <p>This website uses cookies and loads content from Google, CloudFlare and GitHub (USA). Your IP-address will be visible to these companies. By clicking "Accept" you consent to <a href="privacy" style="color: var(--text-color);">our</a> and their privacy policies. If you decline you will have ugly icons and fonts.</p><br>
       <div style="display: inline;">
         <button id="accept-cookie" class="cookie-button">Accept</button>
         <button id="decline-cookie" class="cookie-button">Decline</button>
