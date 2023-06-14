@@ -1,5 +1,6 @@
 import os
 import datetime
+import platform
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
@@ -228,7 +229,10 @@ def send_support():
 @utilities_route.route("/youtube/<video_id>", methods=["GET"])
 def user_download(video_id):
     try:
-        path = os.getcwd() + "/app/downloads/" + video_id + ".mp4"
+        if platform.system() == "Windows" or platform.system() == "MacOS":
+            path = os.getcwd() + "/app/downloads/" + video_id + ".mp4"
+        else:
+            path = "/home/jan/wwwroot/gruettechat/gruettechat/app/downloads/" + video_id + ".mp4"
         return send_file(path, as_attachment=True)
     except:
         return redirect(f"{url_suffix}/youtube")
