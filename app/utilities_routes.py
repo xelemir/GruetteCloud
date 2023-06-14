@@ -199,7 +199,7 @@ def about():
 
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
-    return redirect(f"{url_suffix}/help")
+    return render_template("privacy.html", url_suffix=url_suffix)
 
 @utilities_route.route("/support", methods=["GET"])
 def support():
