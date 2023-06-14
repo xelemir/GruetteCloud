@@ -1,3 +1,5 @@
+import os
+import platform
 from flask import render_template, request, redirect, send_file, session, make_response, Blueprint
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
@@ -227,7 +229,10 @@ def download_from_youtube():
     if request.method == "GET":
         return render_template("youtubedownloader.html", url_suffix=url_suffix)
     elif request.method == "POST":
-        path_to_file = "app/downloads/video.mp4"
+        if platform.system() == "Windows":
+            path_to_file = os.getcwd() + "\\app\\downloads\\video.mp4"
+        else:
+            path_to_file = os.getcwd() + "/app/downloads/video.mp4"
         return send_file(path_to_file, as_attachment=True)
         #return render_template("youtubedownloader.html", path_to_file=path_to_file, url_suffix=url_suffix)
         
