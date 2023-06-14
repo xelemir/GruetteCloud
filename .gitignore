@@ -7,3 +7,4 @@ firebase.json
 .DS_Store
 lib copy/
 .wsgi
+downloads/
