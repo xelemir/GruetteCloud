@@ -1,4 +1,5 @@
 import os
+import platform
 from pytube import YouTube
 
 
@@ -31,7 +32,10 @@ class YouTubeHelper:
         yt = YouTube(self.url)
         stream = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc().first()
 
-        filepath_video = os.getcwd() + "/app/downloads/"
+        if platform.system() == "Windows" or platform.system() == "MacOS":
+            filepath_video = os.getcwd() + "/app/downloads/"
+        else:
+            filepath_video = "/home/jan/wwwroot/gruettechat/gruettechat/app/downloads/"
         stream.download(filename=f"{filename}.mp4", output_path=filepath_video)
 
         self.filepath_video = filepath_video
