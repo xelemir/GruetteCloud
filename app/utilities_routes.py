@@ -225,6 +225,18 @@ def send_support():
 
 @utilities_route.route("/youtube/<video_id>", methods=["GET"])
 def user_download(video_id):
+    if "username" not in session:
+        return redirect(f"{url_suffix}/")
+    
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    
+    if user == []:
+        return redirect(f"{url_suffix}/")
+    elif not bool(user[0]["has_premium"]):
+        return redirect(f"{url_suffix}/premium")
+            
+
     try:
         if platform.system() == "Windows" or platform.system() == "MacOS":
             path = os.getcwd() + "/app/downloads/" + video_id + ".mp4"
@@ -236,6 +248,17 @@ def user_download(video_id):
 
 @utilities_route.route("/youtube", methods=["GET", "POST"])
 def download_from_youtube():
+    if "username" not in session:
+        return redirect(f"{url_suffix}/")
+
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+
+    if user == []:
+        return redirect(f"{url_suffix}/")
+    elif not bool(user[0]["has_premium"]):
+        return redirect(f"{url_suffix}/premium")
+
     if request.method == "GET":
         return render_template("youtube.html", url_suffix=url_suffix)
     elif request.method == "POST":
