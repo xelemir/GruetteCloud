@@ -8,3 +8,4 @@ firebase.json
 lib copy/
 .wsgi
 downloads/
+config.py

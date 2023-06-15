@@ -2,15 +2,9 @@ from flask import render_template, request, redirect, session, make_response, Bl
 from paypalrestsdk import Payment, set_config
 
 from pythonHelper import SQLHelper, MailHelper
-from credentials import url_suffix, paypal_client_id, paypal_client_secret
-
-
-if url_suffix == "/gruettechat":
-    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
-else:
-    path_template = "templates"
+from config import url_suffix, paypal_client_id, paypal_client_secret, templates_path
     
-premium_route = Blueprint("Premium", "Premium", template_folder=path_template)
+premium_route = Blueprint("Premium", "Premium", template_folder=templates_path)
 
 # Configure PayPal SDK
 set_config({

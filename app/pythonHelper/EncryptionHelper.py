@@ -1,5 +1,5 @@
 import json
-from credentials import url_suffix
+from config import url_suffix
 from cryptography.fernet import Fernet
 
 

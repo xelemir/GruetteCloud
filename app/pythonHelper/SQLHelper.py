@@ -2,7 +2,7 @@ import MySQLdb
 import logging
 import socket
 
-from credentials import gcpConfig, jamailliaConfig, macBookProConfig
+from config import gcpConfig, jamailliaConfig, macBookProConfig
 
 class SQLHelper: 
     

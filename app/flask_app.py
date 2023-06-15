@@ -7,7 +7,7 @@ from utilities_routes import utilities_route
 from chat_routes import chat_route
 from premium_routes import premium_route
 
-from credentials import url_suffix
+from config import url_suffix
 
 
 app = Flask("GrütteChat")

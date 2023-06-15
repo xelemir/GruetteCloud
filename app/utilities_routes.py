@@ -4,15 +4,10 @@ import platform
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
-from credentials import url_suffix
+from config import url_suffix, youtube_download_path, templates_path
 
-
-if url_suffix == "/gruettechat":
-    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
-else:
-    path_template = "templates"
     
-utilities_route = Blueprint("Utilities", "Utilities", template_folder=path_template)
+utilities_route = Blueprint("Utilities", "Utilities", template_folder=templates_path)
 
 @utilities_route.route('/chat/delete/<recipient>')
 def delete_chat(recipient):
@@ -234,14 +229,10 @@ def user_download(video_id):
     if user == []:
         return redirect(f"{url_suffix}/")
     elif not bool(user[0]["has_premium"]):
-        return redirect(f"{url_suffix}/premium")
-            
+        return redirect(f"{url_suffix}/premium") 
 
     try:
-        if platform.system() == "Windows" or platform.system() == "MacOS":
-            path = os.getcwd() + "/app/downloads/" + video_id + ".mp4"
-        else:
-            path = "/home/jan/wwwroot/gruettechat/gruettechat/app/downloads/" + video_id + ".mp4"
+        path = youtube_download_path + video_id + ".mp4"
         return send_file(path, as_attachment=True)
     except:
         return redirect(f"{url_suffix}/youtube")

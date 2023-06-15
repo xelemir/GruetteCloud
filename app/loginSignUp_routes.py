@@ -2,15 +2,9 @@ from flask import render_template, request, redirect, session, Blueprint
 import random
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
-from credentials import url_suffix
-
-
-if url_suffix == "/gruettechat":
-    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
-else:
-    path_template = "templates"
+from config import url_suffix, templates_path
     
-loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=path_template)
+loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
 

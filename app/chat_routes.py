@@ -2,15 +2,10 @@ from flask import render_template, request, redirect, session, jsonify, Blueprin
 import logging
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
-from credentials import url_suffix
+from config import url_suffix, templates_path
 
 
-if url_suffix == "/gruettechat":
-    path_template = "/home/jan/wwwroot/gruettechat/gruettechat/templates"
-else:
-    path_template = "templates"
-
-chat_route = Blueprint("Chat", "Chat", template_folder=path_template)
+chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
 
