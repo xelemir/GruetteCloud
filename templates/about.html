@@ -22,11 +22,59 @@
 		h1 {
 			color: var(--primary-color);
 			font-weight: bold;
+            font-size: 6vh;
+        }
+
+        p {
+            color: var(--text-color);
+            font-size: 2vh;
+        }
+
+        .product-section {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            margin: 40px 0;
+        }
+
+        .product-section > div {
+            width: 50%;
+            margin: 10px;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .product-section > div.fade-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .product-screenshot {
+            height: 70vh;
+            width: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            opacity: 1;
+            transform: translateX(-50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .text-field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
 	</style>
 </head>
 <body>
-	<div class="header">
+    <div class="header">
         <div class="dark-mode-toggle">
             <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
@@ -38,24 +86,81 @@
         </div>
 	</div>
 
-    <div style="flex-direction: row; display: flex; width: 100%;">
-        <div class="wrapping-tile" style="width: 50%; text-align: center; margin-left: 0; margin-right: 10px;">
-            <img src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img1.png" title="GrütteChat">
-        </div>
-        <div class="wrapping-tile" style="width: 50%; text-align: center; margin-right: 0; margin-left: 10px;">
+
+    
+    <div class="product-section">
+        <div class="text-field fade-in">
             <h1>What is GrütteChat?</h1>
-                <p>GrütteChat is a chat application</p>
+            <div class="spaced-tile"></div>
+            <div class="spaced-tile"></div>
+            <p>GrütteChat is a new way to keep in touch with friends, family and much more...<br>
+            It's a free, open-source and built with Python and Flask, AJAX and SQL.</p>
+
+        </div>
+        <div class="fade-in">
+            <img class="product-screenshot" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/login_mobile.png" alt="GrütteChat Screenshot 1">
+        </div>
+    </div>
+
+    <div class="product-section">
+        <div class="fade-in">
+            <img class="product-screenshot" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/myai_mobile.png" alt="GrütteChat Screenshot 2">
+        </div>
+        <div class="text-field fade-in">
+            <h1>AI Chatbot</h1>
+            <div class="spaced-tile"></div>
+            <div class="spaced-tile"></div>
+            <p>MyAI is a state of the art chatbot that is built into GrütteChat.<br>
+			You can access MyAI right from the home page.<br>
+			As a GrütteChat <span style="color: var(--purple)">PLUS</span> user, you'll be able to unlock all MyAI personalities.<br>
+			The pirate is selected here.</p>
+        </div>
+    </div>
+
+    <div class="product-section">
+        <div class="text-field fade-in">
+            <h1>Real-time Messaging</h1>
+            <div class="spaced-tile"></div>
+            <div class="spaced-tile"></div>
+            <p>Messages the ones that are important to you in real-time.<br>
+            And rest assured that your messages are safe and securely encrypted.</p>
+        </div>
+        <div class="fade-in">
+            <img class="product-screenshot" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img3.png" alt="GrütteChat Screenshot 3">
+        </div>
+    </div>
+
+    <div class="product-section">
+        <div class="fade-in">
+            <img class="product-screenshot" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img4.png" alt="GrütteChat Screenshot 4">
+        </div>
+        <div class="text-field fade-in">
+            <h1>End-to-End Encryption</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non mauris nec magna consequat placerat. Phasellus pretium lacus eu mauris dignissim aliquet.</p>
+        </div>
+    </div>
+
+    <div class="product-section">
+        <div class="fade-in">
+            <img class="product-screenshot" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img5.png" alt="GrütteChat Screenshot 5">
+        </div>
+        <div class="text-field fade-in">
+            <h1>Group Chats</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non mauris nec magna consequat placerat. Phasellus pretium lacus eu mauris dignissim aliquet.</p>
+        </div>
+    </div>
+
+    <div class="product-section">
+        <div class="fade-in">
+            <img class="product-screenshot" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img6.png" alt="GrütteChat Screenshot 6">
+        </div>
+        <div class="text-field fade-in">
+            <h1>Customizable Themes</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non mauris nec magna consequat placerat. Phasellus pretium lacus eu mauris dignissim aliquet.</p>
         </div>
     </div>
 
 
-
-        <!--<img src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img2.png" title="GrütteChat">
-        <img src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img3.png" title="GrütteChat">
-        <img src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img4.png" title="GrütteChat">
-        <img src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img5.png" title="GrütteChat">
-        <img src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/img6.png" title="GrütteChat">-->
-	</div>
 	<div id="cookie-banner"></div>
 </body>
 </html>
@@ -90,3 +195,35 @@
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
+
+<script>
+    function isElementInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    function handleScrollAnimation() {
+        const elements = document.querySelectorAll('.fade-in');
+        elements.forEach((element) => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            const threshold = windowHeight * 0.4;
+            const isElementInView = elementTop < threshold;
+            if (isElementInView) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            } else {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px)';
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', handleScrollAnimation);
+    handleScrollAnimation();
+</script>

@@ -193,7 +193,7 @@ def help():
         
 @utilities_route.route("/about", methods=["GET"])
 def about():
-    return redirect(f"{url_suffix}/help")
+    return render_template("about.html", url_suffix=url_suffix)
 
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
