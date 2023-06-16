@@ -26,6 +26,7 @@
 
         .product-section > div {
             margin: 10px;
+            min-height: 80vh;
             text-align: center;
             opacity: 0;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -113,7 +114,7 @@
         }
 	</style>
 </head>
-<body>
+<body style="padding-left: 10px; margin-right: 10px;">
     <div class="header">
         <div class="dark-mode-toggle">
             <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -137,7 +138,6 @@
     </div>
 
     <div class="product-section">
-
         <div class="text-field fade-in mobile">
             <h1>AI Chatbot</h1>
             <p>MyAI is a state of the art AI chatbot that is built into GrütteChat.<br>
@@ -145,7 +145,6 @@
 			As a GrütteChat <span style="color: var(--purple)">PLUS</span> user, you'll be able to unlock all MyAI personalities.<br>
 			The pirate is selected here.</p>
         </div>
-
         <div class="fade-in">
             <img class="product-screenshot phone" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/myai_mobile.png" alt="GrütteChat Screenshot 2">
         </div>
@@ -153,7 +152,7 @@
             <h1>AI Chatbot</h1>
             <div class="spaced-tile desktop"></div>
             <div class="spaced-tile desktop"></div>
-            <p>MyAI is a state of the art chatbot that is built into GrütteChat.<br>
+            <p>MyAI is a state of the art AI chatbot that is built into GrütteChat.<br>
 			You can access MyAI right from the home page.<br>
 			As a GrütteChat <span style="color: var(--purple)">PLUS</span> user, you'll be able to unlock all MyAI personalities.<br>
 			The pirate is selected here.</p>
@@ -169,18 +168,16 @@
             and rest assured that your messages are safe and securely encrypted.</p>
         </div>
         <div class="fade-in">
-            <img class="product-screenshot phone" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/chat.png" alt="GrütteChat Screenshot 3">
+            <img class="product-screenshot phone" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/chat_ipad.png" alt="GrütteChat Screenshot 3">
         </div>
     </div>
 
     <div class="product-section">
-
         <div class="text-field fade-in mobile">
             <h1>Looks great on any screen</h1>
             <p>GrütteChat is built with responsive design in mind.<br>
             Experience it on your phone, tablet, laptop or desktop computer.</p>
         </div>
-
         <div class="fade-in">
             <img class="product-screenshot mac" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/myai_mac.png" alt="GrütteChat Screenshot 4">
         </div>
@@ -192,20 +189,42 @@
             Experience it on your phone, tablet, laptop or desktop computer.</p>
         </div>
     </div>
-    <div style="min-height: 30vh;"></div>
-    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
-            About Us
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
-            Help Center
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
-            Privacy Policy
-        </a>
+
+    <div class="product-section">
+        <div class="text-field fade-in">
+            <h1>GrütteChat <span style="color: var(--purple)">PLUS</span></h1>
+            <div class="spaced-tile desktop"></div>
+            <div class="spaced-tile desktop"></div>
+            <p>Enjoy GrütteChat in a completely new way.<br>
+            For a single payment of 2.99 €, you'll get lifetime access to exclusive features.</p>
+        </div>
+        <div class="fade-in">
+            <img class="product-screenshot phone" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/PLUS_zfold2.png" alt="GrütteChat Screenshot 3">
+        </div>
     </div>
+
+    <div class="product-section">
+        <div class="text-field fade-in mobile">
+            <h1>What are you waiting for?</h1>
+            <p>Sign up today and start chatting.</p>
+        </div>
+        <div class="fade-in">
+            <img class="product-screenshot phone" src="https://raw.githubusercontent.com/xelemir/GruetteChat/main/static/marketing/login_mobile.png" alt="GrütteChat Screenshot 4">
+            <div class="spaced-tile mobile"></div>
+            <div class="spaced-tile mobile"></div>
+            <button class="buy-now-button mobile" onclick="window.location.href='{{ url_suffix }}/'">Get Started</button>
+        </div>
+        <div class="text-field fade-in desktop">
+            <h1>What are you waiting for?</h1>
+            <div class="spaced-tile desktop"></div>
+            <div class="spaced-tile desktop"></div>
+            <p>Sign up today and start chatting.</p>
+            <div class="spaced-tile desktop"></div>
+            <div class="spaced-tile desktop"></div>
+            <button class="buy-now-button desktop" onclick="window.location.href='{{ url_suffix }}/'">Get Started</button>
+        </div>
+    </div>
+    <div style="min-height: 10vh;"></div>
 	<div id="cookie-banner"></div>
 </body>
 </html>

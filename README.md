@@ -52,16 +52,21 @@ An ad for GrütteChat.<br><br>
 </p>
 <br>
 <p align="center">
-  <img width=200px src="static/marketing/img1.png" alt="GrütteChat" style="padding:30px;">
-  <img width=200px src="static/marketing/img2.png" alt="GrütteChat" style="padding:30px;">
-  <img width=200px src="static/marketing/img3.png" alt="GrütteChat" style="padding:30px;">
-  <br> The login page, MyAI chat bot with the pirate personality (with dark mode) and chat layout on mobile.<br><br>
+  <img width=200px src="static/marketing/login_mobile.png" alt="GrütteChat" style="padding:30px;">
+  <img width=200px src="static/marketing/myai_mobile.png" alt="GrütteChat" style="padding:30px;">
+  <img width=200px src="static/marketing/chat_mobile.png" alt="GrütteChat" style="padding:30px;">
+  <br> Login page, MyAI chat bot with the pirate personality and chat layout on mobile.<br><br>
 </p>
 <p align="center">
-  <img width=80% src="static/marketing/img5.png" alt="GrütteChat">
-  <br> The chat on desktop.<br><br>
+  <img width=80% src="static/marketing/myai_mac.png" alt="GrütteChat">
+  <br> MyAI on desktop.<br><br>
 </p>
 <p align="center">
-  <img width=80% src="static/marketing/img4.png" alt="GrütteChat">
-  <br> The login page on desktop.
+  <img width=40% src="static/marketing/chat_ipad.png" alt="GrütteChat" style="padding:30px;">
+  <img width=40% src="static/marketing/PLUS_zfold2.png" alt="GrütteChat" style="padding:30px;">
+  <br> Chat on an iPad Air 4th Gen, GrütteChat PLUS page on a Galaxy Z Fold 2.<br><br>
+</p>
+<p align="center">
+  <img width=80% src="static/marketing/gruettechatpad.png" alt="GrütteChat">
+  <br> Erlebe GrütteChat auf dem GrüttePad...<br><br>
 </p>
