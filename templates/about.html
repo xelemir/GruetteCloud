@@ -26,7 +26,7 @@
 
         .product-section > div {
             margin: 10px;
-            min-height: 80vh;
+            height: 100%;
             text-align: center;
             opacity: 0;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -84,6 +84,8 @@
             body {
                 padding-left: 10px;
                 margin-right: 10px;
+                margin-top: 0;
+                margin-bottom: 0;
             }
         }
 
@@ -102,7 +104,6 @@
             }
     
             .mac {
-                margin-top: 20vh;
                 height: auto;
                 width: 40vw;
             }
@@ -288,7 +289,7 @@
         elements.forEach((element) => {
             const elementTop = element.getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
-            const threshold = windowHeight * 0.6;
+            const threshold = windowHeight * 0.5;
             const isElementInView = elementTop < threshold;
             if (isElementInView) {
                 element.style.opacity = '1';
