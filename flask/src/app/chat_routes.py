@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, session, jsonify, Blueprint
 import logging
 
-from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
+from pythonHelper import EncryptionHelper, OpenAIWrapper, MongoDBHelper
 from credentials import url_suffix
 
 

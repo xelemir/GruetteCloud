@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, session, make_response, Blueprint
 
-from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
+from pythonHelper import MongoDBHelper, EncryptionHelper, MailHelper
 from credentials import url_suffix
 
 

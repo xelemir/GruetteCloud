@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, session, make_response, Blueprint
 from paypalrestsdk import Payment, set_config
 
-from pythonHelper import SQLHelper, MailHelper
+from pythonHelper import MongoHelper, MailHelper
 from credentials import url_suffix, paypal_client_id, paypal_client_secret
 
 

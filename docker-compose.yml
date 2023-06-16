@@ -2,16 +2,19 @@ version: '3.8'
 services:
   flask:
     build: ./flask
+    hostname: flask
     ports:
       - "5000"
-  mongodb_service:
+    depends_on:
+      - mongodb
+  mongodb:
     image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=secret
+    hostname: mongodb
     volumes:
       - ./data/db:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - "27017:27017"
   haproxy:
     build: ./haproxy
     ports:
