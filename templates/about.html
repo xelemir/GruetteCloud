@@ -60,6 +60,7 @@
             }
     
             .mac {
+                margin-top: 30px;
                 height: auto;
                 width: 90vw;
             }
@@ -79,6 +80,11 @@
             .mobile {
                 display: block;
             }
+
+            body {
+                padding-left: 10px;
+                margin-right: 10px;
+            }
         }
 
         @media (min-width: 768px) {
@@ -96,6 +102,7 @@
             }
     
             .mac {
+                margin-top: 20vh;
                 height: auto;
                 width: 40vw;
             }
@@ -111,10 +118,15 @@
             .mobile {
                 display: none;
             }
+
+            body {
+                padding-left: 40px;
+                margin-right: 40px;
+            }
         }
 	</style>
 </head>
-<body style="padding-left: 10px; margin-right: 10px;">
+<body>
     <div class="header">
         <div class="dark-mode-toggle">
             <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -276,7 +288,7 @@
         elements.forEach((element) => {
             const elementTop = element.getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
-            const threshold = windowHeight * 0.5;
+            const threshold = windowHeight * 0.6;
             const isElementInView = elementTop < threshold;
             if (isElementInView) {
                 element.style.opacity = '1';
