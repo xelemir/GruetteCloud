@@ -90,7 +90,7 @@ def signup():
             encrypted_password = str(eh.encrypt_message(str(password)))        
             verification_code = str(random.randint(100000, 999999))
 
-            db.write('gruttechat_users', 
+            db.write('users', 
                      {"username": username, 
                       "password": encrypted_password, 
                       "email": email, 
