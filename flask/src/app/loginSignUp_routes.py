@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, session, Blueprint
 import random
+import logging
 
 from pythonHelper import EncryptionHelper, MongoDBHelper, MailHelper
 from credentials import url_suffix
@@ -13,6 +14,7 @@ else:
 loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=path_template)
 
 eh = EncryptionHelper.EncryptionHelper()
+db = MongoDBHelper.MongoDBHelper()
 
 @loginSignUp_route.route('/login', methods=['POST', 'GET'])
 def login():
@@ -21,7 +23,6 @@ def login():
     elif request.method == "GET":
         return redirect(f'{url_suffix}/')
     
-    db = MongoDBHelper.MongoDBHelper()
     username = str(request.form['username'])
     password = str(request.form['password'])
     
@@ -30,7 +31,7 @@ def login():
         return render_template('login.html', error='Please enter a username and password', url_suffix = url_suffix)
     
     # Search for user in database
-    user = db.read('gruttechat_users', {"username": username})
+    user = db.read('users', {"username": username})
     
     # If user exists, check if password is correct
     if user != []:
@@ -65,7 +66,6 @@ def signup():
 
     if request.method == 'POST':
         mail = MailHelper.MailHelper()
-        db = MongoDBHelper.MongoDBHelper()
         username = str(request.form['username'])
         email = str(request.form['email'])
         password = str(request.form['password'])
@@ -82,7 +82,7 @@ def signup():
         elif '@' not in email or '.' not in email:
             return render_template('signup.html', error='Please enter a valid email address', url_suffix = url_suffix)
 
-        search_username = db.read('gruttechat_users', {"username": username})
+        search_username = db.read('users', {"username": username})
 
         if search_username != []:
             return render_template('signup.html', error='Username already exists', url_suffix = url_suffix)
@@ -101,18 +101,21 @@ def signup():
                       "premium_chat": False, 
                       "balance": 0})
 
-            #mail.send_email(email, verification_code)
+            mail.send_email(email, username, verification_code)
             return redirect(f'{url_suffix}/verify/{username}')
 
     return render_template('signup.html', url_suffix = url_suffix)
 
 @loginSignUp_route.route('/verify/<username>', methods=['POST', 'GET'])
 def verify(username):
-    db = MongoDBHelper.MongoDBHelper()
+    if "username" in session or username is None:
+        return redirect(f'{url_suffix}/')
 
-    user = db.read('gruttechat_users', {"username": str(username)})
+    error = None
+    user = db.read('users', {"username": str(username)})
 
     if user == []:
+        logging.error(f"The User '{user}' does not exist")
         return redirect(f'{url_suffix}/')
     else:
         email = user[0]["email"]
@@ -123,13 +126,16 @@ def verify(username):
             create_entered_code = str(request.form['code0']) + str(request.form['code1']) + str(request.form['code2']) + str(request.form['code3']) + str(request.form['code4']) + str(request.form['code5'])
             
             if create_entered_code == verification_code:
-                db.update("gruttechat_users", 
-                          {"$set": {"is_verified": True}},
-                          {"username": str(username)})
+                db.update("users", 
+                          {"username": str(username)},
+                          {"$set": {"is_verified": True}})
+                          
 
                 session['username'] = username
                 response = redirect(f'{url_suffix}/chat')
                 response.set_cookie('username', username)
                 return response
             else:
-                return render_template('verify.html', error='Invalid code', url_suffix = url_suffix, email=email, username=username)
+                error = 'Invalid code'
+
+    return render_template('verify.html', error=error, url_suffix = url_suffix, email=email, username=username, already_verified=already_verified)

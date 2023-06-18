@@ -10,6 +10,7 @@ services:
   mongodb:
     image: mongo
     hostname: mongodb
+    restart: always
     volumes:
       - ./data/db:/data/db
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro

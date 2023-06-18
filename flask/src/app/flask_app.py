@@ -3,18 +3,18 @@ from flask import Flask, render_template, request, session, redirect, jsonify
 from pythonHelper import EncryptionHelper, MongoDBHelper
 
 from loginSignUp_routes import loginSignUp_route
-#from utilities_routes import utilities_route
-#from chat_routes import chat_route
-#from premium_routes import premium_route
+from utilities_routes import utilities_route
+from chat_routes import chat_route
+from premium_routes import premium_route
 
 from credentials import url_suffix
 
 app = Flask("GrütteChat")
 app.secret_key = 'supersecretkey'
 app.register_blueprint(loginSignUp_route)
-#app.register_blueprint(utilities_route)
-#app.register_blueprint(chat_route)
-#app.register_blueprint(premium_route)
+app.register_blueprint(utilities_route)
+app.register_blueprint(chat_route)
+app.register_blueprint(premium_route)
 
 eh = EncryptionHelper.EncryptionHelper()
 db = MongoDBHelper.MongoDBHelper()
@@ -46,7 +46,7 @@ def chat(error=None):
             return redirect(f'{url_suffix}/chat')
 
         # Check if recipient exists
-        user_exists = db.read('gruttechat_users', {"username": recipient})
+        user_exists = db.read('users', {"username": recipient})
 
         if user_exists == []:
             # User does not exist
@@ -57,7 +57,7 @@ def chat(error=None):
             return redirect(f'{url_suffix}/chat/{recipient}')
 
     # Fetch active chats from the database
-    active_chats_database = db.read('gruttechat_messages', {"$or": [{"username_send": username}, {"username_receive": username}]})
+    active_chats_database = db.read('messages', {"$or": [{"username_send": username}, {"username_receive": username}]})
     
     # Add all active chats to a list
     for chat in active_chats_database:
@@ -67,7 +67,7 @@ def chat(error=None):
             active_chats.append(chat["username_send"])
     
     # Get user's premium status
-    user = db.read('gruttechat_users', {"username": username})
+    user = db.read('users', {"username": username})
     
     # Render the home page
     return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_suffix=url_suffix)
