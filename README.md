@@ -47,7 +47,7 @@ GrütteChat is a web chat app. Messages are saved in a SQL database. New message
 ## 🎉 Screenshots <a name = "screenshots"></a>
 <br>
 <p align="center">
-<img width=80% src="static/marketing/ad.png" alt="GrütteChat ad"><br>
+<img width=80% src="flask/src/static/marketing/ad.png" alt="GrütteChat ad"><br>
 An ad for GrütteChat.<br><br>
 </p>
 <br>
