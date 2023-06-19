@@ -5,3 +5,4 @@ paypalrestsdk
 pymongo
 SQLHelper
 gunicorn
+bcrypt

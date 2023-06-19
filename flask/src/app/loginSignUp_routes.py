@@ -35,10 +35,9 @@ def login():
     
     # If user exists, check if password is correct
     if user != []:
-        decrypted_password = eh.decrypt_message(user[0]["password"])
         
         # If username and password are correct
-        if user[0]["username"] == username and decrypted_password == password:
+        if user[0]["username"] == username and eh.check_password(password, user[0]["password"]):
             
             # Check if the user has verified their account
             if bool(user[0]["is_verified"]) == False:
@@ -87,7 +86,7 @@ def signup():
         if search_username != []:
             return render_template('signup.html', error='Username already exists', url_suffix = url_suffix)
         else:
-            encrypted_password = str(eh.encrypt_message(str(password)))        
+            encrypted_password = str(eh.hash_password(str(password)))        
             verification_code = str(random.randint(100000, 999999))
 
             db.write('users', 
@@ -101,7 +100,7 @@ def signup():
                       "premium_chat": False, 
                       "balance": 0})
 
-            mail.send_email(email, username, verification_code)
+            #mail.send_email(email, username, verification_code)
             return redirect(f'{url_suffix}/verify/{username}')
 
     return render_template('signup.html', url_suffix = url_suffix)
