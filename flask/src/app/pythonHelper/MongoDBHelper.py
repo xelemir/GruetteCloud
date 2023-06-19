@@ -1,12 +1,11 @@
 from pymongo import MongoClient
 import logging
+from credentials import db_username, db_password
 
 class MongoDBHelper:
     def __init__(self):
         try:
-            username = "mainUser"
-            password = "pwd"
-            self.client = MongoClient(f"mongodb://{username}:{password}@mongodb:27017/gruetteChatDB?authSource=gruetteChatDB&authMechanism=SCRAM-SHA-1")
+            self.client = MongoClient(f"mongodb://{db_username}:{db_password}@mongodb:27017/gruetteChatDB?authSource=gruetteChatDB&authMechanism=SCRAM-SHA-1")
             self.db = self.client["gruetteChatDB"]
 
         except Exception as e:

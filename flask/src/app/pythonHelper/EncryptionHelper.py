@@ -1,6 +1,5 @@
 import json
 import bcrypt
-from config import url_suffix
 from credentials import url_suffix
 from cryptography.fernet import Fernet
 

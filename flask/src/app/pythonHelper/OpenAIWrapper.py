@@ -1,6 +1,6 @@
 import openai
 
-from config import openai_api_key
+from credentials import openai_api_key
 
 
 class OpenAIWrapper:

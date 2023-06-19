@@ -13,7 +13,7 @@ services:
     restart: always
     volumes:
       - ./data/db:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     ports:
       - "27017:27017"
   haproxy:

@@ -1,4 +1,5 @@
 .spotipyoauthcache
+db_credentials.js
 credentials.py
 __pycache__/
 encryptionkey.json

@@ -2,7 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from config import gmail_mail, gmail_app_password
+from credentials import gmail_mail, gmail_app_password
 
 class MailHelper:
 
