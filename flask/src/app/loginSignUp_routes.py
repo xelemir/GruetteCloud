@@ -1,12 +1,20 @@
 from flask import render_template, request, redirect, session, Blueprint
 import random
+import logging
 
-from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
-from config import url_suffix, templates_path
+from pythonHelper import EncryptionHelper, MongoDBHelper, MailHelper
+from credentials import url_suffix
+
+
+if url_suffix == "/gruettechat":
+    path_template = "/application/templates"
+else:
+    path_template = "/application/templates"
     
-loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=templates_path)
+loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=path_template)
 
 eh = EncryptionHelper.EncryptionHelper()
+db = MongoDBHelper.MongoDBHelper()
 
 @loginSignUp_route.route('/login', methods=['POST', 'GET'])
 def login():
@@ -15,7 +23,6 @@ def login():
     elif request.method == "GET":
         return redirect(f'{url_suffix}/')
     
-    sql = SQLHelper.SQLHelper()
     username = str(request.form['username'])
     password = str(request.form['password'])
     
@@ -24,14 +31,13 @@ def login():
         return render_template('login.html', error='Please enter a username and password', url_suffix = url_suffix)
     
     # Search for user in database
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = db.read('users', {"username": username})
     
     # If user exists, check if password is correct
     if user != []:
-        decrypted_password = eh.decrypt_message(user[0]["password"])
         
         # If username and password are correct
-        if user[0]["username"] == username and decrypted_password == password:
+        if user[0]["username"] == username and eh.check_password(password, user[0]["password"]):
             
             # Check if the user has verified their account
             if bool(user[0]["is_verified"]) == False:
@@ -56,18 +62,14 @@ def login():
 def signup():
     if 'username' in session:
         return redirect(f'{url_suffix}/chat')
-    
-    # If Method is POST
+
     if request.method == 'POST':
-        
         mail = MailHelper.MailHelper()
-        sql = SQLHelper.SQLHelper()
         username = str(request.form['username'])
         email = str(request.form['email'])
         password = str(request.form['password'])
         password_confirm = str(request.form['password2'])
-        
-        # Check if input is valid
+
         if password != password_confirm:
             return render_template('signup.html', error='Passwords do not match', url_suffix = url_suffix)
         elif username == '' or password == '':
@@ -78,64 +80,61 @@ def signup():
             return render_template('signup.html', error='Password must be between 8 and 40 characters', url_suffix = url_suffix)
         elif '@' not in email or '.' not in email:
             return render_template('signup.html', error='Please enter a valid email address', url_suffix = url_suffix)
-        
-        # Check if the username already exists
-        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+
+        search_username = db.read('users', {"username": username})
+
         if search_username != []:
             return render_template('signup.html', error='Username already exists', url_suffix = url_suffix)
-        
-        # Else create new user
         else:
-            encrypted_password = str(eh.encrypt_message(str(password)))        
+            encrypted_password = str(eh.hash_password(str(password)))        
             verification_code = str(random.randint(100000, 999999))
 
-            # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_verified, has_premium, ai_personality, premium_chat, balance) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0)")
-            
-            # Send the email
-            mail.send_verification_email(email, username, verification_code)
-            
-            # Redirect to verification page
-            return redirect(f"{url_suffix}/verify/{username}")
+            db.write('users', 
+                     {"username": username, 
+                      "password": encrypted_password, 
+                      "email": email, 
+                      "verification_code": verification_code, 
+                      "is_verified": False, 
+                      "has_premium": False, 
+                      "ai_personality": 'Default', 
+                      "premium_chat": False, 
+                      "balance": 0})
 
-    # If Method is GET, render the signup page
+            #mail.send_email(email, username, verification_code)
+            return redirect(f'{url_suffix}/verify/{username}')
+
     return render_template('signup.html', url_suffix = url_suffix)
 
-@loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
+@loginSignUp_route.route('/verify/<username>', methods=['POST', 'GET'])
 def verify(username):
     if "username" in session or username is None:
         return redirect(f'{url_suffix}/')
-    
+
     error = None
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(username)}'")
-    
-    # User does not exist
+    user = db.read('users', {"username": str(username)})
+
     if user == []:
+        logging.error(f"The User '{user}' does not exist")
         return redirect(f'{url_suffix}/')
-    
-    # User exists
     else:
-        # Get email and verification code from database 
         email = user[0]["email"]
         verification_code = user[0]["verification_code"]
         already_verified = user[0]["is_verified"]
 
-        # If post request, check if the verification code is correct
         if request.method == 'POST':
-            
-            # Create code from input
             create_entered_code = str(request.form['code0']) + str(request.form['code1']) + str(request.form['code2']) + str(request.form['code3']) + str(request.form['code4']) + str(request.form['code5'])
             
-            # Check if the code is correct, if so, verify the user and log them in
             if create_entered_code == verification_code:
-                sql.writeSQL(f"UPDATE gruttechat_users SET is_verified = {True} WHERE username = '{str(username)}'")
+                db.update("users", 
+                          {"username": str(username)},
+                          {"$set": {"is_verified": True}})
+                          
+
                 session['username'] = username
-                return redirect(f'{url_suffix}/chat')
-            
-            # If the code is incorrect, display an error
+                response = redirect(f'{url_suffix}/chat')
+                response.set_cookie('username', username)
+                return response
             else:
-                error = "The code you entered is incorrect"
-    
-    # Render the verification page
-    return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified, url_suffix = url_suffix)
+                error = 'Invalid code'
+
+    return render_template('verify.html', error=error, url_suffix = url_suffix, email=email, username=username, already_verified=already_verified)

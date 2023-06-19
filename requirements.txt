@@ -1,6 +1,0 @@
-flask
-cryptography
-openai
-paypalrestsdk
-mysqlclient
-pytube

@@ -1,0 +1,9 @@
+flask
+cryptography
+openai
+paypalrestsdk
+pytube
+pymongo
+SQLHelper
+gunicorn
+bcrypt

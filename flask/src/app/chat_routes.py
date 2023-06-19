@@ -1,32 +1,32 @@
 from flask import render_template, request, redirect, session, jsonify, Blueprint
 import logging
 
-from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
-from config import url_suffix, templates_path
+from pythonHelper import EncryptionHelper, OpenAIWrapper, MongoDBHelper
+from credentials import url_suffix
 
 
-chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
+if url_suffix == "/gruettechat":
+    path_template = "/application/templates"
+else:
+    path_template = "/application/templates"
+
+chat_route = Blueprint("Chat", "Chat", template_folder=path_template)
 
 eh = EncryptionHelper.EncryptionHelper()
+db = MongoDBHelper.MongoDBHelper()
 
 @chat_route.route("/get_messages", methods=["GET"])
 def get_messages():
-    """ Route to load messages into the chat
-
-    Returns:
-        str: The messages list as JSON
-    """
      
     if "username" not in session:
         return redirect(f"{url_suffix}/")
     
-    sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username"))
     recipient = str(request.args.get("recipient"))
     messages_list = []
     
     # Fetch all messages from the database
-    get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
+    get_messages = db.read('messages', {"$or": [{"username_send": username, "username_receive": recipient}, {"username_send": recipient, "username_receive": username}]}, sort=[("created_at", -1)])
     
     for message in get_messages:
         # Decrypt the message
@@ -35,7 +35,7 @@ def get_messages():
         except:
             decrypted_message = "Decryption Error!"
 
-        # Check if the message was sent by the user or the recipient abd add it to the list
+        # Check if the message was sent by the user or the recipient and add it to the list
         if message["username_send"] == username:
             messages_list.append(["You", decrypted_message])
         else:
@@ -47,30 +47,20 @@ def get_messages():
 
 @chat_route.route('/chat/<recipient>', methods=['GET', 'POST'])
 def chat_with(recipient):
-    """ Route to chat with a user
-
-    Args:
-        recipient (str): the username of the recipient
-
-    Returns:
-        str: The rendered template or a redirect
-    """
-
     if "username" not in session:
         return redirect(f"{url_suffix}/")
 
-    sql = SQLHelper.SQLHelper()
     username = str(session['username'])
     messages_list = []
 
     # Check if the recipient exists
-    search_recipient = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
-    if search_recipient == []:
+    search_recipient = db.read('users', {"username": recipient})
+    if not search_recipient:
         return redirect(f'{url_suffix}/chat')
     
     # Get the user from the database
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
-    if user == []:
+    user = db.read('users', {"username": username})
+    if not user:
         return redirect(f'{url_suffix}/chat')
     
     # Premium chat meaning that the user needs GrütteChat PLUS to chat with this user
@@ -90,11 +80,11 @@ def chat_with(recipient):
         # If the message is valid, encrypt it and send it to the database 
         else:
             encypted_message = str(eh.encrypt_message(request.form['message']))
-            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
+            db.write('messages', {"username_send": username, "username_receive": recipient, "message_content": encypted_message})
             return redirect(f'{url_suffix}/chat/{recipient}')
 
     # Get is used to load the chat
-    get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
+    get_messages = db.read('messages', {"$or": [{"username_send": username, "username_receive": recipient}, {"username_send": recipient, "username_receive": username}]}, sort=[("created_at", -1)])
     
     for message in get_messages:
         # Decrypt the message
@@ -103,7 +93,7 @@ def chat_with(recipient):
         except:
             decrypted_message = "Decryption Error!"
 
-        # Check if the message was sent by the user or the recipient abd add it to the list
+        # Check if the message was sent by the user or the recipient and add it to the list
         if message["username_send"] == username:
             messages_list.append(["You", decrypted_message])
         else:
@@ -114,21 +104,12 @@ def chat_with(recipient):
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):
-    """ AI Chat route
-
-    Args:
-        method (str): The method to be executed
-
-    Returns:
-        str: The rendered template or a redirect
-    """
     
     if "username" not in session:
         return redirect(f"{url_suffix}/")
 
     ai = OpenAIWrapper.OpenAIWrapper()
-    sql = SQLHelper.SQLHelper()
-    
+
     # Get chat history from session
     chat_history = session.get("chat_history", [])
 
@@ -147,8 +128,8 @@ def send(method):
         chat_history.append({"role": "user", "content": request.form["message"]})
         
         # Get user selected AI personality from database
-        user = sql.readSQL(f"SELECT ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
-        if user == []:
+        user = db.read('users', {"username": session['username']})
+        if not user:
             selected_ai_personality = "Default"
             has_premium = False
         else:

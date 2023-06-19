@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  flask:
+    build: ./flask
+    hostname: flask
+    ports:
+      - "5000"
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    restart: always
+    volumes:
+      - ./data/db:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - "27017:27017"
+  haproxy:
+    build: ./haproxy
+    ports:
+      - 80:80
+    depends_on:
+      - flask

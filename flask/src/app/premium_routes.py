@@ -1,10 +1,17 @@
 from flask import render_template, request, redirect, session, make_response, Blueprint
 from paypalrestsdk import Payment, set_config
 
-from pythonHelper import SQLHelper, MailHelper
-from config import url_suffix, paypal_client_id, paypal_client_secret, templates_path
-    
-premium_route = Blueprint("Premium", "Premium", template_folder=templates_path)
+from pythonHelper import MongoDBHelper, MailHelper
+from credentials import url_suffix, paypal_client_id, paypal_client_secret
+
+
+if url_suffix == "/gruettechat":
+    path_template = "/application/templates"
+else:
+    path_template = "/application/templates"
+
+db = MongoDBHelper.MongoDBHelper()   
+premium_route = Blueprint("Premium", "Premium", template_folder=path_template)
 
 # Configure PayPal SDK
 set_config({
@@ -21,7 +28,7 @@ def pay_with_PayPal(success_url="https://jan.gruettefien.com/gruettechat/success
     """
     amount = round(float(amount), 2)
     
-        # Create PayPal payment object
+    # Create PayPal payment object
     payment = Payment({
         "intent": "sale",
         "payer": {
@@ -59,11 +66,10 @@ def premium():
         return redirect(f"{url_suffix}/")
     
     # Get user from database
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = db.read('users', {"username": str(session['username'])})
 
     # If empty, something went wrong, most likely sql connection issue
-    if user == []:
+    if not user:
         return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False, url_suffix = url_suffix)
     
     # If good to go, check if user has premium
@@ -88,11 +94,10 @@ def payment():
         return redirect(f"{url_suffix}/")
 
     # Get user from database
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = db.read('users', {"username": str(session['username'])})
     
     # If empty, something went wrong, most likely sql connection issue
-    if user == []:
+    if not user:
         return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
     
     # If everything looks good, check if user has premium
@@ -125,11 +130,10 @@ def success():
         return redirect(f"{url_suffix}/")
     
     # Get user from database
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = db.read('users', {"username": str(session['username'])})
    
     # If empty, something went wrong, most likely sql connection issue
-    if user == []:
+    if not user:
         return render_template("settings.html", error="Something went wrong. Please contact customer support.", selected_personality="Default", has_premium=False, url_suffix=url_suffix)
     
     # If good to go, check if user has premium
@@ -145,7 +149,7 @@ def success():
         
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
-            sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
+            db.update('users', {"username": str(session['username'])}, {"$set": {"has_premium": True}})
             return render_template("settings.html", error="You now have GrütteChat PLUS!", selected_personality="Default", has_premium=True, url_suffix=url_suffix)
         
         # Else if payment failed, return error
@@ -175,9 +179,9 @@ def tip(recipient):
     if "username" not in session:
         return redirect(f"{url_suffix}/")
     
-    sql = SQLHelper.SQLHelper()
+    db = MongoDBHelper()
     
-    recipient_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
+    recipient_database = db.read('users', {"username": str(recipient)})
     if recipient_database == []:
         return redirect(f"{url_suffix}/")
     
@@ -188,7 +192,7 @@ def tip_amount(recipient, value):
     if "username" not in session:
         return redirect(f"{url_suffix}/")
     
-    sql = SQLHelper.SQLHelper()
+    db = MongoDBHelper()
     email = MailHelper.MailHelper()
     
     if value == "success":
@@ -205,13 +209,13 @@ def tip_amount(recipient, value):
                 amount = transactions[0].amount
                 paid_amount = amount.total
                 
-                recipient_database = sql.readSQL(f"SELECT username, balance, email FROM gruttechat_users WHERE username = '{str(recipient)}'")
+                recipient_database = db.read('users', {"username": str(recipient)})
                 if recipient_database == []:
                     return redirect(f"{url_suffix}/")
     
                 new_balance = int(recipient_database[0]["balance"]) + int(float(str((paid_amount))))
                 
-                sql.writeSQL(f"UPDATE gruttechat_users SET balance = {new_balance} WHERE username = '{str(recipient)}'")
+                db.update('users', {"username": str(recipient)}, {"$set": {"balance": new_balance}})
                 email.send_tip_email(recipient_email=recipient_database[0]["email"], username_received=recipient_database[0]["username"], username_send=session["username"], paid_amount=paid_amount)
 
             return render_template("tip.html", recipient=recipient, error="Payment successful! Thank you.", url_suffix=url_suffix)
@@ -228,7 +232,7 @@ def tip_amount(recipient, value):
     elif int(value) not in [1, 2, 5, 10]:
         return redirect(f"{url_suffix}/")
         
-    recipient_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
+    recipient_database = db.read('users', {"username": str(recipient)})
     if recipient_database == []:
         return redirect(f"{url_suffix}/")
     

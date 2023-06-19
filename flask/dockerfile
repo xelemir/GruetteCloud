@@ -1,0 +1,21 @@
+# Dockerfile
+
+# Set the base image
+FROM python:3.7
+
+# Set the working directory in the container
+WORKDIR /application
+
+# Copy the dependencies file to the working directory
+COPY requirements.txt .
+
+# Install any dependencies
+RUN pip install -r requirements.txt
+
+# Copy the content of the local src directory to the working directory
+COPY src/ .
+
+WORKDIR /application/app
+
+# Specify the command to run on container start
+CMD [ "gunicorn", "-b", ":5000", "wsgi:app" ]

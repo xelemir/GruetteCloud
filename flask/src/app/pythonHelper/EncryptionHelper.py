@@ -1,5 +1,7 @@
 import json
 from config import url_suffix
+import bcrypt
+from credentials import url_suffix
 from cryptography.fernet import Fernet
 
 
@@ -49,7 +51,6 @@ class EncryptionHelper:
         hex_representation = bytes_representation.hex()
         return hex_representation
 
-
     def number_to_string(self, hex_string):
         if len(hex_string) % 2 != 0:
             hex_string = '0' + hex_string
@@ -57,14 +58,28 @@ class EncryptionHelper:
         string = encoded_bytes.decode('utf-8')
         return string
 
+    # Hashes and salts the provided password
+    def hash_password(self, password):
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password.encode(), salt)
+        return hashed_password.decode('utf-8')
+
+    # Verifies if the provided password matches the hashed password
+    def check_password(self, password, hashed_password):
+        return bcrypt.checkpw(password.encode(), hashed_password.encode())
+
 
 if __name__ == "__main__":
     eh = EncryptionHelper()
 
     my_test_message = "This is a test message"
-    
     encrypted_message = eh.encrypt_message(my_test_message)
     print(encrypted_message)
-    
     decrypted_message = eh.decrypt_message(encrypted_message)
     print(decrypted_message)
+
+    password = "mysecretpassword"
+    hashed_password = eh.hash_password(password)
+    print(hashed_password)
+    is_password_correct = eh.check_password(password, hashed_password)
+    print(is_password_correct)
