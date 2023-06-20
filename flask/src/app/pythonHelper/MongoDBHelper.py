@@ -6,7 +6,7 @@ class MongoDBHelper:
         try:
             username = "mainUser"
             password = "pwd"
-            self.client = MongoClient(f"mongodb://{username}:{password}@mongodb:27017/gruetteChatDB?authSource=gruetteChatDB&authMechanism=SCRAM-SHA-1")
+            self.client = MongoClient(f"mongodb://{username}:{password}@mongodb1:27017/gruetteChatDB?authSource=gruetteChatDB&authMechanism=SCRAM-SHA-1")
             self.db = self.client["gruetteChatDB"]
 
         except Exception as e:
