@@ -1,24 +1,79 @@
 version: '3.8'
 services:
   flask:
-    build: ./flask
+    image: chatapp
     hostname: flask
+    networks:
+      - gruetteChat-net
     ports:
-      - "5000"
-    depends_on:
-      - mongodb
-  mongodb:
-    image: mongo
-    hostname: mongodb
-    restart: always
+      - "5000:5000"
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+  mongodb1:
+    image: mongo:latest
+    command: mongod --replSet rs0
+    networks:
+      - gruetteChat-net
     volumes:
-      - ./data/db:/data/db
-      - ./db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - mongo-data-1:/data/db
     ports:
-      - "27017:27017"
+      - "27017"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  mongodb2:
+    image: mongo:latest
+    command: mongod --replSet rs0
+    networks:
+      - gruetteChat-net
+    volumes:
+      - mongo-data-2:/data/db
+    ports: 
+      - "27017"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  mongodb3:
+    image: mongo:latest
+    command: mongod --replSet rs0
+    networks:
+      - gruetteChat-net
+    volumes:
+      - mongo-data-3:/data/db
+    ports:
+      - "27017"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
   haproxy:
-    build: ./haproxy
+    image: my_haproxy
+    networks:
+      - gruetteChat-net
     ports:
       - 80:80
     depends_on:
       - flask
+
+networks:
+  gruetteChat-net:
+    driver: overlay
+    external: true
+      
+volumes:
+  mongo-data-1:
+  mongo-data-2:
+  mongo-data-3:
+  
