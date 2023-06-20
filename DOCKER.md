@@ -1,4 +1,4 @@
-# Anleitung für Mac Entwickler
+# Anleitung für Entwickler
 
 ## Docker Installieren
 1. Gehe auf die Docker-Website: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
