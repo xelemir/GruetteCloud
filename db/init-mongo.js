@@ -7,12 +7,11 @@ rs.initiate(
         { _id: 2, host : "mongodb3:27017", priority: 0.5 }
      ]
   }
-)
+);
 
 
-db = db.getSiblingDB('gruetteChatDB'); // switch to your db
+db = db.getSiblingDB('gruetteChatDB');
 
-// Create the user in the gruetteChatDB database
 db.createUser({
   user: 'mainUser',
   pwd: 'pwd',

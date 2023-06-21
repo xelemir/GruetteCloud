@@ -64,6 +64,11 @@ services:
       - gruetteChat-net
     ports:
       - 80:80
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
     depends_on:
       - flask
 
