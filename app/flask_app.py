@@ -30,7 +30,7 @@ def index():
     else:
         return render_template("login.html", url_suffix = url_suffix)
 
-@app.route("/chat", methods=['GET', 'POST'])
+@app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
     if 'username' not in session:
         return redirect(f'{url_suffix}/')
