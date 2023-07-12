@@ -166,7 +166,7 @@
                                     <div class="progress-bar-fill" style="width: {{ total_size_percentage }}%;"></div>
                                 </div>
                             </div>
-                            <button class="buy-now-button" style="margin-right: 0px;">Upgrade now</button>
+                            <!--<button class="buy-now-button" style="margin-right: 0px;">Upgrade now</button>-->
                         </div>
                         <div class="spaced-tile"></div>
                         <p>{{ total_size_formatted }} of 5 GB used</p>
@@ -186,12 +186,17 @@
                     {% for file in files %}
                         <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <a href="{{ url_prefix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                                <a href="{{ url_prefix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
                                     <span class="material-symbols-outlined">download</span>
                                 </a>
                             </button>
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <a href="{{ url_prefix }}/download/{{ username }}/{{ file[0] }}/preview" title="Preview">
+                                    <span class="material-symbols-outlined">visibility</span>
+                                </a>
+                            </button>
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
-                                <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                                <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
                                     <span class="material-symbols-outlined">info</span>
                                 </a>
                             </button>

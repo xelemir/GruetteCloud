@@ -130,8 +130,8 @@ def upload():
         return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status="File successfully uploaded!")
 
 
-@gruetteStorage_route.route("/download/<username>/<filename>")
-def download(username, filename):
+@gruetteStorage_route.route("/download/<username>/<filename>/<preview>")
+def download(username, filename, preview=False):
     if "username" not in session:
         return redirect(f"{url_prefix}/")
     elif username != str(session['username']):
@@ -147,7 +147,10 @@ def download(username, filename):
 
     try:
         path = os.path.join(gruetteStorage_path, username, filename)
-        return send_file(path, as_attachment=True)
+        if preview == "preview":
+            return send_file(path, as_attachment=False)
+        else:
+            return send_file(path, as_attachment=True)
     except:
         return redirect(f"{url_prefix}/storage")
 
@@ -210,13 +213,16 @@ def share(username, filename):
     
     return redirect(f"{url_prefix}/file/{username}/{filename}")
 
-@gruetteStorage_route.route("/downloadshared/<username>/<filename>")
-def downloadshared(username, filename):
+@gruetteStorage_route.route("/downloadshared/<username>/<filename>/<preview>")
+def downloadshared(username, filename, preview=False):
     try:
         shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
         if os.path.exists(shared_file):
             path = os.path.join(gruetteStorage_path, username, "shared", filename)
-            return send_file(path, as_attachment=True)
+            if preview == "preview":
+                return send_file(path, as_attachment=False)
+            else:
+                return send_file(path, as_attachment=True)
         else:
             return redirect(f"{url_prefix}/storage")
     except:

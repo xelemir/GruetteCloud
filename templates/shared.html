@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Shared with you | GrütteStorage</title>
+    <title>{{ filename }} | GrütteStorage</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
@@ -63,6 +63,11 @@
         {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
         <p style="margin-bottom: 60px;">Uploaded by {{ username }}</p>
 
+        <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
+            <a href="{{ url_prefix }}/download{% if is_shared %}shared{% endif %}/{{ username }}/{{ filename }}/preview" title="Preview">
+                <span class="material-symbols-outlined">visibility</span> Preview
+            </a>
+        </button><br>
         {% if is_shared %}
             <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
                 <a href="{{ url_prefix }}/downloadshared/{{ username }}/{{ filename }}" title="Download {{ filename }}">
