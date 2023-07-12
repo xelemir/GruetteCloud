@@ -8,7 +8,7 @@
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
     <style>
         .drop-area {
-            border: 2px dashed #ccc;
+            border: 4px dashed var(--secondary-color);
             border-radius: 10px;
             padding: 20px;
             text-align: center;
@@ -129,6 +129,19 @@
             <h1>GrütteStorage</h1>
         </div>
     </div>
+
+    <div class="wrapping-tile" style="text-align: center; color: var(--yellow);">
+        <div class="inner-tile">
+            <h1>We are aware of issues regarding GrütteStorage</h1>
+            <p>File uploading is currently not working as expected. Our engineering teams are looking into the issue and are working on a fix.
+                You should soon be able to use GrütteStorage as expected again.
+                GrütteChat is not affected by this issue.
+                We are very sorry for the inconvenience :/<br><br>
+                [Last updated: 12.07.2023 18:57 CEST]</p>
+        </div>
+    </div>
+    <div class="spaced-tile"></div>
+
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
@@ -151,7 +164,7 @@
                             <button class="buy-now-button" style="margin-right: 0px;">Upgrade now</button>
                         </div>
                         <div class="spaced-tile"></div>
-                        <p>{{ total_size_formatted }} / 5GB used</p>
+                        <p>{{ total_size_formatted }} of 5 GB used</p>
                     </div>
                 </div>
                 
@@ -235,7 +248,7 @@
                 <div class="progress-bar" style="height: 20px;">
                     <div class="progress-bar-fill" style="width: {{ total_size_percentage }}%;"></div>
                 </div>
-                <p style="text-align: center; margin-top: 10px;">{{ total_size_formatted }} of 5GB used</p>
+                <p style="text-align: center; margin-top: 10px;">{{ total_size_formatted }} of 5 GB used</p>
             </div>
         </div>
     </div>
