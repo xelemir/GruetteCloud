@@ -19,33 +19,44 @@
             </a>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <a href="{{ url_suffix }}/storage" class="white-button-blue-on-hover" title="GrütteStorage"><span class="material-symbols-outlined">cloud_upload</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_suffix }}/storage" style="color: var(--purple);" title="GrütteStorage"><span class="material-symbols-outlined">cloud_upload</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="{{ url_suffix }}/settings" class="white-button-blue-on-hover" title="Settings"><span class="material-symbols-outlined">settings</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="{{ url_suffix }}/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
         </div>
     </div>
+
+    
+    <div class="wrapping-tile" style="text-align: center; color: var(--yellow);">
+        <div class="inner-tile">
+            <h1>We are currently looking into issues regarding GrütteStorage</h1>
+            [Last updated: 12.07.2023 18:57 CEST]
+        </div>
+    </div>
+    <div class="spaced-tile"></div>
 
     {% if not has_premium %}
         <div class="wrapping-tile" style="text-align: center;">
             <a href="{{ url_suffix }}/premium" style="text-decoration: none; color: var(--white-color);">
                 <div class="premium-tile">
                     <h1>Unlock GrütteChat PLUS</h1>
-                    for only 2.99€ once!
+                    for only 2.99€ once! 
                 </div>
             </a>
         </div>
         <div class="spaced-tile"></div>
     {% endif %}
 
-    <div class="wrapping-tile" style="text-align: center;">
-        <a href="{{ url_suffix }}/storage" style="text-decoration: none; color: var(--indigo);">
-            <div class="inner-tile">
-                <h1>GrütteStorage</h1>
-                A secure cloud storage service - by GrütteChat
-            </div>
-        </a>
-    </div>
-    <div class="spaced-tile"></div>
+    {% if has_premium %}
+        <div class="wrapping-tile" style="text-align: center;">
+            <a href="{{ url_suffix }}/storage" style="text-decoration: none; color: var(--purple);">
+                <div class="inner-tile">
+                    <h1>GrütteStorage</h1>
+                    A secure cloud storage service - by GrütteChat
+                </div>
+            </a>
+        </div>
+        <div class="spaced-tile"></div>
+    {% endif %}
 
 
     <div class="wrapping-tile">
