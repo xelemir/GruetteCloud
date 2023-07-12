@@ -22,26 +22,33 @@
             text-align: center;
             cursor: pointer;
             -webkit-appearance: none;
-          }
+        }
 
-          .custom-button a {
+        .custom-button a {
             color: var(--white-color);
             text-decoration: none;
             display: flex;
             align-items: center;
-          }
+        }
           
-          .custom-button .material-symbols-outlined,
-          .custom-button a .material-symbols-outlined {
+        .custom-button .material-symbols-outlined,
+        .custom-button a .material-symbols-outlined {
             margin-right: 10px;
-          }
-          
+        }
+
+        .text-offcutter {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: none;
+            color: var(--text-color);
+        } 
     </style>
 </head>
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_suffix }}/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -50,7 +57,7 @@
     </div>
 
     <div style="text-align: center; padding-top: 20vh;">
-        <h1 style="margin-bottom: 40px;">{{ filename }}</h1>
+        <h1 style="margin-bottom: 40px;" class="text-offcutter">{{ filename }}</h1>
         <p>Size: {{ filesize }}</p>
         <p>Created on {{ created_at }}</p>
         {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
@@ -58,7 +65,7 @@
 
         {% if is_shared %}
             <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-                <a href="{{ url_suffix }}/downloadshared/{{ username }}/{{ filename }}" title="Download {{ filename }}">
+                <a href="{{ url_prefix }}/downloadshared/{{ username }}/{{ filename }}" title="Download {{ filename }}">
                     <span class="material-symbols-outlined">download</span> Download
                 </a>
             </button><br>
@@ -67,7 +74,7 @@
             </button><br>
         {% else %}
             <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-                <a href="{{ url_suffix }}/download/{{ username }}/{{ filename }}" title="Download {{ filename }}">
+                <a href="{{ url_prefix }}/download/{{ username }}/{{ filename }}" title="Download {{ filename }}">
                     <span class="material-symbols-outlined">download</span> Download
                 </a>
             </button><br>
@@ -76,19 +83,19 @@
             <div style="display: inline">
                 {% if is_shared %}
                     <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="margin-right: 10px; background-color: var(--red);">
-                        <a href="{{ url_suffix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}">
+                        <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}">
                             <span class="material-symbols-outlined">link_off</span> Stop sharing
                         </a>
                     </button>
                 {% else %}
                     <button class="custom-button" style="margin-right: 10px;">
-                        <a href="{{ url_suffix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}">
+                        <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}">
                             <span class="material-symbols-outlined">share</span> Share
                         </a>
                     </button>
                 {% endif %}
                 <button class="custom-button" style="margin-left: 10px; background-color: var(--red);">
-                    <a href="{{ url_suffix }}/deletefile/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
+                    <a href="{{ url_prefix }}/deletefile/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
                         <span class="material-symbols-outlined">delete</span> Delete forever
                     </a>
                 </button>
@@ -100,15 +107,15 @@
     <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
     <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
             About Us
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
             Help Center
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
             Privacy Policy
         </a>
     </div>

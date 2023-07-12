@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, session, jsonify, Blueprin
 import logging
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
-from config import url_suffix, templates_path
+from config import url_prefix, templates_path
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -18,7 +18,7 @@ def get_messages():
     """
      
     if "username" not in session:
-        return redirect(f"{url_suffix}/")
+        return redirect(f"{url_prefix}/")
     
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username"))
@@ -57,7 +57,7 @@ def chat_with(recipient):
     """
 
     if "username" not in session:
-        return redirect(f"{url_suffix}/")
+        return redirect(f"{url_prefix}/")
 
     sql = SQLHelper.SQLHelper()
     username = str(session['username'])
@@ -66,17 +66,17 @@ def chat_with(recipient):
     # Check if the recipient exists
     search_recipient = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if search_recipient == []:
-        return redirect(f'{url_suffix}/chat')
+        return redirect(f'{url_prefix}/chat')
     
     # Get the user from the database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     if user == []:
-        return redirect(f'{url_suffix}/chat')
+        return redirect(f'{url_prefix}/chat')
     
     # Premium chat meaning that the user needs GrütteChat PLUS to chat with this user
     premium_chat = bool(search_recipient[0]["premium_chat"])
     if premium_chat and not bool(user[0]["has_premium"]):
-        return render_template('home.html', error=f"You need GrütteChat PLUS to chat with {str(recipient)}!", url_suffix = url_suffix)
+        return render_template('home.html', error=f"You need GrütteChat PLUS to chat with {str(recipient)}!", url_prefix = url_prefix)
     
     # Post is used to send a message
     if request.method == 'POST':
@@ -85,13 +85,13 @@ def chat_with(recipient):
         if request.form['message'] == '' or len(request.form['message']) > 1000:
             print(f"Invalid message: {request.form['message']}")
             
-            return redirect(f'{url_suffix}/chat/{recipient}')
+            return redirect(f'{url_prefix}/chat/{recipient}')
 
         # If the message is valid, encrypt it and send it to the database 
         else:
             encypted_message = str(eh.encrypt_message(request.form['message']))
             sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
-            return redirect(f'{url_suffix}/chat/{recipient}')
+            return redirect(f'{url_prefix}/chat/{recipient}')
 
     # Get is used to load the chat
     get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
@@ -110,7 +110,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, premium_chat=premium_chat, url_suffix = url_suffix)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, premium_chat=premium_chat, url_prefix = url_prefix)
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):
@@ -124,7 +124,7 @@ def send(method):
     """
     
     if "username" not in session:
-        return redirect(f"{url_suffix}/")
+        return redirect(f"{url_prefix}/")
 
     ai = OpenAIWrapper.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()
@@ -135,12 +135,12 @@ def send(method):
     # Check if the method is back, clear chat history and redirect to home
     if method == "back":
         session.pop("chat_history", None)
-        return redirect(f"{url_suffix}/")
+        return redirect(f"{url_prefix}/")
     
     # Check if the method is restart, clear chat history and redirect to AI chat
     elif method == "restart":
         session.pop("chat_history", None)
-        return redirect(f"{url_suffix}/ai/chat")
+        return redirect(f"{url_prefix}/ai/chat")
 
     # Check if new message is sent, then append it to chat history, get AI response, and refresh page
     elif "send" in request.form and request.form["message"] != "":
@@ -166,8 +166,8 @@ def send(method):
             
         # Save chat history to session and refresh page
         session["chat_history"] = chat_history
-        return redirect(f"{url_suffix}/ai/chat")
+        return redirect(f"{url_prefix}/ai/chat")
     
     # Reverse chat history to show most recent messages first and render template
     chat_history.reverse()
-    return render_template("aichat.html", chat_history=chat_history, url_suffix = url_suffix)
+    return render_template("aichat.html", chat_history=chat_history, url_prefix = url_prefix)

@@ -8,7 +8,7 @@ from chat_routes import chat_route
 from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 
-from config import url_suffix
+from config import url_prefix
 
 app = Flask("GrütteChat")
 app.secret_key = 'supersecretkey'
@@ -24,17 +24,17 @@ eh = EncryptionHelper.EncryptionHelper()
 @app.route("/")
 def index():
     if "username" in session:
-        return redirect(f"{url_suffix}/chat")
+        return redirect(f"{url_prefix}/chat")
     elif "username" in request.cookies:
         session["username"] = request.cookies["username"]
-        return redirect(f"{url_suffix}/chat")
+        return redirect(f"{url_prefix}/chat")
     else:
-        return render_template("login.html", url_suffix = url_suffix)
+        return render_template("login.html", url_prefix = url_prefix)
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
     if 'username' not in session:
-        return redirect(f'{url_suffix}/')
+        return redirect(f'{url_prefix}/')
 
     username = str(session['username'])
     active_chats = []
@@ -46,18 +46,18 @@ def chat(error=None):
 
         # Check if recipient username is valid
         if recipient is None or recipient == username or len(recipient) > 20:
-            return redirect(f'{url_suffix}/chat')
+            return redirect(f'{url_prefix}/chat')
 
         # Check if recipient exists
         user_exists = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{recipient}'")
 
         if user_exists == []:
             # User does not exist
-            return redirect(f'{url_suffix}/chat')
+            return redirect(f'{url_prefix}/chat')
 
         else:
             # User exists
-            return redirect(f'{url_suffix}/chat/{recipient}')
+            return redirect(f'{url_prefix}/chat/{recipient}')
 
     # Fetch active chats from the database
     active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")    
@@ -73,7 +73,7 @@ def chat(error=None):
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
     
     # Render the home page
-    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_suffix = url_suffix)
+    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix)
 
 if __name__ == '__main__':
     app.run(debug=True)

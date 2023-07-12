@@ -14,7 +14,7 @@
     
             function loadMessages() {
                 $.ajax({
-                    url: '{{ url_suffix }}/get_messages',
+                    url: '{{ url_prefix }}/get_messages',
                     type: 'GET',
                     data: {
                         username: username,  // Pass the value of username as a query parameter
@@ -48,7 +48,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -56,7 +56,7 @@
         </div>
         {% if premium_chat %}
             <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-                <a href="{{ url_suffix }}/tip/{{ recipient }}" class="white-button-purple-on-hover" title="Tip {{ recipient }}"><span class="material-symbols-outlined">paid</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{{ url_prefix }}/tip/{{ recipient }}" class="white-button-purple-on-hover" title="Tip {{ recipient }}"><span class="material-symbols-outlined">paid</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         {% endif %}
     </div>
@@ -87,7 +87,7 @@
         {% endfor %}
     </div>
 
-    <form action="{{ url_suffix }}/chat/{{ recipient }}" method="POST" id="sendMessage">
+    <form action="{{ url_prefix }}/chat/{{ recipient }}" method="POST" id="sendMessage">
         <div class="wrapping-tile">
             <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
             <input type="submit" name="send" value="Send" class="send-button">

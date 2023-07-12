@@ -566,3 +566,11 @@ input[type="text"] {
         display: none;
     }
 }
+
+.text-offcutter {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    color: var(--text-color);
+}

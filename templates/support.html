@@ -21,7 +21,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -34,7 +34,7 @@
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
         <h2>How can we help you today?</h2>
-        <form action="{{ url_suffix }}/support" method="POST" style="flex-direction: column;">
+        <form action="{{ url_prefix }}/support" method="POST" style="flex-direction: column;">
             <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name" style="width: 300px; margin-right: 0px;" required>
             <input type="text" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Your Email" style="width: 300px; margin-right: 0px;" required>
             <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteChat username" style="width: 300px; margin-right: 0px;" required>
@@ -49,15 +49,15 @@
     <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
     <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
             About Us
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
             Help Center
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
             Privacy Policy
         </a>
     </div>

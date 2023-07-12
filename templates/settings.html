@@ -11,17 +11,17 @@
 
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title="Back to home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title="Back to home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
-            <a href="{{ url_suffix }}/" class="logo" title="Home">
+            <a href="{{ url_prefix }}/" class="logo" title="Home">
                 <img src="https://jan.gruettefien.com/static/gruettechat.png" style="width: 40px; height: 40px;" title="GrütteChat">
             </a>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <a href="{{ url_suffix }}/help" class="white-button-blue-on-hover" title="Help Center"><span class="material-symbols-outlined">help_center</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="{{ url_suffix }}/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
+            <a href="{{ url_prefix }}/help" class="white-button-blue-on-hover" title="Help Center"><span class="material-symbols-outlined">help_center</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
         </div>
     </div>
 
@@ -37,7 +37,7 @@
     {% endif %}
     {% if not has_premium %}
         <div class="wrapping-tile" style="text-align: center;">
-            <a href="{{ url_suffix }}/premium" style="text-decoration: none; color: var(--white-color);">
+            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
                 <div class="premium-tile">
                     <h1>Unlock GrütteChat PLUS</h1>
                     for only 2.99€ once!
@@ -49,7 +49,7 @@
     <div style="flex-direction: row; display: flex; width: 100%;">
         <div class="wrapping-tile" style="width: 50%; text-align: center; margin-left: 0; margin-right: 10px;">
             <h1>Change password</h1>
-            <form action="{{ url_suffix }}/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+            <form action="{{ url_prefix }}/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                 <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input">
                 <div class="spaced-tile"></div>
                 <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input">
@@ -57,7 +57,7 @@
             </form>
             <div class="spaced-tile"><br></div>
             <h1>Change email</h1>
-            <form action="{{ url_suffix }}/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+            <form action="{{ url_prefix }}/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                 <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input">
                 <div class="spaced-tile"></div>
                 <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input">
@@ -66,43 +66,43 @@
         </div>
         <div class="wrapping-tile" style="width: 50%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
             <h1>MyAI personality</h1>
-            <a href="{{ url_suffix }}/change_ai_personality/Default" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/Default" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'Default' or not selected_personality%}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Default
                 </div>
             </a>
-            <a href="{{ url_suffix }}/change_ai_personality/UwuGirl" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/UwuGirl" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'UwuGirl' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Uwu Girl (NSFW)
                 </div>
             </a>
-            <a href="{{ url_suffix }}/change_ai_personality/LeeKnow" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/LeeKnow" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'LeeKnow' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Lee Know
                 </div>
             </a>
-            <a href="{{ url_suffix }}/change_ai_personality/Pirate" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/Pirate" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'Pirate' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Pirate
                 </div>
             </a>
-            <a href="{{ url_suffix }}/change_ai_personality/Pistachio" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/Pistachio" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'Pistachio' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Pistachio the dinosaur
                 </div>
             </a>
-            <a href="{{ url_suffix }}/change_ai_personality/Backus" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/Backus" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'Backus' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Backus (BNF inventor)
                 </div>
             </a>
-            <a href="{{ url_suffix }}/change_ai_personality/Lorde" style="text-decoration: none;">
+            <a href="{{ url_prefix }}/change_ai_personality/Lorde" style="text-decoration: none;">
                 <div class="ai-personality-button" style="{% if selected_personality == 'Lorde' %}background-color: var(--primary-color); color: var(--white-color); border: none; {% else %}background-color: var(--background-tile-color); {% endif %}">
                     Lorde
                 </div>
             </a>
             {% if display_back_to_ai %}
-                <a href="{{ url_suffix }}/ai/chat" style="text-decoration: none;">
+                <a href="{{ url_prefix }}/ai/chat" style="text-decoration: none;">
                     <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
                         Back to MyAI
                     </div>
@@ -116,7 +116,7 @@
     <div style="flex-direction: row; display: flex; width: 100%;">
         <div class="wrapping-tile" style="width: 50%; text-align: center; margin-left: 0; margin-right: 10px;">
             <h1>Delete account</h1>
-            <form action="{{ url_suffix }}/delete_account" method="POST" id="delete_account" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+            <form action="{{ url_prefix }}/delete_account" method="POST" id="delete_account" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                 <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="settings-input">
                 <div class="spaced-tile"></div>
                 <input type="text" id="password" name="password" placeholder="Your password" autocomplete="off" required class="settings-input">
@@ -131,7 +131,7 @@
             This feature is currently only available to GrütteChat PLUS users.<br>
             <div class="spaced-tile"></div>
             <div class="spaced-tile"></div>
-            <!--<button class="settings-button"><a href="{{ url_suffix }}/youtube" style="text-decoration: none; color: var(--white-color);">Downloader</a></button>-->
+            <!--<button class="settings-button"><a href="{{ url_prefix }}/youtube" style="text-decoration: none; color: var(--white-color);">Downloader</a></button>-->
             <p style="color: var(--yellow)">This feature is currently unavailable<br> Sorry about that :/</p>
             <button class="settings-button" style="background-color: var(--secondary-color);">Downloader</button>
         </div>
@@ -140,15 +140,15 @@
     <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
     <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
             About Us
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
             Help Center
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
             Privacy Policy
         </a>
     </div>

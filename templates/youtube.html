@@ -24,7 +24,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_suffix }}/settings" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/settings" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
     </div>
@@ -52,7 +52,7 @@
     <!--<div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
         <div class="spaced-tile"></div>
         <h3>Please enter the YouTube link below.</h3>
-        <form id="youtube-form" action="{{ url_suffix }}/youtube" method="POST" style="flex-direction: column;">
+        <form id="youtube-form" action="{{ url_prefix }}/youtube" method="POST" style="flex-direction: column;">
             <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
             <div style="margin-top: 20px">
                 <input type="submit" value="Download video" name="download" style="min-width: 200px" class="send-button">
@@ -74,15 +74,15 @@
     <div id="cookie-banner"></div>
 
     <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
             About Us
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
             Help Center
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
             Privacy Policy
         </a>
     </div>
@@ -164,7 +164,7 @@
             // Check if the response contains the file URL
             if (response && response.filename) {
               // Redirect to the file download URL
-              window.location.href = '{{ url_suffix }}/youtube/' + response.filename;
+              window.location.href = '{{ url_prefix }}/youtube/' + response.filename;
   
               // Hide the loading animation
               $('#loading-container').hide();

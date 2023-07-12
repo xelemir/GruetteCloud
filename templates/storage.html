@@ -28,7 +28,12 @@
         .file-list {
             margin-top: 20px;
             text-align: left;
-            overflow-y: scroll;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
         .file-list a {
@@ -72,7 +77,7 @@
         }
 
         .mock-button-gray {
-            padding: 10px 20px;
+            padding: 10px 10px;
             background-color: var(--secondary-color);
             color: var(--text-color);
             border: none;
@@ -122,7 +127,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_suffix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -130,39 +135,26 @@
         </div>
     </div>
 
-    <div class="wrapping-tile" style="text-align: center; color: var(--green);">
-        <div class="inner-tile">
-            <h1>The issues with GrütteStorage have been resolved</h1>
-            <p>Earlier today, users encountered problems when uploading files to GrütteStorage.
-            Our engineering teams have been working hard to resolve the issue and we are happy to announce that it has been resolved.<br><br>
-            <br><br>
-            [Last updated: 12.07.2023 23:16 CEST]</p>
-        </div>
-    </div>
-    <div class="spaced-tile"></div>
-
-    {% if status %}
-        <div id="status-message" style="display: none;">
-            <div class="spaced-tile"></div>
-            <div class="wrapping-tile" style="text-align: center;">
-                <div class="inner-tile">
-                    <div class="spaced-tile"></div>
-                        <h2 style="color: var(--yellow)">{{ status }}</h2>
-                    <div class="spaced-tile"></div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
+                {% if status %}
+                    <div id="status-message" style="display: none;">
+                        <div class="wrapping-tile" style="text-align: center;">
+                            <div class="inner-tile">
+                                <div class="spaced-tile"></div>
+                                    <h2 style="color: var(--yellow)">{{ status }}</h2>
+                                <div class="spaced-tile"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spaced-tile"></div>
+                {% endif %}
                 <div class="wrapping-tile" style="height: 30vh; padding: 20px;">
                     <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()">
                         <p>Drag and drop files here<br>or click to select a file</p>
                     </label>
                     <input id="file-input" type="file" onchange="handleFile(this.files)">
-                    <input type="file" id="file-input" style="position: absolute; left: -9999px; top: -9999px;">
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
@@ -192,23 +184,23 @@
                         </div>
                     {% endif %}
                     {% for file in files %}
-                        <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; margin-left: 10px;">
-                                <a href="{{ url_suffix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                        <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <a href="{{ url_prefix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">download</span>
                                 </a>
                             </button>
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
-                                <a href="{{ url_suffix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                                <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">info</span>
                                 </a>
                             </button>
-                            <button class="mock-button-gray" style="height: 45px; width: 150px; margin-right: 5px;">
+                            <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 110px; margin-right: 5px;">
                                 <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[1] }}</p>
-                            </button>
-                            <button class="mock-button-gray" style="flex-grow: 1; text-align: left; margin-right: 10px;">
+                            </div>
+                            <div class="mock-button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
                                 <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[0] }}</p>
-                            </button>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -234,14 +226,14 @@
             {% endif %}
             <div class="file-list">
                 {% for file in files %}
-                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
                         <button class="button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px; padding-right: 5px;">
-                            <a href="{{ url_suffix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;">
+                            <a href="{{ url_prefix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;">
                                 <span style="color: var(--text-color); font-size: 18px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file[0] }}</span>
                             </a>
                         </button>
-                        <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
-                            <a href="{{ url_suffix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                        <button class="button-gray" style="height: 45px; width: 60px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
+                            <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined">info</span>
                             </a>
                         </button>
@@ -265,15 +257,15 @@
     <div id="beta-banner"></div>
     <div id="cookie-banner"></div>
     <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
             About Us
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
             Help Center
         </a>
         &nbsp;|&nbsp;
-        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
             Privacy Policy
         </a>
     </div>
@@ -330,12 +322,14 @@
             var formData = new FormData();
             formData.append('file', file);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ url_suffix }}/upload', true);
+            xhr.open('POST', '{{ url_prefix }}/upload', true);
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    alert('File uploaded successfully!');
+                    //alert('File uploaded successfully.');
                     document.getElementById('file-input').value = ''; // Clear the file input value
-                    window.location.reload(); // Refresh the page to update the file list
+                    window.location.href = '{{ url_prefix }}/upload';
+
+                    //window.location.reload(); // Refresh the page to update the file list
                 } else {
                     alert('Error uploading file. Please try again.');
                 }
@@ -360,13 +354,14 @@
     // Show status message and fade out after 5 seconds
     var statusMessage = document.getElementById('status-message');
     {% if status %}
-        errorMessage.style.display = 'block';
+    statusMessage.style.display = 'block';
         setTimeout(function() {
-            errorMessage.style.opacity = '0';
+            statusMessage.style.opacity = '0';
             setTimeout(function() {
-                errorMessage.style.display = 'none';
-                errorMessage.style.opacity = '1';
+                statusMessage.style.display = 'none';
+                statusMessage.style.opacity = '1';
             }, 500);
+            window.location.href = '{{ url_prefix }}/storage';
         }, 5000);
     {% endif %}
 </script>

@@ -1,5 +1,5 @@
 import json
-from config import url_suffix
+from config import url_prefix
 from cryptography.fernet import Fernet
 
 
@@ -14,7 +14,7 @@ class EncryptionHelper:
 
     def get_key(self):
         try:
-            if url_suffix == "/gruettechat":
+            if url_prefix == "/gruettechat":
                 path = "/home/jan/wwwroot/gruettechat/gruettechat/app/encryptionkey.json"
             else:
                 path = "encryptionkey.json"
