@@ -19,6 +19,7 @@
             </a>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+            <a href="{{ url_suffix }}/storage" class="white-button-blue-on-hover" title="GrütteStorage"><span class="material-symbols-outlined">cloud_upload</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="{{ url_suffix }}/settings" class="white-button-blue-on-hover" title="Settings"><span class="material-symbols-outlined">settings</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="{{ url_suffix }}/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
         </div>
@@ -35,6 +36,17 @@
         </div>
         <div class="spaced-tile"></div>
     {% endif %}
+
+    <div class="wrapping-tile" style="text-align: center;">
+        <a href="{{ url_suffix }}/storage" style="text-decoration: none; color: var(--indigo);">
+            <div class="inner-tile">
+                <h1>GrütteStorage</h1>
+                A secure cloud storage service - by GrütteChat
+            </div>
+        </a>
+    </div>
+    <div class="spaced-tile"></div>
+
 
     <div class="wrapping-tile">
         <form method="POST">
@@ -68,7 +80,7 @@
                 {% for chat in active_chats %}
                         <div>
                             <button class="button-gray" style="width: calc(100% - 80px); text-align: left;"><a href="{{ url_suffix }}/chat/{{ chat }}" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ chat }}</a></button>
-                            <button class="button-delete" style="height: 42px; width: 60px;"><a href="{{ url_suffix }}/chat/delete/{{ chat }}" style="color: var(--text-color);"><span class="material-symbols-outlined">delete</span></a></button>
+                            <button class="button-delete" style="height: 42px; width: 60px; padding-right: 40px;"><a href="{{ url_suffix }}/chat/delete/{{ chat }}" style="color: var(--text-color);"><span class="material-symbols-outlined">delete</span></a></button>
                         </div>
                         
                 {% endfor %}

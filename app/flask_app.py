@@ -6,9 +6,9 @@ from loginSignUp_routes import loginSignUp_route
 from utilities_routes import utilities_route
 from chat_routes import chat_route
 from premium_routes import premium_route
+from gruetteStorage_routes import gruetteStorage_route
 
 from config import url_suffix
-
 
 app = Flask("GrütteChat")
 app.secret_key = 'supersecretkey'
@@ -16,6 +16,7 @@ app.register_blueprint(loginSignUp_route)
 app.register_blueprint(utilities_route)
 app.register_blueprint(chat_route)
 app.register_blueprint(premium_route)
+app.register_blueprint(gruetteStorage_route)
 
 eh = EncryptionHelper.EncryptionHelper()
 
