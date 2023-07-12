@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <div class="wrapping-tile" style="text-align: center; color: var(--yellow);">
+    <!--<div class="wrapping-tile" style="text-align: center; color: var(--yellow);">
         <div class="inner-tile">
             <h1>We are aware of issues regarding GrütteStorage</h1>
             <p>File uploading is currently not working as expected. Our engineering teams are looking into the issue and are working on a fix.
@@ -140,12 +140,25 @@
                 [Last updated: 12.07.2023 18:57 CEST]</p>
         </div>
     </div>
-    <div class="spaced-tile"></div>
+    <div class="spaced-tile"></div>-->
+
+    {% if status %}
+        <div id="status-message" style="display: none;">
+            <div class="spaced-tile"></div>
+            <div class="wrapping-tile" style="text-align: center;">
+                <div class="inner-tile">
+                    <div class="spaced-tile"></div>
+                        <h2 style="color: var(--yellow)">{{ status }}</h2>
+                    <div class="spaced-tile"></div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
-                <div class="wrapping-tile" style="height: 30vh;">
+                <div class="wrapping-tile" style="height: 30vh; padding: 20px;">
                     <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()">
                         <p>Drag and drop files here<br>or click to select a file</p>
                     </label>
@@ -167,32 +180,27 @@
                         <p>{{ total_size_formatted }} of 5 GB used</p>
                     </div>
                 </div>
-                
             </div>
-
-            
             <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
                 <h2 align="center">Your files</h2>
                 <div class="spaced-tile"></div>
                 <div class="file-list">
                     {% if not files %}
-                        <div class="inner-tile" style="height: 100%">
-                            <div class="no-files">
-                                <span class="material-symbols-outlined" style="font-size: 100px;">cloud_upload</span>
-                                <p>You have not uploaded any files yet.</p>
-                            </div>
+                        <div class="no-files">
+                            <span class="material-symbols-outlined" style="font-size: 100px;">cloud_upload</span>
+                            <p>You have not uploaded any files yet.</p>
                         </div>
                     {% endif %}
                     {% for file in files %}
                         <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; margin-left: 10px;">
                                 <a href="{{ url_suffix }}/download/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">download</span>
                                 </a>
                             </button>
-                            <button class="button-delete" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <a href="{{ url_suffix }}/deletefile/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
-                                    <span class="material-symbols-outlined">delete</span>
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
+                                <a href="{{ url_suffix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                                    <span class="material-symbols-outlined">info</span>
                                 </a>
                             </button>
                             <button class="mock-button-gray" style="height: 45px; width: 150px; margin-right: 5px;">
@@ -252,8 +260,23 @@
             </div>
         </div>
     </div>
+    
+    <div class="spaced-tile"></div>
     <div id="beta-banner"></div>
     <div id="cookie-banner"></div>
+    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+        <a href="{{ url_suffix }}/about" style="text-decoration: none; color: var(--text-color)">
+            About Us
+        </a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_suffix }}/help" style="text-decoration: none; color: var(--text-color)">
+            Help Center
+        </a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_suffix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+            Privacy Policy
+        </a>
+    </div>
 </body>
 </html>
 
@@ -330,6 +353,21 @@
         var files = event.dataTransfer.files;
         handleFile(files);
     }
+</script>
+
+<script>
+    // Show status message and fade out after 5 seconds
+    var statusMessage = document.getElementById('status-message');
+    {% if status %}
+        errorMessage.style.display = 'block';
+        setTimeout(function() {
+            errorMessage.style.opacity = '0';
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+                errorMessage.style.opacity = '1';
+            }, 500);
+        }, 5000);
+    {% endif %}
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>

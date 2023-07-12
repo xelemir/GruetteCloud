@@ -1,3 +1,4 @@
+import datetime
 from flask import render_template, request, redirect, session, Blueprint, send_file, jsonify
 from werkzeug.utils import secure_filename
 import os
@@ -32,21 +33,38 @@ def storage():
     user_directory = os.path.join(gruetteStorage_path, username)
     if not os.path.exists(user_directory):
         os.makedirs(user_directory)
+    
+    # Create user shared directory if it doesn't exist
+    user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
+    if not os.path.exists(user_shared_directory):
+        os.makedirs(user_shared_directory)
 
-    # Get list of files in user directory
+    # Get list of files in user directory and remove shared directory
     files = os.listdir(user_directory)
+    files.remove("shared")
+    
+    # Calculate file size of user directory
+    size_user = sum(os.path.getsize(os.path.join(user_directory, file)) for file in files)
 
-    # Calculate total file size
-    total_size = sum(os.path.getsize(os.path.join(user_directory, file)) for file in files)
+    # Get list of files in shared directory
+    files_shared = os.listdir(user_shared_directory)
+    
+    # Calculate file size of shared directory
+    size_shared = sum(os.path.getsize(os.path.join(user_shared_directory, file)) for file in files_shared)
+    
+    
 
     # Convert file size to human-readable format
+    total_size = size_user + size_shared
     total_size_formatted = get_formatted_file_size(total_size)
-
-    # Create file list with sublists of filename and formatted file size
-    file_list = [[file, get_formatted_file_size(os.path.getsize(os.path.join(user_directory, file)))] for file in files]
     total_size_percentage = (total_size / (5 * 1073741824)) * 100  # 5 GB
 
-    return render_template("storage.html", url_suffix=url_suffix, username=username, files=file_list, total_size_formatted=total_size_formatted, total_size_percentage=total_size_percentage)
+    # Create file list with sublists of filename and formatted file size and sharing status
+    file_list_user = [[file, get_formatted_file_size(os.path.getsize(os.path.join(user_directory, file))), "private"] for file in files]
+    file_list_shared = [[file, get_formatted_file_size(os.path.getsize(os.path.join(user_shared_directory, file))), "shared"] for file in files_shared]
+    file_list = file_list_shared + file_list_user
+
+    return render_template("storage.html", url_suffix=url_suffix, username=username, files=file_list, total_size_formatted=total_size_formatted, total_size_percentage=total_size_percentage, status=None)
 
 
 # Helper function to convert file size to human-readable format
@@ -93,7 +111,7 @@ def upload():
         return jsonify({"filename": filename})
     return jsonify({"error": "No file selected!"})
 
-@gruetteStorage_route.route('/download/<username>/<filename>')
+@gruetteStorage_route.route("/download/<username>/<filename>")
 def download(username, filename):
     if "username" not in session:
         return redirect(f"{url_suffix}/")
@@ -114,7 +132,7 @@ def download(username, filename):
     except:
         return redirect(f"{url_suffix}/storage")
 
-@gruetteStorage_route.route('/deletefile/<username>/<filename>')
+@gruetteStorage_route.route("/deletefile/<username>/<filename>")
 def deletefile(username, filename):
     if "username" not in session:
         return redirect(f"{url_suffix}/")
@@ -127,3 +145,71 @@ def deletefile(username, filename):
         os.remove(os.path.join(gruetteStorage_path, username, filename))
         
     return redirect(f"{url_suffix}/storage")
+
+@gruetteStorage_route.route("/file/<username>/<filename>")
+def file(username, filename):
+    if "username" not in session or username != str(session['username']):
+        shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
+        if os.path.exists(shared_file):
+            filesize = get_formatted_file_size(os.path.getsize(shared_file))
+            created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y at %H:%M:%S")
+            return render_template("shared.html", url_suffix=url_suffix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True)
+        else:
+            return redirect(f"{url_suffix}/storage")
+        
+    if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
+        path = os.path.join(gruetteStorage_path, username, filename)
+        is_shared = False
+    elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
+        path = os.path.join(gruetteStorage_path, username, "shared", filename)
+        is_shared = True
+    else:
+        return redirect(f"{url_suffix}/storage")
+    
+    filesize = get_formatted_file_size(os.path.getsize(path))
+    created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y at %H:%M:%S")
+        
+    return render_template("shared.html", url_suffix=url_suffix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared)
+    
+
+@gruetteStorage_route.route("/share/<username>/<filename>")
+def share(username, filename):
+    if "username" not in session or username != str(session['username']):
+        return redirect(f"{url_suffix}/storage")
+
+    # Create user shared directory if it doesn't exist
+    user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
+    if not os.path.exists(user_shared_directory):
+        os.makedirs(user_shared_directory)
+    
+    # If the file is not already in the shared directory, copy it there
+    if not os.path.exists(os.path.join(user_shared_directory, filename)):
+        if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
+            shutil.move(os.path.join(gruetteStorage_path, username, filename), os.path.join(user_shared_directory, filename))
+        else:
+            return redirect(f"{url_suffix}/storage")
+    
+    return redirect(f"{url_suffix}/file/{username}/{filename}")
+
+@gruetteStorage_route.route("/downloadshared/<username>/<filename>")
+def downloadshared(username, filename):
+    try:
+        shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
+        if os.path.exists(shared_file):
+            path = os.path.join(gruetteStorage_path, username, "shared", filename)
+            return send_file(path, as_attachment=True)
+        else:
+            return redirect(f"{url_suffix}/storage")
+    except:
+        return redirect(f"{url_suffix}/storage")
+    
+@gruetteStorage_route.route("/stopsharing/<username>/<filename>")
+def stopsharing(username, filename):
+    if "username" not in session or username != str(session['username']):
+        return redirect(f"{url_suffix}/storage")
+
+    user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
+    if os.path.exists(user_shared_directory):
+        shutil.move(os.path.join(user_shared_directory, filename), os.path.join(gruetteStorage_path, username, filename))
+        
+    return redirect(f"{url_suffix}/file/{username}/{filename}")
