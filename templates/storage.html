@@ -162,6 +162,7 @@
                         <p>Drag and drop files here<br>or click to select a file</p>
                     </label>
                     <input id="file-input" type="file" onchange="handleFile(this.files)">
+                    <input type="file" id="file-input" style="position: absolute; left: -9999px; top: -9999px;">
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
@@ -309,7 +310,8 @@
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
 
     // Function to trigger file selection when the drop area is clicked
-    function selectFile() {
+    function selectFile(event) {
+        event.stopPropagation(); // Stop event propagation
         document.getElementById('file-input').click();
     }
 
