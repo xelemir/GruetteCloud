@@ -160,11 +160,11 @@ def deletefile(username, filename):
         return redirect(f"{url_prefix}/")
     elif username != str(session['username']):
         return redirect(f"{url_prefix}/")
-    
-    file_exists = os.path.exists(os.path.join(gruetteStorage_path, username, filename))
-    
-    if file_exists:
+        
+    if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
         os.remove(os.path.join(gruetteStorage_path, username, filename))
+    elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
+        os.remove(os.path.join(gruetteStorage_path, username, "shared", filename))
         
     return redirect(f"{url_prefix}/storage")
 
