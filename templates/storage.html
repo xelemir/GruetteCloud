@@ -240,9 +240,9 @@
                                 <span style="color: var(--text-color); font-size: 18px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file[0] }}</span>
                             </a>
                         </button>
-                        <button class="button-delete" style="height: 45px; width: 60px;">
-                            <a href="{{ url_suffix }}/deletefile/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
-                                <span class="material-symbols-outlined">delete</span>
+                        <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
+                            <a href="{{ url_suffix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                                <span class="material-symbols-outlined">info</span>
                             </a>
                         </button>
                     </div>
