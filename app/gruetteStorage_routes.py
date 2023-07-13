@@ -3,14 +3,17 @@ from flask import render_template, request, redirect, session, Blueprint, send_f
 from werkzeug.utils import secure_filename
 import os
 import shutil
+import requests
 
 
 from pythonHelper import EncryptionHelper, SQLHelper
+from pythonHelper import IconHelper
 from config import url_prefix, templates_path, gruetteStorage_path
     
 gruetteStorage_route = Blueprint("GruetteStorage", "GruetteStorage", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
+icon = IconHelper.IconHelper()
 
 
 @gruetteStorage_route.route('/storage', methods=['POST', 'GET'])
@@ -95,7 +98,6 @@ def get_files(username):
     
     return {"file_list": file_list, "total_size_formatted": total_size_formatted, "total_size_percentage": total_size_percentage}
     
-
 @gruetteStorage_route.route('/upload', methods=['POST', 'GET'])
 def upload():
     if "username" not in session:
@@ -172,7 +174,8 @@ def file(username, filename):
         if os.path.exists(shared_file):
             filesize = get_formatted_file_size(os.path.getsize(shared_file))
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y at %H:%M:%S")
-            return render_template("shared.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True)
+            icon_path = IconHelper.IconHelper().get_icon(filename)
+            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path)
         else:
             return redirect(f"{url_prefix}/storage")
         
@@ -187,8 +190,8 @@ def file(username, filename):
     
     filesize = get_formatted_file_size(os.path.getsize(path))
     created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y at %H:%M:%S")
-        
-    return render_template("shared.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared)
+    icon_path = IconHelper.IconHelper().get_icon(filename)
+    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path)
     
 
 @gruetteStorage_route.route("/share/<username>/<filename>")

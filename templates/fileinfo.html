@@ -56,7 +56,9 @@
         </div>
     </div>
 
-    <div style="text-align: center; padding-top: 20vh;">
+    <div style="text-align: center; padding-top: 10vh;">
+        <img src="{{ file_icon }}" style="width: 100px; height: 100px; margin-bottom: 20px;">
+        <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
         <h1 style="margin-bottom: 40px;" class="text-offcutter">{{ filename }}</h1>
         <p>Size: {{ filesize }}</p>
         <p>Created on {{ created_at }}</p>
@@ -96,7 +98,7 @@
                 {% endif %}
                 <button class="custom-button" style="margin-left: 10px; background-color: var(--red);">
                     <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
-                        <span class="material-symbols-outlined">delete</span> Delete forever
+                        <span class="material-symbols-outlined">delete</span> Delete
                     </a>
                 </button>
             </div>
