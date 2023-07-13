@@ -3,8 +3,8 @@ from flask import render_template, request, redirect, session, Blueprint, send_f
 from werkzeug.utils import secure_filename
 import os
 import shutil
-import requests
-
+import random
+import string
 
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import IconHelper
@@ -175,23 +175,26 @@ def file(username, filename):
             filesize = get_formatted_file_size(os.path.getsize(shared_file))
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y at %H:%M:%S")
             icon_path = IconHelper.IconHelper().get_icon(filename)
-            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path)
+            code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
+            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code)
         else:
             return redirect(f"{url_prefix}/storage")
         
     if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
         path = os.path.join(gruetteStorage_path, username, filename)
         is_shared = False
+        code = ""
     elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
         path = os.path.join(gruetteStorage_path, username, "shared", filename)
         is_shared = True
+        code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
     else:
         return redirect(f"{url_prefix}/storage")
     
     filesize = get_formatted_file_size(os.path.getsize(path))
     created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y at %H:%M:%S")
     icon_path = IconHelper.IconHelper().get_icon(filename)
-    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path)
+    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code)
     
 
 @gruetteStorage_route.route("/share/<username>/<filename>")
@@ -199,12 +202,21 @@ def share(username, filename):
     if "username" not in session or username != str(session['username']):
         return redirect(f"{url_prefix}/storage")
 
+    sql = SQLHelper.SQLHelper()
     user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
     
     # If the file is not already in the shared directory, move it there
     if not os.path.exists(os.path.join(user_shared_directory, filename)):
         if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
             shutil.move(os.path.join(gruetteStorage_path, username, filename), os.path.join(user_shared_directory, filename))
+            
+            not_new_code = True
+            while not_new_code:
+                code = ''.join(random.choice(string.ascii_letters) for _ in range(5))
+                if sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE link_id ='{code}'") == []:
+                    not_new_code = False
+            sql.writeSQL(f"INSERT INTO gruttestorage_links (owner, link_id, filename) VALUES ('{username}', '{code}', '{filename}')")
+                        
         else:
             return redirect(f"{url_prefix}/storage")
     
@@ -214,11 +226,27 @@ def share(username, filename):
 def stopsharing(username, filename):
     if "username" not in session or username != str(session['username']):
         return redirect(f"{url_prefix}/storage")
+    
+    sql = SQLHelper.SQLHelper()
+    
     try:
         user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
         if os.path.exists(user_shared_directory):
             shutil.move(os.path.join(user_shared_directory, filename), os.path.join(gruetteStorage_path, username, filename))
+            sql.writeSQL(f"DELETE FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")
     except:
         return redirect(f"{url_prefix}/file/{username}/{filename}")
         
+    return redirect(f"{url_prefix}/file/{username}/{filename}")
+
+@gruetteStorage_route.route("/s/<code>")
+def shared(code):
+    sql = SQLHelper.SQLHelper()
+    result = sql.readSQL(f"SELECT owner, filename FROM gruttestorage_links WHERE link_id ='{code}'")
+    if result == []:
+        return redirect(f"{url_prefix}/")
+
+    username = result[0]["owner"]
+    filename = result[0]["filename"]
+    
     return redirect(f"{url_prefix}/file/{username}/{filename}")

@@ -65,43 +65,46 @@
         {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
         <p style="margin-bottom: 60px;">Uploaded by {{ username }}</p>
 
-        <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview">
+        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview">
+            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
                 <span class="material-symbols-outlined">visibility</span> Preview
-            </a>
-        </button><br>
-        
-        <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}">
+            </button>
+        </a><br>
+        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}">
+            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
                 <span class="material-symbols-outlined">download</span> Download
-            </a>
-        </button><br>
+            </button>
+        </a><br>
         {% if is_shared %}
             <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="width: 320px; margin-bottom: 20px;">
                 <span class="material-symbols-outlined">link</span> Copy link
             </button><br>
         {% endif %}
         {% if is_author %}
-            <div style="display: inline">
-                {% if is_shared %}
-                    <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="margin-right: 10px; background-color: var(--red);">
-                        <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}">
-                            <span class="material-symbols-outlined">link_off</span> Stop sharing
-                        </a>
+        <div style="display: flex; justify-content: center;">
+            {% if is_shared %}
+                <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}">
+                    <button id="copy-button" class="custom-button" style="margin-right: 20px; background-color: var(--red);">
+                        <span class="material-symbols-outlined">link_off</span> Stop sharing
                     </button>
-                {% else %}
-                    <button class="custom-button" style="margin-right: 10px;">
-                        <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}">
-                            <span class="material-symbols-outlined">share</span> Share
-                        </a>
+                </a>
+            {% else %}
+                <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}">
+                    <button class="custom-button" style="margin-right: 20px;">
+                        <span class="material-symbols-outlined">share</span> Share
                     </button>
-                {% endif %}
-                <button class="custom-button" style="margin-left: 10px; background-color: var(--red);">
-                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
-                        <span class="material-symbols-outlined">delete</span> Delete
-                    </a>
+                </a>
+            {% endif %}
+            <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
+                <button class="custom-button" style="background-color: var(--red);">
+                    <span class="material-symbols-outlined">delete</span> Delete
                 </button>
-            </div>
+            </a>
+        </div>
+        
+
+            
+            
         {% endif %}
     </div>
     
@@ -157,17 +160,18 @@
 <script>
     function copyToClipboard() {
         const tempInput = document.createElement('input');
-        tempInput.value = window.location.href;
+        tempInput.value = "{{ link_id }}" || window.location.href;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand("copy");
         document.body.removeChild(tempInput);
+      
         const copyButton = document.getElementById("copy-button");
         copyButton.innerHTML = '<span class="material-symbols-outlined">done</span> Link copied';
         setTimeout(function() {
-            copyButton.innerHTML = '<span class="material-symbols-outlined">link</span> Copy link';
+          copyButton.innerHTML = '<span class="material-symbols-outlined">link</span> Copy link';
         }, 1000);
-    }
+      }      
 </script>
 
 

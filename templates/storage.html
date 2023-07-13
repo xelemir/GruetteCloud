@@ -185,21 +185,21 @@
                     {% endif %}
                     {% for file in files %}
                         <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
+                            <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
+                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                     <span class="material-symbols-outlined">download</span>
-                                </a>
-                            </button>
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/preview" title="Preview">
+                                </button>
+                            </a>
+                            <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/preview" title="Preview">
+                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                     <span class="material-symbols-outlined">visibility</span>
-                                </a>
-                            </button>
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
-                                <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
+                                </button>
+                            </a>
+                            <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
+                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
                                     <span class="material-symbols-outlined">info</span>
-                                </a>
-                            </button>
+                                </button>
+                            </a>
                             <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 110px; margin-right: 5px;">
                                 <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[1] }}</p>
                             </div>
@@ -240,7 +240,6 @@
                         <button class="button-gray" style="height: 45px; width: 60px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
                             <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined">info</span>
-                            </a>
                         </button>
                     </div>
                 {% endfor %}
