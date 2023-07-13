@@ -73,7 +73,7 @@
                 <span class="material-symbols-outlined">visibility</span> Preview
             </button>
         </a><br>
-        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}">
+        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}" style="text-decoration: none;">
             <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
                 <span class="material-symbols-outlined">download</span> Download
             </button>
@@ -86,19 +86,19 @@
         {% if is_author %}
         <div style="display: flex; justify-content: center;">
             {% if is_shared %}
-                <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}">
+                <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none;">
                     <button id="copy-button" class="custom-button" style="margin-right: 20px; background-color: var(--red);">
                         <span class="material-symbols-outlined">link_off</span> Stop sharing
                     </button>
                 </a>
             {% else %}
-                <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}">
+                <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}" style="text-decoration: none;">
                     <button class="custom-button" style="margin-right: 20px;">
                         <span class="material-symbols-outlined">share</span> Share
                     </button>
                 </a>
             {% endif %}
-            <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
+            <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none;">
                 <button class="custom-button" style="background-color: var(--red);">
                     <span class="material-symbols-outlined">delete</span> Delete
                 </button>
