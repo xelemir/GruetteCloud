@@ -68,8 +68,8 @@
         {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
         <p style="margin-bottom: 60px;">Uploaded by {{ username }}</p>
 
-        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview">
-            <button class="custom-button" style="width: 320px; margin-bottom: 20px; text-decoration: none;">
+        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview" style="text-decoration: none;">
+            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
                 <span class="material-symbols-outlined">visibility</span> Preview
             </button>
         </a><br>
