@@ -9,6 +9,7 @@
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://jan.gruettefien.com/static/switchservice.js"></script>
     <style>
         .centered-div {
             position: absolute;
@@ -26,6 +27,22 @@
         <div class="dark-mode-toggle">
             <a href="{{ url_prefix }}/settings" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+        </div>
+        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+            <div class="dropdown">
+                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
+                    <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="dropdown-menu">
+                    <div class="inner-tile">
+                        <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
+                        <div class="spaced-tile blue-on-hover"></div>
+                        <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
