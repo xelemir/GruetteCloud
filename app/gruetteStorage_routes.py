@@ -214,9 +214,11 @@ def share(username, filename):
 def stopsharing(username, filename):
     if "username" not in session or username != str(session['username']):
         return redirect(f"{url_prefix}/storage")
-
-    user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
-    if os.path.exists(user_shared_directory):
-        shutil.move(os.path.join(user_shared_directory, filename), os.path.join(gruetteStorage_path, username, filename))
+    try:
+        user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
+        if os.path.exists(user_shared_directory):
+            shutil.move(os.path.join(user_shared_directory, filename), os.path.join(gruetteStorage_path, username, filename))
+    except:
+        return redirect(f"{url_prefix}/file/{username}/{filename}")
         
     return redirect(f"{url_prefix}/file/{username}/{filename}")
