@@ -84,8 +84,6 @@ def get_files(username):
     # Calculate file size of shared directory
     size_shared = sum(os.path.getsize(os.path.join(user_shared_directory, file)) for file in files_shared)
     
-    
-
     # Convert file size to human-readable format
     total_size = size_user + size_shared
     total_size_formatted = get_formatted_file_size(total_size)

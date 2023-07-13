@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Dashboard | GrütteCloud</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
+    <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
+    <style>
+        @media (min-width: 768px) {
+            .desktop-only {
+                display: block;
+            }
+
+            .mobile-only {
+                display: none;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 37px;
+            background-color: var(--background-tile-color);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+        }
+
+        .hover-red:hover {
+            background-color: var(--red);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="dark-mode-toggle">
+            <a href="{{ url_prefix }}/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+        </div>
+        <div class="centered-content">
+            <h1>GrütteCloud Dashboard</h1>
+        </div>
+    </div>
+
+   
+    <div style="flex-direction: row; display: flex; width: 100%;">
+        <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
+            {% if platform_message %}
+
+                
+                <div class="wrapping-tile" style="display: flex; align-items: center;">
+                    <div style="flex-grow: 1;">
+                        <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
+                    </div>
+                    <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
+                        <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </a>
+                </div>
+                <div class="spaced-tile"></div>
+            {% endif %}
+
+            <div class="wrapping-tile" style="min-height: 400px;">
+                <h2 align="center" style="margin-bottom: 30px;">New platform message</h2>
+                <div style="flex-direction: row; display: flex; width: 100%;">
+                    <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
+                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                        <span style="color: var(--background-tile-color)">Enter the subject:</span>
+                        <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 30px;" required>
+                        Select a color:
+                        <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 30px;">
+                            <option value="yellow" style="color: var(--yellow);">Yellow</option>
+                            <option value="red" style="color: var(--red);">Red</option>
+                            <option value="green" style="color: var(--green);">Green</option>
+                            <option value="purple" style="color: var(--purple);">Purple</option>
+                        </select>
+                        <div style="margin-top: 20px">
+                            <input type="submit" value="Create status message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
+                        </div>
+                    </div>
+                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center; height: 100%;">
+                        <span style="color: var(--background-tile-color)">Enter the message content:</span>
+                        <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="spaced-tile"></div>
+            <div class="wrapping-tile">
+                <h2 align="center" style="margin-bottom: 30px;">GrütteStorage</h2>
+                <div class="inner-tile">
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-grow: 1;">
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: {{ used_space_percent }}%;"></div>
+                            </div>
+                        </div>
+                        <!--<button class="buy-now-button" style="margin-right: 0px;">Upgrade now</button>-->
+                    </div>
+                    <div class="spaced-tile"></div>
+                    <p>{{ used_space }} of 8 GB in use</p>
+                </div>
+            </div>
+        </div>
+        <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
+            <h2 align="center">Your files</h2>
+            <div class="spaced-tile"></div>
+            <div class="file-list">
+                {% if not files %}
+                    <div class="no-files">
+                        <span class="material-symbols-outlined" style="font-size: 100px;">cloud_upload</span>
+                        <p>You have not uploaded any files yet.</p>
+                    </div>
+                {% endif %}
+                {% for file in files %}
+                    <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
+                        <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <span class="material-symbols-outlined">download</span>
+                            </button>
+                        </a>
+                        <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/preview" title="Preview">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <span class="material-symbols-outlined">visibility</span>
+                            </button>
+                        </a>
+                        <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
+                                <span class="material-symbols-outlined">info</span>
+                            </button>
+                        </a>
+                        <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 110px; margin-right: 5px;">
+                            <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[1] }}</p>
+                        </div>
+                        <div class="mock-button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
+                            <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[0] }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="spaced-tile"></div>
+    <div id="beta-banner"></div>
+    <div id="cookie-banner"></div>
+    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
+            About Us
+        </a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
+            Help Center
+        </a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+            Privacy Policy
+        </a>
+    </div>
+</body>
+</html>
+
+
+<script>
+    // Dark mode toggle functionality
+    var darkModeToggle = document.getElementById('darkModeToggle');
+    var body = document.body;
+    var isDarkMode = localStorage.getItem('darkMode');
+
+    if (isDarkMode === 'true') {
+        body.classList.add('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+    }
+
+    darkModeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'false');
+            document.documentElement.setAttribute('data-theme', 'light');
+            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
+        } else {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'true');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+        }
+    });
+
+    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+</script>
+
+<script>
+    // Show status message and fade out after 5 seconds
+    var statusMessage = document.getElementById('status-message');
+    {% if status %}
+    statusMessage.style.display = 'block';
+        setTimeout(function() {
+            statusMessage.style.opacity = '0';
+            setTimeout(function() {
+                statusMessage.style.display = 'none';
+                statusMessage.style.opacity = '1';
+            }, 500);
+            window.location.href = '{{ url_prefix }}/storage';
+        }, 5000);
+    {% endif %}
+</script>
+
+<script src="https://jan.gruettefien.com/static/cookies.js"></script>

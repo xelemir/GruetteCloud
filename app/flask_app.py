@@ -7,6 +7,7 @@ from utilities_routes import utilities_route
 from chat_routes import chat_route
 from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
+from dashboard_routes import dashboard_route
 
 from config import url_prefix
 
@@ -17,6 +18,7 @@ app.register_blueprint(utilities_route)
 app.register_blueprint(chat_route)
 app.register_blueprint(premium_route)
 app.register_blueprint(gruetteStorage_route)
+app.register_blueprint(dashboard_route)
 
 eh = EncryptionHelper.EncryptionHelper()
 
@@ -72,8 +74,15 @@ def chat(error=None):
     # Get user's premium status
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
     
+    platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
+    
+    if platform_message == []:
+        platform_message = None
+    else:
+        platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
+    
     # Render the home page
-    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix)
+    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message)
 
 if __name__ == '__main__':
     app.run(debug=True)
