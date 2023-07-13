@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Settings | GrütteChat</title>
+    <title>GrütteID | GrütteCloud</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
@@ -12,8 +12,8 @@
 
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title="Back to home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+            <span id="dashboard" style="display: none;"><a href="{{ url_prefix }}/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
         <div class="centered-content">
             <a href="{{ url_prefix }}/" class="logo" title="Home">
@@ -130,7 +130,7 @@
 
     <div style="flex-direction: row; display: flex; width: 100%;">
         <div class="wrapping-tile" style="width: 50%; text-align: center; margin-left: 0; margin-right: 10px;">
-            <h1>Delete account</h1>
+            <h1>Delete GrütteID</h1>
             <form action="{{ url_prefix }}/delete_account" method="POST" id="delete_account" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                 <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="settings-input">
                 <div class="spaced-tile"></div>
@@ -197,6 +197,31 @@
     });
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+
+    // Check the cookie value
+    function getCookieValue(cookieName) {
+        var name = cookieName + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var cookieArray = decodedCookie.split(';');
+        for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+        }
+        return "";
+    }
+    
+    // Check the cookie value and show/hide the HTML tag
+    var cookieValue = getCookieValue("username");
+    if (cookieValue === "jan") {
+        document.getElementById("dashboard").style.display = "inline";
+    } else {
+        document.getElementById("dashboard").style.display = "none";
+    }
 </script>
 
 <script>

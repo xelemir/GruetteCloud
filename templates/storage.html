@@ -11,8 +11,8 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+            <span id="dashboard" style="display: none;"><a href="{{ url_prefix }}/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
         <div class="centered-content">
             <h1>GrütteStorage</h1>
@@ -252,6 +252,31 @@
         event.preventDefault();
         var files = event.dataTransfer.files;
         handleFile(files);
+    }
+
+    // Check the cookie value
+    function getCookieValue(cookieName) {
+        var name = cookieName + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var cookieArray = decodedCookie.split(';');
+        for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+        }
+        return "";
+    }
+    
+    // Check the cookie value and show/hide the HTML tag
+    var cookieValue = getCookieValue("username");
+    if (cookieValue === "jan") {
+        document.getElementById("dashboard").style.display = "inline";
+    } else {
+        document.getElementById("dashboard").style.display = "none";
     }
 </script>
 
