@@ -160,7 +160,7 @@
         <div style="display: flex; justify-content: center; text-decoration: none;">
             {% if is_shared %}
                 <div style="padding-bottom: 20px;">
-                    <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="margin-right: 3vw; width: 37vw;">
+                    <button id="mobile-copy-button" class="custom-button" onclick="mobileCopyToClipboard()" style="margin-right: 3vw; width: 37vw;">
                         <span class="material-symbols-outlined">link</span><span style="font-size: 0.7em;"> Copy link</span>
                     </button>
                 </div>
@@ -272,7 +272,22 @@
         setTimeout(function() {
           copyButton.innerHTML = '<span class="material-symbols-outlined">link</span> Copy link';
         }, 1000);
-      }      
+      }
+
+    function mobileCopyToClipboard() {
+        const tempInput = document.createElement('input');
+        tempInput.value = "{{ link_id }}" || window.location.href;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      
+        const copyButton = document.getElementById("mobile-copy-button");
+        copyButton.innerHTML = '<span class="material-symbols-outlined">done</span><span style="font-size: 0.7em;"> Link copied</span>';
+        setTimeout(function() {
+          copyButton.innerHTML = '<span class="material-symbols-outlined">link</span><span style="font-size: 0.7em;"> Copy link</span>';
+        }, 1000);
+      }
 </script>
 
 
