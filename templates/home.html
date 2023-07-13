@@ -11,7 +11,6 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_prefix }}/" class="sync" title="Refresh"><span class="material-symbols-outlined">cloud_sync</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="dashboard" style="display: none;"><a href="{{ url_prefix }}/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
@@ -26,20 +25,16 @@
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="dropdown-menu" style="right: -80px;">
+                <div class="dropdown-menu">
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
-                        <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="{{ url_prefix }}/settings" title="GrütteID & settings"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
                         <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
                         <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
                     </div>
                 </div>
             </div>
-    
-            <a href="{{ url_prefix }}/settings" class="white-button-blue-on-hover" title="Settings"><span class="material-symbols-outlined">settings</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="{{ url_prefix }}/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
-
         </div>
     </div>
 
