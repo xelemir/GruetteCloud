@@ -146,7 +146,10 @@ def download(username, filename, preview=False):
         return redirect(f"{url_prefix}/premium")
 
     try:
-        path = os.path.join(gruetteStorage_path, username, filename)
+        if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
+            path = os.path.join(gruetteStorage_path, username, filename)
+        elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
+            path = os.path.join(gruetteStorage_path, username, "shared", filename)
         if preview == "preview":
             return send_file(path, as_attachment=False)
         else:
