@@ -186,12 +186,12 @@
                     {% for file in files %}
                         <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <a href="{{ url_prefix }}/download{% if is_shared %}shared{% endif %}/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
+                                <a href="{{ url_prefix }}/download{% if file[2] %}shared{% endif %}/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
                                     <span class="material-symbols-outlined">download</span>
                                 </a>
                             </button>
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <a href="{{ url_prefix }}/download{% if is_shared %}shared{% endif %}/{{ username }}/{{ filename }}/preview" title="Preview">
+                                <a href="{{ url_prefix }}/download{% if file[2] %}shared{% endif %}/{{ username }}/{{ filename }}/preview" title="Preview">
                                     <span class="material-symbols-outlined">visibility</span>
                                 </a>
                             </button>
@@ -233,7 +233,7 @@
                 {% for file in files %}
                     <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
                         <button class="button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px; padding-right: 5px;">
-                            <a href="{{ url_prefix }}/download{% if is_shared %}shared{% endif %}/{{ username }}/{{ file[0] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;" title="Download">
+                            <a href="{{ url_prefix }}/download{% if file[2] %}shared{% endif %}/{{ username }}/{{ file[0] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;" title="Download">
                                 <span style="color: var(--text-color); font-size: 18px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file[0] }}</span>
                             </a>
                         </button>
