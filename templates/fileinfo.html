@@ -84,7 +84,7 @@
             </button><br>
         {% endif %}
         {% if is_author %}
-        <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center; text-decoration: none;">
             {% if is_shared %}
                 <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none;">
                     <button id="copy-button" class="custom-button" style="margin-right: 20px; background-color: var(--red);">
