@@ -36,6 +36,16 @@
         .hover-red:hover {
             background-color: var(--red);
         }
+
+        @media (min-width: 768px) {
+            .desktop-only {
+                display: block;
+            }
+        
+            .mobile-only {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -47,7 +57,7 @@
         <div class="centered-content">
             <h1>GrütteCloud Dashboard</h1>
         </div>
-        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+        <!--<div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
@@ -62,91 +72,109 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 
-   
-    <div style="flex-direction: row; display: flex; width: 100%;">
-        <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
-            {% if platform_message %}
+   <div class="desktop-only">
+        <div style="flex-direction: row; display: flex; width: 100%;" >
+            <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
+                {% if platform_message %}
 
-                
-                <div class="wrapping-tile" style="display: flex; align-items: center;">
-                    <div style="flex-grow: 1;">
-                        <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
-                    </div>
-                    <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
-                        <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
-                            <span class="material-symbols-outlined">delete</span>
-                        </button>
-                    </a>
-                </div>
-                <div class="spaced-tile"></div>
-            {% endif %}
-
-            <div class="wrapping-tile" style="min-height: 400px;">
-                <h2 align="center" style="margin-bottom: 30px;">New platform message</h2>
-                <div style="flex-direction: row; display: flex; width: 100%;">
-                    <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
-                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                        Enter the subject:
-                        <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 30px;" required>
-                        Select a color:
-                        <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 30px;">
-                            <option value="yellow" style="color: var(--yellow);">Yellow</option>
-                            <option value="red" style="color: var(--red);">Red</option>
-                            <option value="green" style="color: var(--green);">Green</option>
-                            <option value="purple" style="color: var(--purple);">Purple</option>
-                        </select>
-                        <div style="margin-top: 20px">
-                            <input type="submit" value="Create status message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
-                        </div>
-                    </div>
-                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center; height: 100%;">
-                        Enter the message content:
-                        <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
-                    </div>
-                    </form>
-                </div>
-            </div>
-            <div class="spaced-tile"></div>
-            <div class="wrapping-tile">
-                <h2 align="center" style="margin-bottom: 30px;">GrütteStorage</h2>
-                <div class="inner-tile">
-                    <div style="display: flex; align-items: center;">
+                    <div class="wrapping-tile" style="display: flex; align-items: center;">
                         <div style="flex-grow: 1;">
-                            <div class="progress-bar">
-                                <div class="progress-bar-fill" style="width: {{ used_space_percent }}%;"></div>
-                            </div>
+                            <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
                         </div>
+                        <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
+                            <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </a>
                     </div>
                     <div class="spaced-tile"></div>
-                    <p>{{ used_space }} of 8 GB in use</p>
+                {% endif %}
+
+                <div class="wrapping-tile" style="min-height: 400px;">
+                    <h2 align="center" style="margin-bottom: 30px;">New platform message</h2>
+                    <div style="flex-direction: row; display: flex; width: 100%;">
+                        <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
+                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                            Enter the subject:
+                            <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 30px;" required>
+                            Select a color:
+                            <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 30px;">
+                                <option value="yellow" style="color: var(--yellow);">Yellow</option>
+                                <option value="red" style="color: var(--red);">Red</option>
+                                <option value="green" style="color: var(--green);">Green</option>
+                                <option value="purple" style="color: var(--purple);">Purple</option>
+                            </select>
+                            <div style="margin-top: 20px">
+                                <input type="submit" value="Create status message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
+                            </div>
+                        </div>
+                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center; height: 100%;">
+                            Enter the message content:
+                            <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="spaced-tile"></div>
+                <div class="wrapping-tile">
+                    <h2 align="center" style="margin-bottom: 30px;">GrütteStorage</h2>
+                    <div class="inner-tile">
+                        <div style="display: flex; align-items: center;">
+                            <div style="flex-grow: 1;">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" style="width: {{ used_space_percent }}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spaced-tile"></div>
+                        <p>{{ used_space }} of 8 GB in use</p>
+                    </div>
                 </div>
             </div>
+            <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
+                <h2 align="center">Currently under construction</h2>
+                
+            </div>
         </div>
-        <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
-            <h2 align="center">Currently under construction</h2>
-            
+    </div>
+    <div class="mobile-only">
+        <div class="spaced-tile"></div>
+        {% if platform_message %}
+            <div class="wrapping-tile" style="display: flex; align-items: center;">
+                <div style="flex-grow: 1;">
+                    <h2 style="color: var(--{{ platform_message["color"] }}); font-size: 1em;">{{ platform_message["subject"] }}</h2>
+                </div>
+                <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
+                    <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </a>
+            </div>
+            <div class="spaced-tile"></div>
+        {% endif %}
+        <div class="wrapping-tile" style="text-align: center;">
+            <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST" style="display: block;">
+                <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 10px;" required>
+                <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 10px;">
+                    <option value="yellow" style="color: var(--yellow);">Yellow</option>
+                    <option value="red" style="color: var(--red);">Red</option>
+                    <option value="green" style="color: var(--green);">Green</option>
+                    <option value="purple" style="color: var(--purple);">Purple</option>
+                </select>
+                <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
+                <div style="margin-top: 10px">
+                    <input type="submit" value="Create status message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
+                </div>
+            </form>
         </div>
+
     </div>
     
     <div class="spaced-tile"></div>
-    <div id="beta-banner"></div>
     <div id="cookie-banner"></div>
-    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
-            About Us
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
-            Help Center
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
-            Privacy Policy
-        </a>
-    </div>
 </body>
 </html>
 
