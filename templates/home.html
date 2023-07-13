@@ -61,19 +61,6 @@
         <div class="spaced-tile"></div>
     {% endif %}
 
-    {% if has_premium %}
-        <div class="wrapping-tile" style="text-align: center;">
-            <a href="{{ url_prefix }}/storage" style="text-decoration: none; color: var(--purple);">
-                <div class="inner-tile">
-                    <h1>GrütteStorage</h1>
-                    A secure cloud storage service - by GrütteChat
-                </div>
-            </a>
-        </div>
-        <div class="spaced-tile"></div>
-    {% endif %}
-
-
     <div class="wrapping-tile">
         <form method="POST">
             <input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 120px);">
