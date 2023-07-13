@@ -130,38 +130,32 @@ def upload():
         return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status="File successfully uploaded!")
 
 
-@gruetteStorage_route.route("/download/<username>/<filename>/<preview>")
-def download(username, filename, preview=False):
-    if "username" not in session:
-        return redirect(f"{url_prefix}/")
-    elif username != str(session['username']):
-        return redirect(f"{url_prefix}/")
-
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
-
-    if user == []:
-        return redirect(f"{url_prefix}/")
-    elif not bool(user[0]["has_premium"]):
-        return redirect(f"{url_prefix}/premium")
-
-    try:
+@gruetteStorage_route.route("/open/<username>/<filename>/<preview>")
+def download(username, filename, preview="Default"):
+    if "username" not in session or username != str(session['username']):
+        if os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
+            path = os.path.join(gruetteStorage_path, username, "shared", filename)
+        else:
+            return redirect(f"{url_prefix}/storage")
+    elif username == str(session['username']):
         if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
             path = os.path.join(gruetteStorage_path, username, filename)
         elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
             path = os.path.join(gruetteStorage_path, username, "shared", filename)
+        else:
+            return redirect(f"{url_prefix}/storage")
+    
+    if path is not None:
         if preview == "preview":
             return send_file(path, as_attachment=False)
         else:
             return send_file(path, as_attachment=True)
-    except:
+    else:
         return redirect(f"{url_prefix}/storage")
 
-@gruetteStorage_route.route("/deletefile/<username>/<filename>")
-def deletefile(username, filename):
-    if "username" not in session:
-        return redirect(f"{url_prefix}/")
-    elif username != str(session['username']):
+@gruetteStorage_route.route("/delete/<username>/<filename>")
+def delete(username, filename):
+    if "username" not in session or username != str(session['username']):
         return redirect(f"{url_prefix}/")
         
     if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
@@ -202,12 +196,9 @@ def share(username, filename):
     if "username" not in session or username != str(session['username']):
         return redirect(f"{url_prefix}/storage")
 
-    # Create user shared directory if it doesn't exist
     user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
-    if not os.path.exists(user_shared_directory):
-        os.makedirs(user_shared_directory)
     
-    # If the file is not already in the shared directory, copy it there
+    # If the file is not already in the shared directory, move it there
     if not os.path.exists(os.path.join(user_shared_directory, filename)):
         if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
             shutil.move(os.path.join(gruetteStorage_path, username, filename), os.path.join(user_shared_directory, filename))
@@ -216,21 +207,6 @@ def share(username, filename):
     
     return redirect(f"{url_prefix}/file/{username}/{filename}")
 
-@gruetteStorage_route.route("/downloadshared/<username>/<filename>/<preview>")
-def downloadshared(username, filename, preview=False):
-    try:
-        shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
-        if os.path.exists(shared_file):
-            path = os.path.join(gruetteStorage_path, username, "shared", filename)
-            if preview == "preview":
-                return send_file(path, as_attachment=False)
-            else:
-                return send_file(path, as_attachment=True)
-        else:
-            return redirect(f"{url_prefix}/storage")
-    except:
-        return redirect(f"{url_prefix}/storage")
-    
 @gruetteStorage_route.route("/stopsharing/<username>/<filename>")
 def stopsharing(username, filename):
     if "username" not in session or username != str(session['username']):

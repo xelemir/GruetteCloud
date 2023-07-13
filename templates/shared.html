@@ -64,24 +64,19 @@
         <p style="margin-bottom: 60px;">Uploaded by {{ username }}</p>
 
         <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-            <a href="{{ url_prefix }}/download{% if is_shared %}shared{% endif %}/{{ username }}/{{ filename }}/preview" title="Preview">
+            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview">
                 <span class="material-symbols-outlined">visibility</span> Preview
             </a>
         </button><br>
+        
+        <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
+            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}">
+                <span class="material-symbols-outlined">download</span> Download
+            </a>
+        </button><br>
         {% if is_shared %}
-            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-                <a href="{{ url_prefix }}/downloadshared/{{ username }}/{{ filename }}" title="Download {{ filename }}">
-                    <span class="material-symbols-outlined">download</span> Download
-                </a>
-            </button><br>
             <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="width: 320px; margin-bottom: 20px;">
                 <span class="material-symbols-outlined">link</span> Copy link
-            </button><br>
-        {% else %}
-            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-                <a href="{{ url_prefix }}/download/{{ username }}/{{ filename }}" title="Download {{ filename }}">
-                    <span class="material-symbols-outlined">download</span> Download
-                </a>
             </button><br>
         {% endif %}
         {% if is_author %}
@@ -100,7 +95,7 @@
                     </button>
                 {% endif %}
                 <button class="custom-button" style="margin-left: 10px; background-color: var(--red);">
-                    <a href="{{ url_prefix }}/deletefile/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
+                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}">
                         <span class="material-symbols-outlined">delete</span> Delete forever
                     </a>
                 </button>
