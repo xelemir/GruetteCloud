@@ -45,7 +45,17 @@
             text-overflow: ellipsis;
             text-decoration: none;
             color: var(--text-color);
-        } 
+        }
+
+        @media (min-width: 768px) {
+            .desktop-only {
+                display: block;
+            }
+
+            .mobile-only {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -59,10 +69,10 @@
         </div>
     </div>
 
-    <div class="" style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px;">
+    <div class="desktop-only" style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
         <img src="{{ file_icon }}" style="width: 100px; height: 100px; margin-bottom: 10px;">
         <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
-        <h1 style="margin-bottom: 20px; font-size: 28px;" class="text-offcutter">{{ filename }}</h1>
+        <div class="text-offcutter" style="max-width: 320px; margin-bottom: 20px; font-size: 28px;">{{ filename }}</div>
         <p>Size: {{ filesize }}</p>
         <p>Shared on {{ created_at }}</p>
         {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
@@ -114,6 +124,67 @@
                     <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="width: 320px; background-color: var(--red);">
                             <span class="material-symbols-outlined">delete</span> Delete
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="mobile-only" style="max-height: 90vh; max-width: 90vw; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+        <img src="{{ file_icon }}" style="width: 15vh; height: 15vh; margin-bottom: 10px;">
+        <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
+        <div class="text-offcutter" style="max-width: 80vw; margin-bottom: 20px; font-size: 1.5em;">{{ filename }}</div>
+        <p style="font-size: 0.8em;">{{ filesize }} • {{ created_at }}</p>
+        {% if is_author %}<p style="font-size: 0.8em;">Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
+        <p style="margin-bottom: 20px; font-size: 0.8em;">Uploaded by {{ username }}</p>
+
+        
+        <div style="display: flex; justify-content: center; text-decoration: none;">
+            {% if is_shared %}
+                <div style="padding-bottom: 20px;">
+                    <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="margin-right: 3vw; width: 37vw;">
+                        <span class="material-symbols-outlined">link</span><span style="font-size: 0.7em;"> Copy link</span>
+                    </button>
+                </div>
+            {% else %}
+                <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
+                    <button class="custom-button" style="margin-right: 3vw; width: 37vw;">
+                        <span class="material-symbols-outlined">share</span><span style="font-size: 0.7em;"> Share</span>
+                    </button>
+                </a>
+            {% endif %}
+            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
+                <button class="custom-button" style="margin-left: 3vw; width: 37vw;">
+                    <span class="material-symbols-outlined">visibility</span><span style="font-size: 0.7em;"> Preview</span>
+                </button>
+            </a>
+        </div>
+        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}" style="text-decoration: none; max-width: 70vw;">
+            <button class="custom-button" style="width: 80vw">
+                <span class="material-symbols-outlined">download</span><span style="font-size: 0.7em;"> Download</span>
+            </button>
+        </a>
+
+        {% if is_author %}
+            {% if is_shared %}
+                <div style="display: flex; justify-content: center; text-decoration: none;">
+                    <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                        <button class="custom-button" style="margin-right: 6vw; background-color: var(--red); width: 37vw;">
+                            <span class="material-symbols-outlined">link_off</span><span style="font-size: 0.7em;"> Stop sharing</span>
+                        </button>
+                    </a>
+                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                        <button class="custom-button" style="background-color: var(--red); width: 37vw;">
+                            <span class="material-symbols-outlined">delete</span><span style="font-size: 0.7em;"> Delete</span>
+                        </button>
+                    </a>
+                </div>
+            {% else %}
+                <div style="margin-top: 20px;">
+                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                        <button class="custom-button" style="width: 80vw; background-color: var(--red);">
+                            <span class="material-symbols-outlined">delete</span><span style="font-size: 0.7em;"> Delete</span>
                         </button>
                     </a>
                 </div>

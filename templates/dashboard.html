@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
+    <script src="https://jan.gruettefien.com/static/switchservice.js"></script>
     <style>
         @media (min-width: 768px) {
             .desktop-only {
@@ -46,6 +47,22 @@
         <div class="centered-content">
             <h1>GrütteCloud Dashboard</h1>
         </div>
+        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+            <div class="dropdown">
+                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
+                    <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="dropdown-menu">
+                    <div class="inner-tile">
+                        <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
+                        <div class="spaced-tile blue-on-hover"></div>
+                        <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
    
@@ -72,7 +89,7 @@
                 <div style="flex-direction: row; display: flex; width: 100%;">
                     <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                        <span style="color: var(--background-tile-color)">Enter the subject:</span>
+                        Enter the subject:
                         <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 30px;" required>
                         Select a color:
                         <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 30px;">
@@ -86,7 +103,7 @@
                         </div>
                     </div>
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center; height: 100%;">
-                        <span style="color: var(--background-tile-color)">Enter the message content:</span>
+                        Enter the message content:
                         <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
                     </div>
                     </form>
@@ -102,7 +119,6 @@
                                 <div class="progress-bar-fill" style="width: {{ used_space_percent }}%;"></div>
                             </div>
                         </div>
-                        <!--<button class="buy-now-button" style="margin-right: 0px;">Upgrade now</button>-->
                     </div>
                     <div class="spaced-tile"></div>
                     <p>{{ used_space }} of 8 GB in use</p>
@@ -110,41 +126,8 @@
             </div>
         </div>
         <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
-            <h2 align="center">Your files</h2>
-            <div class="spaced-tile"></div>
-            <div class="file-list">
-                {% if not files %}
-                    <div class="no-files">
-                        <span class="material-symbols-outlined" style="font-size: 100px;">cloud_upload</span>
-                        <p>You have not uploaded any files yet.</p>
-                    </div>
-                {% endif %}
-                {% for file in files %}
-                    <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
-                        <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <span class="material-symbols-outlined">download</span>
-                            </button>
-                        </a>
-                        <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/preview" title="Preview">
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                <span class="material-symbols-outlined">visibility</span>
-                            </button>
-                        </a>
-                        <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
-                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
-                                <span class="material-symbols-outlined">info</span>
-                            </button>
-                        </a>
-                        <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 110px; margin-right: 5px;">
-                            <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[1] }}</p>
-                        </div>
-                        <div class="mock-button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
-                            <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[0] }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+            <h2 align="center">Currently under construction</h2>
+            
         </div>
     </div>
     
