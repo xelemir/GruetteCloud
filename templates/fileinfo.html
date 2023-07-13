@@ -59,55 +59,65 @@
         </div>
     </div>
 
-    <div style="text-align: center; padding-top: 10vh;">
-        <img src="{{ file_icon }}" style="width: 100px; height: 100px; margin-bottom: 20px;">
+    <div class="" style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px;">
+        <img src="{{ file_icon }}" style="width: 100px; height: 100px; margin-bottom: 10px;">
         <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
-        <h1 style="margin-bottom: 40px;" class="text-offcutter">{{ filename }}</h1>
+        <h1 style="margin-bottom: 20px; font-size: 28px;" class="text-offcutter">{{ filename }}</h1>
         <p>Size: {{ filesize }}</p>
-        <p>Created on {{ created_at }}</p>
+        <p>Shared on {{ created_at }}</p>
         {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
-        <p style="margin-bottom: 60px;">Uploaded by {{ username }}</p>
+        <p style="margin-bottom: 20px;">Uploaded by {{ username }}</p>
 
-        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview" style="text-decoration: none;">
-            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-                <span class="material-symbols-outlined">visibility</span> Preview
-            </button>
-        </a><br>
-        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}" style="text-decoration: none;">
-            <button class="custom-button" style="width: 320px; margin-bottom: 20px;">
-                <span class="material-symbols-outlined">download</span> Download
-            </button>
-        </a><br>
-        {% if is_shared %}
-            <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="width: 320px; margin-bottom: 20px;">
-                <span class="material-symbols-outlined">link</span> Copy link
-            </button><br>
-        {% endif %}
-        {% if is_author %}
+        
         <div style="display: flex; justify-content: center; text-decoration: none;">
             {% if is_shared %}
-                <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none;">
-                    <button id="copy-button" class="custom-button" style="margin-right: 20px; background-color: var(--red);">
-                        <span class="material-symbols-outlined">link_off</span> Stop sharing
+                <div style="padding-bottom: 20px;">
+                    <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="margin-right: 10px;">
+                        <span class="material-symbols-outlined">link</span> Copy link
                     </button>
-                </a>
+                </div>
             {% else %}
-                <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}" style="text-decoration: none;">
-                    <button class="custom-button" style="margin-right: 20px;">
+                <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
+                    <button class="custom-button" style="margin-right: 10px;">
                         <span class="material-symbols-outlined">share</span> Share
                     </button>
                 </a>
             {% endif %}
-            <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none;">
-                <button class="custom-button" style="background-color: var(--red);">
-                    <span class="material-symbols-outlined">delete</span> Delete
+            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
+                <button class="custom-button" style="margin-left: 10px;">
+                    <span class="material-symbols-outlined">visibility</span> Preview
                 </button>
             </a>
         </div>
-        
+        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}" style="text-decoration: none;">
+            <button class="custom-button" style="width: 320px;">
+                <span class="material-symbols-outlined">download</span> Download
+            </button>
+        </a>
 
-            
-            
+        {% if is_author %}
+            {% if is_shared %}
+                <div style="display: flex; justify-content: center; text-decoration: none;">
+                    <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                        <button class="custom-button" style="margin-right: 20px; background-color: var(--red);">
+                            <span class="material-symbols-outlined">link_off</span> Stop sharing
+                        </button>
+                    </a>
+                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                        <button class="custom-button" style="background-color: var(--red);">
+                            <span class="material-symbols-outlined">delete</span> Delete
+                        </button>
+                    </a>
+                </div>
+            {% else %}
+                <div style="display: flex; justify-content: center; text-decoration: none;">
+                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                        <button class="custom-button" style="width: 320px; background-color: var(--red);">
+                            <span class="material-symbols-outlined">delete</span> Delete
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
     

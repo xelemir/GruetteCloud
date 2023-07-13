@@ -173,7 +173,7 @@ def file(username, filename):
         shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
         if os.path.exists(shared_file):
             filesize = get_formatted_file_size(os.path.getsize(shared_file))
-            created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y at %H:%M:%S")
+            created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y")
             icon_path = IconHelper.IconHelper().get_icon(filename)
             code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
             return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code)
@@ -192,7 +192,7 @@ def file(username, filename):
         return redirect(f"{url_prefix}/storage")
     
     filesize = get_formatted_file_size(os.path.getsize(path))
-    created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y at %H:%M:%S")
+    created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y")
     icon_path = IconHelper.IconHelper().get_icon(filename)
     return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code)
     
