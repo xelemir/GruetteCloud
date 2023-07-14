@@ -35,10 +35,12 @@
     </div>-->
     <div class="centered-div" style="top: 25%;">
         <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-            <h1 style="font-size: 30px; font-weight: bold">Welcome to GrütteCloud!<h1>
-            <img src="https://jan.gruettefien.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" align="center" class="desktop-only">
+          <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 20px;">Welcome to GrütteCloud!</h1>
+          <div style="display: flex; justify-content: center;">
+            <img src="https://jan.gruettefien.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
+          </div>
         </div>
-    </div>
+      </div>
       
 
     <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
@@ -104,6 +106,51 @@
     });
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+
+  const images = [
+    "https://jan.gruettefien.com/static/GrütteCloud.png",
+    "https://jan.gruettefien.com/static/GrütteStorage.png",
+    "https://jan.gruettefien.com/static/GrütteID.png",
+    "https://jan.gruettefien.com/static/gruettechat.png"
+  ];
+  let currentIndex = 0;
+  const carouselImage = document.getElementById("carousel-image");
+
+  function fadeIn() {
+    let opacity = 0;
+    const fadeInterval = setInterval(() => {
+      opacity += 0.01;
+      carouselImage.style.opacity = opacity.toFixed(2);
+      if (opacity >= 1) {
+        clearInterval(fadeInterval);
+      }
+    }, 10);
+  }
+
+  function fadeOut() {
+    let opacity = 1;
+    const fadeInterval = setInterval(() => {
+      opacity -= 0.01;
+      carouselImage.style.opacity = opacity.toFixed(2);
+      if (opacity <= 0) {
+        clearInterval(fadeInterval);
+        changeImage();
+        fadeIn();
+      }
+    }, 10);
+  }
+
+  function changeImage() {
+    carouselImage.src = images[currentIndex];
+    currentIndex = (currentIndex + 1) % images.length;
+  }
+
+  function startCarousel() {
+    fadeIn();
+    setInterval(fadeOut, 3000);
+  }
+
+  startCarousel();
 </script>
 <script>
     // Show error message and fade out after 5 seconds
