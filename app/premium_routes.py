@@ -13,7 +13,7 @@ set_config({
     'client_secret': paypal_client_secret
 })
 
-def pay_with_PayPal(success_url="https://jan.gruettefien.com/gruettechat/success", cancel_url="https://jan.gruettefien.com/gruettechat/cancel", amount=2.99, description="GrütteChat PLUS"):
+def pay_with_PayPal(success_url="https://jan.gruettefien.com/gruettechat/success", cancel_url="https://jan.gruettefien.com/gruettechat/cancel", amount=2.99, description="GrütteCloud PLUS"):
     """ Pay with PayPal
 
     Args:
@@ -100,12 +100,12 @@ def payment():
         
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix=url_prefix)
+            return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix=url_prefix)
         
         # Else, create payment and redirect user to PayPal
         else:
 
-            paypal_response = pay_with_PayPal(amount=2.99, description="GrütteChat PLUS")
+            paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
             
             if paypal_response != "Something went wrong on our end :/":
                 return paypal_response
@@ -134,7 +134,7 @@ def success():
     
     # If good to go, check if user has premium
     if bool(user[0]["has_premium"]) == True:
-        return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix=url_prefix)
+        return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix=url_prefix)
     
     try:
 
@@ -146,7 +146,7 @@ def success():
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
             sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return render_template("settings.html", error="You now have GrütteChat PLUS!", selected_personality="Default", has_premium=True, url_prefix=url_prefix)
+            return render_template("settings.html", error="You now have GrütteCloud PLUS!", selected_personality="Default", has_premium=True, url_prefix=url_prefix)
         
         # Else if payment failed, return error
         else:
