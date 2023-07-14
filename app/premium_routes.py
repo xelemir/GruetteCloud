@@ -8,7 +8,7 @@ premium_route = Blueprint("Premium", "Premium", template_folder=templates_path)
 
 # Configure PayPal SDK
 set_config({
-    'mode': 'live',
+    'mode': 'sandbox',
     'client_id': paypal_client_id,
     'client_secret': paypal_client_secret
 })
