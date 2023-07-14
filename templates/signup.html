@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
+    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px; box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);">
         <div id="error-message" style="display: none;">
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
@@ -40,6 +40,10 @@
             <input type="text" id="email" name="email" class="login-input" autocomplete="off" placeholder="Your email address" style="width: 300px; margin-right: 0px;" required>
             <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="A strong password" style="width: 300px; margin-right: 0px;" required>
             <input type="password" id="password2" name="password2" class="login-input" autocomplete="off" placeholder="Repeat your password" style="width: 300px; margin-right: 0px;" required>
+            <span style="display: flex;" class="login-input">
+                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                <span>I accept the <a href="{{ url_prefix }}/termsofservice" style="color: var(--text-color);">terms of service</a></span>
+            </span>
             <div style="margin-top: 20px">
                 <input type="submit" value="Create GrütteID" name="login" class="signup-button">
             </div>

@@ -62,7 +62,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_prefix }}/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            {% if is_gruettecloud_user %}<a href="{{ url_prefix }}/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -214,19 +214,6 @@
 
     <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
-    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
-            About Us
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
-            Help Center
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
-            Privacy Policy
-        </a>
-    </div>
 </body>
 </html>
 
