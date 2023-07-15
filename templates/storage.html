@@ -220,22 +220,28 @@
             var file = files[0];
             var fileSizeInBytes = file.size;
             var maxSizeInBytes = 5 * 1024 * 1024 * 1024; // 5 GB
-
+    
             if (fileSizeInBytes > maxSizeInBytes) {
                 alert('File size exceeds the allowed limit of 5GB. Please select a smaller file.');
                 return;
             }
-
+    
+            // Show the "uploading-message" div
+            document.getElementById('uploading-message').style.display = 'block';
+    
             var formData = new FormData();
             formData.append('file', file);
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '{{ url_prefix }}/upload', true);
             xhr.onload = function () {
+                // Hide the "uploading-message" div
+                document.getElementById('uploading-message').style.display = 'none';
+    
                 if (xhr.status === 200) {
                     //alert('File uploaded successfully.');
                     document.getElementById('file-input').value = ''; // Clear the file input value
                     window.location.href = '{{ url_prefix }}/upload';
-
+    
                     //window.location.reload(); // Refresh the page to update the file list
                 } else {
                     alert('Error uploading file. Please try again.');
@@ -244,6 +250,7 @@
             xhr.send(formData);
         }
     }
+    
 
     function dragOverHandler(event) {
         event.preventDefault();
