@@ -5,6 +5,7 @@
     <title>GrütteStorage | GrütteChat</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/GrütteStorage.png">
     <script src="https://jan.gruettefien.com/static/switchservice.js"></script>
 </head>
@@ -40,23 +41,17 @@
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
-                {% if status %}
-                    <div id="status-message" style="display: none;">
-                        <div class="wrapping-tile" style="text-align: center;">
-                            <div class="inner-tile">
-                                <div class="spaced-tile"></div>
-                                    <h2 style="color: var(--yellow)">{{ status }}</h2>
-                                <div class="spaced-tile"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="spaced-tile"></div>
-                {% endif %}
+                
+                <div id="upload-confirmed" style="display: none; right: 20px; position: absolute; background-color: var(--secondary-color); padding: 20px; font-size: 1.2em; border-radius: 10px; color: var(--yellow); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4); min-width: 25vw;">
+                    File uploaded successfully!
+                </div>
+
                 <div class="wrapping-tile" style="height: 30vh; padding: 20px;">
-                    <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()">
+                    <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex;" id="drop-area">
                         <p>Drag and drop files here<br>or click to select a file</p>
                     </label>
                     <input id="file-input" type="file" onchange="handleFile(this.files)">
+                    <p class="drop-area" id="uploading-message" style="display: none; color: var(--yellow)"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
@@ -226,21 +221,34 @@
                 return;
             }
     
-            // Show the "uploading-message" div
-            document.getElementById('uploading-message').style.display = 'block';
+            // Show the "uploading-message" div and hide the "drop-area" div
+            document.getElementById('uploading-message').style.display = 'flex';
+            document.getElementById('drop-area').style.display = 'none';
     
             var formData = new FormData();
             formData.append('file', file);
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '{{ url_prefix }}/upload', true);
             xhr.onload = function () {
-                // Hide the "uploading-message" div
+                // Hide the "uploading-message" div and show the "drop-area" div
                 document.getElementById('uploading-message').style.display = 'none';
+                document.getElementById('drop-area').style.display = 'flex';
     
                 if (xhr.status === 200) {
                     //alert('File uploaded successfully.');
                     document.getElementById('file-input').value = ''; // Clear the file input value
-                    window.location.href = '{{ url_prefix }}/upload';
+
+                    var uploadConfirmedMessage = document.getElementById('upload-confirmed');
+
+                    uploadConfirmedMessage.style.display = 'block';
+                    setTimeout(function() {
+                        uploadConfirmedMessage.style.opacity = '0';
+                        setTimeout(function() {
+                            uploadConfirmedMessage.style.display = 'none';
+                            uploadConfirmedMessage.style.opacity = '1';
+                        }, 500);
+                    }, 5000);
+
     
                     //window.location.reload(); // Refresh the page to update the file list
                 } else {
@@ -287,22 +295,6 @@
     } else {
         document.getElementById("dashboard").style.display = "none";
     }
-</script>
-
-<script>
-    // Show status message and fade out after 5 seconds
-    var statusMessage = document.getElementById('status-message');
-    {% if status %}
-    statusMessage.style.display = 'block';
-        setTimeout(function() {
-            statusMessage.style.opacity = '0';
-            setTimeout(function() {
-                statusMessage.style.display = 'none';
-                statusMessage.style.opacity = '1';
-            }, 500);
-            window.location.href = '{{ url_prefix }}/storage';
-        }, 5000);
-    {% endif %}
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>

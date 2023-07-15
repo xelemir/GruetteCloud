@@ -96,7 +96,7 @@ def get_files(username):
     
     return {"file_list": file_list, "total_size_formatted": total_size_formatted, "total_size_percentage": total_size_percentage}
     
-@gruetteStorage_route.route('/upload', methods=['POST', 'GET'])
+@gruetteStorage_route.route('/upload', methods=['POST'])
 def upload():
     if "username" not in session:
         return redirect(f"{url_prefix}/")
@@ -124,11 +124,6 @@ def upload():
             
             return jsonify({"filename": filename})
         return jsonify({"error": "No file selected!"})
-    else:
-        files = get_files(str(session['username']))
-        file_list = files["file_list"]
-        return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status="File successfully uploaded!")
-
 
 @gruetteStorage_route.route("/open/<username>/<filename>/<preview>")
 def download(username, filename, preview="Default"):
