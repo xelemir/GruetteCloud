@@ -92,10 +92,17 @@
         <img src="{{ file_icon }}" style="width: 100px; height: 100px; margin-bottom: 10px;">
         <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
         <div class="text-offcutter" style="max-width: 320px; margin-bottom: 20px; font-size: 28px;">{{ filename }}</div>
-        <p>Size: {{ filesize }}</p>
-        <p>Shared on {{ created_at }}</p>
-        {% if is_author %}<p>Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
-        <p style="margin-bottom: 20px;">Uploaded by {{ username }}</p>
+        <p>{{ filesize }} • {{ created_at }}</p>
+        {% if is_author %}
+            {% if is_shared %}
+            <p>Uploaded by {{ username }}</p>
+            <p style="color: var(--green); margin-bottom: 20px;">Sharing is on</p>
+            {% else %}
+            <p style="margin-bottom: 20px;">Uploaded by {{ username }}</p>
+            {% endif %}
+        {% else %}
+            <p style="margin-bottom: 20px;">Uploaded by {{ username }}</p>
+        {% endif %}
 
         
         <div style="display: flex; justify-content: center; text-decoration: none;">
@@ -155,8 +162,16 @@
         <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
         <div class="text-offcutter" style="max-width: 80vw; margin-bottom: 20px; font-size: 1.5em;">{{ filename }}</div>
         <p style="font-size: 0.8em;">{{ filesize }} • {{ created_at }}</p>
-        {% if is_author %}<p style="font-size: 0.8em;">Sharing: {% if is_shared %}on{% else %}off{% endif %}</p>{% endif %}
-        <p style="margin-bottom: 20px; font-size: 0.8em;">Uploaded by {{ username }}</p>
+        {% if is_author %}
+            {% if is_shared %}
+            <p style="font-size: 0.8em;">Uploaded by {{ username }}</p>
+            <p style="font-size: 0.8em; color: var(--green); margin-bottom: 20px;">Sharing is on</p>
+            {% else %}
+            <p style="font-size: 0.8em; margin-bottom: 20px;">Uploaded by {{ username }}</p>
+            {% endif %}
+        {% else %}
+            <p style="font-size: 0.8em; margin-bottom: 20px;">Uploaded by {{ username }}</p>
+        {% endif %}
 
         
         <div style="display: flex; justify-content: center; text-decoration: none;">
@@ -209,6 +224,20 @@
                 </div>
             {% endif %}
         {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: auto;">
+        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
+            About Us
+        </a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
+            Help Center
+        </a>
+        &nbsp;|&nbsp;
+        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
+            Privacy Policy
+        </a>
     </div>
     
 
