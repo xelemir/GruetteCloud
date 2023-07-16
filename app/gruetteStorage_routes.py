@@ -30,7 +30,7 @@ def storage():
     if username_database == []:
         return redirect(f'{url_prefix}/')
     elif not bool(username_database[0]["has_premium"]):
-        return redirect(f'{url_prefix}/')
+        return redirect(f'{url_prefix}/premium')
 
     files = get_files(username)
     
