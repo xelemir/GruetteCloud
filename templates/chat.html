@@ -51,12 +51,11 @@
             <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
-        <div class="centered-content">
-            <h1>{{ recipient }}</h1>
+        <div class="centered-content" style="display: flex; align-items: center;">
+            <h1 style="display: flex; align-items: center;">{{ recipient }}{% if recipient == 'jan' %}<span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-left: 5px; color: var(--primary-color); align-items: center;">verified</span>{% endif %}</h1>
         </div>
+        
     </div>
-    
-    
 
     <div class="chat-messages">
         {% for message in messages %}
