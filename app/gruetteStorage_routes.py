@@ -28,7 +28,8 @@ def storage():
     username_database = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
 
     if username_database == []:
-        return redirect(f'{url_prefix}/')
+        # Security check: User cookie is invalid and should be deleted. This may happen if the user was deleted from the database.
+        return redirect(f'{url_prefix}/logout')
     elif not bool(username_database[0]["has_premium"]):
         return redirect(f'{url_prefix}/premium')
 
