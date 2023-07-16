@@ -26,14 +26,14 @@
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
-            <h1>Get help</h1>
+            <h1>Contact support</h1>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu" style="z-index: 2;">
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
@@ -46,16 +46,16 @@
         </div>
     </div>
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
+    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px; z-index: 1;">
         <div id="error-message" style="display: none;">
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
-        <h2>How can we help you today?</h2>
+        <h2>Hey, we're happy to assist :)</h2>
         <form action="{{ url_prefix }}/support" method="POST" style="flex-direction: column;">
             <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name" style="width: 300px; margin-right: 0px;" required>
             <input type="text" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Your Email" style="width: 300px; margin-right: 0px;" required>
-            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteChat username" style="width: 300px; margin-right: 0px;" required>
-            <textarea id="message" name="message" class="login-input" autocomplete="off" placeholder="Describe your issue" style="width: 300px; margin-right: 0px; height: 200px; resize: vertical;" maxlength="2000" required></textarea>
+            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Your GrütteID" style="width: 300px; margin-right: 0px;" required>
+            <textarea id="message" name="message" class="login-input" autocomplete="off" placeholder="Your message" style="width: 300px; margin-right: 0px; height: 200px; resize: vertical;" maxlength="2000" required></textarea>
             <div style="margin-top: 20px">
                 <input type="submit" value="Send message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
             </div>
