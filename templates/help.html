@@ -2,28 +2,39 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<title>Help Center | GrütteChat</title>
+	<title>Help Center | GrütteCloud</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
 	<link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
-    <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
+    <link rel="icon" href="https://jan.gruettefien.com/static/GrütteCloud.png">
     <script src="https://jan.gruettefien.com/static/switchservice.js"></script>
 	<style>
-		.centered-div {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			padding-top: 20px;
-			height: auto;
-			max-height: calc(100vh - 120px);
-			overflow-y: auto;
-		}
-		
 		h2 {
 			color: var(--primary-color);
 			font-weight: bold;
-		}	
+        }
+
+		a {
+			color: var(--text-color);
+		}
+
+		.help-item {
+			margin-bottom: 10px;
+		}
+	
+		.help-item .headline {
+			font-size: 1.2em;
+			cursor: pointer;
+			font-weight: bold;
+		}
+	
+		.help-item .content {
+			font-size: 1em;
+			display: none;
+			margin-top: 5px;
+			padding: 20px;
+			border: 1px solid var(--primary-color);
+			border-radius: 5px;
+		}
 	</style>
 </head>
 <body>
@@ -34,10 +45,10 @@
         </div>
 		<div class="centered-content">
             <a href="{{ url_prefix }}/" class="logo" title="Home">
-                <img src="https://jan.gruettefien.com/static/gruettechat.png" style="width: 40px; height: 40px;" title="GrütteChat">
+                <img src="https://jan.gruettefien.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
         </div>
-		<div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
@@ -56,169 +67,225 @@
 	</div>
 
 
-	<div class="wrapping-tile" style="font-size: 13px;">
+	<div class="wrapping-tile" style="font-size: 13px; padding: 20px;">
 		<div class="spaced-tile"></div>
-        <h1>Welcome to the Help Center</h1>
-			<div align="center">
-				<button class="button-blue" style="min-width: 0px;"><a href="{{ url_prefix }}/support" style="text-decoration: none; color: var(--white-color);">Talk to support</a></button>
-				<div class="spaced-tile"></div>
+
+        <h1>Help Center</h1>
+
+		<input type="text" id="search-input" placeholder="Search help center" style="width: 100%; padding: 10px; margin-bottom: 20px;"/>
+
+		<div id="help-menu">
+			<div class="help-item">
+			  	<div class="headline">How to get started</div>
+			  	<div class="content">
+					<p>Firstly, you need to create your GrütteID.</p>
+					<p>You can do this by clicking on the "Sign Up" button on the landing page or simply click <a href="{{ url_prefix }}/signup">here</a>.</p>
+					<p>You'll then be asked to enter a username, your email address, and a password.</p>
+					<p>After reviewing the Terms of Service and Privacy Policy, you can click on the "Sign Up" button.</p>
+					<p>You are then going to receive a six digit verification code via email. You'll need to enter this code on the next page.</p>
+					<p>Once you've done that, you'll be able to log in and use GrütteCloud services.</p>
+			  	</div>
+			</div>
+		
+			<div class="help-item">
+				<div class="headline">What is GrütteChat</div>
+				<div class="content">
+					<p>GrütteChat is a mostly free, open-source, chat application. It is built with Python and Flask, AJAX and SQL.</p>
+					<p>Chat messages as well as user information is stored in a MySQL database.</p>
+					<p>The message content and the user passwords are encrypted before being stored in the database.</p>
+					<p>GrütteChat also has a state of the art chat-bot called MyAI built in.</p>
+					<p>You can check out the source code on <a href="https://github.com/xelemir/GruetteChat">GitHub</a>.</p>
+					<p>You may also take a look at some <a href="{{ url_prefix }}/about">GrütteChat promo material</a>.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">Impressum</h2><br>
-				GrütteChat<br>
-				Jan Grüttefien<br>
-				Kapellenweg 47a<br>
-				70378 Stuttgart<br>
-				jan@gruettefien.com<br>
+			<div class="help-item">
+				<div class="headline">What is GrütteStorage</div>
+				<div class="content">
+					<p>GrütteStorage is a cloud storage application.</p>
+					<p>Files are stored securely on our servers.</p>
+					<p>You can choose to share files directly with others via a link. You do not need to have GrütteID to view shared files</p>
+					<p>To use GrütteStorage you need to purchase GrütteCloud PLUS.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">What is GrütteChat?</h2><br>
-				GrütteChat is a free, open-source, chat application. It is built with Python and Flask, AJAX and SQL.<br>
-				Chat messages as well as user information is stored in a MySQL database.<br>
-				The message content and the user passwords are encrypted before being stored in the database.<br>
-				GrütteChat also has a state of the art chat-bot called MyAI built in.<br>
+			<div class="help-item">
+				<div class="headline">What is MyAI</div>
+				<div class="content">
+					<p>MyAI is a chat-bot that is built into GrütteChat.</p>
+					<p>The bot is built using the openai API.</p>
+					<p>MyAI is equipped with conversational awareness, meaning previous messages are taken into account when generating a reply.</p>
+					<p>As a GrütteCloud PLUS subscriber, you get access to all MyAI personalities as well as longer conversations and replies.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">How can I use GrütteChat?</h2><br>
-				Firstly, you need to create an account. You can do this by clicking on the "Sign Up" button on the landing page.<br>
-				You'll then be asked to enter a username, your email address, and a password.<br>
-				After that, you'll receive a six digit verification code via email. You'll need to enter this code on the next page.<br>
-				Once you've done that, you'll be able to log in and use GrütteChat.<br>
+			<div class="help-item">
+				<div class="headline">What is GrütteCloud PLUS</div>
+				<div class="content">
+					<p>GrütteCloud PLUS is a subscription that gives you access to the following:</p>
+					<p>• Unlock all MyAI personalities</p>
+					<p>• 4x longer MyAI conversations</p>
+					<p>• Up to 10x longer MyAI replies</p>
+					<p>• Access to GrütteStorage</p>
+					<p>• Access to all upcoming features</p>
+					<p>For only 2.99 € you get lifetime* access to GrütteCloud.</p>
+					<p>currently, only PayPal is supported as a payment method</p>
+					<p>You may request a refund within 14 days of purchase.</p><br>
+					<p>*lifetime means as long as the service is available. Please refer to the <a href="{{ url_prefix }}/terms">Terms of Service</a> for more information.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">What is MyAI</h2><br>
-				MyAI is a state of the art chatbot that is built into GrütteChat.<br>
-				You can access MyAI by clicking on the "MyAI" button on the home page.<br>
-				As a GrütteChat PLUS user, you'll be able to unlock all MyAI personalities.<br>
-				Currently, there are 6 additional MyAI personalities available.<br>
-				You can change your MyAI personality on the <a href="{{ url_prefix }}/settings" style="color: var(--text-color); display: inline;">settings page</a>
+			<div class="help-item">
+				<div class="headline">How can I purchase GrütteCloud PLUS</div>
+				<div class="content">
+					<p>We got you covered!</p>
+					<p>Simply click <a href="{{ url_prefix }}/premium">here</a> to purchase GrütteCloud PLUS.</p>
+					<p>Note: We currently only support PayPal as a payment method.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">What features does GrütteChat offer?</h2><br>
-				GrütteChat currently offers the following features:<br>
-				• Sending and receiving messages to and from other GrütteChat users<br>
-				• Deleting chats<br>
-				• Chatting with a state of the art MyAI chat-bot<br>
-				• Changing your email and password<br>
+			<div class="help-item">
+				<div class="headline">How can I contact you</div>
+				<div class="content">
+					<p>You can contact us by clicking <a href="{{ url_prefix }}/support">here</a>.</p>
+					<p>Alternatively, you can send us an email at <a href="mailto:notifications.jan.gtn@gmail.com">notifications.jan.gtn@gmail.com</a>.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">What is GrütteChat PLUS</h2><br>
-				GrütteChat PLUS is a premium version of GrütteChat.<br>
-				It offers the following features:<br>
-				• Unlock all MyAI personalities<br>
-				• 4x longer MyAI conversations<br>
-				• Up to 10x longer MyAI replies<br>
-				• YouTube Downloader<br>
-				• Access to premium chats<br>
-				• Access to all upcoming features<br>
-				Additionally, you'll be supporting the developer by purchasing GrütteChat PLUS.<br>
+			<div class="help-item">
+				<div class="headline">How can I delete my GrütteID</div>
+				<div class="content">
+					<p>To delete your GrütteID and all data associated with it, please head over to your GrütteID settings or click <a href="{{ url_prefix }}/settings">here</a>.</p>
+					<p> You will be asked to enter your username, password and email to confirm the deletion.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">How can I purchase GrütteChat PLUS?</h2><br>
-				You can simply press the Unlock GrütteChat PLUS button on the home page.<br>
-				Or simply click <a href="{{ url_prefix }}/premium" style="color: var(--text-color); display: inline;">here</a>
-				Unfortunately, you can only purchase GrütteChat PLUS using PayPal at the moment.<br>
+			<div class="help-item">
+				<div class="headline">How can I change my GrütteID email</div>
+				<div class="content">
+					<p>To change your GrütteID email, please head over to your GrütteID settings or click <a href="{{ url_prefix }}/settings">here</a>.</p>
+					<p> You will be asked to enter your new email and your password to confirm the action.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">How much is GrütteChat PLUS?</h2><br>
-				GrütteChat PLUS costs 2.99€ only.<br>
-				You then have access to all GrütteChat PLUS features forever.<br>
-				We offer a 14-day money-back guarantee.<br>
+			<div class="help-item">
+				<div class="headline">How can I change my GrütteID password</div>
+				<div class="content">
+					<p>To change your GrütteID password, please head over to your GrütteID settings or click <a href="{{ url_prefix }}/settings">here</a>.</p>
+					<p> You will be asked to enter your old password and the new password to confirm the action.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">What are premium chats?</h2><br>
-				Some users have created premium chats. These chats are only accessible to GrütteChat PLUS users.<br>
-				So to chat with these users, you'll need to purchase GrütteChat PLUS.<br>
-				But dont worry, you can still chat with all regular users.<br>
-				This feature is currently in beta.<br>
+			<div class="help-item">
+				<div class="headline">I can't login using my GrütteID</div>
+				<div class="content">
+					<p>Please <a href="{{ url_prefix }}/support">contact us</a> and we are going to help you as soon as possible.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">How does tipping work?</h2><br>
-				You can tip premium chat users by clicking the icon top left of the chat.<br>
-				You can then select an amount between 1€ to 10€.<br>
-				The user you tipped will be notified about your tip.<br>
-				Unfortunately, tips cannot be refunded.<br>
+			<div class="help-item">
+				<div class="headline">I forgot my password</div>
+				<div class="content">
+					<p>Please <a href="{{ url_prefix }}/support">contact us</a> and we are going to help you as soon as possible.</p>
+					<p>Automatic password recovery is going to be added soon.</p>
+				</div>
 			</div>
 
-			<div class="inner-tile">
-				<h2 align="center">How can I create a premium chat?</h2><br>
-				You can't. Premium chats are only available to selected users.<br>
-			</div>
-
-			<div class="inner-tile">
-				<h2 align="center">How can I change my password?</h2><br>
-				You can change your password by clicking on the "Change Password" button on the <a href="{{ url_prefix }}/settings" style="color: var(--text-color); display: inline;">settings page</a>
-			</div>
-
-			<div class="inner-tile">
-				<h2 align="center">How can I change my email address?</h2><br>
-				You can change your email address by clicking on the "Change Email" button on the <a href="{{ url_prefix }}/settings" style="color: var(--text-color); display: inline;">settings page</a>
-			</div>
-
-			<div class="inner-tile">
-				<h2 align="center">How can I delete my account?</h2><br>
-				You can delete your account by clicking on the "Delete Account" button on the <a href="{{ url_prefix }}/settings" style="color: var(--text-color); display: inline;">settings page</a>
-			</div>
-
-			<div class="inner-tile">
-				<h2 align="center">Who is behind GrütteChat?</h2><br>
-				GrütteChat is developed by Jan Grüttefien, a Computer Science student from Germany.<br>
-				You can learn more about Jan on his <a href="https://github.com/xelemir", style="color: var(--text-color); display: inline-block;">GitHub</a>
-			</div>
-
-			<div class="inner-tile">
-				<h2 align="center">How can I contact the developer?</h2><br>
-				You can contact the developer via email at <a href="mailto:jan@gruettefien.com" style="color: var(--text-color); display: inline;">gruttefien@gmail.com</a>
-			</div>
-
-			<div class="inner-tile">
-				<h2 align="center">How can I contribute to GrütteChat?</h2><br>
-				You can contribute to GrütteChat by reporting bugs, suggesting new features, or by contributing code.<br>
-				You can also support the developer by purchasing <a href="{{ url_prefix }}/premium" style="color: var(--text-color); display: inline;">GrütteChat PLUS</a> for 2.99€.<br>
+			<div class="help-item">
+				<div class="headline">Who is behind GrütteCloud</div>
+				<div class="content">
+					<p>GrütteChat is developed by Jan Grüttefien, a Computer Science student from Stuttgart, Germany.</p>
+					<p>You can check out Jan's <a href="https://github.com/xelemir">GitHub</a>, <a href="https://www.instagram.com/jan.gtm">Instagram</a> or <a href="https://open.spotify.com/user/n0c39jatc5pksdv4rhxizx2xy?si=dae086e6ce4c4723">Spotify</a>.</p>
+					<p>You can also <a href="{{ url_prefix }}/chat/jan">text me on GrütteChat</a>. My GrütteID is jan. Thanks for checking out my project :)</p>
+				</div>
 			</div>
 		</div>
+        <div align="center">
+            <div class="spaced-tile"></div>
+            <a href="{{ url_prefix }}/support" style="text-decoration: none; color: var(--white-color);"><button class="button-blue" style="min-width: 0px;">Contact us</button></a>
+        </div>
 	</div>
+    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+        <div style="display: flex;">
+            <div style="width: 50%; margin-right: 20px; text-align: left;">
+                <b style="font-size: 0.9em;">GrütteCloud</b>
+                <div style="white-space: nowrap; line-height: 1em;">
+                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/about">What is GrütteChat?</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/support">Contact support</a>
+                </div>
+            </div>
+            <div style="width: 50%; text-align: left;">
+                <b style="font-size: 0.9em;">Legal</b>
+                <div style="white-space: nowrap; line-height: 1em;">
+                    <a class="footer-link" href="{{ url_prefix }}/aboutus">About Us</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
+                </div>
+            </div>                
+        </div>
+    </div>
 	<div id="cookie-banner"></div>
 </body>
 </html>
 
 <script>
-		// Dark mode toggle functionality
-		var darkModeToggle = document.getElementById('darkModeToggle');
-		var body = document.body;
-		var isDarkMode = localStorage.getItem('darkMode');
+	// Dark mode toggle functionality
+	var darkModeToggle = document.getElementById('darkModeToggle');
+	var body = document.body;
+	var isDarkMode = localStorage.getItem('darkMode');
 
-		if (isDarkMode === 'true') {
-				body.classList.add('dark-mode');
-				document.documentElement.setAttribute('data-theme', 'dark');
-				darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+	if (isDarkMode === 'true') {
+			body.classList.add('dark-mode');
+			document.documentElement.setAttribute('data-theme', 'dark');
+			darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+	}
+
+	darkModeToggle.addEventListener('click', function() {
+			if (body.classList.contains('dark-mode')) {
+					body.classList.remove('dark-mode');
+					localStorage.setItem('darkMode', 'false');
+					document.documentElement.setAttribute('data-theme', 'light');
+					darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
+			} else {
+					body.classList.add('dark-mode');
+					localStorage.setItem('darkMode', 'true');
+					document.documentElement.setAttribute('data-theme', 'dark');
+					darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+			}
+	});
+
+	darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+
+
+	// Function to handle search functionality
+    function handleSearch() {
+		const searchInput = document.getElementById('search-input');
+		const searchTerm = searchInput.value.toLowerCase();
+		const helpItems = document.getElementsByClassName('help-item');
+  
+		for (let item of helpItems) {
+		  const headline = item.querySelector('.headline').textContent.toLowerCase();
+		  const content = item.querySelector('.content').textContent.toLowerCase();
+		  const isMatch = headline.includes(searchTerm) || content.includes(searchTerm);
+		  item.style.display = isMatch ? 'block' : 'none';
 		}
-
-		darkModeToggle.addEventListener('click', function() {
-				if (body.classList.contains('dark-mode')) {
-						body.classList.remove('dark-mode');
-						localStorage.setItem('darkMode', 'false');
-						document.documentElement.setAttribute('data-theme', 'light');
-						darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-				} else {
-						body.classList.add('dark-mode');
-						localStorage.setItem('darkMode', 'true');
-						document.documentElement.setAttribute('data-theme', 'dark');
-						darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-				}
-		});
-
-		darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+	  }
+  
+	  // Function to toggle the visibility of content
+	  function toggleContent(event) {
+		const content = event.target.nextElementSibling;
+		content.style.display = content.style.display === 'none' ? 'block' : 'none';
+	  }
+  
+	  // Add event listeners
+	  const searchInput = document.getElementById('search-input');
+	  searchInput.addEventListener('input', handleSearch);
+  
+	  const headlines = document.getElementsByClassName('headline');
+	  for (let headline of headlines) {
+		headline.addEventListener('click', toggleContent);
+	  }
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>

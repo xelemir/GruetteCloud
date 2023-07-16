@@ -73,11 +73,6 @@ def chat_with(recipient):
     if user == []:
         return redirect(f'{url_prefix}/chat')
     
-    # Premium chat meaning that the user needs GrütteChat PLUS to chat with this user
-    premium_chat = bool(search_recipient[0]["premium_chat"])
-    if premium_chat and not bool(user[0]["has_premium"]):
-        return render_template('home.html', error=f"You need GrütteChat PLUS to chat with {str(recipient)}!", url_prefix = url_prefix)
-    
     # Post is used to send a message
     if request.method == 'POST':
         
@@ -110,7 +105,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, premium_chat=premium_chat, url_prefix = url_prefix)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix)
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):

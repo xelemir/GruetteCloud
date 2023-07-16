@@ -203,6 +203,14 @@ def privacy():
 def support():
     return render_template("support.html", url_prefix=url_prefix)
 
+@utilities_route.route("/aboutus", methods=["GET"])
+def aboutus():
+    return render_template("aboutus.html", url_prefix=url_prefix)
+
+@utilities_route.route("/terms", methods=["GET"])
+def terms():
+    return render_template("terms.html", url_prefix=url_prefix)
+
 @utilities_route.route("/support", methods=["POST"])
 def send_support():
     if "username" not in session:

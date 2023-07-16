@@ -40,9 +40,9 @@
             <input type="text" id="email" name="email" class="login-input" autocomplete="off" placeholder="Your email address" style="width: 300px; margin-right: 0px;" required>
             <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="A strong password" style="width: 300px; margin-right: 0px;" required>
             <input type="password" id="password2" name="password2" class="login-input" autocomplete="off" placeholder="Repeat your password" style="width: 300px; margin-right: 0px;" required>
-            <span style="display: flex;" class="login-input">
+            <span style="display: flex; width: 300px;" class="login-input">
                 <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
-                <span>I accept the <a href="{{ url_prefix }}/termsofservice" style="color: var(--text-color);">terms of service</a></span>
+                <span style="text-align: left;">I have read and accept the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="{{ url_prefix }}/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
             </span>
             <div style="margin-top: 20px">
                 <input type="submit" value="Create GrütteID" name="login" class="signup-button">
@@ -52,21 +52,27 @@
         <a href="{{ url_prefix }}/" style="color: var(--text-color);">Back to login</a>
         <div class="spaced-tile"></div>
     </div>
-    <div class="spaced-tile"></div>
-    <div id="cookie-banner"></div>
-    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
-            About Us
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
-            Help Center
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
-            Privacy Policy
-        </a>
+    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+        <div style="display: flex;">
+            <div style="width: 50%; margin-right: 20px; text-align: left;">
+                <b style="font-size: 0.9em;">GrütteCloud</b>
+                <div style="white-space: nowrap; line-height: 1em;">
+                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/about">What is GrütteChat?</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/support">Contact support</a>
+                </div>
+            </div>
+            <div style="width: 50%; text-align: left;">
+                <b style="font-size: 0.9em;">Legal</b>
+                <div style="white-space: nowrap; line-height: 1em;">
+                    <a class="footer-link" href="{{ url_prefix }}/aboutus">About Us</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
+                </div>
+            </div>                
+        </div>
     </div>
+    <div id="cookie-banner"></div>
 </body>
 </html>
 

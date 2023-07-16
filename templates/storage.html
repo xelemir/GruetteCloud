@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/GrütteStorage.png">
     <script src="https://jan.gruettefien.com/static/switchservice.js"></script>
+    </style>
 </head>
 <body>
     <div class="header">
@@ -41,17 +42,13 @@
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
-                
-                <div id="upload-confirmed" style="display: none; right: 20px; position: absolute; background-color: var(--secondary-color); padding: 20px; font-size: 1.2em; border-radius: 10px; color: var(--yellow); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4); min-width: 25vw;">
-                    File uploaded successfully!
-                </div>
-
                 <div class="wrapping-tile" style="height: 30vh; padding: 20px;">
                     <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex;" id="drop-area">
                         <p>Drag and drop files here<br>or click to select a file</p>
                     </label>
                     <input id="file-input" type="file" onchange="handleFile(this.files)">
-                    <p class="drop-area" id="uploading-message" style="display: none; color: var(--yellow)"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
+                    <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow)"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
+                    <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green)">File uploaded successfully!</p>
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
@@ -111,10 +108,12 @@
     </div>
     <div class="mobile-only">
         <div class="wrapping-tile">
-            <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()">
-                <span class="material-symbols-outlined">upload</span> Upload file
+            <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex;" id="drop-area">
+                <p>Drag and drop files here<br>or click to select a file</p>
             </label>
             <input id="file-input" type="file" onchange="handleFile(this.files)">
+            <p class="drop-area-style" id="mobile-uploading-message" style="display: none; color: var(--yellow)"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
+            <p class="drop-area-style" id="mobile-upload-confirmed" style="display: none; color: var(--green)">File uploaded successfully!</p>
         </div>
         <div class="spaced-tile"></div>
         <div class="wrapping-tile">
@@ -155,22 +154,28 @@
         </div>
     </div>
     
-    <div class="spaced-tile"></div>
+    <div style="display: flex; justify-content: center; padding: 20px;">
+        <div style="display: flex;">
+            <div style="width: 50%; margin-right: 20px; text-align: left;">
+                <b style="font-size: 0.9em;">GrütteCloud</b>
+                <div style="white-space: nowrap; line-height: 1em;">
+                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/about">What is GrütteChat?</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/support">Contact support</a>
+                </div>
+            </div>
+            <div style="width: 50%; text-align: left;">
+                <b style="font-size: 0.9em;">Legal</b>
+                <div style="white-space: nowrap; line-height: 1em;">
+                    <a class="footer-link" href="{{ url_prefix }}/aboutus">About Us</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
+                </div>
+            </div>                
+        </div>
+    </div>
     <div id="beta-banner"></div>
     <div id="cookie-banner"></div>
-    <div style="text-align: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <a href="{{ url_prefix }}/about" style="text-decoration: none; color: var(--text-color)">
-            About Us
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/help" style="text-decoration: none; color: var(--text-color)">
-            Help Center
-        </a>
-        &nbsp;|&nbsp;
-        <a href="{{ url_prefix }}/privacy" style="text-decoration: none; color: var(--text-color)">
-            Privacy Policy
-        </a>
-    </div>
 </body>
 </html>
 
@@ -223,7 +228,12 @@
     
             // Show the "uploading-message" div and hide the "drop-area" div
             document.getElementById('uploading-message').style.display = 'flex';
-            document.getElementById('drop-area').style.display = 'none';
+            document.getElementById('mobile-uploading-message').style.display = 'flex';
+
+            var dropAreas = document.getElementsByClassName('drop-area');
+            for (var i = 0; i < dropAreas.length; i++) {
+                dropAreas[i].style.display = 'none';
+            }
     
             var formData = new FormData();
             formData.append('file', file);
@@ -232,25 +242,27 @@
             xhr.onload = function () {
                 // Hide the "uploading-message" div and show the "drop-area" div
                 document.getElementById('uploading-message').style.display = 'none';
-                document.getElementById('drop-area').style.display = 'flex';
+                document.getElementById('mobile-uploading-message').style.display = 'none';
     
                 if (xhr.status === 200) {
-                    //alert('File uploaded successfully.');
                     document.getElementById('file-input').value = ''; // Clear the file input value
 
                     var uploadConfirmedMessage = document.getElementById('upload-confirmed');
+                    var mobileUploadConfirmedMessage = document.getElementById('mobile-upload-confirmed');
 
-                    uploadConfirmedMessage.style.display = 'block';
+                    uploadConfirmedMessage.style.display = 'flex';
+                    mobileUploadConfirmedMessage.style.display = 'flex';
                     setTimeout(function() {
-                        uploadConfirmedMessage.style.opacity = '0';
-                        setTimeout(function() {
-                            uploadConfirmedMessage.style.display = 'none';
-                            uploadConfirmedMessage.style.opacity = '1';
-                        }, 500);
-                    }, 5000);
+                        uploadConfirmedMessage.style.display = 'none';
+                        mobileUploadConfirmedMessage.style.display = 'none';
 
-    
-                    window.location.reload(); // Refresh the page to update the file list
+                        var dropAreas = document.getElementsByClassName('drop-area');
+                        for (var i = 0; i < dropAreas.length; i++) {
+                            dropAreas[i].style.display = 'flex';
+                        }
+
+                        window.location.reload(); // Refresh the page to update the file list
+                    }, 2000);
                 } else {
                     alert('Error uploading file. Please try again.');
                 }
