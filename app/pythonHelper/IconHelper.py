@@ -5,7 +5,7 @@ class IconHelper:
         pass
 
     def get_icon(self, filename):
-        extension = filename.split(".")[-1]
+        extension = filename.split(".")[-1].lower()
         
         if extension in ["jpg", "jpeg", "png", "gif", "bmp", "ico", "webp"]:
             return "https://jan.gruettefien.com/static/icons/image.svg"
