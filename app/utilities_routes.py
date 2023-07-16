@@ -137,7 +137,7 @@ def change_ai_personality(ai_personality):
         sql.writeSQL(f"UPDATE gruttechat_users SET ai_personality = '{str(ai_personality)}' WHERE username = '{str(session['username'])}'")
         return render_template("settings.html", error=f"MyAI is set to {ai_personality}", selected_personality=ai_personality, has_premium=True, display_back_to_ai=True, url_prefix=url_prefix)
     else:
-        return render_template("settings.html", error="Please purchase GrütteChat PLUS to change your MyAI personality!", selected_personality="Default", has_premium=False, url_prefix=url_prefix)
+        return render_template("settings.html", error="Please purchase GrütteCloud PLUS to change your MyAI personality!", selected_personality="Default", has_premium=False, url_prefix=url_prefix)
         
 @utilities_route.route("/ai-preferences", methods=["GET"])
 def ai_preferences():
