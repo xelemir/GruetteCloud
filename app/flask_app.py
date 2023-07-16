@@ -62,8 +62,8 @@ def chat(error=None):
             return redirect(f'{url_prefix}/chat/{recipient}')
 
     # Fetch active chats from the database
-    active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")    
-            
+    active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")
+                
     # Add all active chats to a list
     for chat in active_chats_database:
         if chat["username_send"] == username:
@@ -73,6 +73,10 @@ def chat(error=None):
     
     # Get user's premium status
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
+    
+    if user == []:
+        # Safety check
+        return redirect(f'{url_prefix}/logout')
     
     platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
     
