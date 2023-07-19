@@ -105,10 +105,10 @@
         <p>{{ filesize }} • {{ created_at }}</p>
         {% if is_author %}
             {% if is_shared %}
-            <p>Uploaded by {{ username }}</p>
-            <p style="color: var(--green); margin-bottom: 20px;">Sharing is on</p>
+                <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
+                <p style="color: var(--green); margin-bottom: 20px;">Sharing is on</p>
             {% else %}
-            <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
+                <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
             {% endif %}
         {% else %}
             <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
@@ -174,7 +174,7 @@
         <p style="font-size: 0.8em;">{{ filesize }} • {{ created_at }}</p>
         {% if is_author %}
             {% if is_shared %}
-                <p style="font-size: 0.8em;">Uploaded by {{ username }}</p>
+                <p style="font-size: 0.8em; margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
                 <p style="font-size: 0.8em; color: var(--green); margin-bottom: 20px;">Sharing is on</p>
             {% else %}
                 <p style="font-size: 0.8em; margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
