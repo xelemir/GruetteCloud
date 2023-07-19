@@ -8,7 +8,7 @@ import string
 
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, gruetteStorage_path
+from config import url_prefix, templates_path, gruetteStorage_path, admin_users
     
 gruetteStorage_route = Blueprint("GruetteStorage", "GruetteStorage", template_folder=templates_path)
 
@@ -36,10 +36,6 @@ def storage():
     files = get_files(username)
     
     file_list = files["file_list"]
-    #file_list.extend([["test1.txt", "1 TB", "private"], ["test2.txt", "1 TB", "private"], ["test3.txt", "1 TB", "shared"], ["test4.txt", "1 TB", "private"], ["test5.txt", "1 TB", "private"], ["test6.txt", "1 TB", "shared"]])
-    #file_list.extend([["test1.txt", "1 TB", "private"], ["test2.txt", "1 TB", "private"], ["test3.txt", "1 TB", "shared"], ["test4.txt", "1 TB", "private"], ["test5.txt", "1 TB", "private"], ["test6.txt", "1 TB", "shared"]])
-    #file_list.extend([["test1.txt", "1 TB", "private"], ["test2.txt", "1 TB", "private"], ["test3.txt", "1 TB", "shared"], ["test4.txt", "1 TB", "private"], ["test5.txt", "1 TB", "private"], ["test6.txt", "1 TB", "shared"]])
-    #file_list.extend([["test1.txt", "1 TB", "private"], ["test2.txt", "1 TB", "private"], ["test3.txt", "1 TB", "shared"], ["test4.txt", "1 TB", "private"], ["test5.txt", "1 TB", "private"], ["test6.txt", "1 TB", "shared"]])
 
     return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None)
 
@@ -170,7 +166,10 @@ def file(username, filename):
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y")
             icon_path = IconHelper.IconHelper().get_icon(filename)
             code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
-            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False)
+            is_author_verified = False
+            if username in admin_users:
+                is_author_verified = True
+            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=is_author_verified)
         else:
             return redirect(f"{url_prefix}/storage")
         
@@ -188,7 +187,11 @@ def file(username, filename):
     filesize = get_formatted_file_size(os.path.getsize(path))
     created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y")
     icon_path = IconHelper.IconHelper().get_icon(filename)
-    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True)
+    
+    is_author_verified = False
+    if username in admin_users:
+        is_author_verified = True
+    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=is_author_verified)
     
 
 @gruetteStorage_route.route("/share/<username>/<filename>")
