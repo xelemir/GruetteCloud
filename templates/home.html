@@ -104,13 +104,13 @@
                 {% for chat in active_chats %}
                     <div style="display: flex; align-items: center;">
                         <div style="flex-grow: 1;">
-                            <a href="{{ url_prefix }}/chat/{{ chat }}" style="color: var(--text-color); text-decoration: none;">
+                            <a href="{{ url_prefix }}/chat/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
                                 <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
-                                    {{ chat }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color)">verified</span>{% endif %}
+                                    {{ chat["username"] }}{% if chat["is_verified"] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color)">verified</span>{% endif %}
                                 </button>
                             </a>                            
                         </div>
-                        <a href="{{ url_prefix }}/chat/delete/{{ chat }}" style="color: var(--text-color); text-decoration: none;">
+                        <a href="{{ url_prefix }}/chat/delete/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
                             <button class="button-delete" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; color: var(--text-color);">
                                 <span class="material-symbols-outlined">delete</span>
                             </button>

@@ -67,9 +67,17 @@ def chat(error=None):
     # Add all active chats to a list
     for chat in active_chats_database:
         if chat["username_send"] == username:
-            active_chats.append(chat["username_receive"])
+            verified = False
+            if chat["username_receive"] in admin_users:
+                verified = True
+            if chat["username_receive"] not in [x["username"] for x in active_chats]:
+                active_chats.append({"username": chat["username_receive"], "is_verified": verified})
         else:
-            active_chats.append(chat["username_send"])
+            verified = False
+            if chat["username_send"] in admin_users:
+                verified = True
+            if chat["username_send"] not in [x["username"] for x in active_chats]:
+                active_chats.append({"username": chat["username_send"], "is_verified": verified})
     
     # Get user's premium status
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
@@ -91,7 +99,7 @@ def chat(error=None):
         verified = False
     
     # Render the home page
-    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verfied=verified)
+    return render_template('home.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=verified)
 
 if __name__ == '__main__':
     app.run(debug=True)

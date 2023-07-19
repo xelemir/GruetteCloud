@@ -104,7 +104,7 @@ def chat_with(recipient):
         else:
             messages_list.append([recipient, decrypted_message])
             
-    if username in admin_users:
+    if str(recipient) in admin_users:
         verified = True
     else:
         verified = False
