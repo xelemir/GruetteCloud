@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, session, jsonify, Blueprin
 import logging
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
-from config import url_prefix, templates_path
+from config import url_prefix, templates_path, admin_users
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -103,9 +103,14 @@ def chat_with(recipient):
             messages_list.append(["You", decrypted_message])
         else:
             messages_list.append([recipient, decrypted_message])
+            
+    if username in admin_users:
+        verified = True
+    else:
+        verified = False
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix, verified=verified)
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):

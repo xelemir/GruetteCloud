@@ -9,7 +9,7 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import url_prefix
+from config import url_prefix, admin_users
 
 app = Flask("GrütteChat")
 app.secret_key = 'supersecretkey'
@@ -85,8 +85,13 @@ def chat(error=None):
     else:
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
+    if username in admin_users:
+        verified = True
+    else:
+        verified = False
+    
     # Render the home page
-    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message)
+    return render_template('home.html', username=username, active_chats=set(active_chats), error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verfied=verified)
 
 if __name__ == '__main__':
     app.run(debug=True)
