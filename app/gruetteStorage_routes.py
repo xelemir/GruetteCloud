@@ -34,10 +34,13 @@ def storage():
         return redirect(f'{url_prefix}/premium')
 
     files = get_files(username)
-    
     file_list = files["file_list"]
+    
+    verified = False
+    if username in admin_users:
+        verified = True
 
-    return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None)
+    return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None, verified=verified)
 
 
 # Helper function to convert file size to human-readable format

@@ -29,16 +29,25 @@
                 <div class="dropdown-menu">
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
-                        <div class="spaced-tile blue-on-hover"></div>
+                        <div class="spaced-tile"></div>
                         <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
                         <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                        <a href="{{ url_prefix }}/storage" title="GrütteStorage" style="margin-bottom: 8px;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                        <div>
+                            Signed in as {{ username }}
+                        </div>
+                        <a href="{{ url_prefix }}/logout" title="Logout"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div>
+        <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            Hey, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+        </h1>
+    </div>
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
@@ -52,18 +61,16 @@
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
-                    <h2 align="center" style="margin-bottom: 30px;">Storage used</h2>
-                    <div class="inner-tile">
+                    <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
+                    <div>
                         <div style="display: flex; align-items: center;">
                             <div style="flex-grow: 1;">
-                                <div class="progress-bar">
+                                <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px;">
                                     <div class="progress-bar-fill" style="width: {{ total_size_percentage }}%;"></div>
                                 </div>
                             </div>
-                            <!--<button class="buy-now-button" style="margin-right: 0px;">Upgrade now</button>-->
                         </div>
-                        <div class="spaced-tile"></div>
-                        <p>{{ total_size_formatted }} of 5 GB used</p>
+                        <p style="margin-top: 10px;">{{ total_size_formatted }} of 5 GB used</p>
                     </div>
                 </div>
             </div>
@@ -144,12 +151,16 @@
         </div>
         <div class="spaced-tile"></div>
         <div class="wrapping-tile">
-            <h2 align="center">Storage used</h2>
-            <div class="inner-tile">
-                <div class="progress-bar" style="height: 20px;">
-                    <div class="progress-bar-fill" style="width: {{ total_size_percentage }}%;"></div>
+            <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
+            <div>
+                <div style="display: flex; align-items: center;">
+                    <div style="flex-grow: 1;">
+                        <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px;">
+                            <div class="progress-bar-fill" style="width: {{ total_size_percentage }}%;"></div>
+                        </div>
+                    </div>
                 </div>
-                <p style="text-align: center; margin-top: 10px;">{{ total_size_formatted }} of 5 GB used</p>
+                <p style="margin-top: 10px; text-align: center;">{{ total_size_formatted }} of 5 GB used</p>
             </div>
         </div>
     </div>
