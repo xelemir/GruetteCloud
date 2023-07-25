@@ -39,23 +39,18 @@
     </div>
 
     {% if status_message %}
-        <div class="wrapping-tile" style="text-align: center;">
-            <div class="inner-tile">
-                    <h2 style="color: var(--{{ status_message["color"] }})">{{ status_message["subject"] }}</h2>
-                    <p style="color: var(--{{ status_message["color"] }})">{{ status_message["content"] }}</p><br>
-                    <p style="color: var(--{{ status_message["color"] }})">[Last updated: {{ status_message["created_at"] }}]</p>
-            </div>
+        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
+            <h2 style="color: var(--{{ status_message["color"] }})">{{ status_message["subject"] }}</h2>
+            <p style="color: var(--{{ status_message["color"] }})">{{ status_message["content"] }}</p>
         </div>
         <div class="spaced-tile"></div>
     {% endif %}
 
     {% if not has_premium %}
-        <div class="wrapping-tile" style="text-align: center;">
+        <div class="premium-tile" style="text-align: center;">
             <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
-                <div class="premium-tile">
                     <h1>Unlock GrütteCloud PLUS</h1>
                     for only 2.99€ once! 
-                </div>
             </a>
         </div>
         <div class="spaced-tile"></div>

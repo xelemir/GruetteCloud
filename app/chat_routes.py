@@ -21,8 +21,8 @@ def get_messages():
         return redirect(f"{url_prefix}/")
     
     sql = SQLHelper.SQLHelper()
-    username = str(request.args.get("username"))
-    recipient = str(request.args.get("recipient"))
+    username = str(request.args.get("username")).lower()
+    recipient = str(request.args.get("recipient")).lower()
     messages_list = []
     
     # Fetch all messages from the database
@@ -58,6 +58,8 @@ def chat_with(recipient):
 
     if "username" not in session:
         return redirect(f"{url_prefix}/")
+    
+    recipient = str(recipient).lower()
 
     sql = SQLHelper.SQLHelper()
     username = str(session['username'])

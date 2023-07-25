@@ -60,11 +60,3 @@ class EncryptionHelper:
 
 if __name__ == "__main__":
     eh = EncryptionHelper()
-
-    my_test_message = "This is a test message"
-    
-    encrypted_message = eh.encrypt_message(my_test_message)
-    print(encrypted_message)
-    
-    decrypted_message = eh.decrypt_message(encrypted_message)
-    print(decrypted_message)

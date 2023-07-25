@@ -187,7 +187,7 @@ def delete_account():
     username_form = str(request.form["username"])
     password_form = str(request.form["password"])
     email_form = str(request.form["email"])
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username_session}'")
     verified = False
     if username_session in admin_users:
         verified = True

@@ -16,7 +16,7 @@ def login():
         return redirect(f'{url_prefix}/')
     
     sql = SQLHelper.SQLHelper()
-    username = str(request.form['username'])
+    username = str(request.form['username']).lower()
     password = str(request.form['password'])
     
     # Check if input is valid
@@ -31,7 +31,7 @@ def login():
         decrypted_password = eh.decrypt_message(user[0]["password"])
         
         # If username and password are correct
-        if user[0]["username"] == username and decrypted_password == password:
+        if user[0]["username"].lower() == username and decrypted_password == password:
             
             # Check if the user has verified their account
             if bool(user[0]["is_verified"]) == False:
@@ -62,8 +62,8 @@ def signup():
         
         mail = MailHelper.MailHelper()
         sql = SQLHelper.SQLHelper()
-        username = str(request.form['username'])
-        email = str(request.form['email'])
+        username = str(request.form['username']).lower()
+        email = str(request.form['email']).lower()
         password = str(request.form['password'])
         password_confirm = str(request.form['password2'])
         
@@ -82,7 +82,7 @@ def signup():
         # Check if the username already exists
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
         if search_username != []:
-            return render_template('signup.html', error='Username already exists', url_prefix = url_prefix)
+            return render_template('signup.html', error='Username already taken', url_prefix = url_prefix)
         
         # Else create new user
         else:
@@ -107,6 +107,7 @@ def verify(username):
         return redirect(f'{url_prefix}/')
     
     error = None
+    username = str(username).lower()
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(username)}'")
     

@@ -33,21 +33,12 @@
                         <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
                         <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
                         <a href="{{ url_prefix }}/storage" title="GrütteStorage" style="margin-bottom: 8px;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
-                        <div>
-                            Signed in as {{ username }}
-                        </div>
-                        <a href="{{ url_prefix }}/logout" title="Logout"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div>
-        <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
-            Hey, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-        </h1>
-    </div>
     <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
@@ -60,7 +51,7 @@
                     <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green)">File uploaded successfully!</p>
                 </div>
                 <div class="spaced-tile"></div>
-                <div class="wrapping-tile">
+                <div class="wrapping-tile" style="padding: 20px;">
                     <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
                     <div>
                         <div style="display: flex; align-items: center;">
@@ -74,8 +65,8 @@
                     </div>
                 </div>
             </div>
-            <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
-                <h2 align="center">Your files</h2>
+            <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px; padding: 20px;">
+                <h2 align="center" style="margin-bottom: 10px;">Your files</h2>
                 <div class="spaced-tile"></div>
                 <div class="file-list">
                     {% if not files %}
@@ -85,7 +76,7 @@
                         </div>
                     {% endif %}
                     {% for file in files %}
-                        <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                             <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                     <span class="material-symbols-outlined">download</span>
@@ -123,7 +114,7 @@
             <p class="drop-area-style" id="mobile-upload-confirmed" style="display: none; color: var(--green)">File uploaded successfully!</p>
         </div>
         <div class="spaced-tile"></div>
-        <div class="wrapping-tile">
+        <div class="wrapping-tile" style="margin-bottom: 10px; padding: 20px;">
             <h2 align="center">Your files</h2>
             {% if not files %}
                 <div class="inner-tile" style="height: 100%">
@@ -134,7 +125,7 @@
             {% endif %}
             <div class="file-list">
                 {% for file in files %}
-                    <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text; margin-left: 10px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                         <button class="button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px; padding-right: 5px;">
                             <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;" title="Download">
                                 <span style="color: var(--text-color); font-size: 18px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file[0] }}</span>
@@ -150,7 +141,7 @@
             </div>
         </div>
         <div class="spaced-tile"></div>
-        <div class="wrapping-tile">
+        <div class="wrapping-tile" style="padding: 20px;">
             <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
             <div>
                 <div style="display: flex; align-items: center;">

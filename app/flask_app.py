@@ -28,7 +28,7 @@ def index():
     if "username" in session:
         return redirect(f"{url_prefix}/chat")
     elif "username" in request.cookies:
-        session["username"] = request.cookies["username"]
+        session["username"] = request.cookies["username"].lower()
         return redirect(f"{url_prefix}/chat")
     else:
         return render_template("login.html", url_prefix = url_prefix)
@@ -38,7 +38,7 @@ def chat(error=None):
     if 'username' not in session:
         return redirect(f'{url_prefix}/')
 
-    username = str(session['username'])
+    username = str(session['username']).lower()
     active_chats = []
     sql = SQLHelper.SQLHelper()
 
@@ -66,18 +66,18 @@ def chat(error=None):
                 
     # Add all active chats to a list
     for chat in active_chats_database:
-        if chat["username_send"] == username:
+        if chat["username_send"].lower() == username:
             verified = False
-            if chat["username_receive"] in admin_users:
+            if chat["username_receive"].lower() in admin_users:
                 verified = True
-            if chat["username_receive"] not in [x["username"] for x in active_chats]:
-                active_chats.append({"username": chat["username_receive"], "is_verified": verified})
+            if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
+                active_chats.append({"username": chat["username_receive"].lower(), "is_verified": verified})
         else:
             verified = False
-            if chat["username_send"] in admin_users:
+            if chat["username_send"].lower() in admin_users:
                 verified = True
-            if chat["username_send"] not in [x["username"] for x in active_chats]:
-                active_chats.append({"username": chat["username_send"], "is_verified": verified})
+            if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
+                active_chats.append({"username": chat["username_send"].lower(), "is_verified": verified})
     
     # Get user's premium status
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
