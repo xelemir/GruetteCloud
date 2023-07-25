@@ -47,12 +47,12 @@
     {% endif %}
 
     {% if not has_premium %}
-        <div class="premium-tile" style="text-align: center;">
-            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
-                    <h1>Unlock GrütteCloud PLUS</h1>
-                    for only 2.99€ once! 
-            </a>
-        </div>
+        <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
+            <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
+                <h1>Unlock GrütteCloud PLUS</h1>
+                for only 2.99€ once!
+            </div>
+        </a>
         <div class="spaced-tile"></div>
     {% endif %}
 
