@@ -60,7 +60,7 @@
         <div class="spaced-tile"></div>
     {% endif %}
 
-    <div>
+    <div class="desktop-only">
         <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
             Signed in as {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
         </h1>
@@ -104,8 +104,7 @@
                                 Back to MyAI
                             </div>
                         </a>
-                    {% endif %} 
-                    
+                    {% endif %}
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="padding-bottom: 20px;">
@@ -163,35 +162,81 @@
         </div>
     </div>
     <div class="mobile-only">
-        <div class="spaced-tile"></div>
-        {% if platform_message %}
-            <div class="wrapping-tile" style="display: flex; align-items: center;">
-                <div style="flex-grow: 1;">
-                    <h2 style="color: var(--{{ platform_message["color"] }}); font-size: 1em;">{{ platform_message["subject"] }}</h2>
-                </div>
-                <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
-                    <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+        <div class="wrapping-tile" style="padding: 20px;">
+            <h1 style="margin-bottom: 0px; font-size: 1.2em;">MyAI personality</h1>
+            <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%;">
+                {% if selected_personality != 'Default' %}
+                <option value="{{ url_prefix }}/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
+                {% endif %}
+                <option value="{{ url_prefix }}/change_ai_personality/Default">Default</option>
+                {% if selected_personality != 'UwuGirl'%}
+                    <option value="{{ url_prefix }}/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
+                {% endif %}
+                {% if selected_personality != 'LeeKnow'%}
+                    <option value="{{ url_prefix }}/change_ai_personality/LeeKnow">Lee Know</option>
+                {% endif %}
+                {% if selected_personality != 'Pirate'%}
+                    <option value="{{ url_prefix }}/change_ai_personality/Pirate">Pirate</option>
+                {% endif %}
+                {% if selected_personality != 'Pistachio'%}
+                    <option value="{{ url_prefix }}/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
+                {% endif %}
+                {% if selected_personality != 'Backus'%}
+                    <option value="{{ url_prefix }}/change_ai_personality/Backus">Backus (BNF inventor)</option>
+                {% endif %}
+                {% if selected_personality != 'Lorde'%}
+                    <option value="{{ url_prefix }}/change_ai_personality/Lorde">Lorde</option>
+                {% endif %}
+            </select>
+            {% if display_back_to_ai %}
+                <a href="{{ url_prefix }}/ai/chat" style="text-decoration: none;">
+                    <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
+                        Back to MyAI
+                    </div>
                 </a>
-            </div>
-            <div class="spaced-tile"></div>
-        {% endif %}
-        <div class="wrapping-tile" style="text-align: center;">
-            <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST" style="display: block;">
-                <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 10px;" required>
-                <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 10px;">
-                    <option value="yellow" style="color: var(--yellow);">Yellow</option>
-                    <option value="red" style="color: var(--red);">Red</option>
-                    <option value="green" style="color: var(--green);">Green</option>
-                    <option value="purple" style="color: var(--purple);">Purple</option>
-                </select>
-                <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
-                <div style="margin-top: 10px">
-                    <input type="submit" value="Create status message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
-                </div>
+            {% endif %} 
+        </div>
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
+            <h1 style="font-size: 1.2em;">Change password</h1>
+            <form action="{{ url_prefix }}/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input">
+                <div class="spaced-tile"></div>
+                <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input">
+                <input type="submit" value="Change password" class="settings-button" style="min-width: 100%;">
             </form>
         </div>
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
+            <h1 style="font-size: 1.2em;">Change email</h1>
+            <form action="{{ url_prefix }}/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input">
+                <div class="spaced-tile"></div>
+                <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input">
+                <input type="submit" value="Change email" class="settings-button" style="min-width: 100%;">
+            </form>
+        </div>
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="text-align: center;">
+            <h1 style="font-size: 1.2em;">Delete GrütteID</h1>
+            <form action="{{ url_prefix }}/delete_account" method="POST" id="delete_account">
+                <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
+                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="settings-input">
+                            <div class="spaced-tile"></div>
+                            <input type="text" id="password" name="password" placeholder="Your password" autocomplete="off" required class="settings-input">
+                        </div>
+                    </div>
+                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <input type="text" id="email" name="email" placeholder="Your email" autocomplete="off" required class="settings-input">
+                            <div class="spaced-tile"></div>
+                            <input type="submit" value="Delete" class="delete-account-button" style="margin-top: 0px; min-width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </form>
 
     </div>
     
