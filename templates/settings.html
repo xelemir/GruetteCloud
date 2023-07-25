@@ -49,14 +49,12 @@
         </div>
     {% endif %}
     {% if not has_premium %}
-        <div class="wrapping-tile" style="text-align: center;">
-            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
-                <div class="premium-tile">
-                    <h1>Unlock GrütteCloud PLUS</h1>
-                    for only 2.99€ once!
-                </div>
-            </a>
-        </div>
+        <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
+            <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
+                <h1>Unlock GrütteCloud PLUS</h1>
+                for only 2.99€ once!
+            </div>
+        </a>
         <div class="spaced-tile"></div>
     {% endif %}
 
@@ -64,6 +62,7 @@
         <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
             Signed in as {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
         </h1>
+        <div class="spaced-tile"></div>
     </div>
 
     <!---   -->

@@ -25,7 +25,7 @@
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu" style="z-index: 2;">
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
@@ -47,13 +47,18 @@
     {% endif %}
 
     {% if not has_premium %}
-        <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
-            <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
-                <h1>Unlock GrütteCloud PLUS</h1>
-                for only 2.99€ once!
-            </div>
-        </a>
-        <div class="spaced-tile"></div>
+        <div id="premium-banner" style="display: block;">
+            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 60px; right: 5px; height: 30px; width: 30px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--text-color); border-radius: 10px;">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
+                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
+                    <h1>Unlock GrütteCloud PLUS</h1>
+                    for only 2.99€ once!
+                </div>
+            </a>
+            <div class="spaced-tile"></div>
+        </div>
     {% endif %}
 
     <div class="wrapping-tile" style="padding-left: 0; padding-right: 0;">
@@ -167,6 +172,33 @@
     });
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+
+
+    // GrütteCloud PLUS banner functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const banner = document.getElementById('premium-banner');
+        const dismissButton = document.getElementById('dismiss-button');
+
+        // Check if the cookie 'premiumBannerDismissed' exists
+        const cookieExists = document.cookie.indexOf('premiumBannerDismissed=true') !== -1;
+
+        if (cookieExists) {
+            banner.style.display = 'none';
+        } else {
+            banner.style.display = 'block';
+        }
+
+        // Set the cookie and hide the banner when the 'Dismiss' button is clicked
+        dismissButton.addEventListener('click', function () {
+            // Set the cookie to expire in 7 days
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 7);
+            document.cookie = 'premiumBannerDismissed=true; expires=' + expirationDate.toUTCString();
+
+            // Hide the banner
+            banner.style.display = 'none';
+        });
+    });
 </script>
 
 <script>
