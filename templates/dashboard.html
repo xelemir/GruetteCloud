@@ -46,6 +46,14 @@
                 display: none;
             }
         }
+
+        .blurred-email {
+            filter: blur(5px); /* Initial blur value, adjust as needed */
+        }
+    
+        .email-container:hover .blurred-email {
+            filter: none;
+        }
     </style>
 </head>
 <body>
@@ -120,23 +128,49 @@
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
-                    <h2 align="center" style="margin-bottom: 30px;">GrütteStorage</h2>
-                    <div class="inner-tile">
-                        <div style="display: flex; align-items: center;">
-                            <div style="flex-grow: 1;">
-                                <div class="progress-bar">
-                                    <div class="progress-bar-fill" style="width: {{ used_space_percent }}%;"></div>
+                    <h2 align="center" style="margin-bottom: 10px;">GrütteCloud Users - {{ all_users|length }} total</h2>
+                    <div class="file-list" style="max-height: 40vh;">
+                        {% for user in all_users %}
+                            <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
+                                {% if not user["has_premium"] %}
+                                <a href="{{ url_prefix }}/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
+                                {% else %}
+                                <a href="{{ url_prefix }}/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
+                                {% endif %}
+                                    <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if user["has_premium"] %} background-color: var(--purple);{% endif %}">
+                                        <span class="material-symbols-outlined">workspace_premium</span>
+                                    </button>
+                                </a>
+                                <a href="{{ url_prefix }}/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
+                                    <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                        <span class="material-symbols-outlined">forum</span>
+                                    </button>
+                                </a>
+                                <a href="{{ url_prefix }}/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
+                                    <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                        <span class="material-symbols-outlined">person_remove</span>
+                                    </button>
+                                </a>
+                                <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 200px; margin-right: 5px;">
+                                    <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
+                                </div>
+                                <div class="mock-button-gray text-offcutter email-container" style="flex-grow: 1; text-align: left; margin-right: 10px;">
+                                    <p class="text-offcutter blurred-email" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["email"] }}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="spaced-tile"></div>
-                        <p>{{ used_space }} of 8 GB in use</p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
             <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
-                <h2 align="center">Currently under construction</h2>
-                
+                <h2 align="center" style="margin-bottom: 30px;">Access logs</h2>
+                <div class="file-list" style="max-height: 70vh;">
+                    {% for event in events %}
+                        <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
+                            {{ event }}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -170,7 +204,39 @@
                 </div>
             </form>
         </div>
+        <div class="spaced-tile"></div>
 
+        <div class="wrapping-tile">
+            <h2 align="center" style="margin-bottom: 10px;">{{ all_users|length }} GrütteIDs registered</h2>
+            <div class="file-list">
+                {% for user in all_users %}
+                    <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
+                        {% if not user["has_premium"] %}
+                        <a href="{{ url_prefix }}/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
+                        {% else %}
+                        <a href="{{ url_prefix }}/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
+                        {% endif %}
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if user["has_premium"] %} background-color: var(--purple);{% endif %}">
+                                <span class="material-symbols-outlined">workspace_premium</span>
+                            </button>
+                        </a>
+                        <a href="{{ url_prefix }}/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <span class="material-symbols-outlined">forum</span>
+                            </button>
+                        </a>
+                        <a href="{{ url_prefix }}/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
+                            <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <span class="material-symbols-outlined">person_remove</span>
+                            </button>
+                        </a>
+                        <div class="mock-button-gray text-offcutter" style="height: 45px; max-width: 30vw; margin-right: 5px;">
+                            <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
@@ -226,6 +292,20 @@
     });
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+
+    // JavaScript to prevent the email from being selectable
+    const emailContainers = document.querySelectorAll('.email-container');
+    emailContainers.forEach((container) => {
+        container.addEventListener('click', function () {
+            const inputElement = this.querySelector('.blurred-email-input');
+            inputElement.style.opacity = 1;
+            inputElement.style.pointerEvents = 'auto';
+            inputElement.select();
+            document.execCommand('copy');
+            inputElement.style.opacity = 0;
+            inputElement.style.pointerEvents = 'none';
+        });
+    });
 </script>
 
 <script>
