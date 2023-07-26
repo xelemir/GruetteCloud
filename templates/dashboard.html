@@ -87,49 +87,51 @@
    <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;" >
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
-                {% if platform_message %}
-                    <div class="wrapping-tile" style="display: flex; align-items: center;">
-                        <div style="flex-grow: 1;">
-                            <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
-                        </div>
-                        <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
-                            <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </a>
-                    </div>
-                    <div class="spaced-tile"></div>
-                {% endif %}
-
-                <div class="wrapping-tile" style="min-height: 400px;">
-                    <h2 align="center" style="margin-bottom: 30px;">New platform message</h2>
-                    <div style="flex-direction: row; display: flex; width: 100%;">
-                        <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
-                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                            Enter the subject:
-                            <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Enter the headline" style="width: 100%; margin-bottom: 30px;" required>
-                            Select a color:
-                            <select id="color" name="color" class="login-input" style="width: 100%; margin-bottom: 30px;">
-                                <option value="yellow" style="color: var(--yellow);">Yellow</option>
-                                <option value="red" style="color: var(--red);">Red</option>
-                                <option value="green" style="color: var(--green);">Green</option>
-                                <option value="purple" style="color: var(--purple);">Purple</option>
-                            </select>
-                            <div style="margin-top: 20px">
-                                <input type="submit" value="Create status message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
+                <div class="wrapping-tile" style="padding: 20px;">
+                    <h2 align="center" style="margin-bottom: 30px;">Platform Message</h2>
+                    <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
+                        <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
+                            <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Enter the headline" required>
+                                    <div class="spaced-tile"></div>
+                                    <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" required>
+                                </div>
+                            </div>
+                            <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <select id="color" name="color" class="settings-input" style="width: 100%; height: 38px;">
+                                        <option value="yellow" style="color: var(--yellow);">Yellow</option>
+                                        <option value="red" style="color: var(--red);">Red</option>
+                                        <option value="green" style="color: var(--green);">Green</option>
+                                        <option value="purple" style="color: var(--purple);">Purple</option>
+                                    </select>                                    <div class="spaced-tile"></div>
+                                    <input type="submit" value="Create status message" name="send" style="margin-top: 0px; min-width: 100%;" class="send-button">
+                                </div>
                             </div>
                         </div>
-                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center; height: 100%;">
-                            Enter the message content:
-                            <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Enter the message content" maxlength="2000" style="resize: none; width: 100%; height: 250px; box-sizing: border-box; min-height: inherit;" required></textarea>
+                    </form>
+                    {% if platform_message %}
+                        <div class="spaced-tile"></div>
+                        <h2 style="font-size: 1.2em;">Current platform status</h2>
+                        <div class="spaced-tile"></div>
+                        <div class="wrapping-tile" style="display: flex; align-items: center; background-color: var(--secondary-color);">
+                            <div style="flex-grow: 1;">
+                                <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
+                            </div>
+                            <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
+                                <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </a>
                         </div>
-                        </form>
-                    </div>
+                    {% endif %}
+                    
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile">
-                    <h2 align="center" style="margin-bottom: 10px;">GrütteCloud Users - {{ all_users|length }} total</h2>
-                    <div class="file-list" style="max-height: 40vh;">
+                    <h2 align="center" style="margin-bottom: 10px;">GrütteIDs ({{ all_users|length }})</h2>
+                    <div class="file-list" style="min-height: {% if platform_message %}40{% else %}55{% endif %}vh;">
                         {% for user in all_users %}
                             <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                                 {% if not user["has_premium"] %}
@@ -151,8 +153,8 @@
                                         <span class="material-symbols-outlined">person_remove</span>
                                     </button>
                                 </a>
-                                <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 200px; margin-right: 5px;">
-                                    <p style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
+                                <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 100px; margin-right: 5px;">
+                                    <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
                                 </div>
                                 <div class="mock-button-gray text-offcutter email-container" style="flex-grow: 1; text-align: left; margin-right: 10px;">
                                     <p class="text-offcutter blurred-email" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["email"] }}</p>
@@ -163,12 +165,16 @@
                 </div>
             </div>
             <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
-                <h2 align="center" style="margin-bottom: 30px;">Access logs</h2>
-                <div class="file-list" style="max-height: 70vh;">
+                <h2 align="center" style="margin-bottom: 30px;">Access Logs</h2>
+                <div class="file-list" style="min-height: 80vh; font-size: 0.7em;">
                     {% for event in events %}
-                        <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
-                            {{ event }}
+                        <div style="display: block; background-color: var(--secondary-color); border: none; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
+                            <p style="font-weight: bold; margin: 0;">
+                                <span style="color: var(--primary-color);">{{ event["date"] }}</span> - - <span style="color: var(--indigo);">{{ event["ip"] }}</span>
+                            </p>
+                            <p style="margin-top: 5px;">{{ event["entry"] }}</p>
                         </div>
+                    
                     {% endfor %}
                 </div>
             </div>
@@ -238,29 +244,6 @@
             </div>
         </div>
     </div>
-    
-    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <div style="display: flex;">
-            <div style="width: 50%; margin-right: 20px; text-align: left;">
-                <b style="font-size: 0.9em;">GrütteCloud</b>
-                <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/about">What is GrütteChat?</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/support">Contact support</a>
-                </div>
-            </div>
-            <div style="width: 50%; text-align: left;">
-                <b style="font-size: 0.9em;">Legal</b>
-                <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/aboutus">About Us</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
-                </div>
-            </div>                
-        </div>
-    </div>
-
-    <div id="cookie-banner"></div>
 </body>
 </html>
 

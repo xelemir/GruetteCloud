@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, session, Blueprint, send_file, jsonify
 
 import os
+import re
 
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import IconHelper
@@ -57,8 +58,12 @@ def dashboard():
 
     for entry in log_lines:
         if str(local_ip) not in entry:
-            filtered_log_lines.append(entry)
+            date_regex = re.search(r'\[([^\]]+)\]', entry)
+            ip_regex = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry)
+            if date_regex is not None:
+                filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})
     
+    print(filtered_log_lines)
     return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines)
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
