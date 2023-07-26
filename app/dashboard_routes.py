@@ -64,7 +64,6 @@ def dashboard():
             if date_regex is not None:
                 filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})
     
-    print(filtered_log_lines)
     return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines)
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
@@ -132,14 +131,9 @@ def git_pull():
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'{url_prefix}/')
 
-    if request.headers.get('X-GitHub-Event') == 'push':
-        try:
-            subprocess.check_output(['git', '-C', repo_path, 'pull'])
+    try:
+        subprocess.check_output(['git', '-C', repo_path, 'pull'])
 
-            return 'Git pull executed successfully!', 200
-        except Exception as e:
-            return str(e), 500
-    else:
-        return 'Invalid request', 400
-
-    return redirect(f'{url_prefix}/dashboard')
+        return redirect(f'{url_prefix}/dashboard')
+    except Exception as e:
+        return str(e), 500
