@@ -1,3 +1,4 @@
+import subprocess
 from flask import render_template, request, redirect, session, Blueprint, send_file, jsonify
 
 import os
@@ -5,7 +6,7 @@ import re
 
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip
+from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, repo_path
     
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
 
@@ -123,5 +124,22 @@ def revoke_plus(username):
     sql = SQLHelper.SQLHelper()
 
     sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {False} WHERE username = '{username}'")
+
+    return redirect(f'{url_prefix}/dashboard')
+
+@dashboard_route.route('/dashboard/gitpull')
+def git_pull():
+    if 'username' not in session or session['username'] not in admin_users:
+        return redirect(f'{url_prefix}/')
+
+    if request.headers.get('X-GitHub-Event') == 'push':
+        try:
+            subprocess.check_output(['git', '-C', repo_path, 'pull'])
+
+            return 'Git pull executed successfully!', 200
+        except Exception as e:
+            return str(e), 500
+    else:
+        return 'Invalid request', 400
 
     return redirect(f'{url_prefix}/dashboard')

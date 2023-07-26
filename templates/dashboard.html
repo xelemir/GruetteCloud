@@ -61,10 +61,11 @@
         <div class="dark-mode-toggle">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
-        <div class="centered-content">
-            <a href="{{ url_prefix }}/dashboard" class="logo" title="Home">
+        <div class="centered-content" style="display: flex;">
+            <a href="{{ url_prefix }}/dashboard" class="logo align-icons-center" title="Home">
                 <img src="https://jan.gruettefien.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
+            <p style="font-size: 1.3em; display: flex; align-items: center; justify-content: center;">&nbsp;&nbsp;Dashboard</p>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
@@ -85,7 +86,6 @@
     </div>
 
    <div class="desktop-only">
-        <h1>GrütteCloud Dashboard</h1>
         <div style="flex-direction: row; display: flex; width: 100%;" >
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
                 <div class="wrapping-tile" style="padding: 20px;">
@@ -132,7 +132,7 @@
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="padding: 20px;">
                     <h2 align="center" style="margin-bottom: 10px;">GrütteIDs ({{ all_users|length }})</h2>
-                    <div class="file-list" style="height: {% if platform_message %}30{% else %}45{% endif %}vh;">
+                    <div class="file-list" style="height: {% if platform_message %}20{% else %}35{% endif %}vh;">
                         {% for user in all_users %}
                             <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                                 {% if not user["has_premium"] %}
@@ -179,6 +179,13 @@
                     {% endfor %}
                 </div>
             </div>
+        </div>
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="padding: 20px;">
+            <h1>Git Operations</h1>
+            <button class="button-gray" style="height: 45px; width: 200px; margin-right: 5px; display: flex; align-items: center; justify-content: center;" onclick="window.location.href = '{{ url_prefix }}/dashboard/gitpull'">
+                <span class="material-symbols-outlined">memory</span> Git Pull
+            </button>
         </div>
     </div>
 
