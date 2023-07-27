@@ -68,11 +68,10 @@
                 <div style="display: flex; align-items: center; justify-content: center;">
                     <button class="button-gray" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; background-color: var(--background-tile-color);" onclick="toggleSearchBar()"><span class="material-symbols-outlined">search</span></button>
                     <div style="flex: 1; text-align: center;">
-                        <h2 style="margin-bottom: 10px;">Your Files</h2>
+                        <h2>Your Files</h2>
                     </div>
                 </div>                
-                <div class="spaced-tile"></div>
-                <input type="text" id="file-search-input" placeholder="Search Files..." class="settings-input" style="margin-bottom: 20px; margin-left: 0; display: none;">
+                <input type="text" id="file-search-input" placeholder="Search Files..." class="settings-input" style="margin-left: 0; display: none;">
                 <div class="file-list">
                     {% if not files %}
                         <div class="no-files">
@@ -321,13 +320,16 @@
     function toggleSearchBar() {
         const searchBar = document.getElementById('file-search-input');
         searchBar.style.display = searchBar.style.display === 'none' ? 'block' : 'none';
+        handleFileSearch(); // Call the search function to update the file display
     }
 
     // Function to handle file search functionality
     function handleFileSearch() {
         const searchInput = document.getElementById('file-search-input');
-        const searchTerm = searchInput.value.toLowerCase();
         const fileItems = document.getElementsByClassName('file-search-item');
+
+        // Get the search term from the input, or set it to an empty string if the input is hidden
+        const searchTerm = searchInput.style.display !== 'none' ? searchInput.value.toLowerCase() : '';
 
         for (let item of fileItems) {
             const fileName = item.querySelector('.filename').textContent.toLowerCase();
