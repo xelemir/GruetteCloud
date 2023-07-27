@@ -65,11 +65,12 @@ def dashboard():
                 filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})  
         
     try:
-        commit_version = subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip().decode('utf-8')
-        commit_message = subprocess.check_output(['git', 'log', '-1', '--pretty=%B']).strip().decode('utf-8')
-        commit_date = subprocess.check_output(['git', 'log', '-1', '--pretty=%cd']).strip().decode('utf-8')
+        version = {"commit": "Unknown", "message": "Unknown", "date": "Unknown"}
+        #commit_version = subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip().decode('utf-8')
+        #commit_message = subprocess.check_output(['git', 'log', '-1', '--pretty=%B']).strip().decode('utf-8')
+        #commit_date = subprocess.check_output(['git', 'log', '-1', '--pretty=%cd']).strip().decode('utf-8')
 
-        version = {"commit": commit_version, "message": commit_message, "date": commit_date}
+        #version = {"commit": commit_version, "message": commit_message, "date": commit_date}
     except subprocess.CalledProcessError:
         version = {"commit": "Unknown", "message": "Unknown", "date": "Unknown"}
     
