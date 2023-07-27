@@ -11,7 +11,6 @@ class SQLHelper:
     def __init__(self):
         try:
             host_local = socket.gethostname()
-            print(host_local)
             if host_local in ["gruttechat-webserver", "dauntless-1"]:
                 connection = MySQLdb.Connection(**gcpConfig)
             elif "mac" in host_local.lower() or "mbp" in host_local.lower():

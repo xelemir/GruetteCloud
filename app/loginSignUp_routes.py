@@ -24,9 +24,7 @@ def login():
         return render_template('login.html', error='Please enter a username and password', url_prefix = url_prefix)
     
     # Search for user in database
-    print("Searching for user")
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
-    print("User found")
     
     # If user exists, check if password is correct
     if user != []:
