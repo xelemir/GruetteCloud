@@ -36,7 +36,7 @@
             {% endif %}
         {% endfor %}
     </div>
-    <form action="{{ url_prefix }}/ai/chat" method="POST" id="sendMessage" onsubmit="return disableSubmitButton()">
+    <form action="{{ url_prefix }}/ai/chat" method="POST" id="sendMessage">
         <div class="wrapping-tile">
             <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
             <button type="submit" id="submitButton" name="send" class="send-button">Send</button>

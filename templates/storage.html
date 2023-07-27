@@ -39,7 +39,6 @@
     </div>
 
     <div class="desktop-only">
-        <h1>GrütteStorage</h1>
         <div style="flex-direction: row; display: flex; width: 100%;">
             <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
                 <div class="wrapping-tile" style="height: 30vh; padding: 20px;">
@@ -66,8 +65,14 @@
                 </div>
             </div>
             <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px; padding: 20px;">
-                <h2 align="center" style="margin-bottom: 10px;">Your files</h2>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <button class="button-gray" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; background-color: var(--background-tile-color);" onclick="toggleSearchBar()"><span class="material-symbols-outlined">search</span></button>
+                    <div style="flex: 1; text-align: center;">
+                        <h2 style="margin-bottom: 10px;">Your Files</h2>
+                    </div>
+                </div>                
                 <div class="spaced-tile"></div>
+                <input type="text" id="file-search-input" placeholder="Search Files..." class="settings-input" style="margin-bottom: 20px; margin-left: 0; display: none;">
                 <div class="file-list">
                     {% if not files %}
                         <div class="no-files">
@@ -76,27 +81,27 @@
                         </div>
                     {% endif %}
                     {% for file in files %}
-                        <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
+                        <div class="search-item file-search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                             <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">download</span>
                                 </button>
                             </a>
                             <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/preview" title="Preview">
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
+                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">visibility</span>
                                 </button>
                             </a>
                             <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
+                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">info</span>
                                 </button>
                             </a>
                             <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 110px; margin-right: 5px;">
-                                <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[1] }}</p>
+                                <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: center;">{{ file[1] }}</p>
                             </div>
                             <div class="mock-button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
-                                <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ file[0] }}</p>
+                                <p class="filename text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file[0] }}</p>
                             </div>
                         </div>
                     {% endfor %}
@@ -310,6 +315,35 @@
         document.getElementById("dashboard").style.display = "none";
     }
 </script>
+
+<script>
+    // Function to toggle the display of the search bar
+    function toggleSearchBar() {
+        const searchBar = document.getElementById('file-search-input');
+        searchBar.style.display = searchBar.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Function to handle file search functionality
+    function handleFileSearch() {
+        const searchInput = document.getElementById('file-search-input');
+        const searchTerm = searchInput.value.toLowerCase();
+        const fileItems = document.getElementsByClassName('file-search-item');
+
+        for (let item of fileItems) {
+            const fileName = item.querySelector('.filename').textContent.toLowerCase();
+            const fileDescription = item.querySelector('.text-offcutter').textContent.toLowerCase();
+            const isMatch = fileName.includes(searchTerm) || fileDescription.includes(searchTerm);
+            item.style.display = isMatch ? 'flex' : 'none';
+        }
+    }
+
+    // Add event listener to the search input field
+    const fileSearchInput = document.getElementById('file-search-input');
+    fileSearchInput.addEventListener('input', handleFileSearch);
+</script>
+
+
+
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
 <script src="https://jan.gruettefien.com/static/betanotice.js"></script>

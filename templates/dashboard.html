@@ -132,21 +132,22 @@
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="padding: 20px;">
                     <h2 align="center" style="margin-bottom: 10px;">GrütteIDs ({{ all_users|length }})</h2>
-                    <div class="file-list" style="height: {% if platform_message %}20{% else %}35{% endif %}vh;">
+                    <input type="text" id="search-input" placeholder="Search for GrütteID" class="settings-input" style="margin-bottom: 20px; margin-left: 0;"/>
+                    <div class="file-list" style="height: {% if platform_message %}35{% else %}45{% endif %}vh;">
                         {% for user in all_users %}
-                            <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
+                            <div class="search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                                 {% if not user["has_premium"] %}
                                 <a href="{{ url_prefix }}/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
                                 {% else %}
                                 <a href="{{ url_prefix }}/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
                                 {% endif %}
                                     <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if user["has_premium"] %} background-color: var(--purple);{% endif %}">
-                                        <span class="material-symbols-outlined">workspace_premium</span>
+                                        <span class="material-symbols-outlined text-offcutter">workspace_premium</span>
                                     </button>
                                 </a>
                                 <a href="{{ url_prefix }}/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
                                     <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                        <span class="material-symbols-outlined">forum</span>
+                                        <span class="material-symbols-outlined text-offcutter">forum</span>
                                     </button>
                                 </a>
                                 <a href="{{ url_prefix }}/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
@@ -155,19 +156,19 @@
                                     </button>
                                 </a>
                                 <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 100px; margin-right: 5px;">
-                                    <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
+                                    <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
                                 </div>
-                                <div class="mock-button-gray text-offcutter email-container" style="flex-grow: 1; text-align: left; margin-right: 10px;">
-                                    <p class="text-offcutter blurred-email" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["email"] }}</p>
+                                <div class="mock-button-gray email-container text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
+                                    <p class="email blurred-email text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["email"] }}</p>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-            <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px; padding: 20px;">
+            <div class="wrapping-tile" style="width: 60%; margin: 0; margin-right: 0; margin-left: 10px; padding: 20px;">
                 <h2 align="center" style="margin-bottom: 30px;">Access Logs</h2>
-                <div class="file-list" style="height: 60vh; font-size: 0.7em;">
+                <div class="file-list" style="height: 100%; font-size: 0.7em;">
                     {% for event in events %}
                         <div style="display: block; background-color: var(--secondary-color); border: none; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
                             <p style="font-weight: bold; margin: 0;">
@@ -175,12 +176,13 @@
                             </p>
                             <p style="margin-top: 5px;">{{ event["entry"] }}</p>
                         </div>
-                    
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+
+    
     <div class="mobile-only">
         <div class="wrapping-tile" style="padding: 20px;">
             <h2 align="center" style="margin-bottom: 10px;">Platform Notification</h2>
@@ -255,6 +257,7 @@
             </div>
         </div>
     </div>
+    <div id="cookie-banner"></div>
 </body>
 </html>
 
@@ -316,6 +319,37 @@
             window.location.href = '{{ url_prefix }}/storage';
         }, 5000);
     {% endif %}
+</script>
+
+<script>
+    // Function to handle search functionality
+    function handleSearch() {
+        const searchInput = document.getElementById('search-input');
+        const searchTerm = searchInput.value.toLowerCase();
+        const helpItems = document.getElementsByClassName('search-item'); // Change ID to Class
+
+        for (let item of helpItems) {
+            const username = item.querySelector('.username').textContent.toLowerCase();
+            const email = item.querySelector('.email').textContent.toLowerCase();
+            const isMatch = username.includes(searchTerm) || email.includes(searchTerm);
+            item.style.display = isMatch ? 'flex' : 'none';
+        }
+    }
+
+    // Function to toggle the visibility of email
+    function toggleemail(event) {
+        const email = event.target.nextElementSibling;
+        email.style.display = email.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    // Add event listeners
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', handleSearch);
+
+    const usernames = document.getElementsByClassName('username');
+    for (let username of usernames) {
+        username.addEventListener('click', toggleemail);
+    }
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
