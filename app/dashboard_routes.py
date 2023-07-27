@@ -6,7 +6,7 @@ import re
 
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, repo_path
+from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip
     
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
 
@@ -125,15 +125,3 @@ def revoke_plus(username):
     sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {False} WHERE username = '{username}'")
 
     return redirect(f'{url_prefix}/dashboard')
-
-@dashboard_route.route('/dashboard/gitpull')
-def git_pull():
-    if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
-
-    try:
-        subprocess.check_output(['git', '-C', repo_path, 'pull'])
-
-        return redirect(f'{url_prefix}/dashboard')
-    except Exception as e:
-        return str(e), 500
