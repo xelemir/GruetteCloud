@@ -73,7 +73,6 @@ def dashboard():
     except subprocess.CalledProcessError:
         version = {"commit": "Unknown", "message": "Unknown", "date": "Unknown"}
     
-    print(version)
     return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, version=version)
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
