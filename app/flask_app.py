@@ -27,11 +27,8 @@ eh = EncryptionHelper.EncryptionHelper()
 def index():
     if "username" in session:
         return redirect(f"{url_prefix}/chat")
-    elif "username" in request.cookies:
-        session["username"] = request.cookies["username"].lower()
-        return redirect(f"{url_prefix}/chat")
     else:
-        return render_template("login.html", url_prefix = url_prefix)
+        return redirect(f"{url_prefix}/login")
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):

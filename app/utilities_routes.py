@@ -35,9 +35,7 @@ def logout():
         str: Redirect to home page
     """    
     session.pop('username', None)
-    response = redirect(f'{url_prefix}/')
-    response.delete_cookie('username')
-    return response
+    return redirect(f'{url_prefix}/')
 
 @utilities_route.route("/settings", methods=["GET", "POST"])
 def settings(error=None):
@@ -202,9 +200,7 @@ def delete_account():
     if username_db == username_form and password_db == password_form and email_db == email_form:
         sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
         session.pop('username', None)
-        response = redirect(f'{url_prefix}/')
-        response.delete_cookie('username')
-        return response
+        return redirect(f'{url_prefix}/')
     elif username_db != username_form:
         return render_template("settings.html", verified=verified, username=username_session, error="Username isn't matching!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]), url_prefix=url_prefix)
     elif password_db != password_form:

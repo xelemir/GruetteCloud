@@ -13,7 +13,7 @@ def login():
     if "signup" in request.form:
         return redirect(f'{url_prefix}/signup')
     elif request.method == "GET":
-        return redirect(f'{url_prefix}/')
+        return render_template('login.html', url_prefix = url_prefix)
     
     sql = SQLHelper.SQLHelper()
     username = str(request.form['username']).lower()
@@ -24,7 +24,9 @@ def login():
         return render_template('login.html', error='Please enter a username and password', url_prefix = url_prefix)
     
     # Search for user in database
+    print("Searching for user")
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    print("User found")
     
     # If user exists, check if password is correct
     if user != []:
@@ -40,9 +42,7 @@ def login():
             # Log the user in
             else:
                 session['username'] = username
-                response = redirect(f'{url_prefix}/chat')
-                response.set_cookie('username', username)
-                return response
+                return redirect(f'{url_prefix}/chat')
 
         # If password is or username is incorrect
         else:

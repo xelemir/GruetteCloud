@@ -11,9 +11,10 @@ class SQLHelper:
     def __init__(self):
         try:
             host_local = socket.gethostname()
+            print(host_local)
             if host_local in ["gruttechat-webserver", "dauntless-1"]:
                 connection = MySQLdb.Connection(**gcpConfig)
-            elif host_local in ["Jans-MacBook-Pro.local", "Jans-MacBook-Pro", "Jans-MBP.local", "Jans-MBP", "macbook-pro.ext.jamaillia.net"]:
+            elif "mac" in host_local.lower() or "mbp" in host_local.lower():
                 connection = MySQLdb.Connection(**macBookProConfig)
             else:
                 connection = MySQLdb.Connection(**jamailliaConfig)
@@ -57,6 +58,7 @@ class SQLHelper:
     
 if __name__ == "__main__":
     sql = SQLHelper()
+    print(sql.readSQL("SELECT * FROM gruttechat_users"))
     #sql.writeSQL("INSERT INTO chat (userSend, userReceive, message) VALUES ('user1', 'user2', 'Test')")
     #sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, is_verified, has_premium, ai_personality) VALUES ('user2', 'password', 'email', {True}, {False}, 'ai_personality')")
     #sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('user1', 'user2', 'Test')")
