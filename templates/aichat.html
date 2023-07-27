@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>MyAI | GrütteChat</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
 </head>
 <body>
@@ -36,10 +36,10 @@
             {% endif %}
         {% endfor %}
     </div>
-    <form action="{{ url_prefix }}/ai/chat" method="POST" id="sendMessage">
+    <form action="{{ url_prefix }}/ai/chat" method="POST" id="sendMessage" onsubmit="return disableSubmitButton()">
         <div class="wrapping-tile">
             <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
-            <input type="submit" name="send" value="Send" class="send-button">
+            <button type="submit" id="submitButton" name="send" class="send-button">Send</button>
         </div>
     </form>
     <div id="cookie-banner"></div>
@@ -82,3 +82,10 @@
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
+
+<script>
+    function disableSubmitButton() {
+      document.getElementById("submitButton").disabled = true;
+      return true; // This allows the form to be submitted after disabling the button
+    }
+</script>

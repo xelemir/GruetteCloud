@@ -166,7 +166,7 @@
                 </div>
             </div>
             <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px; padding: 20px;">
-                <h2 align="center" style="margin-bottom: 30px;"></h2>
+                <h2 align="center" style="margin-bottom: 30px;">Access Logs</h2>
                 <div class="file-list" style="height: 60vh; font-size: 0.7em;">
                     {% for event in events %}
                         <div style="display: block; background-color: var(--secondary-color); border: none; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
@@ -182,20 +182,16 @@
         </div>
         <div class="spaced-tile"></div>
         <div class="wrapping-tile" style="padding: 20px;">
-            <h1>Git Operations</h1>
-            <button class="button-gray" style="height: 45px; width: 200px; margin-right: 5px; display: flex; align-items: center; justify-content: center;" onclick="window.location.href = '{{ url_prefix }}/dashboard/gitpull'">
-                <span class="material-symbols-outlined">memory</span> Git Pull
+            <h1>Hazard Operations</h1>
+            <button class="button-gray" style="height: 45px; width: 200px; display: flex; align-items: center; justify-content: center;" onclick="window.location.href = '{{ url_prefix }}/dashboard/gitpull'">
+                <span class="material-symbols-outlined">memory</span>&nbsp;&nbsp;Git Pull
             </button>
         </div>
     </div>
 
-
-
     <div class="mobile-only">
-        <h1>Mobile Dashboard</h1>
-        <div class="spaced-tile"></div>
         <div class="wrapping-tile" style="padding: 20px;">
-            <h2 align="center" style="margin-bottom: 30px;">Platform Notification</h2>
+            <h2 align="center" style="margin-bottom: 10px;">Platform Notification</h2>
             <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
                 <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
                     <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
@@ -235,9 +231,8 @@
             {% endif %}
         </div>
         <div class="spaced-tile"></div>
-
-        <div class="wrapping-tile">
-            <h2 align="center" style="margin-bottom: 10px;">GrütteIDs ({{ all_users|length }})</h2>
+        <div class="wrapping-tile" style="padding: 20px;">
+            <h2 align="center">GrütteIDs ({{ all_users|length }})</h2>
             <div class="file-list">
                 {% for user in all_users %}
                     <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
@@ -267,6 +262,17 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="spaced-tile"></div>
+        <div align="left" class="wrapping-tile" style="padding: 20px;">
+            <h2 align="center" style="margin-bottom: 10px;">Hazard Panel</h2>
+            <div style="display: flex;">
+                <button class="button-gray" style="height: 50px; width: 30%; display: flex; align-items: center; justify-content: center;" onclick="window.location.href = '{{ url_prefix }}/dashboard/gitpull'">
+                    <span class="material-symbols-outlined">memory</span>&nbsp;&nbsp;Git Pull
+                </button>
+                
+            </div>
+        </div>
+        <div class="spaced-tile"></div>
     </div>
 </body>
 </html>
