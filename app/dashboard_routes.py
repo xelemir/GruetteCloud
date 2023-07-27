@@ -51,6 +51,9 @@ def dashboard():
 
     all_users = sql.readSQL(f"SELECT username, email, has_premium FROM gruttechat_users")
     
+    # Security issue
+    all_users = [{"username": "Security issue", "email": "Security issue", "has_premium": False}]
+    
     log_lines = []
     filtered_log_lines = []
     with open(f"{logfiles_path}access.log", 'r') as file:
@@ -64,6 +67,9 @@ def dashboard():
             if date_regex is not None:
                 filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})
     
+    # Security issue
+    log_lines = [{"date": "Hidden due to security issue", "ip": "Hidden due to security issue", "entry": "Hidden due to security issue"}]
+    
     return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines)
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
@@ -71,6 +77,9 @@ def create_status_message():
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'{url_prefix}/')
 
+    # Security issue
+    return redirect(f'{url_prefix}/dashboard')
+    
     sql = SQLHelper.SQLHelper()
 
     subject = str(request.form["subject"])
@@ -86,6 +95,9 @@ def create_status_message():
 def delete_status_message():
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'{url_prefix}/')
+    
+    # Security issue
+    return redirect(f'{url_prefix}/dashboard')
 
     sql = SQLHelper.SQLHelper()
 
@@ -108,6 +120,9 @@ def delete_user(username):
 def gift_plus(username):
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'{url_prefix}/')
+    
+    # Security issue
+    return redirect(f'{url_prefix}/dashboard')
 
     sql = SQLHelper.SQLHelper()
 
@@ -119,6 +134,9 @@ def gift_plus(username):
 def revoke_plus(username):
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'{url_prefix}/')
+    
+    # Security issue
+    return redirect(f'{url_prefix}/dashboard')
 
     sql = SQLHelper.SQLHelper()
 
