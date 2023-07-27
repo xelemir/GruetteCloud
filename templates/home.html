@@ -38,14 +38,6 @@
         </div>
     </div>
 
-    {% if status_message %}
-        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
-            <h2 style="color: var(--{{ status_message["color"] }})">{{ status_message["subject"] }}</h2>
-            <p style="color: var(--{{ status_message["color"] }})">{{ status_message["content"] }}</p>
-        </div>
-        <div class="spaced-tile"></div>
-    {% endif %}
-
     {% if not has_premium %}
         <div id="premium-banner" style="display: block;">
             <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 60px; right: 5px; height: 30px; width: 30px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--text-color); border-radius: 10px;">
@@ -59,6 +51,14 @@
             </a>
             <div class="spaced-tile"></div>
         </div>
+    {% endif %}
+
+    {% if status_message %}
+        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
+            <h2 style="color: var(--{{ status_message["color"] }})">{{ status_message["subject"] }}</h2>
+            <p style="color: var(--{{ status_message["color"] }})">{{ status_message["content"] }}</p>
+        </div>
+        <div class="spaced-tile"></div>
     {% endif %}
 
     <div class="wrapping-tile" style="padding-left: 0; padding-right: 0;">
