@@ -9,10 +9,11 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import url_prefix, admin_users
+from config import url_prefix, admin_users, secret_key
 
-app = Flask("GrütteChat")
-app.secret_key = 'supersecretkey'
+app = Flask("GrütteCloud")
+app.secret_key = secret_key
+app.permanent_session_lifetime = 1209600 # 2 weeks
 app.register_blueprint(loginSignUp_route)
 app.register_blueprint(utilities_route)
 app.register_blueprint(chat_route)
@@ -21,7 +22,6 @@ app.register_blueprint(gruetteStorage_route)
 app.register_blueprint(dashboard_route)
 
 eh = EncryptionHelper.EncryptionHelper()
-
 
 @app.route("/")
 def index():

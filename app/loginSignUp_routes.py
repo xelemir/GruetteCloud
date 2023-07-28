@@ -40,7 +40,8 @@ def login():
             # Log the user in
             else:
                 session['username'] = username
-                return redirect(f'{url_prefix}/chat')
+                session.permanent = True
+                return redirect(f'{url_prefix}/')
 
         # If password is or username is incorrect
         else:
@@ -53,7 +54,7 @@ def login():
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
     if 'username' in session:
-        return redirect(f'{url_prefix}/chat')
+        return redirect(f'{url_prefix}/')
     
     # If Method is POST
     if request.method == 'POST':
@@ -130,7 +131,8 @@ def verify(username):
             if create_entered_code == verification_code:
                 sql.writeSQL(f"UPDATE gruttechat_users SET is_verified = {True} WHERE username = '{str(username)}'")
                 session['username'] = username
-                return redirect(f'{url_prefix}/chat')
+                session.permanent = True
+                return redirect(f'{url_prefix}/')
             
             # If the code is incorrect, display an error
             else:
