@@ -64,17 +64,14 @@
                     <div style="display: flex; justify-content: center;">
                         <img src="https://jan.gruettefien.com/static/GrütteStorage.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
                     </div>
-                    <div id="result-container">
-                        <h2 style="color: var(--yellow)">This feature is currently unavailable<br>because the used YouTube API library (pytube) has not been updated yet.<br>Sorry about that :/</h2>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!--<div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
+    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
         <div class="spaced-tile"></div>
-        <h3>Please enter the YouTube link below.</h3>
+        <h3>Downloaded videos can be found on<br><a href="{{ url_prefix }}/storage" style="color: var(--text-color);">GrütteStorage</a>.<br>Downloading videos is only allowed for personal use<br>and may be illegal in your country.</h3>
         <form id="youtube-form" action="{{ url_prefix }}/youtube" method="POST" style="flex-direction: column;">
             <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
             <div style="margin-top: 20px">
@@ -82,8 +79,8 @@
             </div>
         </form>
         <div class="spaced-tile"></div>
-    </div>-->
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
+    </div>
+    <!--<div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
         <div class="spaced-tile"></div>
         <h3>Please enter the YouTube link below.</h3>
         <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
@@ -91,7 +88,7 @@
             <button class="send-button" style="min-width: 200px; background-color: var(--secondary-color);">Download video</button>
         </div>
         <div class="spaced-tile"></div>
-    </div>
+    </div>-->
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
             <div style="width: 50%; margin-right: 20px; text-align: left;">

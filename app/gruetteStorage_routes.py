@@ -70,10 +70,14 @@ def get_files(username):
     user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
     if not os.path.exists(user_shared_directory):
         os.makedirs(user_shared_directory)
+        
+    # Create user YouTube directory if it doesn't exist
+    user_yt_directory = os.path.join(gruetteStorage_path, username, "YouTube")    
 
     # Get list of files in user directory and remove shared directory
     files = os.listdir(user_directory)
     files.remove("shared")
+    files.remove("YouTube")
     
     # Calculate file size of user directory
     size_user = sum(os.path.getsize(os.path.join(user_directory, file)) for file in files)
@@ -81,18 +85,25 @@ def get_files(username):
     # Get list of files in shared directory
     files_shared = os.listdir(user_shared_directory)
     
+    # Get list of files in YouTube directory
+    files_yt = os.listdir(user_yt_directory)
+    
     # Calculate file size of shared directory
     size_shared = sum(os.path.getsize(os.path.join(user_shared_directory, file)) for file in files_shared)
     
+    # Calculate file size of YouTube directory
+    size_yt = sum(os.path.getsize(os.path.join(user_yt_directory, file)) for file in files_yt)
+    
     # Convert file size to human-readable format
-    total_size = size_user + size_shared
+    total_size = size_user + size_shared + size_yt
     total_size_formatted = get_formatted_file_size(total_size)
     total_size_percentage = (total_size / (5 * 1073741824)) * 100  # 5 GB
 
     # Create file list with sublists of filename and formatted file size and sharing status
     file_list_user = [[file, get_formatted_file_size(os.path.getsize(os.path.join(user_directory, file))), "private"] for file in files]
     file_list_shared = [[file, get_formatted_file_size(os.path.getsize(os.path.join(user_shared_directory, file))), "shared"] for file in files_shared]
-    file_list = file_list_shared + file_list_user
+    file_list_yt = [[file, get_formatted_file_size(os.path.getsize(os.path.join(user_yt_directory, file))), "youtube"] for file in files_yt]
+    file_list = file_list_shared + file_list_yt + file_list_user
     
     return {"file_list": file_list, "total_size_formatted": total_size_formatted, "total_size_percentage": total_size_percentage}
     
@@ -137,6 +148,8 @@ def download(username, filename, preview="Default"):
             path = os.path.join(gruetteStorage_path, username, filename)
         elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
             path = os.path.join(gruetteStorage_path, username, "shared", filename)
+        elif os.path.exists(os.path.join(gruetteStorage_path, username, "YouTube", filename)):
+            path = os.path.join(gruetteStorage_path, username, "YouTube", filename)
         else:
             return redirect(f"{url_prefix}/storage")
     
@@ -157,6 +170,8 @@ def delete(username, filename):
         os.remove(os.path.join(gruetteStorage_path, username, filename))
     elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
         os.remove(os.path.join(gruetteStorage_path, username, "shared", filename))
+    elif os.path.exists(os.path.join(gruetteStorage_path, username, "YouTube", filename)):
+        os.remove(os.path.join(gruetteStorage_path, username, "YouTube", filename))
         
     return redirect(f"{url_prefix}/storage")
 
@@ -172,18 +187,25 @@ def file(username, filename):
             is_author_verified = False
             if username in admin_users:
                 is_author_verified = True
-            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=is_author_verified)
+            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=is_author_verified, is_youtube_video=False)
         else:
             return redirect(f"{url_prefix}/storage")
         
     if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
         path = os.path.join(gruetteStorage_path, username, filename)
         is_shared = False
+        is_youtube_video = False
         code = ""
     elif os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
         path = os.path.join(gruetteStorage_path, username, "shared", filename)
         is_shared = True
+        is_youtube_video = False
         code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
+    elif os.path.exists(os.path.join(gruetteStorage_path, username, "YouTube", filename)):
+        path = os.path.join(gruetteStorage_path, username, "YouTube", filename)
+        is_shared = False
+        is_youtube_video = True
+        code = ""
     else:
         return redirect(f"{url_prefix}/storage")
     
@@ -194,7 +216,7 @@ def file(username, filename):
     is_author_verified = False
     if username in admin_users:
         is_author_verified = True
-    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=is_author_verified)
+    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=is_youtube_video)
     
 
 @gruetteStorage_route.route("/share/<username>/<filename>")

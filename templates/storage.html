@@ -51,6 +51,16 @@
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="padding: 20px;">
+                    <h2 align="center" style="margin-bottom: 10px;">YouTube Downloader</h2>
+                    GrütteCloud PLUS offers a YouTube downloader.<br>You can download videos from YouTube and save them right to GrütteStorage.
+                    <div class="spaced-tile"></div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <button class="button-blue" onclick="window.location.href = '{{ url_prefix }}/youtube'">YouTube Downloader</button>
+                    </div>
+                    
+                </div>
+                <div class="spaced-tile"></div>
+                <div class="wrapping-tile" style="padding: 20px;">
                     <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
                     <div>
                         <div style="display: flex; align-items: center;">
@@ -87,8 +97,8 @@
                                 </button>
                             </a>
                             <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/preview" title="Preview">
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
-                                    <span class="material-symbols-outlined">visibility</span>
+                                <button class="button-gray" style="{% if file[2] == "youtube" %}color: var(--white-color); background-color: var(--red); {% endif %}height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
+                                    <span class="material-symbols-outlined">{% if file[2] == "youtube" %}youtube_activity{% else %}visibility{% endif %}</span>
                                 </button>
                             </a>
                             <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
@@ -135,7 +145,7 @@
                                 <span style="color: var(--text-color); font-size: 18px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file[0] }}</span>
                             </a>
                         </button>
-                        <button class="button-gray" style="height: 45px; width: 60px;{% if file[2] == "shared" %} background-color: var(--green);{% endif %}">
+                        <button class="button-gray" style="height: 45px; width: 60px;{% if file[2] == "shared" %} background-color: var(--green);{% elif file[2] == "youtube" %} background-color: var(--red);{% endif %}">
                             <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined">info</span>
                             </a>

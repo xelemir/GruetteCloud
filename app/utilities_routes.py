@@ -4,7 +4,7 @@ import platform
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
-from config import url_prefix, youtube_download_path, templates_path, admin_users
+from config import url_prefix, templates_path, admin_users, gruetteStorage_path
 
     
 utilities_route = Blueprint("Utilities", "Utilities", template_folder=templates_path)
@@ -260,11 +260,11 @@ def user_download(video_id):
     elif not bool(user[0]["has_premium"]):
         return redirect(f"{url_prefix}/premium") 
 
-    try:
-        path = youtube_download_path + video_id + ".mp4"
-        return send_file(path, as_attachment=True)
-    except:
-        return redirect(f"{url_prefix}/youtube")
+    #try:
+    path = os.path.join(gruetteStorage_path, str(session['username']), "YouTube", f"{video_id}.mp4")
+    return send_file(path, as_attachment=True)
+    #except:
+        #return redirect(f"{url_prefix}/youtube")
 
 @utilities_route.route("/youtube", methods=["GET", "POST"])
 def download_from_youtube():
@@ -288,6 +288,6 @@ def download_from_youtube():
         except:
             return jsonify({"error": "Something went wrong on our end :/"})
             
-        video_id = str(datetime.datetime.now().timestamp()).replace(".", "")
-        youtube.download(filename=video_id)
+        youtube.download(username=str(session["username"]))
+        video_id = youtube.get_media_title()
         return jsonify({"filename": video_id})

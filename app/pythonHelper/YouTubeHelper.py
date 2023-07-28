@@ -1,7 +1,9 @@
 import os
 import platform
+from werkzeug.utils import secure_filename
 from pytube import YouTube
 
+from config import gruetteStorage_path
 
 class YouTubeHelper:
     """ Class to download a YouTube video from a given url
@@ -23,23 +25,24 @@ class YouTubeHelper:
         try:
             yt.check_availability()
             self.url = url
+            self.media_title = secure_filename(yt.title)
         except:
             raise Exception("Invalid video URL")
 
-    def download(self, filename):
+    def download(self, username):
         """ Method to download the video from the given url
         """
         yt = YouTube(self.url)
         stream = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc().first()
 
-        if platform.system() == "Windows" or platform.system() == "MacOS":
-            filepath_video = os.getcwd() + "/app/downloads/"
-        else:
-            filepath_video = "/home/jan/wwwroot/gruettechat/gruettechat/app/downloads/"
+        filepath_video = os.path.join(gruetteStorage_path, username, "YouTube")
+        if not os.path.exists(filepath_video):
+            os.makedirs(filepath_video)
+
+        filename = secure_filename(self.media_title)
         stream.download(filename=f"{filename}.mp4", output_path=filepath_video)
 
         self.filepath_video = filepath_video
-        self.media_title = yt.title
 
     def get_filepath_video(self):
         """ Method to get the filepath of the downloaded video
