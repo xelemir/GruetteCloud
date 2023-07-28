@@ -81,7 +81,7 @@ def chat(error=None):
         verified = False
     
     # Render the home page
-    return render_template('home.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=verified)
+    return render_template('home.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix=url_prefix, status_message=platform_message, verified=verified)
 
 
 
@@ -135,7 +135,7 @@ def chat_room(room):
     
     # Retrieve messages from the database for the given room
     messages = get_messages_from_database(room)
-    return render_template('chat.html', room=room, messages=messages, username=username, recipient=recipient)
+    return render_template('chat.html', url_prefix=url_prefix, room=room, messages=messages, username=username, recipient=recipient)
 
 @socketio.on('send_private_message')
 def handle_private_message(data):
