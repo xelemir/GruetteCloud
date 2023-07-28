@@ -89,7 +89,7 @@
 </script>
 
 <script type="text/javascript">
-    const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    const socket = io.connect(location.protocol + '//' + document.domain);
 
     function sendMessage() {
         const messageInput = document.getElementById('message-input');
