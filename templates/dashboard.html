@@ -39,11 +39,21 @@
 
         @media (min-width: 768px) {
             .desktop-only {
-                display: block;
+                display: flex;
             }
         
             .mobile-only {
                 display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none;
+            }
+        
+            .mobile-only {
+                display: block;
             }
         }
 
@@ -85,10 +95,10 @@
         </div>
     </div>
 
-    <div class="desktop-only" style="display: flex; width: 100%; align-items: stretch;">
+    <div class="desktop-only" style="width: 100%; align-items: stretch;">
         <div style="flex: 1; text-align: center; margin-right: 10px;">
             <div class="wrapping-tile" style="padding: 20px;">
-                <h2 align="center" style="margin-bottom: 10px;">Platform Notification</h2>
+                <h2 align="center" style="margin-bottom: 20px;">Platform Notification</h2>
                 <form action="{{ url_prefix }}/dashboard/createstatusmessage" method="POST">
                     <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
                         <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
@@ -113,7 +123,7 @@
                 </form>
                 {% if platform_message %}
                     <div class="spaced-tile"></div>
-                    <h2 style="font-size: 1.2em;">Current Platform Notification</h2>
+                    <h2 style="font-size: 1.2em; margin-bottom: 10px;">Current Platform Notification</h2>
                     <div class="wrapping-tile" style="display: flex; align-items: center; background-color: var(--secondary-color);">
                         <div style="flex-grow: 1;">
                             <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
@@ -128,10 +138,10 @@
                 
             </div>
             <div class="spaced-tile"></div>
-            <div class="wrapping-tile" style="padding: 20px;">
-                <h2 align="center" style="margin-bottom: 10px;">GrütteIDs ({{ all_users|length }})</h2>
+            <div class="wrapping-tile" style="padding: 20px; margin-bottom: 20px;">
+                <h2 align="center" style="margin-bottom: 20px;">GrütteIDs ({{ all_users|length }})</h2>
                 <input type="text" id="search-input" placeholder="Search for GrütteID" class="settings-input" style="margin-bottom: 20px; margin-left: 0;"/>
-                <div class="file-list" style="height: {% if platform_message %}30{% else %}40{% endif %}vh;">
+                <div class="file-list" style="height: 30vh;">
                     {% for user in all_users %}
                         <div class="search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                             {% if not user["has_premium"] %}
@@ -168,7 +178,7 @@
         <div style="width: 60%; margin-left: -15px; padding: 20px; margin-top: -20px; margin-right: -20px;">
             <div class="wrapping-tile" style="padding: 20px; margin-bottom: 20px;">
                 <h2 align="center" style="margin-bottom: 10px;">Access Logs</h2>
-                <div class="file-list" style="height: 48vh; font-size: 0.7em;">
+                <div class="file-list" style="height: 80vh; font-size: 0.7em;">
                     {% for event in events %}
                         <div style="display: block; background-color: var(--secondary-color); border: none; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
                             <p style="font-weight: bold; margin: 0;">
@@ -178,13 +188,6 @@
                         </div>
                     {% endfor %}
                 </div>
-            </div>
-            <div class="wrapping-tile" style="text-align: center;">
-                <h2 style="margin-bottom: 10px;">Version Info</h2>
-                <div class="inner-tile">
-                {{ version["commit"] }}<br>
-                {{ version["message"] }}<br>
-                {{ version["date"] }}</div>
             </div>
         </div>
     </div>
