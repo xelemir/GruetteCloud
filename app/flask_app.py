@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, session, redirect, jsonify
+from flask import Flask, render_template, request, session, redirect, jsonify, url_for
+from flask_socketio import SocketIO, emit, join_room, leave_room
+import hashlib
 
 from pythonHelper import EncryptionHelper, SQLHelper
 
@@ -16,21 +18,23 @@ app.secret_key = secret_key
 app.permanent_session_lifetime = 1209600 # 2 weeks
 app.register_blueprint(loginSignUp_route)
 app.register_blueprint(utilities_route)
-app.register_blueprint(chat_route)
+#app.register_blueprint(chat_route)
 app.register_blueprint(premium_route)
 app.register_blueprint(gruetteStorage_route)
 app.register_blueprint(dashboard_route)
+
+socketio = SocketIO(app)
 
 eh = EncryptionHelper.EncryptionHelper()
 
 @app.route("/")
 def index():
     if "username" in session:
-        return redirect(f"{url_prefix}/chat")
+        return redirect(f"{url_prefix}/home")
     else:
         return redirect(f"{url_prefix}/login")
 
-@app.route("/chat", methods=["GET", "POST"])
+@app.route("/home", methods=["GET"])
 def chat(error=None):
     if 'username' not in session:
         return redirect(f'{url_prefix}/')
@@ -38,25 +42,6 @@ def chat(error=None):
     username = str(session['username']).lower()
     active_chats = []
     sql = SQLHelper.SQLHelper()
-
-    if request.method == 'POST':
-        # Post is used to create a new chat
-        recipient = str(request.form['recipient'])
-
-        # Check if recipient username is valid
-        if recipient is None or recipient == username or len(recipient) > 20:
-            return redirect(f'{url_prefix}/chat')
-
-        # Check if recipient exists
-        user_exists = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{recipient}'")
-
-        if user_exists == []:
-            # User does not exist
-            return redirect(f'{url_prefix}/chat')
-
-        else:
-            # User exists
-            return redirect(f'{url_prefix}/chat/{recipient}')
 
     # Fetch active chats from the database
     active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")
@@ -97,6 +82,85 @@ def chat(error=None):
     
     # Render the home page
     return render_template('home.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=verified)
+
+
+
+@app.route('/chat/<recipient>')
+def open_chat(recipient):
+    if 'username' not in session:
+        return redirect(f'{url_prefix}/')
+    
+    username = str(session['username']).lower()
+    recipient = str(recipient).lower()
+    
+    sql = SQLHelper.SQLHelper()
+    
+    if recipient and recipient != username and len(recipient) <= 20:
+        
+        # Check input validity
+        user_exists = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{recipient}'")
+        if user_exists == []:
+            return redirect(f'{url_prefix}/home')
+    
+        room = generate_hashed_room_name(username, recipient)
+        return redirect(f'{url_prefix}/chat/r/{room}?recipient={recipient}')
+    
+    return redirect(f'{url_prefix}/home')
+
+@socketio.on('join')
+def on_join(data):
+    username = session.get('username')
+    if username:
+        room = data['room']
+        join_room(room)
+        emit('user_join', {'username': username}, room=room)
+
+def get_messages_from_database(room):
+    sql = SQLHelper.SQLHelper()
+    
+    sql_query = f"SELECT * FROM gruttechat_chats WHERE chat_id = '{room}'"
+    messages = sql.readSQL(sql_query)
+    return messages[::-1]
+
+@app.route('/chat/r/<room>')
+def chat_room(room):
+    if 'username' not in session:
+        return redirect(f'{url_prefix}/')
+    
+    username = str(session['username']).lower()
+    recipient = str(request.args.get('recipient')).lower()
+    
+    if not recipient:
+        recipient = "Couldn't get username"
+    
+    # Retrieve messages from the database for the given room
+    messages = get_messages_from_database(room)
+    return render_template('chat.html', room=room, messages=messages, username=username, recipient=recipient)
+
+@socketio.on('send_private_message')
+def handle_private_message(data):
+    sql = SQLHelper.SQLHelper()
+        
+    username = session.get('username')
+    if username:
+        message = data['message']
+        room = data['room']
+        emit('receive_private_message', {'username': username, 'message': message}, room=room)
+
+        # Store the message in the database
+        sql_query = f"INSERT INTO gruttechat_chats (chat_id, author, content) VALUES ('{room}', '{username.lower()}', '{message}')"
+        sql.writeSQL(sql_query)
+
+def generate_hashed_room_name(username1, username2):
+    # Sort the usernames and concatenate them
+    sorted_usernames = sorted([username1, username2])
+    concatenated = ''.join(sorted_usernames)
+
+    # Hash the concatenated string
+    hashed = hashlib.sha256(concatenated.encode()).hexdigest()
+    return hashed
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

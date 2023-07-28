@@ -7,42 +7,7 @@
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
     <link rel="icon" href="https://jan.gruettefien.com/static/gruettechat.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            var username = "{{ username }}";  // Retrieve the value of username from Flask
-            var recipient = "{{ recipient }}";  // Retrieve the value of recipient from Flask
-    
-            function loadMessages() {
-                $.ajax({
-                    url: '{{ url_prefix }}/get_messages',
-                    type: 'GET',
-                    data: {
-                        username: username,  // Pass the value of username as a query parameter
-                        recipient: recipient  // Pass the value of recipient as a query parameter
-                    },
-                    success: function(response) {
-                        $('.chat-messages').empty();  // Clear existing messages
-                        response.messages.forEach(function(message) {
-                            var messageContainer;
-                            if (message[0] === 'You') {
-                                messageContainer = $('<div>').addClass('message right-bubble');
-                            } else {
-                                messageContainer = $('<div>').addClass('message left-bubble');
-                            }
-                            // Create the message content element
-                            var messageContent = $('<div>').addClass('message-content').text(message[1]);
-                            messageContainer.append(messageContent);  // Append message content to the container
-                            $('.chat-messages').append(messageContainer);  // Append the message container to the chat messages container
-                        });
-                    },
-                    complete: function() {
-                        setTimeout(loadMessages, 5000);
-                    }
-                });
-            }
-            loadMessages();
-        });
-    </script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 <body>
     <div class="header">
@@ -56,36 +21,34 @@
         
     </div>
 
-    <div class="chat-messages">
+    <div class="chat-messages" id="chat-messages">
         {% for message in messages %}
-            {% if message[0] == "You" %}
+            {% if message["author"] == username %}
                 <div class="message right-bubble">
-                    {% if message[1] == "#!#DecryptionError#!#" %}
+                    {% if "#!#DecryptionError#!#" in message["content"] %}
                         <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
                     {% else %}
                         <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                        <div class="message-content">{{ message[1] }}</div>
+                        <div class="message-content">{{ message["content"] }}</div>
                     {% endif %}
                 </div>
             {% else %}
                 <div class="message left-bubble">
-                    {% if "#!#DecryptionError#!#" in message[1] %}
+                    {% if "#!#DecryptionError#!#" in message["content"] %}
                         <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
                     {% else %}
                         <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                        <div class="message-content">{{ message[1] }}</div>
+                        <div class="message-content">{{ message["content"] }}</div>
                     {% endif %}
                 </div>
             {% endif %}
         {% endfor %}
     </div>
 
-    <form action="{{ url_prefix }}/chat/{{ recipient }}" method="POST" id="sendMessage">
-        <div class="wrapping-tile">
-            <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
-            <input type="submit" name="send" value="Send" class="send-button">
-        </div>
-    </form>
+    <div class="wrapping-tile">
+        <input type="text" id="message-input" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
+        <button class="send-button" id="send-button">Send</button>
+    </div>
     <div id="cookie-banner"></div>
 </body>
 </html>
@@ -124,5 +87,49 @@
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
 </script>
+
+<script type="text/javascript">
+    const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+    function sendMessage() {
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value;
+        if (message.trim() !== '') {
+            socket.emit('send_private_message', {'message': message, 'room': '{{ room }}'});
+            messageInput.value = '';
+        }
+    }
+
+    document.getElementById('send-button').onclick = sendMessage;
+
+    document.getElementById('message-input').addEventListener('keyup', function(event) {
+        if (event.keyCode === 13) {
+            sendMessage();
+        }
+    });
+
+
+    socket.on('receive_private_message', data => {
+        const chatList = document.getElementById('chat-messages');
+        const messageItem = document.createElement('div');
+    
+        // Determine the class name for the message bubble based on the sender's username
+        const bubbleClassName = data.username === '{{ username }}' ? 'message right-bubble' : 'message left-bubble';
+        messageItem.className = bubbleClassName;
+    
+        // Set the message content
+        let messageContent = data.message;
+    
+        // Set the message item's inner HTML with the message content
+        messageItem.innerHTML = messageContent;
+    
+        // Insert the message item at the beginning of the chat-list
+        chatList.insertBefore(messageItem, chatList.firstChild);
+    });
+    
+    
+    socket.emit('join', {'room': '{{ room }}'});
+</script>
+
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>
