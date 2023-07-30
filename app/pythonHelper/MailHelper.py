@@ -63,7 +63,7 @@ class MailHelper:
         
     
         
-    def send_email(self, recipient_email, username, subject, body, image_url="https://jan.gruettefien.com/static/gruettecloud_logo.png", link=False):
+    def send_email(self, recipient_email, username, subject, body, image_url="https://www.gruettecloud.com/static/gruettecloud_logo.png", link=False):
         additional_br = ""
         if not link:
             additional_br = "<br><br>"
@@ -80,13 +80,13 @@ class MailHelper:
                         <b style="color: #FFFFFF;">Kind regards,<br>Jan from GrütteCloud</b>
                         <br><br><br>
                         <span style="font-size: 0.7em;">
-                            If you think this email was sent by mistake, <a href="https://jan.gruettefien.com/gruettechat/support" style="color: #FFFFFF;">contact us</a>.
+                            If you think this email was sent by mistake, <a href="https://www.gruettecloud.com/v/support" style="color: #FFFFFF;">contact us</a>.
                             <span style="display: inline-flex;">
-                                <a href="https://jan.gruettefien.com/gruettechat/aboutus" style="color: #FFFFFF;">About Us</a>
+                                <a href="https://www.gruettecloud.com/v/aboutus" style="color: #FFFFFF;">About Us</a>
                                 &nbsp;|&nbsp;
-                                <a href="https://jan.gruettefien.com/gruettechat/terms" style="color: #FFFFFF;">Terms of Service</a>
+                                <a href="https://www.gruettecloud.com/v/terms" style="color: #FFFFFF;">Terms of Service</a>
                                 &nbsp;|&nbsp;
-                                <a href="https://jan.gruettefien.com/gruettechat/privacy" style="color: #FFFFFF;">Privacy Policy</a>
+                                <a href="https://www.gruettecloud.com/v/privacy" style="color: #FFFFFF;">Privacy Policy</a>
                             </span>
                         </span>
                     </div>

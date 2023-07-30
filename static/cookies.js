@@ -22,7 +22,7 @@ function loadFonts() {
   if (getCookieStatus() === 'accepted') {
     link.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap';
   } else {
-    link.href = 'https://jan.gruettefien.com/static/Nunito/static/Nunito-SemiBold.ttf';
+    link.href = 'https://www.gruettecloud.com/static/Nunito/static/Nunito-SemiBold.ttf';
   }
 
   document.head.appendChild(link);
