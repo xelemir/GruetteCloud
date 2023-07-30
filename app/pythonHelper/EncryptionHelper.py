@@ -1,5 +1,5 @@
 import json
-from config import url_prefix
+from config import url_prefix, flask_app_path
 from cryptography.fernet import Fernet
 
 
@@ -14,11 +14,9 @@ class EncryptionHelper:
 
     def get_key(self):
         try:
-            if url_prefix == "/gruettechat":
-                path = "/home/jan/wwwroot/gruettechat/gruettechat/app/encryptionkey.json"
-            else:
-                path = "encryptionkey.json"
-            with open(path, 'r') as f:
+            flask_app_path + "encryptionkey.json"
+            
+            with open(flask_app_path, 'r') as f:
                 data = json.load(f)
                 return data['key']
 

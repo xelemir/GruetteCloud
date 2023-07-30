@@ -95,6 +95,10 @@
         </div>
     </div>
 
+    <div id="status-message" class="wrapping-tile" style="display: none; padding: 20px; margin-bottom: 20px; text-align: center; color: var(--yellow); height: 100%; width: 100% margin: 20px;">
+        {{ status }}
+    </div>
+
     <div class="desktop-only" style="width: 100%; align-items: stretch;">
         <div style="flex: 1; text-align: center; margin-right: 10px;">
             <div class="wrapping-tile" style="padding: 20px;">
@@ -103,7 +107,7 @@
                     <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
                         <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Headline" required>
+                                <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Subject" required>
                                 <div class="spaced-tile"></div>
                                 <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Content" maxlength="2000" required>
                             </div>
@@ -115,7 +119,8 @@
                                     <option value="red" style="color: var(--red);">Red</option>
                                     <option value="green" style="color: var(--green);">Green</option>
                                     <option value="purple" style="color: var(--purple);">Purple</option>
-                                </select>                                    <div class="spaced-tile"></div>
+                                </select>
+                                <div class="spaced-tile"></div>
                                 <input type="submit" value="Create Notification" name="send" style="margin-top: 0px; min-width: 100%;" class="send-button">
                             </div>
                         </div>
@@ -141,7 +146,7 @@
             <div class="wrapping-tile" style="padding: 20px; margin-bottom: 20px;">
                 <h2 align="center" style="margin-bottom: 20px;">GrütteIDs ({{ all_users|length }})</h2>
                 <input type="text" id="search-input" placeholder="Search for GrütteID" class="settings-input" style="margin-bottom: 20px; margin-left: 0;"/>
-                <div class="file-list" style="height: 30vh;">
+                <div class="file-list" style="height:{% if platform_message %}50vh{% else %}60vh{% endif %}; overflow-y: scroll; overflow-x: hidden; padding-right: 10px;">
                     {% for user in all_users %}
                         <div class="search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                             {% if not user["has_premium"] %}
@@ -178,7 +183,7 @@
         <div style="width: 60%; margin-left: -15px; padding: 20px; margin-top: -20px; margin-right: -20px;">
             <div class="wrapping-tile" style="padding: 20px; margin-bottom: 20px;">
                 <h2 align="center" style="margin-bottom: 10px;">Access Logs</h2>
-                <div class="file-list" style="height: 80vh; font-size: 0.7em;">
+                <div class="file-list" style="font-size: 0.7em; height: 60vh;">
                     {% for event in events %}
                         <div style="display: block; background-color: var(--secondary-color); border: none; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
                             <p style="font-weight: bold; margin: 0;">
@@ -188,6 +193,36 @@
                         </div>
                     {% endfor %}
                 </div>
+            </div>
+            <div class="wrapping-tile" style="padding: 20px;">
+                <h2 align="center" style="margin-bottom: 20px;">Promo Email</h2>
+                <form action="{{ url_prefix }}/dashboard/sendemail" method="POST">
+                    <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
+                        <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Subject" required>
+                                <div class="spaced-tile"></div>
+                                <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Message" maxlength="2000" required>
+                            </div>
+                        </div>
+                        <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div style="display: inline-flex; width: 100%;">
+                                    <input type="text" id="username" name="username"  autocomplete="off" placeholder="GrütteID" style="margin-right: 0;" required>
+                                    <input type="text" id="otp" name="otp"  autocomplete="off" placeholder="Google Auth OTP" style="margin-left: 20px; margin-right: 0;" required>
+                                </div>
+                                <div class="spaced-tile"></div>
+                                <div style="display: inline-flex; width: 100%;">
+                                    <span style="display: flex; margin: 0; height: 38px;" class="login-input">
+                                        <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                                        <span style="text-align: left;">I have read and accept the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="{{ url_prefix }}/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
+                                    </span>
+                                    <input type="submit" value="Send Email" name="send" style="margin-top: 0px;" class="send-button" style="width: 50%; margin-left: 20px; margin-right: 0;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -201,7 +236,7 @@
                 <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
                     <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
                         <div style="display: flex; flex-direction: column; align-items: center;">
-                            <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Headline" required>
+                            <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Subject" required>
                             <div class="spaced-tile"></div>
                             <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Content" maxlength="2000" required>
                         </div>
@@ -316,10 +351,10 @@
     });
 </script>
 
+{% if status %}
 <script>
     // Show status message and fade out after 5 seconds
     var statusMessage = document.getElementById('status-message');
-    {% if status %}
     statusMessage.style.display = 'block';
         setTimeout(function() {
             statusMessage.style.opacity = '0';
@@ -327,10 +362,10 @@
                 statusMessage.style.display = 'none';
                 statusMessage.style.opacity = '1';
             }, 500);
-            window.location.href = '{{ url_prefix }}/storage';
+            window.location.href = '{{ url_prefix }}/dashboard';
         }, 5000);
-    {% endif %}
 </script>
+{% endif %}
 
 <script>
     // Function to handle search functionality

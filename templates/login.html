@@ -110,51 +110,6 @@
     });
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
-
-  const images = [
-    "https://jan.gruettefien.com/static/GrütteCloud.png",
-    "https://jan.gruettefien.com/static/GrütteStorage.png",
-    "https://jan.gruettefien.com/static/GrütteID.png",
-    "https://jan.gruettefien.com/static/gruettechat.png"
-  ];
-  let currentIndex = 0;
-  const carouselImage = document.getElementById("carousel-image");
-
-  function fadeIn() {
-    let opacity = 0;
-    const fadeInterval = setInterval(() => {
-      opacity += 0.01;
-      carouselImage.style.opacity = opacity.toFixed(2);
-      if (opacity >= 1) {
-        clearInterval(fadeInterval);
-      }
-    }, 10);
-  }
-
-  function fadeOut() {
-    let opacity = 1;
-    const fadeInterval = setInterval(() => {
-      opacity -= 0.01;
-      carouselImage.style.opacity = opacity.toFixed(2);
-      if (opacity <= 0) {
-        clearInterval(fadeInterval);
-        changeImage();
-        fadeIn();
-      }
-    }, 10);
-  }
-
-  function changeImage() {
-    carouselImage.src = images[currentIndex];
-    currentIndex = (currentIndex + 1) % images.length;
-  }
-
-  function startCarousel() {
-    fadeIn();
-    setInterval(fadeOut, 3000);
-  }
-
-  startCarousel();
 </script>
 <script>
     // Show error message and fade out after 5 seconds

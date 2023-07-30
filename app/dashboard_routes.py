@@ -3,11 +3,14 @@ from flask import render_template, request, redirect, session, Blueprint, send_f
 
 import os
 import re
+import pyotp
 
 from pythonHelper import EncryptionHelper, SQLHelper
+from pythonHelper import MailHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip
+from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, auth_admin_key
     
+
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
@@ -39,6 +42,12 @@ def dashboard():
 
     sql = SQLHelper.SQLHelper()
     
+    status = str(request.args.get('error'))
+    if status == "None":
+        status = None
+    elif status == "otp":
+        status = "Invalid OTP, please try again."
+    
     platform_message = sql.readSQL(f"SELECT subject, color FROM gruttechat_platform_messages")
     if platform_message == []:
         platform_message = None
@@ -53,18 +62,21 @@ def dashboard():
         
     log_lines = []
     filtered_log_lines = []
-    with open(f"{logfiles_path}access.log", 'r') as file:
-        log_lines = file.read().splitlines()
-    log_lines.reverse()
+    try:
+        with open(f"{logfiles_path}access.log", 'r') as file:
+            log_lines = file.read().splitlines()
+        log_lines.reverse()
 
-    for entry in log_lines:
-        if str(local_ip) not in entry:
-            date_regex = re.search(r'\[([^\]]+)\]', entry)
-            ip_regex = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry)
-            if date_regex is not None:
-                filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})  
+        for entry in log_lines:
+            if str(local_ip) not in entry:
+                date_regex = re.search(r'\[([^\]]+)\]', entry)
+                ip_regex = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry)
+                if date_regex is not None:
+                    filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})
+    except:
+        pass
     
-    return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines)
+    return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status)
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
 def create_status_message():
@@ -125,3 +137,42 @@ def revoke_plus(username):
     sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {False} WHERE username = '{username}'")
 
     return redirect(f'{url_prefix}/dashboard')
+
+@dashboard_route.route('/dashboard/sendemail', methods=['POST'])
+def send_mail():
+    if 'username' not in session or session['username'] not in admin_users:
+        return redirect(f'{url_prefix}/')
+    
+    email = MailHelper.MailHelper()
+    sql = SQLHelper.SQLHelper()
+    
+    recipient_username = str(request.form["username"])
+    subject = str(request.form["subject"])
+    content = str(request.form["content"])
+    otp = str(request.form["otp"])
+    
+    totp = pyotp.TOTP(auth_admin_key)
+
+    # Validate the OTP
+    if not totp.verify(otp):
+        return redirect(f'{url_prefix}/dashboard?error=otp')
+    
+    recipient = sql.readSQL(f"SELECT email FROM gruttechat_users WHERE username = '{recipient_username}'")
+    
+    if recipient == []:
+        return redirect(f'{url_prefix}/dashboard')
+    else:
+        recipient_email = recipient[0]["email"]
+        
+    email.send_email(recipient_email, recipient_username, subject, content)
+    
+    return redirect(f'{url_prefix}/dashboard')    
+    
+    """email = MailHelper.MailHelper()
+    sql = SQLHelper.SQLHelper()
+    
+    all_users = sql.readSQL(f"SELECT username, email FROM gruttechat_users")
+    
+    for user in all_users:
+        print(user["email"], user["username"])
+        #email.send_email(user["email"], "Gruttechat - Nieuwsbrief", request.form["content"])"""

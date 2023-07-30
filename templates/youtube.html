@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>YouTube downloader | GrütteChat</title>
+    <title>YouTube Downloader | GrütteStorage</title>
     <meta name="description" content="GrütteChat, a new way text.">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://jan.gruettefien.com/static/stylesheet.css">
@@ -25,7 +25,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="{{ url_prefix }}/settings" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_prefix }}/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
@@ -33,7 +33,7 @@
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu" style="z-index: 2;">
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
@@ -46,43 +46,34 @@
         </div>
     </div>
 
-    <div class="centered-div" style="top: 25%;">
-        <div style="text-align: center; margin-bottom: 20px; min-width: 600px; height: auto;">
-            <div id="loading-container" style="display: none;">
-                <h2 style="color: var(--yellow)"><i class="fa fa-spinner fa-spin"></i> Please wait...</h2>
-            </div>
-            <div id="result-container" style="display: none; ">
-                <h2 style="color: var(--yellow)">An error occurred.</h2>
-            </div>
-
-
-            
+    <div class="wrapping-tile centered-div" style="padding: 20px; font-size: 0.7em; z-index: 1;">
+        <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 10px;">YouTube Downloader</h1>
+        <div id="loading-container" style="display: none;">
+            <div class="spaced-tile"></div>
+            <h2 style="color: var(--yellow)"><i class="fa fa-spinner fa-spin"></i> Downloading to GrütteStorage...</h2>
         </div>
-    </div>
-
-    <div class="wrapping-tile centered-div" style="padding: 20px; font-size: 0.7em;">
+        <div id="result-container" style="display: none; ">
+            <h2 style="color: var(--yellow)">An error occurred.</h2>
+        </div>
         <div id="headline" style="display: none;">
             <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-                <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 10px;">YouTube Downloader</h1>
                 <div class="desktop-only" style="font-size: 17px;">powered by</div>
                 <div class="spaced-title"></div>
                 <div style="display: flex; justify-content: center;">
                     <img src="https://jan.gruettefien.com/static/GrütteStorage.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
                 </div>
             </div>
-        </div>
-        <div class="spaced-tile"></div>
-        <form id="youtube-form" action="{{ url_prefix }}/youtube" method="POST" style="flex-direction: column;">
-            <span style="display: flex; width: 300px;" class="login-input">
-                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
-                <span style="text-align: left;">I have read and accept the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="{{ url_prefix }}/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
-            </span>
-            <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
-            <div style="margin-top: 20px">
-                <input type="submit" value="Download to GrütteStorage" name="download" style="min-width: 200px" class="send-button">
-            </div>
-        </form>
-        <div class="spaced-tile"></div>
+            <form id="youtube-form" action="{{ url_prefix }}/youtube" method="POST" style="flex-direction: column;">
+                <span style="display: flex; width: 300px;" class="login-input">
+                    <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                    <span style="text-align: left;">I have read and accept the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="{{ url_prefix }}/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
+                </span>
+                <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
+                <div style="margin-top: 20px">
+                    <input type="submit" value="Download to GrütteStorage" name="download" style="min-width: 200px" class="send-button">
+                </div>
+            </form>
+        </div>                    
     </div>
     <!--<div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
         <div class="spaced-tile"></div>
@@ -237,4 +228,3 @@
       });
     });
   </script>
-  

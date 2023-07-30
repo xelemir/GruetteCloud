@@ -90,7 +90,7 @@
                     {% endif %}
                     {% for file in files %}
                         <div class="search-item file-search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
-                            <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Download">
+                            <a href="{{ url_prefix }}/open/{{ username }}/{{ file[0] }}/download" style="color: var(--text-color); display: block; align-items: center; justify-content: center;" title="Download">
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">download</span>
                                 </button>
@@ -100,13 +100,13 @@
                                     <span class="material-symbols-outlined">{% if file[2] == "youtube" %}youtube_activity{% else %}visibility{% endif %}</span>
                                 </button>
                             </a>
-                            <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Info">
+                            <a href="{{ url_prefix }}/file/{{ username }}/{{ file[0] }}" style="color: var(--text-color); display: block; align-items: center; justify-content: center;" title="Info">
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file[2] == "shared" %} background-color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">info</span>
                                 </button>
                             </a>
                             <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 110px; margin-right: 5px;">
-                                <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: center;">{{ file[1] }}</p>
+                                <p class="text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none; display: block; align-items: center; justify-content: center;">{{ file[1] }}</p>
                             </div>
                             <div class="mock-button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
                                 <p class="filename text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file[0] }}</p>

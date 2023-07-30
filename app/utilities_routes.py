@@ -264,11 +264,11 @@ def download_from_youtube():
         
         return render_template("youtube.html", url_prefix=url_prefix)
     elif request.method == "POST":
-        #try:
-        video_url = str(request.form["video_url"])
-        youtube = YouTubeHelper.YouTubeHelper(url=video_url)
-        #except:
-            #return jsonify({"error": "Something went wrong on our end :/"})
+        try:
+            video_url = str(request.form["video_url"])
+            youtube = YouTubeHelper.YouTubeHelper(url=video_url)
+        except:
+            return jsonify({"error": "Something went wrong on our end :/"})
             
         youtube.download(username=str(session["username"]))
         video_id = youtube.get_media_title()

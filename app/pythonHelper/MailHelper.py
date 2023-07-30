@@ -12,7 +12,7 @@ class MailHelper:
         self.sender_email = gmail_mail
         self.app_password = gmail_app_password
 
-    def send_email(self, recipient_email, subject, message):
+    def send_email_no_template(self, recipient_email, subject, message):
         """ Send an email message using Gmail.
 
         Args:
@@ -61,273 +61,65 @@ class MailHelper:
             print(f'An error occurred while sending the email: {str(e)}')
             return False
         
+    
+        
+    def send_email(self, recipient_email, username, subject, body, image_url="https://jan.gruettefien.com/static/gruettecloud_logo.png", link=False):
+        additional_br = ""
+        if not link:
+            additional_br = "<br><br>"
+        html = f'''
+            <html>
+                <body style="color: #FFFFFF;">
+                    <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 20px; padding: 20px;">
+                        <img src="{image_url}" alt="GrütteCloud Logo" style="max-width: 50%; margin-top: -20px;">
+                        <h1 style="color: #0A84FF; margin-top: -20px;">Hey {username},</h1>
+                        <b style="color: #FFFFFF;">
+                            {body}
+                            {additional_br}
+                        </b>
+                        <b style="color: #FFFFFF;">Kind regards,<br>Jan from GrütteCloud</b>
+                        <br><br><br>
+                        <span style="font-size: 0.7em;">
+                            If you think this email was sent by mistake, <a href="https://jan.gruettefien.com/gruettechat/support" style="color: #FFFFFF;">contact us</a>.
+                            <span style="display: inline-flex;">
+                                <a href="https://jan.gruettefien.com/gruettechat/aboutus" style="color: #FFFFFF;">About Us</a>
+                                &nbsp;|&nbsp;
+                                <a href="https://jan.gruettefien.com/gruettechat/terms" style="color: #FFFFFF;">Terms of Service</a>
+                                &nbsp;|&nbsp;
+                                <a href="https://jan.gruettefien.com/gruettechat/privacy" style="color: #FFFFFF;">Privacy Policy</a>
+                            </span>
+                        </span>
+                    </div>
+                </body>
+            </html>
+        '''
+        self.send_email_no_template(recipient_email, subject, html)
+        
     def send_verification_email(self, recipient_email, username, verification_code):
-        html = f'''
-            <html>
-                <head>
-                    <style>
-                        body {{
-                            background-color: #1B1B1B;
-                            text-align: center;
-                            color: #FFFFFF;
-                        }}
-                        
-                        img {{
-                            padding: 20px;
-                            width: 100px;
-                            height: 100px;
-                            padding-bottom: 0px;
-                        }}
-
-                        .outer-div {{
-                            background-color: #282828;
-                            text-align: center;
-                            color: #FFFFFF;
-                            width: auto;
-                            height: auto;
-                            border-radius: 10px;
-                        }}
-                        
-                        h1, h2 {{
-                            color: #0A84FF;
-                        }}
-                        
-                        a {{
-                            color: #0A84FF;
-                            text-decoration: none;
-                        }}
-                    
-                    </style>
-                </head>
-                <body>
-                    <div class="outer-div">
-                        <div style="text-align: center;">
-                            <img src="https://raw.githubusercontent.com/xelemir/xelemir.github.io/master/media/Gr%C3%BCtteChat.png" alt="GrütteChat Logo" style="max-width: 50%; height: auto; margin-left: auto; margin-right: auto;" /><br>
-                        </div><br>
-                        <h1>Hey {username},</h1>
-                        <b>Thanks for signing up to GrütteChat!<br>
-                        To get started, please enter the following code on the verification page:
-                        <h2><a href="http://jan.gruettefien.com/gruettechat/verify/{username}">{verification_code}</a></h2>
-                        Kind regards,<br>The GrütteChat Team<br><br></b>
-                    </div>
-                </body>
-            </html>
-        '''
-        self.send_email(recipient_email, "Verify your GrütteChat account", html)
-        
-    def send_new_domain_email(self, recipient_email, username):
-        html = f'''
-            <html>
-                <head>
-                    <style>
-                        body {{
-                            background-color: #1B1B1B;
-                            text-align: center;
-                            color: #FFFFFF;
-                        }}
-                        
-                        img {{
-                            padding:20px;
-                            width: 80px;
-                            height: 80px;
-                            padding-bottom: 0px;
-                        }}
-
-                        .outer-div {{
-                            background-color: #282828;
-                            text-align: center;
-                            color: #FFFFFF;
-                            width: auto;
-                            height: auto;
-                            border-radius: 10px;
-                        }}
-                        
-                        h1, h2 {{
-                            color: #0A84FF;
-                        }}
-                        
-                        a {{
-                            color: #0A84FF;
-                            text-decoration: none;
-                        }}
-                    
-                    </style>
-                </head>
-                <body>
-                    <div class="outer-div">
-                        <div style="text-align: center;">
-                            <img src="https://raw.githubusercontent.com/xelemir/xelemir.github.io/master/media/Gr%C3%BCtteChat.png" alt="GrütteChat Logo" style="max-width: 50%; height: auto; margin-left: auto; margin-right: auto;" /><br>
-                        </div><br>
-                        <h1>Hey {username},</h1>
-                        <b>We have a new URL. Check it out!<br>
-                        <h2><a href="https://jan.gruettefien.com/gruettechat">jan.gruettefien.com/gruettechat</a></h2>
-                        Thanks for being an early supporter!<br><br>
-                        Kind regards,<br>The GrütteChat Team<br><br></b>
-                    </div>
-                </body>
-            </html>
-        '''
-        self.send_email(recipient_email, "GrütteChat has a new URL", html)
-
-    def send_sophiaxkn_email(self, recipient_email, username):
-        html = f'''
-            <html>
-                <head>
-                    <style>
-                        body {{
-                            background-color: #1B1B1B;
-                            text-align: center;
-                            color: #FFFFFF;
-                        }}
-                        
-                        img {{
-                            padding:20px;
-                            height: 80%;
-                            padding-bottom: 0px;
-                        }}
-
-                        .outer-div {{
-                            background-color: #282828;
-                            text-align: center;
-                            color: #FFFFFF;
-                            width: auto;
-                            height: auto;
-                            border-radius: 10px;
-                        }}
-                        
-                        h1, h2 {{
-                            color: #0A84FF;
-                        }}
-                        
-                        a {{
-                            color: #0A84FF;
-                            text-decoration: none;
-                        }}
-                    
-                    </style>
-                </head>
-                <body>
-                    <div class="outer-div">
-                        <div style="text-align: center;">
-                            <img src="https://lh3.googleusercontent.com/hUqSAfoaWi3kIS70C2oauHhkWAIHhSNfFlAHjGDBMzkDDSFFLR_H2UiOly7t6zbMFFFsVEw6kaTo1LmwspE=w330-h220-rw" alt="GrütteChat Logo" style="max-width: 80%; height: auto; margin-left: auto; margin-right: auto;" /><br>
-                        </div><br>
-                        <h1>Hey {username},</h1>
-                        <b>Thanks for trusting us with your personal data!<br>
-                        It's in good hands :)<br><br>
-                        Kind regards,<br>The GrütteChat Team<br><br></b>
-                    </div>
-                </body>
-            </html>
-        '''
-        self.send_email(recipient_email, "The GrütteChat Team", html)
-        
-        
-    def send_tip_email(self, recipient_email, username_received, username_send, paid_amount):
-        html = f'''
-            <html>
-                <head>
-                    <style>
-                        body {{
-                            background-color: #1B1B1B;
-                            text-align: center;
-                            color: #FFFFFF;
-                        }}
-                        
-                        img {{
-                            padding:20px;
-                            width: 80px;
-                            height: 80px;
-                            padding-bottom: 0px;
-                        }}
-
-                        .outer-div {{
-                            background-color: #282828;
-                            text-align: center;
-                            color: #FFFFFF;
-                            width: auto;
-                            height: auto;
-                            border-radius: 10px;
-                        }}
-                        
-                        h1, h2 {{
-                            color: #0A84FF;
-                        }}
-                        
-                        a {{
-                            color: #0A84FF;
-                            text-decoration: none;
-                        }}
-                    
-                    </style>
-                </head>
-                <body>
-                    <div class="outer-div">
-                        <div style="text-align: center;">
-                            <img src="https://raw.githubusercontent.com/xelemir/xelemir.github.io/master/media/Gr%C3%BCtteChat.png" alt="GrütteChat Logo" style="max-width: 50%; height: auto; margin-left: auto; margin-right: auto;" /><br>
-                        </div><br>
-                        <h1>Hey {username_received},</h1>
-                        <b>{username_send} has sent you a tip of<br>
-                        <h2>{paid_amount}€</h2>
-                        Kind regards,<br>The GrütteChat Team<br><br></b>
-                    </div>
-                </body>
-            </html>
-        '''
-        self.send_email(recipient_email, "Tip received", html)
+        html = f'Thanks for signing up to GrütteCloud!<br>To get started, please enter the following code on the verification page:<h2 style="color: #0A84FF;"><a style="color: #0A84FF; text-decoration: none;" href="http://jan.gruettefien.com/gruettechat/verify/{username}/{verification_code}">{verification_code}</a></h2>'
+        self.send_email(recipient_email, username, "Verify your GrütteID", html, link=True)
 
     def send_support_mail(self, name, username, email, message):
         html = f'''
             <html>
-                <head>
-                    <style>
-                        body {{
-                            background-color: #1B1B1B;
-                            text-align: center;
-                            color: #FFFFFF;
-                        }}
-                        
-                        img {{
-                            padding: 20px;
-                            width: 100px;
-                            height: 100px;
-                            padding-bottom: 0px;
-                        }}
-
-                        .outer-div {{
-                            background-color: #282828;
-                            text-align: center;
-                            color: #FFFFFF;
-                            width: auto;
-                            height: auto;
-                            border-radius: 10px;
-                        }}
-                        
-                        h1, h2 {{
-                            color: #0A84FF;
-                        }}
-                        
-                        a {{
-                            color: #0A84FF;
-                            text-decoration: none;
-                        }}
-                    
-                    </style>
-                </head>
-                <body>
-                    <div class="outer-div">
-                        <div style="text-align: center;">
-                            <img src="https://raw.githubusercontent.com/xelemir/xelemir.github.io/master/media/Gr%C3%BCtteChat.png" alt="GrütteChat Logo" style="max-width: 50%; height: auto; margin-left: auto; margin-right: auto;" /><br>
-                        </div><br>
-                        <h1>Support request by {name},</h1>
-                        <b>Username: {username}<br>
-                        Email: {email}<br>
-                        Message: {message}<br><br>
+                <body style="color: #FFFFFF;">
+                    <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 10px; padding: 20px;">
+                        <h1 style="color: #0A84FF; margin-top: -20px;">New Support Request</h1>
+                        <b>
+                            Name: {name}<br>
+                            Username: {username}<br>
+                            Email: {email}<br>
+                            Message: {message}<br><br>
+                        </b>
                     </div>
                 </body>
             </html>
         '''
-        self.send_email(gmail_mail, "New support ticket", html)
+        self.send_email_no_template(gmail_mail, "New support ticket", html)
 
 if __name__ == "__main__":
+    sophia_img = "https://lh3.googleusercontent.com/hUqSAfoaWi3kIS70C2oauHhkWAIHhSNfFlAHjGDBMzkDDSFFLR_H2UiOly7t6zbMFFFsVEw6kaTo1LmwspE=w330-h220-rw"
     mail = MailHelper()
-    #mail.send_verification_email("email@example.com", "user1", "123456")
+    mail.send_verification_email("gruttefien@gmail.com", "tester2", "468415")
+    #mail.send_email("gruttefien@gmail.com", "jan", "Test", "HEHEHEHHE DOPPEL D")
+    

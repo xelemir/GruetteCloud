@@ -140,3 +140,36 @@ def verify(username):
     
     # Render the verification page
     return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified, url_prefix = url_prefix)
+
+@loginSignUp_route.route('/verify/<username>/<code>')
+def verify_code(username, code):
+    if "username" in session or username is None:
+        return redirect(f'{url_prefix}/')
+    
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(username)}'")
+    
+    # User does not exist
+    if user == []:
+        return redirect(f'{url_prefix}/')
+    
+    # User exists
+    else:
+        # Get email and verification code from database 
+        email = user[0]["email"]
+        verification_code = user[0]["verification_code"]
+        already_verified = user[0]["is_verified"]
+        
+        # Check if the code is correct, if so, verify the user and log them in
+        if code == verification_code:
+            sql.writeSQL(f"UPDATE gruttechat_users SET is_verified = {True} WHERE username = '{str(username)}'")
+            session['username'] = username
+            session.permanent = True
+            return redirect(f'{url_prefix}/')
+        
+        # If the code is incorrect, display an error
+        else:
+            error = "The code you entered is incorrect"
+    
+    # Render the verification page
+    return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified, url_prefix = url_prefix)
