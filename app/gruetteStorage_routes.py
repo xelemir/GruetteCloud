@@ -72,7 +72,9 @@ def get_files(username):
         os.makedirs(user_shared_directory)
         
     # Create user YouTube directory if it doesn't exist
-    user_yt_directory = os.path.join(gruetteStorage_path, username, "YouTube")    
+    user_yt_directory = os.path.join(gruetteStorage_path, username, "YouTube") 
+    if not os.path.exists(user_yt_directory):
+        os.makedirs(user_yt_directory)   
 
     # Get list of files in user directory and remove shared directory
     files = os.listdir(user_directory)

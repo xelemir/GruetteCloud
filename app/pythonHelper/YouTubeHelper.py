@@ -23,6 +23,8 @@ class YouTubeHelper:
         """
         yt = YouTube(url)
         try:
+            print("Checking availability of video...")
+            print(url)
             yt.check_availability()
             self.url = url
             self.media_title = secure_filename(yt.title)

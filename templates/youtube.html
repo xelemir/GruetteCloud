@@ -56,26 +56,30 @@
             </div>
 
 
-            <div id="headline" style="display: none;">
-                <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-                    <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 20px;">YouTube Downloader</h1>
-                    <div class="desktop-only" style="font-size: 17px;">powered by</div>
-                    <div class="spaced-title"></div>
-                    <div style="display: flex; justify-content: center;">
-                        <img src="https://jan.gruettefien.com/static/GrütteStorage.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
+    <div class="wrapping-tile centered-div" style="padding: 20px; font-size: 0.7em;">
+        <div id="headline" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
+                <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 10px;">YouTube Downloader</h1>
+                <div class="desktop-only" style="font-size: 17px;">powered by</div>
+                <div class="spaced-title"></div>
+                <div style="display: flex; justify-content: center;">
+                    <img src="https://jan.gruettefien.com/static/GrütteStorage.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
+                </div>
+            </div>
+        </div>
         <div class="spaced-tile"></div>
-        <h3>Downloaded videos can be found on<br><a href="{{ url_prefix }}/storage" style="color: var(--text-color);">GrütteStorage</a>.<br>Downloading videos is only allowed for personal use<br>and may be illegal in your country.</h3>
         <form id="youtube-form" action="{{ url_prefix }}/youtube" method="POST" style="flex-direction: column;">
+            <span style="display: flex; width: 300px;" class="login-input">
+                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                <span style="text-align: left;">I have read and accept the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="{{ url_prefix }}/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
+            </span>
             <input type="text" id="video_url" name="video_url" class="login-input" autocomplete="off" placeholder="Video URL" style="width: 300px; margin-right: 0px;" required>
             <div style="margin-top: 20px">
-                <input type="submit" value="Download video" name="download" style="min-width: 200px" class="send-button">
+                <input type="submit" value="Download to GrütteStorage" name="download" style="min-width: 200px" class="send-button">
             </div>
         </form>
         <div class="spaced-tile"></div>
@@ -188,7 +192,7 @@
             // Check if the response contains the file URL
             if (response && response.filename) {
               // Redirect to the file download URL
-              window.location.href = '{{ url_prefix }}/youtube/' + response.filename;
+              window.location.href = '{{ url_prefix }}/storage';
   
               // Hide the loading animation
               $('#loading-container').hide();

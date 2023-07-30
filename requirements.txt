@@ -2,5 +2,5 @@ flask
 cryptography
 openai
 paypalrestsdk
-mysqlclient
+mysqlclient==2.1.1
 pytube
