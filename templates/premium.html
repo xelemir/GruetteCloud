@@ -70,17 +70,20 @@
 			<p>• Access to all upcoming features</p>
 		</div>
 		<div class="spaced-tile"><br></div>
-		<p>Only 2.99 € for lifetime access*</p>
+		<!--<p>Only 2.99 € for lifetime access*</p>-->
+		<p>Get lifetime access*. It's FREE</p>
 		<form action="{{ url_prefix }}/payment" method="POST">
 			<input type="submit" value="Unlock now!*" class="buy-now-button">
 		</form>
 		<div class="spaced-tile"><br></div>
 		<div style="text-align: center; font-size: 10px;">
-			* We currently only accept PayPal as a payment method, sorry about that :/<br>
-			14-day money-back guarantee if you are not satisfied with GrütteCloud PLUS.<br>
+			<!--* We currently only accept PayPal as a payment method, sorry about that :/<br>
+			14-day money-back guarantee if you are not satisfied with GrütteCloud PLUS.<br>-->
+			GrütteCloud PLUS is free. We reserve the right to change this at any time.<br>
 			GrütteCloud PLUS will give you lifetime access to all PLUS features as mentioned above.<br>
+			Lifetime means as long as the service is available. Visit the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> for more info.<br>
 			However we reserve the right to change the features of GrütteCloud PLUS at any time.<br>
-			GrütteCloud PLUS was formerly known as GrütteChat PLUS. Mentions of GrütteChat PLUS refer to GrütteCloud PLUS.
+			EU-platform for online dispute resolution: <a href="https://ec.europa.eu/consumers/odr" style="color: var(--text-color);">https://ec.europa.eu/consumers/odr</a>
 		</div>
 		<div class="spaced-tile"></div>
 	</div>
@@ -109,46 +112,46 @@
 </html>
 
 <script>
-		// Dark mode toggle functionality
-		var darkModeToggle = document.getElementById('darkModeToggle');
-		var body = document.body;
-		var isDarkMode = localStorage.getItem('darkMode');
+	// Dark mode toggle functionality
+	var darkModeToggle = document.getElementById('darkModeToggle');
+	var body = document.body;
+	var isDarkMode = localStorage.getItem('darkMode');
 
-		if (isDarkMode === 'true') {
-				body.classList.add('dark-mode');
-				document.documentElement.setAttribute('data-theme', 'dark');
-				darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+	if (isDarkMode === 'true') {
+		body.classList.add('dark-mode');
+		document.documentElement.setAttribute('data-theme', 'dark');
+		darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+	}
+
+	darkModeToggle.addEventListener('click', function() {
+		if (body.classList.contains('dark-mode')) {
+			body.classList.remove('dark-mode');
+			localStorage.setItem('darkMode', 'false');
+			document.documentElement.setAttribute('data-theme', 'light');
+			darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
+		} else {
+			body.classList.add('dark-mode');
+			localStorage.setItem('darkMode', 'true');
+			document.documentElement.setAttribute('data-theme', 'dark');
+			darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
 		}
+	});
 
-		darkModeToggle.addEventListener('click', function() {
-				if (body.classList.contains('dark-mode')) {
-						body.classList.remove('dark-mode');
-						localStorage.setItem('darkMode', 'false');
-						document.documentElement.setAttribute('data-theme', 'light');
-						darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-				} else {
-						body.classList.add('dark-mode');
-						localStorage.setItem('darkMode', 'true');
-						document.documentElement.setAttribute('data-theme', 'dark');
-						darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-				}
-		});
-
-		darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+	darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
 </script>
 <script>
-		// Show error message and fade out after 5 seconds
-		var errorMessage = document.getElementById('error-message');
-		{% if error %}
-				errorMessage.style.display = 'block';
-				setTimeout(function() {
-						errorMessage.style.opacity = '0';
-						setTimeout(function() {
-								errorMessage.style.display = 'none';
-								errorMessage.style.opacity = '1';
-						}, 500);
-				}, 5000);
-		{% endif %}
+	// Show error message and fade out after 5 seconds
+	var errorMessage = document.getElementById('error-message');
+	{% if error %}
+			errorMessage.style.display = 'block';
+			setTimeout(function() {
+					errorMessage.style.opacity = '0';
+					setTimeout(function() {
+							errorMessage.style.display = 'none';
+							errorMessage.style.opacity = '1';
+					}, 500);
+			}, 5000);
+	{% endif %}
 </script>
 
 <script src="https://jan.gruettefien.com/static/cookies.js"></script>

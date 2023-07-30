@@ -65,7 +65,7 @@ def signup():
         email = str(request.form['email']).lower()
         password = str(request.form['password'])
         password_confirm = str(request.form['password2'])
-        
+                
         # Check if input is valid
         if password != password_confirm:
             return render_template('signup.html', error='Passwords do not match', url_prefix = url_prefix)

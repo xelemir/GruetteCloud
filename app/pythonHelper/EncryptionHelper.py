@@ -15,16 +15,18 @@ class EncryptionHelper:
     def get_key(self):
         try:
             path = flask_app_path + "encryptionkey.json"
+            print(path)
             
             with open(path, 'r') as f:
                 data = json.load(f)
                 return data['key']
 
         except FileNotFoundError:
-            self.create_new_key()
+            return False
+            """self.create_new_key()
             with open('encryptionkey.json', 'r') as f:
                 data = json.load(f)
-                return data['key']
+                return data['key']"""
 
     def encrypt_message(self, message):
         cipher_suite = Fernet(self.key)
@@ -33,13 +35,13 @@ class EncryptionHelper:
         return encrypted_message_number
 
     def decrypt_message(self, encrypted_message_number):
-        try:
+        #try:
             cipher_suite = Fernet(self.key)
             encrypted_message = self.number_to_string(encrypted_message_number)
             decrypted_message = cipher_suite.decrypt(bytes(encrypted_message, 'utf-8')).decode()
             return decrypted_message
-        except Exception as e:
-            return False
+        #except Exception as e:
+            #return False
     
     def string_to_number(self, string):    
         encoded_string = string.decode('utf-8')
