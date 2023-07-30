@@ -71,7 +71,7 @@ def premium():
 
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteChat PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix = url_prefix)
+            return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix = url_prefix)
         
         # If user does not have premium, render premium ad page
         else:
@@ -104,15 +104,19 @@ def payment():
         
         # Else, create payment and redirect user to PayPal
         else:
+            # Gift PLUS as apparently I am not allowed to make money with this!?!
+            sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
+            return render_template("settings.html", error="You now have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix=url_prefix)
+            
 
-            paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
+            """paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
             
             if paypal_response != "Something went wrong on our end :/":
                 return paypal_response
             
             # Payment creation failed
             else:
-                return render_template("premium.html", error="Payment error, please try again.", url_prefix=url_prefix)
+                return render_template("premium.html", error="Payment error, please try again.", url_prefix=url_prefix)"""
 
 @premium_route.route('/success')
 def success():

@@ -71,6 +71,8 @@ def signup():
             return render_template('signup.html', error='Passwords do not match', url_prefix = url_prefix)
         elif username == '' or password == '':
             return render_template('signup.html', error='Please enter a username and password', url_prefix = url_prefix)
+        elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/']] != []:
+            return render_template('signup.html', error='Please do not use special characters in your GrütteID', url_prefix = url_prefix)
         elif len(username) > 20:
             return render_template('signup.html', error='Username must be less than 20 characters', url_prefix = url_prefix)
         elif len(password) > 40 or len(password) < 8:
@@ -81,7 +83,7 @@ def signup():
         # Check if the username already exists
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
         if search_username != []:
-            return render_template('signup.html', error='Username already taken', url_prefix = url_prefix)
+            return render_template('signup.html', error='GrütteID already taken', url_prefix = url_prefix)
         
         # Else create new user
         else:

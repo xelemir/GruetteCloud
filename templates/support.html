@@ -50,14 +50,14 @@
         <div id="error-message" style="display: none;">
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
-        <h2>Hey, we're happy to assist :)</h2>
+        <h2>We're happy to assist you :)</h2>
         <form action="{{ url_prefix }}/support" method="POST" style="flex-direction: column;">
-            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name" style="width: 300px; margin-right: 0px;" required>
-            <input type="text" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Your Email" style="width: 300px; margin-right: 0px;" required>
-            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Your GrütteID" style="width: 300px; margin-right: 0px;" required>
-            <textarea id="message" name="message" class="login-input" autocomplete="off" placeholder="Your message" style="width: 300px; margin-right: 0px; height: 200px; resize: vertical;" maxlength="2000" required></textarea>
+            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Name" style="width: 300px; margin-right: 0px;">
+            <input type="text" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Email" style="width: 300px; margin-right: 0px;">
+            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 300px; margin-right: 0px;">
+            <textarea id="message" name="message" class="login-input" autocomplete="off" placeholder="Message" style="width: 300px; margin-right: 0px; height: 200px; resize: vertical;" maxlength="2000" required></textarea>
             <div style="margin-top: 20px">
-                <input type="submit" value="Send message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
+                <input type="submit" value="Send Message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
             </div>
         </form>
         
