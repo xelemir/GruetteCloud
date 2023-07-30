@@ -120,6 +120,6 @@ class MailHelper:
 if __name__ == "__main__":
     sophia_img = "https://lh3.googleusercontent.com/hUqSAfoaWi3kIS70C2oauHhkWAIHhSNfFlAHjGDBMzkDDSFFLR_H2UiOly7t6zbMFFFsVEw6kaTo1LmwspE=w330-h220-rw"
     mail = MailHelper()
-    mail.send_verification_email("gruttefien@gmail.com", "tester2", "468415")
-    #mail.send_email("gruttefien@gmail.com", "jan", "Test", "HEHEHEHHE DOPPEL D")
+    mail.send_verification_email("test@gmail.com", "tester2", "468415")
+    #mail.send_email("test@gmail.com", "jan", "Test", "HEHEHEHHE DOPPEL D")
     

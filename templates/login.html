@@ -43,21 +43,20 @@
     </div>
       
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px; box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);">
+    <div class="wrapping-tile centered-div" style="font-size: 13px; padding: 30px; box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);">
         <div id="error-message" style="display: none;">
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
         <form action="{{ url_prefix }}/login" method="POST" style="flex-direction: column;">
-            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Username" style="width: 300px; margin-right: 0px;">
-            <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 300px; margin-right: 0px;">
-            <div style="margin-top: 20px">
-                <input type="submit" value="Login" name="login" style="margin-right: 10px" class="send-button left-login">
-                <input type="submit" value="Sign Up" name="signup" style="margin-left: 10px" class="send-button right-login">
+            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Username" style="width: 250px; margin: 0px;">
+            <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 250px; margin: 0px; margin-top: 20px;">
+            <div style="display: inline-flex; width: 100%; margin-top: 30px;">
+                <input type="submit" value="Log In" name="login" style="margin-right: 10px; width: 50%;" class="send-button left-login ">
+                <input type="submit" value="Sign Up" name="signup" style="margin-left: 10px; width: 50%;" class="send-button right-login">
             </div>
         </form>
         <br>
         Trouble logging in? <a href="{{ url_prefix }}/support" style="color: var(--text-color)">Reset your password</a>
-        <div class="spaced-tile"></div>
     </div>
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
       <div style="display: flex;">
@@ -66,13 +65,13 @@
               <div style="white-space: nowrap; line-height: 1em;">
                   <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
                   <a class="footer-link" href="{{ url_prefix }}/about">What is GrütteChat?</a><br>
-                  <a class="footer-link" href="{{ url_prefix }}/support">Contact support</a>
+                  <a class="footer-link" href="{{ url_prefix }}/support">Contact Support</a>
               </div>
           </div>
           <div style="width: 50%; text-align: left;">
               <b style="font-size: 0.9em;">Legal</b>
               <div style="white-space: nowrap; line-height: 1em;">
-                  <a class="footer-link" href="{{ url_prefix }}/aboutus">About Us</a><br>
+                  <a class="footer-link" href="{{ url_prefix }}/aboutus">Über Uns</a><br>
                   <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
                   <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
               </div>
