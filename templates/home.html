@@ -174,7 +174,7 @@
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
 
-
+    {% if not has_premium %}
     // GrütteCloud PLUS banner functionality
     document.addEventListener('DOMContentLoaded', function () {
         const banner = document.getElementById('premium-banner');
@@ -200,6 +200,7 @@
             banner.style.display = 'none';
         });
     });
+    {% endif %}
 </script>
 
 <script>

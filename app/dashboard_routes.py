@@ -8,7 +8,7 @@ import pyotp
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import MailHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, auth_admin_key
+from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, auth_admin_key, excluded_users
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
@@ -47,6 +47,12 @@ def dashboard():
         status = None
     elif status == "otp":
         status = "Invalid OTP, please try again."
+    elif status == "no_recipient":
+        status = "No recipient specified."
+    elif status == "invalid_recipient":
+        status = "Invalid recipient specified."
+    elif status == "sent":
+        status = "Email(s) sent."
     
     platform_message = sql.readSQL(f"SELECT subject, color FROM gruttechat_platform_messages")
     if platform_message == []:
@@ -150,6 +156,9 @@ def send_mail():
     subject = str(request.form["subject"])
     content = str(request.form["content"])
     otp = str(request.form["otp"])
+    send_to_all = False
+    if "sendtoall" in request.form:
+        send_to_all = True
     
     totp = pyotp.TOTP(auth_admin_key)
 
@@ -157,22 +166,24 @@ def send_mail():
     if not totp.verify(otp):
         return redirect(f'{url_prefix}/dashboard?error=otp')
     
-    recipient = sql.readSQL(f"SELECT email FROM gruttechat_users WHERE username = '{recipient_username}'")
+    if recipient_username == "" and not send_to_all:
+        return redirect(f'{url_prefix}/dashboard?error=no_recipient')
     
-    if recipient == []:
-        return redirect(f'{url_prefix}/dashboard')
+    if not send_to_all:
+    
+        recipient = sql.readSQL(f"SELECT email FROM gruttechat_users WHERE username = '{recipient_username}'")
+    
+        if recipient == []:
+            return redirect(f'{url_prefix}/dashboard?error=invalid_recipient')
+        else:
+            recipient_email = recipient[0]["email"]
+            
+        email.send_email(recipient_email, recipient_username, subject, content)
+        return redirect(f'{url_prefix}/dashboard?error=sent')
+    
     else:
-        recipient_email = recipient[0]["email"]
-        
-    email.send_email(recipient_email, recipient_username, subject, content)
-    
-    return redirect(f'{url_prefix}/dashboard')    
-    
-    """email = MailHelper.MailHelper()
-    sql = SQLHelper.SQLHelper()
-    
-    all_users = sql.readSQL(f"SELECT username, email FROM gruttechat_users")
-    
-    for user in all_users:
-        print(user["email"], user["username"])
-        #email.send_email(user["email"], "Gruttechat - Nieuwsbrief", request.form["content"])"""
+        for user in sql.readSQL(f"SELECT username, email FROM gruttechat_users"):
+            if user["username"] not in excluded_users:
+                email.send_email(user["email"], user["username"], subject, content)
+                
+        return redirect(f'{url_prefix}/dashboard?error=sent')

@@ -24,6 +24,11 @@
         <div class="dark-mode-toggle">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
+        <div class="centered-content mobile-only">
+            <a href="{{ url_prefix }}/" class="logo" title="Home">
+                <img class="cycleImage" src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+            </a>
+        </div>
     </div>
 
     <!--<div class="centered-div" style="top: 25%;">
@@ -33,21 +38,22 @@
             <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
         </div>
     </div>-->
-    <div class="centered-div" style="top: 25%;">
+    <div class="centered-div desktop-only" style="top: 25%;">
         <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-            <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 20px;">Welcome to GrütteCloud!</h1>
+            <h1 style="font-size: 2.5em; font-weight: bold; margin-bottom: 0;">Welcome to:</h1>
             <div style="display: flex; justify-content: center;">
-                <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
-            </div>
+                <img class="cycleImage" src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 200px; height: auto; margin-top: 20px;">
+            </div>           
         </div>
     </div>
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding: 30px; box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);">
+    <div class="wrapping-tile centered-div" style="font-size: 13px; padding: 20px; box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);">
         <div id="error-message" style="display: none;">
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
         <form action="{{ url_prefix }}/login" method="POST" style="flex-direction: column;">
-            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Username" style="width: 250px; margin: 0px;">
+            <h1 class="mobile-only" style="font-size: 1.5em; font-weight: bold; margin-bottom: 20px;">Welcome to GrütteCloud</h1>
+            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 250px; margin: 0px;">
             <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 250px; margin: 0px; margin-top: 20px;">
             <div style="display: inline-flex; width: 100%; margin-top: 30px;">
                 <input type="submit" value="Log In" name="login" style="margin-right: 10px; width: 50%;" class="send-button left-login ">
@@ -125,3 +131,38 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+<script>
+    // Array to store the image URLs
+    const imageUrls = [
+      "https://www.gruettecloud.com/static/gruettechat.png",
+      "https://www.gruettecloud.com/static/GrütteStorage.png",
+      "https://www.gruettecloud.com/static/GrütteID.png",
+      "https://www.gruettecloud.com/static/gruettecloud_logo.png"
+    ];
+  
+    // Function to cycle through the images
+    function cycleImages() {
+        const imgElements = document.getElementsByClassName("cycleImage");
+        for (let i = 0; i < imgElements.length; i++) {
+            const imgElement = imgElements[i];
+            const currentSrc = imgElement.getAttribute("src");
+            const currentIndex = imageUrls.indexOf(currentSrc);
+            const nextIndex = (currentIndex + 1) % imageUrls.length;
+            imgElement.setAttribute("src", imageUrls[nextIndex]);
+        }
+
+
+
+
+
+      /*const currentSrc = imgElement.getAttribute("src");
+      const currentIndex = imageUrls.indexOf(currentSrc);
+      const nextIndex = (currentIndex + 1) % imageUrls.length;
+      imgElement.setAttribute("src", imageUrls[nextIndex]);*/
+    }
+  
+    // Call the cycleImages function every 3 seconds (3000 milliseconds)
+    setInterval(cycleImages, 3000);
+</script>
+  

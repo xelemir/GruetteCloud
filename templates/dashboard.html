@@ -208,16 +208,16 @@
                         <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <div style="display: inline-flex; width: 100%;">
-                                    <input type="text" id="username" name="username"  autocomplete="off" placeholder="GrütteID" style="margin-right: 0;" required>
+                                    <input type="text" id="username" name="username"  autocomplete="off" placeholder="GrütteID" style="margin-right: 0;">
                                     <input type="text" id="otp" name="otp"  autocomplete="off" placeholder="Google Auth OTP" style="margin-left: 20px; margin-right: 0;" required>
                                 </div>
                                 <div class="spaced-tile"></div>
                                 <div style="display: inline-flex; width: 100%;">
-                                    <span style="display: flex; margin: 0; height: 38px;" class="login-input">
-                                        <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
-                                        <span style="text-align: left;">I have read and accept the <a href="{{ url_prefix }}/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="{{ url_prefix }}/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
+                                    <span style="display: inline-flex; align-items: center; margin: 0; height: 38px; width: 50%;" class="login-input">
+                                        <input type="checkbox" id="sendtoall" name="sendtoall" style="margin-right: 10px;">
+                                        <span style="text-align: left;">Send to all.</span>
                                     </span>
-                                    <input type="submit" value="Send Email" name="send" style="margin-top: 0px;" class="send-button" style="width: 50%; margin-left: 20px; margin-right: 0;">
+                                    <input type="submit" value="Send Email" name="send" class="send-button" style="width: 50%; margin-left: 20px; margin-right: 0;">
                                 </div>
                             </div>
                         </div>

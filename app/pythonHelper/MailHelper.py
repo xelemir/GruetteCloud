@@ -69,9 +69,20 @@ class MailHelper:
             additional_br = "<br><br>"
         html = f'''
             <html>
+                <head>
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
+                    <style>
+                        body {{
+                            font-family: 'Nunito', sans-serif;
+                            font-size: 1em;
+                        }}
+                    </style>
+                </head>
                 <body style="color: #FFFFFF;">
                     <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 20px; padding: 20px;">
-                        <img src="{image_url}" alt="GrütteCloud Logo" style="max-width: 50%; margin-top: -20px;">
+                        <img src="{image_url}" alt="GrütteCloud Logo" style="max-width: 200px; margin-top: -20px;">
                         <h1 style="color: #0A84FF; margin-top: -20px;">Hey {username},</h1>
                         <b style="color: #FFFFFF;">
                             {body}
@@ -80,7 +91,7 @@ class MailHelper:
                         <b style="color: #FFFFFF;">Kind regards,<br>Jan from GrütteCloud</b>
                         <br><br><br>
                         <span style="font-size: 0.7em;">
-                            If you think this email was sent by mistake, <a href="https://www.gruettecloud.com/v/support" style="color: #FFFFFF;">contact us</a>.
+                            If you think this email was sent by mistake, <a href="https://www.gruettecloud.com/v/support" style="color: #FFFFFF;">contact us</a>.<br>
                             <span style="display: inline-flex;">
                                 <a href="https://www.gruettecloud.com/v/aboutus" style="color: #FFFFFF;">About Us</a>
                                 &nbsp;|&nbsp;
