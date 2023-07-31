@@ -73,7 +73,6 @@
             <div style="width: 50%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
                 <div class="wrapping-tile">
                     <h1>MyAI personality</h1>
-                    Adjust MyAI's personality to your taste
                     <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%; margin-bottom: 10px;">
                         {% if selected_personality != 'Default' %}
                         <option value="{{ url_prefix }}/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
@@ -108,14 +107,14 @@
                 </div>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="padding-bottom: 20px;">
-                    <h1>YouTube Downloader</h1>
-                    The YouTube Downloader allows you to download videos from YouTube.<br>
-                    Downloading videos from YouTube may be illegal in some countries. Please comply with local laws.<br>
-                    Your videos will be downloaded right into GrütteStorage.<br>
-                    <div class="spaced-tile"></div>
-                    <div class="spaced-tile"></div>
-                    <button class="settings-button"><a href="{{ url_prefix }}/youtube" style="text-decoration: none; color: var(--white-color);">YouTube Downloader</a></button>
-                    
+                    <h1>Two-Factor Authentication</h1>
+                    {% if not is_two_fa_enabled %}
+                    <p>Two-Factor Authentication (2FA) is a security feature that adds an extra layer of security to your account. When you log in, you'll need to enter your password and a special code you get from your phone.</p>
+                    <button class="settings-button"><a href="{{ url_prefix }}/2fa/enable" style="text-decoration: none; color: var(--white-color);">Enable 2FA</a></button>
+                    {% else %}
+                    <p>You have 2FA enabled. If you want to disable it, click the button below.</p>
+                    <button class="settings-button"><a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color);">Disable 2FA</a></button>
+                    {% endif %}
                 </div>
             </div>
             <div class="wrapping-tile" style="width: 50%; margin: 0 auto; margin-right: 0; margin-left: 10px;">

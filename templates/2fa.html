@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Verify | GrütteCloud</title>
+    <title>Two-Factor Authentication | GrütteCloud</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">    <style>
@@ -20,58 +20,37 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+            <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>        </div>
         </div>
     </div>
 
-    {% if already_verified %}
-        <div class="centered-div" style="top: 50%;">
-            <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-                <a href="{{ url_prefix }}/" style="color: var(--text-color);">
-                    <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;">
-                </a>
-                <div class="spaced-tile"><br><br></div>
-                <h1 style="font-size: 20px; font-weight: bold">{{ username }} has already verfied their email.<h1>
-                <div class="spaced-tile"></div>
-                <div class="spaced-tile"></div>
-                <a href="{{ url_prefix }}/" style="color: var(--text-color);">
-                    <h1 style="font-size: 20px; font-weight: bold">Back to login<h1>
-                </a>
-            </div>
-        </div>
-    {% endif %}
 
-
-    {% if not already_verified %}
-        <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px;">
-            <div class="inner-tile">
-            <div style="font-size: 20px;">A verification code has been sent to</div>
-            <div style="font-size: 20px;">{{ email }}</div>
-            </div>
-            <div class="spaced-tile"></div>
-            <form method="POST" style="flex-direction: column;"> 
-                <div id="error-message" style="display: none;">
-                    <p style="color: var(--yellow)">{{ error }}</p>
-                </div>           
-                <div style="display: inline;">
-                    <input type="text" id="code0" maxlength="6" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" id="code1" maxlength="5" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" id="code2" maxlength="4" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" id="code3" maxlength="3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" id="code4" maxlength="2" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                    <input type="text" id="code5" maxlength="1" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                  </div>
-                  <input type="hidden" name="username" value="{{ username }}">
-                  <div style="margin-top: 20px">
-                    <input type="submit" value="Verify account" name="login" class="signup-button">
-                  </div>
-                  
-            </form>
-            <br>
-            <a href="{{ url_prefix }}/" style="color: var(--text-color);">Back to login</a>
-            <div class="spaced-tile"></div>
-        </div>
-    {% endif %}
+    <div class="wrapping-tile centered-div" style="font-size: 13px; padding: 20px;">
+        <div style="font-size: 20px;">Hey, {{ username }}</div>
+        <div style="font-size: 20px;">Please enter the 2FA code<br>from your authentication app.</div>
+        <div class="spaced-tile"></div>
+        <form method="POST" style="flex-direction: column;"> 
+            <div id="error-message" style="display: none;">
+                <p style="color: var(--yellow)">{{ error }}</p>
+            </div>           
+            <div style="display: inline;">
+                <input type="text" id="code0" maxlength="6" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                <input type="text" id="code1" maxlength="5" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                <input type="text" id="code2" maxlength="4" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                <input type="text" id="code3" maxlength="3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                <input type="text" id="code4" maxlength="2" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                <input type="text" id="code5" maxlength="1" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                </div>
+                <input type="hidden" name="username" value="{{ username }}">
+                <div style="margin-top: 20px">
+                <input type="submit" value="Log In" name="login" class="signup-button">
+                </div>
+                
+        </form>
+        <br>
+        <a href="{{ url_prefix }}/support" style="color: var(--text-color)">Trouble logging in?</a>
+    </div>
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
             <div style="width: 50%; margin-right: 20px; text-align: left;">

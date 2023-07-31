@@ -120,6 +120,7 @@ def change_email():
     new_email = str(request.form["new_email"])
     password_form = str(request.form["password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    
 
     if user == []:
         return render_template("settings.html", verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False, url_prefix=url_prefix)

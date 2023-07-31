@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, session, Blueprint
 import random
 
+import pyotp
+
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
 from config import url_prefix, templates_path
     
@@ -37,6 +39,11 @@ def login():
             if bool(user[0]["is_verified"]) == False:
                 return redirect(f'{url_prefix}/verify/{username}')
             
+            # Check if 2FA is enabled
+            if bool(user[0]["is_2fa_enabled"]) == True:
+                session['username_2fa'] = username
+                return redirect(f'{url_prefix}/2fa')
+            
             # Log the user in
             else:
                 session['username'] = username
@@ -50,6 +57,37 @@ def login():
     # If user does not exist
     else:
         return render_template('login.html', error='Invalid login credentials', url_prefix = url_prefix)
+    
+@loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
+def two_fa():
+    if "username" in session or "username_2fa" not in session:
+        return redirect(f'{url_prefix}/')
+    if request.method == "GET":
+        return render_template('2fa.html', url_prefix=url_prefix, username=session['username_2fa'])
+    if request.method == "POST":
+        sql = SQLHelper.SQLHelper()
+        
+        entered_code = str(request.form['code0']) + str(request.form['code1']) + str(request.form['code2']) + str(request.form['code3']) + str(request.form['code4']) + str(request.form['code5'])
+        username = session['username_2fa']
+    
+        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+        user_secret_key = user[0]["secret_key"]
+        
+        totp = pyotp.TOTP(user_secret_key)
+
+        # Validate the OTP
+        if totp.verify(entered_code):
+            session.pop('username_2fa', None)
+            session['username'] = username
+            session.permanent = True
+            return redirect(f'{url_prefix}/')
+        
+        else:
+            return render_template('2fa.html', error="Invalid code", url_prefix=url_prefix, username=username)
+
+    
+    
+    
 
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -91,7 +129,7 @@ def signup():
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_verified, has_premium, ai_personality, premium_chat, balance) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0)")
+            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_verified, has_premium, ai_personality, is_2fa_enabled) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False})")
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)
