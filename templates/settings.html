@@ -126,7 +126,7 @@
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <div>
-                                    <div id="qrcode" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;"></div>
+                                    <div class="qr-code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;"></div>
                                     <!--<img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">-->
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                     </span>
                     <div class="mobile-only" style="display: flex; flex-direction: column; align-items: center;">
                         <div style="display: flex; flex-direction: column; align-items: center;">
-                            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">
+                            <div style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px; margin-bottom: 20px;" class="qr-code"></div>
                         </div>
                         <p style="color: var(--green); text-align: center;">You have 2FA enabled.</p><p style="text-align: center;">Please scan this code with your authenticator app.</p>
                     </div>
@@ -243,9 +243,6 @@
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                             <a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
                         </div>
-                    </div>
-                    <div class="desktop-only">
-                        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">
                     </div>
                 </div>
             {% else %}
@@ -400,16 +397,21 @@
 
 <script src="https://www.gruettecloud.com/static/qrcode.min.js"></script>
 
-    <!-- Script to generate the QR code -->
-    <script>
-        // JavaScript code to generate the QR code
-        const qrCodeContainer = document.getElementById("qrcode");
-        const qrCodeData = "{{ qr_code_data }}"; // Replace this with the actual data for the QR code
+<!-- Script to generate the QR code -->
+<script>
+    // JavaScript code to generate the QR code
+    const qrCodeContainers = document.getElementsByClassName('qr-code');
+    const qrCodeData = "{{ qr_code_data }}"; // Replace this with the actual data for the QR code
 
+    // Convert the HTMLCollection to an array
+    const qrCodeArray = Array.from(qrCodeContainers);
+
+    qrCodeArray.forEach((qrCodeContainer) => {
         // Create the QR code using qrcode.js
         const qrcode = new QRCode(qrCodeContainer, {
             text: qrCodeData,
             width: 200,
             height: 200,
         });
+    });
 </script>
