@@ -2,9 +2,6 @@ import os
 import datetime
 import platform
 import pyotp
-import qrcode
-import io
-import base64
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
@@ -77,12 +74,16 @@ def settings(error=None):
 
         # Generate the QR code image
         provisioning_uri = totp.provisioning_uri(username, issuer_name="GrütteCloud")
-        qr = qrcode.make(provisioning_uri)
+        """qr = qrcode.make(provisioning_uri)
         qr_image_data = io.BytesIO()
         qr.save(qr_image_data, format='PNG')
         qr_image_base64 = base64.b64encode(qr_image_data.getvalue()).decode('utf-8')
-        is_two_fa_enabled = True
+        is_two_fa_enabled = True"""
         totp_now = totp.now()
+        provisioning_uri = totp.provisioning_uri(username, issuer_name="GrütteCloud")
+        
+        return render_template("settings.html", verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, url_prefix=url_prefix, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now)
+        
         
     else:
         is_two_fa_enabled = False

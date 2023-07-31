@@ -126,7 +126,8 @@
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <div>
-                                    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">
+                                    <div id="qrcode" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;"></div>
+                                    <!--<img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">-->
                                 </div>
                             </div>
                         </div>
@@ -396,3 +397,19 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+<script src="https://www.gruettecloud.com/static/qrcode.min.js"></script>
+
+    <!-- Script to generate the QR code -->
+    <script>
+        // JavaScript code to generate the QR code
+        const qrCodeContainer = document.getElementById("qrcode");
+        const qrCodeData = "{{ qr_code_data }}"; // Replace this with the actual data for the QR code
+
+        // Create the QR code using qrcode.js
+        const qrcode = new QRCode(qrCodeContainer, {
+            text: qrCodeData,
+            width: 200,
+            height: 200,
+        });
+</script>
