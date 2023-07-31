@@ -185,7 +185,7 @@ def file(username, filename):
             filesize = get_formatted_file_size(os.path.getsize(shared_file))
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y")
             icon_path = IconHelper.IconHelper().get_icon(filename)
-            code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
+            code = "https://www.gruettecloud.com/v/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
             is_author_verified = False
             if username in admin_users:
                 is_author_verified = True
@@ -202,7 +202,7 @@ def file(username, filename):
         path = os.path.join(gruetteStorage_path, username, "shared", filename)
         is_shared = True
         is_youtube_video = False
-        code = "https://jan.gruettefien.com/gruettechat/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
+        code = "https://www.gruettecloud.com/v/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
     elif os.path.exists(os.path.join(gruetteStorage_path, username, "YouTube", filename)):
         path = os.path.join(gruetteStorage_path, username, "YouTube", filename)
         is_shared = False
