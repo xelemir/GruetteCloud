@@ -140,7 +140,6 @@
                         </a>
                     </div>
                 {% endif %}
-                
             </div>
             <div class="spaced-tile"></div>
             <div class="wrapping-tile" style="padding: 20px; margin-bottom: 20px;">
@@ -248,7 +247,8 @@
                                 <option value="red" style="color: var(--red);">Red</option>
                                 <option value="green" style="color: var(--green);">Green</option>
                                 <option value="purple" style="color: var(--purple);">Purple</option>
-                            </select>                                    <div class="spaced-tile"></div>
+                            </select>
+                            <div class="spaced-tile"></div>
                             <input type="submit" value="Notify" name="send" style="margin-top: 0px; min-width: 100%;" class="send-button">
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                 <h2 style="font-size: 1.2em; text-align: center;">Current platform status</h2>
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="display: flex; align-items: center; background-color: var(--secondary-color);">
-                    <div style="flex-grow: 1;">
+                    <div class="text-offcutter" style="flex-grow: 1;">
                         <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
                     </div>
                     <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
@@ -271,6 +271,36 @@
             {% endif %}
         </div>
         <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="padding: 20px;">
+            <h2 align="center" style="margin-bottom: 20px;">Promo Email</h2>
+            <form action="{{ url_prefix }}/dashboard/sendemail" method="POST">
+                <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
+                    <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Subject" required>
+                            <div class="spaced-tile"></div>
+                            <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Message" maxlength="2000" required>
+                            <div class="spaced-tile"></div>
+                            <span class="settings-input" style="display: inline-flex; align-items: center; padding-left: 10px; height: 38px; width: 50%;" class="login-input">
+                                <input type="checkbox" id="sendtoall" name="sendtoall" style="margin-right: 10px;" >
+                                <span style="text-align: left; font-size: 0.7em;">Send to everyone</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <input type="text" id="username" name="username" class="settings-input" autocomplete="off" placeholder="GrütteID">
+                            <div class="spaced-tile"></div>
+                            <input type="text" id="otp" name="otp" class="settings-input" autocomplete="off" placeholder="Google Auth OTP" required>
+                            <div class="spaced-tile"></div>
+                            <input type="submit" value="Send Email" name="send" style="margin-top: 0px; min-width: 100%;" class="send-button">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="spaced-tile"></div>
+        
         <div class="wrapping-tile" style="padding: 20px;">
             <h2 align="center">GrütteIDs ({{ all_users|length }})</h2>
             <div class="file-list">

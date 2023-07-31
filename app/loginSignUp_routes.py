@@ -1,7 +1,9 @@
-from flask import render_template, request, redirect, session, Blueprint
+from flask import render_template, request, redirect, session, Blueprint, Flask
 import random
-
 import pyotp
+import qrcode
+import io
+import base64
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
 from config import url_prefix, templates_path
@@ -71,7 +73,7 @@ def two_fa():
         username = session['username_2fa']
     
         user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
-        user_secret_key = user[0]["secret_key"]
+        user_secret_key = user[0]["2fa_secret_key"]
         
         totp = pyotp.TOTP(user_secret_key)
 
@@ -109,7 +111,7 @@ def signup():
             return render_template('signup.html', error='Passwords do not match', url_prefix = url_prefix)
         elif username == '' or password == '':
             return render_template('signup.html', error='Please enter a username and password', url_prefix = url_prefix)
-        elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/']] != []:
+        elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/']] != []:
             return render_template('signup.html', error='Please do not use special characters in your GrütteID', url_prefix = url_prefix)
         elif len(username) > 20:
             return render_template('signup.html', error='Username must be less than 20 characters', url_prefix = url_prefix)
@@ -129,7 +131,7 @@ def signup():
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_verified, has_premium, ai_personality, is_2fa_enabled) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False})")
+            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0)")
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)

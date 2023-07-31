@@ -15,7 +15,6 @@ class EncryptionHelper:
     def get_key(self):
         try:
             path = flask_app_path + "encryptionkey.json"
-            print(path)
             
             with open(path, 'r') as f:
                 data = json.load(f)

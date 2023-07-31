@@ -70,7 +70,7 @@
 
    <div class="desktop-only">
         <div style="flex-direction: row; display: flex; width: 100%;" >
-            <div style="width: 50%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
+            <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
                 <div class="wrapping-tile">
                     <h1>MyAI personality</h1>
                     <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%; margin-bottom: 10px;">
@@ -106,18 +106,44 @@
                     {% endif %}
                 </div>
                 <div class="spaced-tile"></div>
-                <div class="wrapping-tile" style="padding-bottom: 20px;">
-                    <h1>Two-Factor Authentication</h1>
-                    {% if not is_two_fa_enabled %}
-                    <p>Two-Factor Authentication (2FA) is a security feature that adds an extra layer of security to your account. When you log in, you'll need to enter your password and a special code you get from your phone.</p>
-                    <button class="settings-button"><a href="{{ url_prefix }}/2fa/enable" style="text-decoration: none; color: var(--white-color);">Enable 2FA</a></button>
+                <div class="wrapping-tile" style="padding: 20px;">
+                    <h1 style="display: flex; flex-direction: column; align-items: center;">Two-Factor Authentication</h1>
+                    {% if is_two_fa_enabled %}
+                    <div style="flex-direction: row; display: flex; width: 100%;">
+                        <div style="width: 50%; text-align: center; align-content: center;">
+                            <div class="inner-tile" style="display: flex; flex-direction: column; align-items: center;">
+                                <p style="color: var(--green);">You have 2FA enabled.</p><br><p>If you want to disable it, click the button below. You can also generate a new code.</p>
+                                <div style="flex-direction: row; display: flex; width: 100%; margin-top: 30px;">
+                                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                                        <a href="{{ url_prefix }}/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
+                                    </div>
+                                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                                        <a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div>
+                                    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% else %}
-                    <p>You have 2FA enabled. If you want to disable it, click the button below.</p>
-                    <button class="settings-button"><a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color);">Disable 2FA</a></button>
+                    <div class="inner-tile">
+                        <p style="color: var(--red);">WARNING: You have 2FA disabled!</p><br>
+                        <p>Please scan this code with your authenticator app.</p>
+                        <p>Two-Factor Authentication (2FA) is a feature that adds an extra layer of security to your GrütteID.</p>
+                        <p>When you log in, you'll be asked for a special one-time password from an app like Google Authenticator.</p>
+                        <p>Click the button below to enable it.</p>
+                    </div>
+                    <a href="{{ url_prefix }}/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button class="settings-button">Enable 2FA</button></a>
                     {% endif %}
                 </div>
             </div>
-            <div class="wrapping-tile" style="width: 50%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
+            <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
                 <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 30px;">
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                         <h1>Change password</h1>
@@ -194,6 +220,41 @@
                     </div>
                 </a>
             {% endif %} 
+        </div>
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="padding: 20px;">
+            <h1 style="font-size: 1.2em;">Two-Factor Authentication</h1>
+            {% if is_two_fa_enabled %}
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <span class="desktop-only">
+                        <p style="color: var(--green);">You have 2FA enabled.</p><br><p style="text-align: center;">Please scan this code with your authenticator app. If you want to disable it, click the button below. You can also generate a new code.</p>
+                    </span>
+                    <div class="mobile-only" style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">
+                        </div>
+                        <p style="color: var(--green); text-align: center;">You have 2FA enabled.</p><p style="text-align: center;">Please scan this code with your authenticator app.</p>
+                    </div>
+                    <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
+                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                            <a href="{{ url_prefix }}/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
+                        </div>
+                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                            <a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
+                        </div>
+                    </div>
+                    <div class="desktop-only">
+                        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">
+                    </div>
+                </div>
+            {% else %}
+                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 0.7em;">
+                    <p style="color: var(--red);">WARNING: You have 2FA disabled!</p>
+                    <p>2FA adds an extra layer of security to your GrütteID.</p>
+                    <p>When you log in, you'll be asked for a special one-time password from an app like Google Authenticator.</p>
+                    <a href="{{ url_prefix }}/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button style="margin-left: 0;" class="settings-button">Enable Two-Factor Authentication</button></a>
+                </div>
+            {% endif %}
         </div>
         <div class="spaced-tile"></div>
         <div class="wrapping-tile" style="text-align: center; padding: 20px;">

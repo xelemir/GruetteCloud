@@ -21,35 +21,39 @@
     <div class="header">
         <div class="dark-mode-toggle">
             <a href="{{ url_prefix }}/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>        </div>
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
     </div>
 
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding: 20px;">
-        <div style="font-size: 20px;">Hey, {{ username }}</div>
-        <div style="font-size: 20px;">Please enter the 2FA code<br>from your authentication app.</div>
+    <div class="wrapping-tile centered-div" style="padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
+            <div style="display: flex; justify-content: center;" class="desktop-only">
+                <img src="https://www.gruettecloud.com/static/GrütteID.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
+            </div>
+        </div>
+        <h1>Two-Factor Authentication</h1>
+        <p>To protect your GrütteID, we need to verify your identity.</p>
+        <p>Please enter the code from your authenticator app.</p>
         <div class="spaced-tile"></div>
         <form method="POST" style="flex-direction: column;"> 
             <div id="error-message" style="display: none;">
                 <p style="color: var(--yellow)">{{ error }}</p>
             </div>           
             <div style="display: inline;">
-                <input type="text" id="code0" maxlength="6" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                <input type="text" id="code1" maxlength="5" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                <input type="text" id="code2" maxlength="4" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                <input type="text" id="code3" maxlength="3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                <input type="text" id="code4" maxlength="2" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                <input type="text" id="code5" maxlength="1" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
-                </div>
-                <input type="hidden" name="username" value="{{ username }}">
-                <div style="margin-top: 20px">
+                    <input type="text" id="code0" maxlength="6" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code1" maxlength="5" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code2" maxlength="4" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code3" maxlength="3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code4" maxlength="2" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+                    <input type="text" id="code5" maxlength="1" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center;" required>
+            </div>
+            <div style="margin-top: 20px">
                 <input type="submit" value="Log In" name="login" class="signup-button">
-                </div>
-                
+            </div>
         </form>
         <br>
-        <a href="{{ url_prefix }}/support" style="color: var(--text-color)">Trouble logging in?</a>
+        <a href="{{ url_prefix }}/support" style="color: var(--text-color);">Trouble logging in?</a>
     </div>
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">

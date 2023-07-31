@@ -61,7 +61,7 @@
             </div>
         </form>
         <br>
-        Trouble logging in? <a href="{{ url_prefix }}/support" style="color: var(--text-color)">Reset your password</a>
+        <a href="{{ url_prefix }}/support" style="color: var(--text-color);">Trouble logging in?</a>
     </div>
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
       <div style="display: flex;">
@@ -150,18 +150,8 @@
             const currentIndex = imageUrls.indexOf(currentSrc);
             const nextIndex = (currentIndex + 1) % imageUrls.length;
             imgElement.setAttribute("src", imageUrls[nextIndex]);
-        }
-
-
-
-
-
-      /*const currentSrc = imgElement.getAttribute("src");
-      const currentIndex = imageUrls.indexOf(currentSrc);
-      const nextIndex = (currentIndex + 1) % imageUrls.length;
-      imgElement.setAttribute("src", imageUrls[nextIndex]);*/
-    }
-  
+        };
+    };
     // Call the cycleImages function every 3 seconds (3000 milliseconds)
     setInterval(cycleImages, 3000);
 </script>

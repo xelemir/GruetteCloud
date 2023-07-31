@@ -53,6 +53,8 @@ def dashboard():
         status = "Invalid recipient specified."
     elif status == "sent":
         status = "Email(s) sent."
+    elif status == "no_otp":
+        status = "No auth secret found. Make sure you have set up 2FA enabled."
     
     platform_message = sql.readSQL(f"SELECT subject, color FROM gruttechat_platform_messages")
     if platform_message == []:
@@ -160,7 +162,14 @@ def send_mail():
     if "sendtoall" in request.form:
         send_to_all = True
     
-    totp = pyotp.TOTP(auth_admin_key)
+    # Get auth secret from db as users here must be admins
+    user = sql.readSQL(f"SELECT 2fa_secret_key FROM gruttechat_users WHERE username = '{session['username']}'")
+    if user == []:
+        return redirect(f'{url_prefix}/dashboard')
+    try:
+        totp = pyotp.TOTP(user[0]["2fa_secret_key"])
+    except:
+        return redirect(f'{url_prefix}/dashboard?error=no_otp')
 
     # Validate the OTP
     if not totp.verify(otp):

@@ -1,6 +1,10 @@
 import os
 import datetime
 import platform
+import pyotp
+import qrcode
+import io
+import base64
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
@@ -65,8 +69,27 @@ def settings(error=None):
     else:
         selected_personality = user[0]["ai_personality"]
         has_premium = bool(user[0]["has_premium"])
+        
+    if bool(user[0]["is_2fa_enabled"]) == True and user[0]["2fa_secret_key"] != '0':
+        
+        # Create the Google Authenticator OTP instance
+        totp = pyotp.TOTP(user[0]["2fa_secret_key"])
 
-    return render_template("settings.html", verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, url_prefix=url_prefix)
+        # Generate the QR code image
+        provisioning_uri = totp.provisioning_uri(username, issuer_name="GrütteCloud")
+        qr = qrcode.make(provisioning_uri)
+        qr_image_data = io.BytesIO()
+        qr.save(qr_image_data, format='PNG')
+        qr_image_base64 = base64.b64encode(qr_image_data.getvalue()).decode('utf-8')
+        is_two_fa_enabled = True
+        totp_now = totp.now()
+        
+    else:
+        is_two_fa_enabled = False
+        qr_image_base64 = None
+        totp_now = None
+        
+    return render_template("settings.html", verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, url_prefix=url_prefix, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now)
 
 @utilities_route.route("/change_password", methods=["GET", "POST"])
 def change_password():
@@ -274,3 +297,62 @@ def download_from_youtube():
         youtube.download(username=str(session["username"]))
         video_id = youtube.get_media_title()
         return jsonify({"filename": video_id})
+
+@utilities_route.route("/2fa/enable")
+def enable_2fa():
+    if "username" not in session:
+        return redirect(f"{url_prefix}/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    if user == []:
+        return redirect(f"{url_prefix}/")
+    
+    if user[0]["2fa_secret_key"] == '0' and bool(user[0]["is_2fa_enabled"]):
+        # If 2fa is enabled but the secret key is 0, generate a new secret key
+        two_fa_secret_key = str(pyotp.random_base32())
+        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
+        return redirect(f"{url_prefix}/settings")
+    
+    elif bool(user[0]["is_2fa_enabled"]):
+        return redirect(f"{url_prefix}/settings")
+    elif user[0]["2fa_secret_key"] != '0':
+        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True} WHERE username = '{str(session['username'])}'")
+        return redirect(f"{url_prefix}/settings")
+    if user[0]["2fa_secret_key"] == '0':
+        return redirect(f"{url_prefix}/settings")
+    
+    else:
+        two_fa_secret_key = str(pyotp.random_base32())
+        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
+        return redirect(f"{url_prefix}/settings")
+
+@utilities_route.route("/2fa/disable")
+def disable_2fa():
+    if "username" not in session:
+        return redirect(f"{url_prefix}/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {False} WHERE username = '{str(session['username'])}'")
+    
+    return redirect(f"{url_prefix}/settings")
+
+@utilities_route.route("/2fa/refresh")
+def refresh_2fa():
+    if "username" not in session:
+        return redirect(f"{url_prefix}/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    
+    if user == []:
+        return redirect(f"{url_prefix}/")
+    elif bool(user[0]["is_2fa_enabled"]) == False:
+        return redirect(f"{url_prefix}/settings")
+    else:
+        two_fa_secret_key = str(pyotp.random_base32())
+        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
+        return redirect(f"{url_prefix}/settings")
