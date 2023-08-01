@@ -1,9 +1,6 @@
 from flask import render_template, request, redirect, session, Blueprint, Flask
 import random
 import pyotp
-import qrcode
-import io
-import base64
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
 from config import url_prefix, templates_path

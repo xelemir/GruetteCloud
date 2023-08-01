@@ -114,7 +114,7 @@ class MailHelper:
         html = f'''
             <html>
                 <body style="color: #FFFFFF;">
-                    <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 10px; padding: 20px;">
+                    <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 20px; padding: 20px;">
                         <h1 style="color: #0A84FF; margin-top: -20px;">New Support Request</h1>
                         <b>
                             Name: {name}<br>

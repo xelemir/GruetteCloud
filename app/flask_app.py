@@ -29,6 +29,33 @@ def index():
         return redirect(f"{url_prefix}/chat")
     else:
         return redirect(f"{url_prefix}/login")
+    
+@app.route("/home")
+def home():
+    if "username" not in session:
+        return redirect(f"{url_prefix}/")
+    
+    username = str(session["username"]).lower()
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
+    if user == []:
+        # Security measure
+        return redirect(f"{url_prefix}/logout")
+    
+    is_verified = False
+    if username in admin_users:
+        is_verified = True
+        
+    if platform_message == []:
+        #platform_message = None
+        platform_message = {"created_at": "Today", "content": "Content", "subject": "Subject", "color": "yellow"}
+
+    else:
+        platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
+    
+    return render_template("home2.html", url_prefix=url_prefix, has_premium=bool(user[0]["has_premium"]), is_verified=is_verified, username=username, status_message=platform_message)
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
