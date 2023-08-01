@@ -137,7 +137,7 @@ def send(method):
     # Check if the method is back, clear chat history and redirect to home
     if method == "back":
         session.pop("chat_history", None)
-        return redirect(f"{url_prefix}/")
+        return redirect(f"{url_prefix}/chat")
     
     # Check if the method is restart, clear chat history and redirect to AI chat
     elif method == "restart":

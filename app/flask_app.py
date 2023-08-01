@@ -121,7 +121,7 @@ def chat(error=None):
         verified = False
     
     # Render the home page
-    return render_template('home.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=verified)
+    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=verified)
 
 if __name__ == '__main__':
     app.run(debug=True)
