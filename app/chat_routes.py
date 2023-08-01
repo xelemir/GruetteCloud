@@ -167,9 +167,11 @@ def send(method):
             chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
             
         # Save chat history to session and refresh page
+        session.pop("chat_history", None)
         session["chat_history"] = chat_history
+        print(chat_history)
+        
         return redirect(f"{url_prefix}/ai/chat")
     
     # Reverse chat history to show most recent messages first and render template
-    chat_history.reverse()
-    return render_template("aichat.html", chat_history=chat_history, url_prefix = url_prefix)
+    return render_template("aichat.html", chat_history=chat_history[::-1], url_prefix = url_prefix)
