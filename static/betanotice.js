@@ -19,7 +19,7 @@ function getBetaStatus() {
           <button id="accept-beta" class="cookie-button">Accept</button>
         </div><br>
         <div style="display: inline;">
-          <a href="about" style="color: var(--text-color);">About</a> | 
+          <a href="about" style="color: var(--text-color);">Über Uns</a> | 
           <a href="help" style="color: var(--text-color);">Help</a> | 
           <a href="privacy" style="color: var(--text-color);">Privacy</a>
         </div>

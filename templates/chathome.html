@@ -7,23 +7,6 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
-    <style>
-        .tile {
-            background-color: var(--background-tile-color);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        .tile:hover {
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.8);
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--text-color);
-        }
-    </style>
 </head>
 <body>
     <div class="header">
@@ -33,10 +16,11 @@
         </div>
         <div class="centered-content">
             <a href="{{ url_prefix }}/" class="logo" title="Home">
-                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteChat">
+                <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 40px; height: 40px;" title="GrütteChat">
             </a>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
@@ -54,7 +38,21 @@
         </div>
     </div>
 
-    <h1>Discover GrütteCloud</h1>
+    {% if not has_premium %}
+        <div id="premium-banner" style="display: block;">
+            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 60px; right: 5px; height: 30px; width: 30px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 10px;">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
+                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
+                    <h1>Unlock GrütteCloud PLUS</h1>
+                    <!--for only 2.99 € once!-->
+                    It's free!
+                </div>
+            </a>
+            <div class="spaced-tile"></div>
+        </div>
+    {% endif %}
 
     {% if status_message %}
         <div class="wrapping-tile" style="text-align: center; padding: 20px;">
@@ -64,50 +62,66 @@
         <div class="spaced-tile"></div>
     {% endif %}
 
-
-    <div style="display: flex; justify-content: center;">
-        <a href="{{ url_prefix }}/storage" class="tile" style="display: flex; flex-basis: 33.33%; justify-content: center; margin-right: 10px;">
-            <div style="width: 100%; text-align: center;">
-                <img src="https://www.gruettecloud.com/static/GrütteStorage.png" style="width: 100px; height: 100px;" title="GrütteCloud">
-                <h2 style="color: var(--primary-color); margin: 20px;">GrütteStorage</h2>
-                A cloud-based storage solution for all your files.
-                Share files your files via links.
-                You can even download videos from YouTube directly.
-            </div>
-        </a>
-        <a href="{{ url_prefix }}/chat" class="tile" style="display: flex; flex-basis: 33.33%; justify-content: center; margin-right: 10px; margin-left: 10px;">
-            <div style="width: 100%; text-align: center;">
-                <img src="https://www.gruettecloud.com/static/GrütteChat.png" style="width: 100px; height: 100px;" title="GrütteCloud">
-                <h2 style="color: var(--primary-color); margin: 20px;">GrütteChat</h2>
-                A chat application for all your needs.
-                Chat with your friends and family in realtime.
-                If no one is online, you can even chat with a customizable MyAI chat bot.
-            </div>
-        </a>
-        <a href="{{ url_prefix }}/settings" class="tile" style="display: flex; flex-basis: 33.33%; justify-content: center; margin-left: 10px;">
-            <div style="width: 100%; text-align: center;">
-                <img src="https://www.gruettecloud.com/static/GrütteID.png" style="width: 100px; height: 100px;" title="GrütteCloud">
-                <h2 style="color: var(--primary-color); margin: 20px;">GrütteID</h2>
-                A single sign-in solution for all GrütteCloud services.
-                Manage your account and settings.
-                You can even enable two-factor authentication for your account.
-            </div>
-        </a>
+    <div class="wrapping-tile" style="padding-left: 0; padding-right: 0;">
+        <form method="POST">
+            <input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
+            <input type="submit" name="new" value="Start Chat" class="send-button">
+        </form>
     </div>
-    {% if has_premium %}
-        <div class="spaced-tile"></div>
-        <div id="premium-banner" style="display: block; justify-content: center;">
-            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color); width: 100px;">
-                <div class="tile wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
-                    <h1>Unlock GrütteCloud PLUS</h1>
-                    <!--for only 2.99 € once!-->
-                    It's free!
+
+    {% if error %}
+        <div id="error-message" style="display: none;">
+            <div class="spaced-tile"></div>
+            <div class="wrapping-tile" style="text-align: center;">
+                <div class="inner-tile">
+                    <div class="spaced-tile"></div>
+                        <h2 style="color: var(--yellow)">{{ error }}</h2>
+                    <div class="spaced-tile"></div>
                 </div>
-            </a>
-            
+            </div>
         </div>
     {% endif %}
-            
+
+    <div class="spaced-tile"></div>
+    <div style="flex-direction: row; display: flex; width: 100%;">
+        <div class="wrapping-tile">
+            <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                Welcome, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+            </h1>
+            <div class="spaced-tile"></div>
+            <div class="inner-tile">
+                <div style="display: flex; align-items: center;">
+                    <div style="flex-grow: 1;">
+                        <a href="{{ url_prefix }}/ai/chat" style="color: var(--text-color); text-decoration: none;">
+                            <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
+                                MyAI
+                            </button>
+                        </a>
+                    </div>
+                    <button class="button-gray" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; color: var(--text-color);">
+                        <span class="material-symbols-outlined">smart_toy</span>
+                    </button>
+                </div>
+                {% for chat in active_chats %}
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-grow: 1;">
+                            <a href="{{ url_prefix }}/chat/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
+                                <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
+                                    {{ chat["username"] }}{% if chat["is_verified"] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color)">verified</span>{% endif %}
+                                </button>
+                            </a>                            
+                        </div>
+                        <a href="{{ url_prefix }}/chat/delete/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
+                            <button class="button-delete" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; color: var(--text-color);">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
@@ -115,14 +129,14 @@
                 <b style="font-size: 0.9em;">GrütteCloud</b>
                 <div style="white-space: nowrap; line-height: 1em;">
                     <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/about">What is GrütteChat?</a><br>
+                    <a class="footer-link" href="https://www.gruettecloud.com/">What is GrütteChat?</a><br>
                     <a class="footer-link" href="{{ url_prefix }}/support">Contact Support</a>
                 </div>
             </div>
             <div style="width: 50%; text-align: left;">
                 <b style="font-size: 0.9em;">Legal</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/aboutus">Über Uns</a><br>
+                    <a class="footer-link" href="{{ url_prefix }}about">Über Uns</a><br>
                     <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
                     <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
                 </div>
@@ -190,6 +204,19 @@
 </script>
 
 <script>
+    // Show error message and fade out after 5 seconds
+    var errorMessage = document.getElementById('error-message');
+    {% if error %}
+        errorMessage.style.display = 'block';
+        setTimeout(function() {
+            errorMessage.style.opacity = '0';
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+                errorMessage.style.opacity = '1';
+            }, 500);
+        }, 5000);
+    {% endif %}
+
     // Check the cookie value
     function getCookieValue(cookieName) {
         var name = cookieName + "=";

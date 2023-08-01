@@ -26,7 +26,7 @@ eh = EncryptionHelper.EncryptionHelper()
 @app.route("/")
 def index():
     if "username" in session:
-        return redirect(f"{url_prefix}/chat")
+        return redirect(f"{url_prefix}/home")
     else:
         return redirect(f"{url_prefix}/login")
     
@@ -49,13 +49,11 @@ def home():
         is_verified = True
         
     if platform_message == []:
-        #platform_message = None
-        platform_message = {"created_at": "Today", "content": "Content", "subject": "Subject", "color": "yellow"}
-
+        platform_message = None
     else:
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
-    return render_template("home2.html", url_prefix=url_prefix, has_premium=bool(user[0]["has_premium"]), is_verified=is_verified, username=username, status_message=platform_message)
+    return render_template("home.html", url_prefix=url_prefix, has_premium=bool(user[0]["has_premium"]), is_verified=is_verified, username=username, status_message=platform_message)
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
