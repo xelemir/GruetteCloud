@@ -92,7 +92,7 @@ def chat_with(recipient):
 
     # Get is used to load the chat
     get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
-    
+
     for message in get_messages:
         # Decrypt the message
         try:
@@ -112,7 +112,7 @@ def chat_with(recipient):
         verified = False
 
     # Render the template
-    return render_template('chathome.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix, verified=verified)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix, verified=verified)
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):
