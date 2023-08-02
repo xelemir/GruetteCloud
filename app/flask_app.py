@@ -43,17 +43,13 @@ def home():
     if user == []:
         # Security measure
         return redirect(f"{url_prefix}/logout")
-    
-    is_verified = False
-    if username in admin_users:
-        is_verified = True
         
     if platform_message == []:
         platform_message = None
     else:
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
-    return render_template("home.html", url_prefix=url_prefix, has_premium=bool(user[0]["has_premium"]), is_verified=is_verified, username=username, status_message=platform_message)
+    return render_template("home.html", url_prefix=url_prefix, has_premium=bool(user[0]["has_premium"]), is_admin=user[0]["is_admin"], username=username, status_message=platform_message)
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
@@ -89,20 +85,14 @@ def chat(error=None):
     # Add all active chats to a list
     for chat in active_chats_database:
         if chat["username_send"].lower() == username:
-            verified = False
-            if chat["username_receive"].lower() in admin_users:
-                verified = True
             if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
-                active_chats.append({"username": chat["username_receive"].lower(), "is_verified": verified})
+                active_chats.append({"username": chat["username_receive"].lower()})
         else:
-            verified = False
-            if chat["username_send"].lower() in admin_users:
-                verified = True
             if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
-                active_chats.append({"username": chat["username_send"].lower(), "is_verified": verified})
+                active_chats.append({"username": chat["username_send"].lower()})
     
     # Get user's premium status
-    user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     
     if user == []:
         # Safety check
@@ -115,13 +105,8 @@ def chat(error=None):
     else:
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
-    if username in admin_users:
-        verified = True
-    else:
-        verified = False
-    
     # Render the home page
-    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=verified)
+    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"])
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Home | GrütteChat</title>
+    <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
@@ -84,57 +85,64 @@
                 </div>
             </a>
         </div>
-        {% if not has_premium %}
-        <div class="spaced-tile"></div>
-        <div id="premium-banner" style="display: block; justify-content: center;">
-            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color); width: 100px;">
-                <div class="tile wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 20px;">
-                    <h1>Unlock GrütteCloud PLUS</h1>
-                    <!--for only 2.99 € once!-->
-                    It's free!
+        {% if is_admin %}
+            <div class="spaced-tile"></div>
+            <a href="{{ url_prefix }}/dashboard" class="tile" style="display: flex; justify-content: center; padding: 20px;">
+                <div style="width: 100%; text-align: center;">
+                    <!--<img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 100px; height: 100px;" title="GrütteID">-->
+                    <h2 style="color: var(--primary-color); margin: 20px;">
+                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 2.5em; height: auto; vertical-align: middle;" title="GrütteCloud">
+                        <span style="vertical-align: middle;">Dashboard</span>
+                    </h2>
+                    See log files, manage users, send promotion emails and create platform-wide notifications.
                 </div>
             </a>
-            
-        </div>
-    {% endif %}
+        {% endif %}
+        {% if not has_premium %}
+            <div class="spaced-tile"></div>
+            <div id="premium-banner" style="display: block; justify-content: center;">
+                <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color); width: 100px;">
+                    <div class="tile wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 20px;">
+                        <h1>Unlock GrütteCloud PLUS</h1>
+                        <!--for only 2.99 € once!-->
+                        It's free!
+                    </div>
+                </a>
+                
+            </div>
+        {% endif %}
     </span>
 
     <span class="wrapping-tile mobile-only" style="padding: 20px; border-radius: 20px;">
         <h1>Discover GrütteCloud</h1>
         <div style="display: block; justify-content: center;">
+            {% if is_admin %}
+                <a href="{{ url_prefix }}/dashboard" class="tile" style="display: flex; justify-content: center; padding: 20px;">
+                    <div style="width: 100%; text-align: center;">
+                        <!--<img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 100px; height: 100px;" title="GrütteID">-->
+                        <h2 style="color: var(--primary-color); margin: 20px;">
+                            <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 2.5em; height: auto; vertical-align: middle;" title="GrütteCloud">
+                            <span style="vertical-align: middle;">Dashboard</span>
+                        </h2>
+                    </div>
+                </a>
+                <div class="spaced-tile"></div>
+            {% endif %}
             <a href="{{ url_prefix }}/chat" class="tile" style="display: flex; justify-content: center; padding: 20px;">
                 <div style="width: 100%; text-align: center;">
                     <img src="https://www.gruettecloud.com/static/GrütteChat.png" style="width: 100px; height: 100px;" title="GrütteChat">
-                    <h2 style="color: var(--primary-color); margin: 10px;">GrütteChat</h2>
-                    <span style="font-size: 0.9em;">
-                        A chat application for all your needs.
-                        Chat with your friends and family in realtime.
-                        If no one is online, you can even chat with a customizable MyAI chat bot.
-                    </span>
                 </div>
             </a>
             <div class="spaced-tile"></div>
             <a href="{{ url_prefix }}/storage" class="tile" style="display: flex; justify-content: center; padding: 20px;">
                 <div style="width: 100%; text-align: center;">
                     <img src="https://www.gruettecloud.com/static/GrütteStorage.png" style="width: 100px; height: 100px;" title="GrütteStorage">
-                    <h2 style="color: var(--primary-color); margin: 10px;">GrütteStorage</h2>
-                    <span style="font-size: 0.9em;">
-                        A cloud-based storage solution for all your files.
-                        Share files your files via links.
-                        You can even download videos from YouTube directly.
-                    </span>
                 </div>
             </a>
             <div class="spaced-tile"></div>
             <a href="{{ url_prefix }}/settings" class="tile" style="display: flex; justify-content: center; padding: 20px;">
                 <div style="width: 100%; text-align: center;">
                     <img src="https://www.gruettecloud.com/static/GrütteID.png" style="width: 100px; height: 100px;" title="GrütteID">
-                    <h2 style="color: var(--primary-color); margin: 10px;">GrütteID</h2>
-                    <span style="font-size: 0.9em;">
-                        A single sign-in solution for all GrütteCloud services.
-                        Manage your account and settings.
-                        You can even enable two-factor authentication for your account.
-                    </span>
                 </div>
             </a>
         </div>

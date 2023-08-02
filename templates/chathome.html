@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Home | GrütteChat</title>
+    <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
@@ -12,7 +13,9 @@
     <div class="header">
         <div class="dark-mode-toggle">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span id="dashboard" style="display: none;"><a href="{{ url_prefix }}/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a></span>
+            {% if is_admin %}
+            <span id="dashboard" style="display: inline;"><a href="{{ url_prefix }}/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a></span>
+            {% endif %}
         </div>
         <div class="centered-content">
             <a href="{{ url_prefix }}/" class="logo" title="Home">
@@ -107,7 +110,7 @@
                         <div style="flex-grow: 1;">
                             <a href="{{ url_prefix }}/chat/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
                                 <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
-                                    {{ chat["username"] }}{% if chat["is_verified"] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color)">verified</span>{% endif %}
+                                    {{ chat["username"] }}
                                 </button>
                             </a>                            
                         </div>
@@ -215,28 +218,6 @@
                 errorMessage.style.opacity = '1';
             }, 500);
         }, 5000);
-    {% endif %}
-
-    // Check the cookie value
-    function getCookieValue(cookieName) {
-        var name = cookieName + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var cookieArray = decodedCookie.split(';');
-        for (var i = 0; i < cookieArray.length; i++) {
-        var cookie = cookieArray[i];
-        while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-        }
-        return "";
-    }
-    
-    // Check the cookie value and show/hide the HTML tag
-    {% if verified %}
-        document.getElementById("dashboard").style.display = "inline";
     {% endif %}
 </script>
 

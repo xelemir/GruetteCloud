@@ -25,7 +25,7 @@ def storage():
 
     sql = SQLHelper.SQLHelper()
 
-    username_database = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{username}'")
+    username_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
 
     if username_database == []:
         # Security check: Username is invalid and should be deleted. This may happen if the user was deleted from the database.
@@ -36,11 +36,7 @@ def storage():
     files = get_files(username)
     file_list = files["file_list"]
     
-    verified = False
-    if username in admin_users:
-        verified = True
-
-    return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None, verified=verified)
+    return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None, verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
 
 
 # Helper function to convert file size to human-readable format
@@ -179,6 +175,12 @@ def delete(username, filename):
 
 @gruetteStorage_route.route("/file/<username>/<filename>")
 def file(username, filename):
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT is_verified FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    if user == []:
+        return redirect(f"{url_prefix}/")
+    
     if "username" not in session or username != str(session['username']):
         shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
         if os.path.exists(shared_file):
@@ -189,7 +191,7 @@ def file(username, filename):
             is_author_verified = False
             if username in admin_users:
                 is_author_verified = True
-            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=is_author_verified, is_youtube_video=False)
+            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=user[0]["is_verified"], is_youtube_video=False)
         else:
             return redirect(f"{url_prefix}/storage")
         
@@ -218,7 +220,7 @@ def file(username, filename):
     is_author_verified = False
     if username in admin_users:
         is_author_verified = True
-    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=is_youtube_video)
+    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=user[0]["is_verified"], is_youtube_video=is_youtube_video)
     
 
 @gruetteStorage_route.route("/share/<username>/<filename>")

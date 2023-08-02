@@ -100,19 +100,14 @@ def chat_with(recipient):
         except:
             decrypted_message = "Decryption Error!"
 
-        # Check if the message was sent by the user or the recipient abd add it to the list
+        # Check if the message was sent by the user or the recipient and add it to the list
         if message["username_send"] == username:
             messages_list.append(["You", decrypted_message])
         else:
             messages_list.append([recipient, decrypted_message])
-            
-    if str(recipient) in admin_users:
-        verified = True
-    else:
-        verified = False
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix, verified=verified)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix, verified=search_recipient[0]["is_verified"])
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):

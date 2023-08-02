@@ -35,7 +35,7 @@ def login():
         if user[0]["username"].lower() == username and decrypted_password == password:
             
             # Check if the user has verified their account
-            if bool(user[0]["is_verified"]) == False:
+            if bool(user[0]["is_email_verified"]) == False:
                 return redirect(f'{url_prefix}/verify/{username}')
             
             # Check if 2FA is enabled
@@ -128,7 +128,7 @@ def signup():
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0)")
+            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0)")
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)
@@ -158,7 +158,7 @@ def verify(username):
         # Get email and verification code from database 
         email = user[0]["email"]
         verification_code = user[0]["verification_code"]
-        already_verified = user[0]["is_verified"]
+        already_verified = user[0]["is_email_verified"]
 
         # If post request, check if the verification code is correct
         if request.method == 'POST':
@@ -168,7 +168,7 @@ def verify(username):
             
             # Check if the code is correct, if so, verify the user and log them in
             if create_entered_code == verification_code:
-                sql.writeSQL(f"UPDATE gruttechat_users SET is_verified = {True} WHERE username = '{str(username)}'")
+                sql.writeSQL(f"UPDATE gruttechat_users SET is_email_verified = {True} WHERE username = '{str(username)}'")
                 session['username'] = username
                 session.permanent = True
                 return redirect(f'{url_prefix}/')
@@ -197,11 +197,11 @@ def verify_code(username, code):
         # Get email and verification code from database 
         email = user[0]["email"]
         verification_code = user[0]["verification_code"]
-        already_verified = user[0]["is_verified"]
+        already_verified = user[0]["is_email_verified"]
         
         # Check if the code is correct, if so, verify the user and log them in
         if code == verification_code:
-            sql.writeSQL(f"UPDATE gruttechat_users SET is_verified = {True} WHERE username = '{str(username)}'")
+            sql.writeSQL(f"UPDATE gruttechat_users SET is_email_verified = {True} WHERE username = '{str(username)}'")
             session['username'] = username
             session.permanent = True
             return redirect(f'{url_prefix}/')
