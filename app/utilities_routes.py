@@ -310,9 +310,6 @@ def enable_2fa():
     elif user[0]["2fa_secret_key"] != '0':
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True} WHERE username = '{str(session['username'])}'")
         return redirect(f"{url_prefix}/settings")
-    if user[0]["2fa_secret_key"] == '0':
-        return redirect(f"{url_prefix}/settings")
-    
     else:
         two_fa_secret_key = str(pyotp.random_base32())
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")

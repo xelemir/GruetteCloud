@@ -9,7 +9,7 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import url_prefix, admin_users, secret_key, well_known_directory
+from config import url_prefix, secret_key, well_known_directory
 
 app = Flask("GrütteCloud")
 app.secret_key = secret_key
