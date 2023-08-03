@@ -14,11 +14,11 @@
         <div class="dark-mode-toggle">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
             {% if is_admin %}
-            <span id="dashboard" style="display: inline;"><a href="{{ url_prefix }}/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a></span>
+            <span id="dashboard" style="display: inline;"><a href="/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a></span>
             {% endif %}
         </div>
         <div class="centered-content">
-            <a href="{{ url_prefix }}/" class="logo" title="Home">
+            <a href="/" class="logo" title="Home">
                 <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 40px; height: 40px;" title="GrütteChat">
             </a>
         </div>
@@ -32,9 +32,9 @@
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
-                        <a href="{{ url_prefix }}/settings" title="GrütteID & settings"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
-                        <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                        <a href="/settings" title="GrütteID & settings"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                        <a href="/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
             <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 60px; right: 5px; height: 30px; width: 30px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 10px;">
                 <span class="material-symbols-outlined">close</span>
             </button>
-            <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
+            <a href="/premium" style="text-decoration: none; color: var(--white-color);">
                 <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
                     <h1>Unlock GrütteCloud PLUS</h1>
                     <!--for only 2.99 € once!-->
@@ -95,7 +95,7 @@
             <div class="inner-tile">
                 <div style="display: flex; align-items: center;">
                     <div style="flex-grow: 1;">
-                        <a href="{{ url_prefix }}/ai/chat" style="color: var(--text-color); text-decoration: none;">
+                        <a href="/ai/chat" style="color: var(--text-color); text-decoration: none;">
                             <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
                                 MyAI
                             </button>
@@ -108,13 +108,13 @@
                 {% for chat in active_chats %}
                     <div style="display: flex; align-items: center;">
                         <div style="flex-grow: 1;">
-                            <a href="{{ url_prefix }}/chat/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
+                            <a href="/chat/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
                                 <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
                                     {{ chat["username"] }}
                                 </button>
                             </a>                            
                         </div>
-                        <a href="{{ url_prefix }}/chat/delete/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
+                        <a href="/chat/delete/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
                             <button class="button-delete" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; color: var(--text-color);">
                                 <span class="material-symbols-outlined">delete</span>
                             </button>
@@ -131,17 +131,17 @@
             <div style="width: 50%; margin-right: 20px; text-align: left;">
                 <b style="font-size: 0.9em;">GrütteCloud</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
+                    <a class="footer-link" href="/help">Help Center</a><br>
                     <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/support">Contact Support</a>
+                    <a class="footer-link" href="/support">Contact Support</a>
                 </div>
             </div>
             <div style="width: 50%; text-align: left;">
                 <b style="font-size: 0.9em;">Legal</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}about">Über Uns</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
+                    <a class="footer-link" href="about">Über Uns</a><br>
+                    <a class="footer-link" href="/terms">Terms of Service</a><br>
+                    <a class="footer-link" href="/privacy">Privacy Policy</a>
                 </div>
             </div>
         </div>

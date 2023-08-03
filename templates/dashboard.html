@@ -73,7 +73,7 @@
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content" style="display: flex;">
-            <a href="{{ url_prefix }}/dashboard" class="logo align-icons-center" title="Home">
+            <a href="/dashboard" class="logo align-icons-center" title="Home">
                 <img src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
             <p style="font-size: 1.3em; display: flex; align-items: center; justify-content: center;">&nbsp;&nbsp;Dashboard</p>
@@ -87,9 +87,9 @@
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
-                        <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
-                        <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                        <a href="/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                        <a href="/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
                     </div>
                 </div>
             </div>
@@ -134,7 +134,7 @@
                         <div style="flex-grow: 1;">
                             <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
                         </div>
-                        <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
+                        <a href="/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
                             <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined">delete</span>
                             </button>
@@ -150,20 +150,20 @@
                     {% for user in all_users %}
                         <div class="search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                             {% if not user["has_premium"] %}
-                            <a href="{{ url_prefix }}/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
+                            <a href="/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
                             {% else %}
-                            <a href="{{ url_prefix }}/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
+                            <a href="/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
                             {% endif %}
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if user["has_premium"] %} background-color: var(--purple);{% endif %}">
                                     <span class="material-symbols-outlined text-offcutter">workspace_premium</span>
                                 </button>
                             </a>
-                            <a href="{{ url_prefix }}/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
+                            <a href="/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                     <span class="material-symbols-outlined text-offcutter">forum</span>
                                 </button>
                             </a>
-                            <a href="{{ url_prefix }}/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
+                            <a href="/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                     <span class="material-symbols-outlined">person_remove</span>
                                 </button>
@@ -263,7 +263,7 @@
                     <div class="text-offcutter" style="flex-grow: 1;">
                         <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
                     </div>
-                    <a href="{{ url_prefix }}/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
+                    <a href="/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
                         <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
@@ -308,20 +308,20 @@
                 {% for user in all_users %}
                     <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                         {% if not user["has_premium"] %}
-                        <a href="{{ url_prefix }}/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
+                        <a href="/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
                         {% else %}
-                        <a href="{{ url_prefix }}/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
+                        <a href="/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
                         {% endif %}
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if user["has_premium"] %} background-color: var(--purple);{% endif %}">
                                 <span class="material-symbols-outlined">workspace_premium</span>
                             </button>
                         </a>
-                        <a href="{{ url_prefix }}/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
+                        <a href="/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                 <span class="material-symbols-outlined">forum</span>
                             </button>
                         </a>
-                        <a href="{{ url_prefix }}/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
+                        <a href="/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
                             <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
                                 <span class="material-symbols-outlined">person_remove</span>
                             </button>

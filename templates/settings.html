@@ -16,7 +16,7 @@
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="centered-content">
-            <a href="{{ url_prefix }}/settings" class="logo" title="Home">
+            <a href="/settings" class="logo" title="Home">
                 <img src="https://www.gruettecloud.com/static/GrütteID.png" style="width: 40px; height: 40px;" title="GrütteID">
             </a>
         </div>
@@ -29,14 +29,14 @@
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
-                        <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
-                        <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                        <a href="/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                        <a href="/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
                     </div>
                 </div>
             </div>
-            <a href="{{ url_prefix }}/help" class="white-button-blue-on-hover" title="Help Center"><span class="material-symbols-outlined">help_center</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="{{ url_prefix }}/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
+            <a href="/help" class="white-button-blue-on-hover" title="Help Center"><span class="material-symbols-outlined">help_center</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/logout" class="logout" title="Logout"><span class="material-symbols-outlined">logout</span></a>
         </div>
     </div>
 
@@ -49,7 +49,7 @@
         </div>
     {% endif %}
     {% if not has_premium %}
-        <a href="{{ url_prefix }}/premium" style="text-decoration: none; color: var(--white-color);">
+        <a href="/premium" style="text-decoration: none; color: var(--white-color);">
             <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
                 <h1>Unlock GrütteCloud PLUS</h1>
                 <!--for only 2.99€ once!-->
@@ -98,7 +98,7 @@
                         {% endif %}
                     </select>
                     {% if display_back_to_ai %}
-                        <a href="{{ url_prefix }}/ai/chat" style="text-decoration: none;">
+                        <a href="/ai/chat" style="text-decoration: none;">
                             <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
                                 Back to MyAI
                             </div>
@@ -115,10 +115,10 @@
                                 <p style="color: var(--green);">You have 2FA enabled.</p><br><p>If you want to disable it, click the button below. You can also generate a new code.</p>
                                 <div style="flex-direction: row; display: flex; width: 100%; margin-top: 30px;">
                                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                                        <a href="{{ url_prefix }}/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
+                                        <a href="/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
                                     </div>
                                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                                        <a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
+                                        <a href="/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
                         <p>When you log in, you'll be asked for a special one-time password from an app like Google Authenticator.</p>
                         <p>Click the button below to enable it.</p>
                     </div>
-                    <a href="{{ url_prefix }}/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button class="settings-button">Enable 2FA</button></a>
+                    <a href="/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button class="settings-button">Enable 2FA</button></a>
                     {% endif %}
                 </div>
             </div>
@@ -215,7 +215,7 @@
                 {% endif %}
             </select>
             {% if display_back_to_ai %}
-                <a href="{{ url_prefix }}/ai/chat" style="text-decoration: none;">
+                <a href="/ai/chat" style="text-decoration: none;">
                     <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
                         Back to MyAI
                     </div>
@@ -238,10 +238,10 @@
                     </div>
                     <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                            <a href="{{ url_prefix }}/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
+                            <a href="/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
                         </div>
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                            <a href="{{ url_prefix }}/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
+                            <a href="/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
                         </div>
                     </div>
                 </div>
@@ -250,7 +250,7 @@
                     <p style="color: var(--red);">WARNING: You have 2FA disabled!</p>
                     <p>2FA adds an extra layer of security to your GrütteID.</p>
                     <p>When you log in, you'll be asked for a special one-time password from an app like Google Authenticator.</p>
-                    <a href="{{ url_prefix }}/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button style="margin-left: 0;" class="settings-button">Enable Two-Factor Authentication</button></a>
+                    <a href="/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button style="margin-left: 0;" class="settings-button">Enable Two-Factor Authentication</button></a>
                 </div>
             {% endif %}
         </div>
@@ -304,17 +304,17 @@
             <div style="width: 50%; margin-right: 20px; text-align: left;">
                 <b style="font-size: 0.9em;">GrütteCloud</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
+                    <a class="footer-link" href="/help">Help Center</a><br>
                     <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/support">Contact Support</a>
+                    <a class="footer-link" href="/support">Contact Support</a>
                 </div>
             </div>
             <div style="width: 50%; text-align: left;">
                 <b style="font-size: 0.9em;">Legal</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/about">Über Uns</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
+                    <a class="footer-link" href="/about">Über Uns</a><br>
+                    <a class="footer-link" href="/terms">Terms of Service</a><br>
+                    <a class="footer-link" href="/privacy">Privacy Policy</a>
                 </div>
             </div>
         </div>

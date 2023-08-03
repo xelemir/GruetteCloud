@@ -73,11 +73,11 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            {% if is_gruettecloud_user %}<a href="{{ url_prefix }}/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+            {% if is_gruettecloud_user %}<a href="/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
-            <a href="{{ url_prefix }}/storage" class="logo" title="Home">
+            <a href="/storage" class="logo" title="Home">
                 <img src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
         </div>
@@ -90,9 +90,9 @@
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
-                        <a href="{{ url_prefix }}/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
-                        <a href="{{ url_prefix }}/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                        <a href="{{ url_prefix }}/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                        <a href="/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                        <a href="/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                         </button>
                     </div>
                 {% else %}
-                    <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
+                    <a href="/share/{{ link_id }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
                         <button class="custom-button" style="margin-right: 10px;">
                             <span class="material-symbols-outlined">share</span> Share
                         </button>
@@ -138,13 +138,13 @@
                     </button>
                 </div>
             {% endif %}
-            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
+            <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
                 <button class="custom-button" style="margin-left: 10px;">
                     <span class="material-symbols-outlined">visibility</span> Preview
                 </button>
             </a>
         </div>
-        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}" style="text-decoration: none;">
+        <a href="/open/{{ link_id }}/download" title="Download {{ filename }}" style="text-decoration: none;">
             <button class="custom-button" style="width: 320px;">
                 <span class="material-symbols-outlined">download</span> Download
             </button>
@@ -153,12 +153,12 @@
         {% if is_author %}
             {% if is_shared %}
                 <div style="display: flex; justify-content: center; text-decoration: none;">
-                    <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                    <a href="/stopsharing/{{ link_id }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="margin-right: 20px; background-color: var(--red);">
                             <span class="material-symbols-outlined">link_off</span> Stop sharing
                         </button>
                     </a>
-                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="background-color: var(--red);">
                             <span class="material-symbols-outlined">delete</span> Delete
                         </button>
@@ -166,7 +166,7 @@
                 </div>
             {% else %}
                 <div style="display: flex; justify-content: center; text-decoration: none;">
-                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="width: 320px; background-color: var(--red);">
                             <span class="material-symbols-outlined">delete</span> Delete
                         </button>
@@ -202,7 +202,7 @@
                     </button>
                 </div>
                 {% else %}
-                    <a href="{{ url_prefix }}/share/{{ username }}/{{ filename }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
+                    <a href="/share/{{ link_id }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
                         <button class="custom-button" style="margin-right: 3vw; width: 37vw;">
                             <span class="material-symbols-outlined">share</span><span style="font-size: 0.7em;"> Share</span>
                         </button>
@@ -215,13 +215,13 @@
                     </button>
                 </div>
             {% endif %}
-            <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
+            <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
                 <button class="custom-button" style="margin-left: 3vw; width: 37vw;">
                     <span class="material-symbols-outlined">visibility</span><span style="font-size: 0.7em;"> Preview</span>
                 </button>
             </a>
         </div>
-        <a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}/download" title="Download {{ filename }}" style="text-decoration: none; max-width: 70vw;">
+        <a href="/open/{{ link_id }}/download" title="Download {{ filename }}" style="text-decoration: none; max-width: 70vw;">
             <button class="custom-button" style="width: 80vw">
                 <span class="material-symbols-outlined">download</span><span style="font-size: 0.7em;"> Download</span>
             </button>
@@ -230,12 +230,12 @@
         {% if is_author %}
             {% if is_shared %}
                 <div style="display: flex; justify-content: center; text-decoration: none;">
-                    <a href="{{ url_prefix }}/stopsharing/{{ username }}/{{ filename }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                    <a href="/stopsharing/{{ link_id }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="margin-right: 6vw; background-color: var(--red); width: 37vw;">
                             <span class="material-symbols-outlined">link_off</span><span style="font-size: 0.7em;"> Stop sharing</span>
                         </button>
                     </a>
-                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="background-color: var(--red); width: 37vw;">
                             <span class="material-symbols-outlined">delete</span><span style="font-size: 0.7em;"> Delete</span>
                         </button>
@@ -243,7 +243,7 @@
                 </div>
             {% else %}
                 <div style="margin-top: 20px;">
-                    <a href="{{ url_prefix }}/delete/{{ username }}/{{ filename }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
+                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
                         <button class="custom-button" style="width: 80vw; background-color: var(--red);">
                             <span class="material-symbols-outlined">delete</span><span style="font-size: 0.7em;"> Delete</span>
                         </button>
@@ -259,17 +259,17 @@
             <div style="width: 50%; margin-right: 20px; text-align: left;">
                 <b style="font-size: 0.9em;">GrütteCloud</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/help">Help Center</a><br>
+                    <a class="footer-link" href="/help">Help Center</a><br>
                     <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/support">Contact Support</a>
+                    <a class="footer-link" href="/support">Contact Support</a>
                 </div>
             </div>
             <div style="width: 50%; text-align: left;">
                 <b style="font-size: 0.9em;">Legal</b>
                 <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="{{ url_prefix }}/about">Über Uns</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/terms">Terms of Service</a><br>
-                    <a class="footer-link" href="{{ url_prefix }}/privacy">Privacy Policy</a>
+                    <a class="footer-link" href="/about">Über Uns</a><br>
+                    <a class="footer-link" href="/terms">Terms of Service</a><br>
+                    <a class="footer-link" href="/privacy">Privacy Policy</a>
                 </div>
             </div>                
         </div>
@@ -311,7 +311,7 @@
 <script>
     function copyToClipboard() {
         const tempInput = document.createElement('input');
-        tempInput.value = "{{ link_id }}" || window.location.href;
+        tempInput.value = "https://www.gruettecloud.com/s/{{ link_id }}" || window.location.href;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand("copy");
@@ -326,7 +326,7 @@
 
     function mobileCopyToClipboard() {
         const tempInput = document.createElement('input');
-        tempInput.value = "{{ link_id }}" || window.location.href;
+        tempInput.value = "https://www.gruettecloud.com/s/{{ link_id }}" || window.location.href;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand("copy");
