@@ -235,8 +235,8 @@ def about():
     return render_template("about.html")
 
 @utilities_route.route("/discover", methods=["GET"])
-def about():
-    return render_template("about.html")
+def discover():
+    return render_template("discover.html")
 
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
