@@ -21,12 +21,12 @@ def delete_chat(recipient):
         str: Redirect to home page
     """    
     if 'username' not in session:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     username = str(session['username'])
     sql = SQLHelper.SQLHelper()
     sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}'")
-    return redirect(f'{url_prefix}/')
+    return redirect(f'/')
 
 @utilities_route.route('/logout')
 def logout():
@@ -36,7 +36,7 @@ def logout():
         str: Redirect to home page
     """    
     session.pop('username', None)
-    return redirect(f'{url_prefix}/')
+    return redirect(f'/')
 
 @utilities_route.route("/settings", methods=["GET", "POST"])
 def settings(error=None):
@@ -49,7 +49,7 @@ def settings(error=None):
         str: The template to render
     """    
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     username = str(session["username"])
     verified = False
@@ -88,9 +88,9 @@ def settings(error=None):
 @utilities_route.route("/change_password", methods=["GET", "POST"])
 def change_password():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     if request.method == "GET":
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     
     username = str(session["username"])
     verified = False
@@ -124,9 +124,9 @@ def change_password():
 @utilities_route.route("/change_email", methods=["GET", "POST"])
 def change_email():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     if request.method == "GET":
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     
     username = str(session["username"])
     verified = False
@@ -156,7 +156,7 @@ def change_email():
 @utilities_route.route("/change_ai_personality/<ai_personality>", methods=["GET"])
 def change_ai_personality(ai_personality):
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     username = str(session["username"])
     verified = False
@@ -176,7 +176,7 @@ def change_ai_personality(ai_personality):
 @utilities_route.route("/ai-preferences", methods=["GET"])
 def ai_preferences():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     username = str(session["username"])
     verified = False
@@ -193,9 +193,9 @@ def ai_preferences():
 @utilities_route.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     if request.method == "GET":
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
@@ -218,7 +218,7 @@ def delete_account():
     if username_db == username_form and password_db == password_form and email_db == email_form:
         sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
         session.pop('username', None)
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
     elif username_db != username_form:
         return render_template("settings.html", verified=verified, username=username_session, error="Username isn't matching!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]), url_prefix=url_prefix)
     elif password_db != password_form:
@@ -249,7 +249,7 @@ def terms():
 @utilities_route.route("/support", methods=["POST"])
 def send_support():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     name = str(request.form["name"])
     username = str(request.form["username"])
@@ -264,15 +264,15 @@ def send_support():
 @utilities_route.route("/youtube", methods=["GET", "POST"])
 def download_from_youtube():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
 
     if user == []:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     elif not bool(user[0]["has_premium"]):
-        return redirect(f"{url_prefix}/premium")
+        return redirect(f"/premium")
 
     if request.method == "GET":
         
@@ -291,55 +291,55 @@ def download_from_youtube():
 @utilities_route.route("/2fa/enable")
 def enable_2fa():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
     user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM gruttechat_users WHERE username = '{str(session['username'])}'")
     if user == []:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     if user[0]["2fa_secret_key"] == '0' and bool(user[0]["is_2fa_enabled"]):
         # If 2fa is enabled but the secret key is 0, generate a new secret key
         two_fa_secret_key = str(pyotp.random_base32())
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     
     elif bool(user[0]["is_2fa_enabled"]):
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     elif user[0]["2fa_secret_key"] != '0':
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True} WHERE username = '{str(session['username'])}'")
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     else:
         two_fa_secret_key = str(pyotp.random_base32())
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
 
 @utilities_route.route("/2fa/disable")
 def disable_2fa():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
     sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {False} WHERE username = '{str(session['username'])}'")
     
-    return redirect(f"{url_prefix}/settings")
+    return redirect(f"/settings")
 
 @utilities_route.route("/2fa/refresh")
 def refresh_2fa():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
     user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM gruttechat_users WHERE username = '{str(session['username'])}'")
     
     if user == []:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     elif bool(user[0]["is_2fa_enabled"]) == False:
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")
     else:
         two_fa_secret_key = str(pyotp.random_base32())
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
-        return redirect(f"{url_prefix}/settings")
+        return redirect(f"/settings")

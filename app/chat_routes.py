@@ -18,7 +18,7 @@ def get_messages():
     """
      
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username")).lower()
@@ -57,7 +57,7 @@ def chat_with(recipient):
     """
 
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     recipient = str(recipient).lower()
 
@@ -68,12 +68,12 @@ def chat_with(recipient):
     # Check if the recipient exists
     search_recipient = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if search_recipient == []:
-        return redirect(f'{url_prefix}/chat')
+        return redirect(f'/chat')
     
     # Get the user from the database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     if user == []:
-        return redirect(f'{url_prefix}/chat')
+        return redirect(f'/chat')
     
     # Post is used to send a message
     if request.method == 'POST':
@@ -82,13 +82,13 @@ def chat_with(recipient):
         if request.form['message'] == '' or len(request.form['message']) > 1000:
             print(f"Invalid message: {request.form['message']}")
             
-            return redirect(f'{url_prefix}/chat/{recipient}')
+            return redirect(f'/chat/{recipient}')
 
         # If the message is valid, encrypt it and send it to the database 
         else:
             encypted_message = str(eh.encrypt_message(request.form['message']))
             sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
-            return redirect(f'{url_prefix}/chat/{recipient}')
+            return redirect(f'/chat/{recipient}')
 
     # Get is used to load the chat
     get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
@@ -107,7 +107,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, url_prefix = url_prefix, verified=search_recipient[0]["is_verified"])
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"])
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):
@@ -121,7 +121,7 @@ def send(method):
     """
     
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     ai = OpenAIWrapper.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()
@@ -132,12 +132,12 @@ def send(method):
     # Check if the method is back, clear chat history and redirect to home
     if method == "back":
         session.pop("chat_history", None)
-        return redirect(f"{url_prefix}/chat")
+        return redirect(f"/chat")
     
     # Check if the method is restart, clear chat history and redirect to AI chat
     elif method == "restart":
         session.pop("chat_history", None)
-        return redirect(f"{url_prefix}/ai/chat")
+        return redirect(f"/ai/chat")
 
     # Check if new message is sent, then append it to chat history, get AI response, and refresh page
     elif "send" in request.form and request.form["message"] != "":
@@ -166,7 +166,7 @@ def send(method):
         session["chat_history"] = chat_history
         print(chat_history)
         
-        return redirect(f"{url_prefix}/ai/chat")
+        return redirect(f"/ai/chat")
     
     # Reverse chat history to show most recent messages first and render template
-    return render_template("aichat.html", chat_history=chat_history[::-1], url_prefix = url_prefix)
+    return render_template("aichat.html", chat_history=chat_history[::-1])

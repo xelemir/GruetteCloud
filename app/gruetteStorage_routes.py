@@ -19,7 +19,7 @@ icon = IconHelper.IconHelper()
 @gruetteStorage_route.route('/storage', methods=['POST', 'GET'])
 def storage():
     if "username" not in session:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     username = str(session['username'])
 
@@ -29,9 +29,9 @@ def storage():
 
     if username_database == []:
         # Security check: Username is invalid and should be deleted. This may happen if the user was deleted from the database.
-        return redirect(f'{url_prefix}/logout')
+        return redirect(f'/logout')
     elif not bool(username_database[0]["has_premium"]):
-        return redirect(f'{url_prefix}/premium')
+        return redirect(f'/premium')
 
     files = get_files(username)
     file_list = files["file_list"]
@@ -108,7 +108,7 @@ def get_files(username):
 @gruetteStorage_route.route('/upload', methods=['POST'])
 def upload():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     username = str(session['username'])
 
@@ -117,9 +117,9 @@ def upload():
         user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
 
         if user == []:
-            return redirect(f"{url_prefix}/")
+            return redirect(f"/")
         elif not bool(user[0]["has_premium"]):
-            return redirect(f"{url_prefix}/premium")
+            return redirect(f"/premium")
 
         file = request.files['file']
         if file:
@@ -140,7 +140,7 @@ def download(username, filename, preview="Default"):
         if os.path.exists(os.path.join(gruetteStorage_path, username, "shared", filename)):
             path = os.path.join(gruetteStorage_path, username, "shared", filename)
         else:
-            return redirect(f"{url_prefix}/storage")
+            return redirect(f"/storage")
     elif username == str(session['username']):
         if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
             path = os.path.join(gruetteStorage_path, username, filename)
@@ -149,7 +149,7 @@ def download(username, filename, preview="Default"):
         elif os.path.exists(os.path.join(gruetteStorage_path, username, "YouTube", filename)):
             path = os.path.join(gruetteStorage_path, username, "YouTube", filename)
         else:
-            return redirect(f"{url_prefix}/storage")
+            return redirect(f"/storage")
     
     if path is not None:
         if preview == "preview":
@@ -157,12 +157,12 @@ def download(username, filename, preview="Default"):
         else:
             return send_file(path, as_attachment=True)
     else:
-        return redirect(f"{url_prefix}/storage")
+        return redirect(f"/storage")
 
 @gruetteStorage_route.route("/delete/<username>/<filename>")
 def delete(username, filename):
     if "username" not in session or username != str(session['username']):
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
         
     if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
         os.remove(os.path.join(gruetteStorage_path, username, filename))
@@ -171,7 +171,7 @@ def delete(username, filename):
     elif os.path.exists(os.path.join(gruetteStorage_path, username, "YouTube", filename)):
         os.remove(os.path.join(gruetteStorage_path, username, "YouTube", filename))
         
-    return redirect(f"{url_prefix}/storage")
+    return redirect(f"/storage")
 
 @gruetteStorage_route.route("/file/<username>/<filename>")
 def file(username, filename):
@@ -179,7 +179,7 @@ def file(username, filename):
     
     user = sql.readSQL(f"SELECT is_verified FROM gruttechat_users WHERE username = '{str(username)}'")
     if user == []:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     if "username" not in session or username != str(session['username']):
         shared_file = os.path.join(gruetteStorage_path, username, "shared", filename)
@@ -190,7 +190,7 @@ def file(username, filename):
             code = "https://www.gruettecloud.com/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
             return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=user[0]["is_verified"], is_youtube_video=False)
         else:
-            return redirect(f"{url_prefix}/storage")
+            return redirect(f"/storage")
         
     if os.path.exists(os.path.join(gruetteStorage_path, username, filename)):
         path = os.path.join(gruetteStorage_path, username, filename)
@@ -208,7 +208,7 @@ def file(username, filename):
         is_youtube_video = True
         code = ""
     else:
-        return redirect(f"{url_prefix}/storage")
+        return redirect(f"/storage")
     
     filesize = get_formatted_file_size(os.path.getsize(path))
     created_at = datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime("%d.%m.%Y")
@@ -223,7 +223,7 @@ def file(username, filename):
 @gruetteStorage_route.route("/share/<username>/<filename>")
 def share(username, filename):
     if "username" not in session or username != str(session['username']):
-        return redirect(f"{url_prefix}/storage")
+        return redirect(f"/storage")
 
     sql = SQLHelper.SQLHelper()
     user_shared_directory = os.path.join(gruetteStorage_path, username, "shared")
@@ -241,14 +241,14 @@ def share(username, filename):
             sql.writeSQL(f"INSERT INTO gruttestorage_links (owner, link_id, filename) VALUES ('{username}', '{code}', '{filename}')")
                         
         else:
-            return redirect(f"{url_prefix}/storage")
+            return redirect(f"/storage")
     
-    return redirect(f"{url_prefix}/file/{username}/{filename}")
+    return redirect(f"/file/{username}/{filename}")
 
 @gruetteStorage_route.route("/stopsharing/<username>/<filename>")
 def stopsharing(username, filename):
     if "username" not in session or username != str(session['username']):
-        return redirect(f"{url_prefix}/storage")
+        return redirect(f"/storage")
     
     sql = SQLHelper.SQLHelper()
     
@@ -258,18 +258,18 @@ def stopsharing(username, filename):
             shutil.move(os.path.join(user_shared_directory, filename), os.path.join(gruetteStorage_path, username, filename))
             sql.writeSQL(f"DELETE FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")
     except:
-        return redirect(f"{url_prefix}/file/{username}/{filename}")
+        return redirect(f"/file/{username}/{filename}")
         
-    return redirect(f"{url_prefix}/file/{username}/{filename}")
+    return redirect(f"/file/{username}/{filename}")
 
 @gruetteStorage_route.route("/s/<code>")
 def shared(code):
     sql = SQLHelper.SQLHelper()
     result = sql.readSQL(f"SELECT owner, filename FROM gruttestorage_links WHERE link_id ='{code}'")
     if result == []:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     username = result[0]["owner"]
     filename = result[0]["filename"]
     
-    return redirect(f"{url_prefix}/file/{username}/{filename}")
+    return redirect(f"/file/{username}/{filename}")

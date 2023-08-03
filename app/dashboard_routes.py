@@ -36,9 +36,9 @@ def get_formatted_file_size(size):
 @dashboard_route.route('/dashboard', methods=['POST', 'GET'])
 def dashboard():
     if 'username' not in session:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
     elif session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
     
@@ -89,7 +89,7 @@ def dashboard():
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
 def create_status_message():
     if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
     
     sql = SQLHelper.SQLHelper()
 
@@ -100,56 +100,56 @@ def create_status_message():
     sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
     sql.writeSQL(f"INSERT INTO gruttechat_platform_messages (subject, content, color) VALUES ('{subject}', '{content}', '{color}')")
 
-    return redirect(f'{url_prefix}/dashboard')
+    return redirect(f'/dashboard')
 
 @dashboard_route.route('/dashboard/deletestatusmessage')
 def delete_status_message():
     if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
 
     sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
 
-    return redirect(f'{url_prefix}/dashboard')
+    return redirect(f'/dashboard')
 
 @dashboard_route.route('/dashboard/deleteuser/<username>')
 def delete_user(username):
     if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
 
     sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{username}'")
 
-    return redirect(f'{url_prefix}/dashboard')
+    return redirect(f'/dashboard')
 
 @dashboard_route.route('/dashboard/giftplus/<username>')
 def gift_plus(username):
     if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
 
     sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{username}'")
 
-    return redirect(f'{url_prefix}/dashboard')
+    return redirect(f'/dashboard')
 
 @dashboard_route.route('/dashboard/revokeplus/<username>')
 def revoke_plus(username):
     if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
 
     sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {False} WHERE username = '{username}'")
 
-    return redirect(f'{url_prefix}/dashboard')
+    return redirect(f'/dashboard')
 
 @dashboard_route.route('/dashboard/sendemail', methods=['POST'])
 def send_mail():
     if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
     
     email = MailHelper.MailHelper()
     sql = SQLHelper.SQLHelper()
@@ -165,34 +165,34 @@ def send_mail():
     # Get auth secret from db as users here must be admins
     user = sql.readSQL(f"SELECT 2fa_secret_key FROM gruttechat_users WHERE username = '{session['username']}'")
     if user == []:
-        return redirect(f'{url_prefix}/dashboard')
+        return redirect(f'/dashboard')
     try:
         totp = pyotp.TOTP(user[0]["2fa_secret_key"])
     except:
-        return redirect(f'{url_prefix}/dashboard?error=no_otp')
+        return redirect(f'/dashboard?error=no_otp')
 
     # Validate the OTP
     if not totp.verify(otp):
-        return redirect(f'{url_prefix}/dashboard?error=otp')
+        return redirect(f'/dashboard?error=otp')
     
     if recipient_username == "" and not send_to_all:
-        return redirect(f'{url_prefix}/dashboard?error=no_recipient')
+        return redirect(f'/dashboard?error=no_recipient')
     
     if not send_to_all:
     
         recipient = sql.readSQL(f"SELECT email FROM gruttechat_users WHERE username = '{recipient_username}'")
     
         if recipient == []:
-            return redirect(f'{url_prefix}/dashboard?error=invalid_recipient')
+            return redirect(f'/dashboard?error=invalid_recipient')
         else:
             recipient_email = recipient[0]["email"]
             
         email.send_email(recipient_email, recipient_username, subject, content)
-        return redirect(f'{url_prefix}/dashboard?error=sent')
+        return redirect(f'/dashboard?error=sent')
     
     else:
         for user in sql.readSQL(f"SELECT username, email FROM gruttechat_users"):
             if user["username"] not in excluded_users:
                 email.send_email(user["email"], user["username"], subject, content)
                 
-        return redirect(f'{url_prefix}/dashboard?error=sent')
+        return redirect(f'/dashboard?error=sent')

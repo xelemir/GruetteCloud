@@ -56,7 +56,7 @@ def premium():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     # Get user from database
     sql = SQLHelper.SQLHelper()
@@ -64,14 +64,14 @@ def premium():
 
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False, url_prefix = url_prefix)
+        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
     
     # If good to go, check if user has premium
     else:
 
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True, url_prefix = url_prefix)
+            return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
         
         # If user does not have premium, render premium ad page
         else:
@@ -85,7 +85,7 @@ def payment():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     # Get user from database
     sql = SQLHelper.SQLHelper()
@@ -126,7 +126,7 @@ def success():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     # Get user from database
     sql = SQLHelper.SQLHelper()
@@ -168,7 +168,7 @@ def cancel():
         str: Rendered template
     """    
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
 
     # Payment cancelled error
     return render_template("settings.html", error="Payment cancelled.", selected_personality="Default", has_premium=False, url_prefix=url_prefix)
@@ -177,12 +177,12 @@ def cancel():
 @premium_route.route("/tip/<recipient>", methods=["GET"])
 def tip(recipient):
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
     recipient_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if recipient_database == []:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     return render_template("tip.html", recipient=str(recipient), url_prefix=url_prefix)

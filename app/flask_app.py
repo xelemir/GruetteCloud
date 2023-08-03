@@ -9,7 +9,7 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import url_prefix, secret_key, well_known_directory, static_directory
+from config import url_prefix, secret_key
 
 app = Flask("GrütteCloud")
 app.secret_key = secret_key
@@ -26,22 +26,14 @@ eh = EncryptionHelper.EncryptionHelper()
 @app.route("/")
 def index():
     if "username" in session:
-        return redirect(f"{url_prefix}/home")
+        return redirect(f"/home")
     else:
-        return redirect(f"{url_prefix}/login")
-    
-@app.route('/.well-known/<path:filename>')
-def serve_well_known(filename):
-    return send_from_directory(well_known_directory, filename)
+        return redirect(f"/login")
 
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(static_directory, filename)
-    
 @app.route("/home")
 def home():
     if "username" not in session:
-        return redirect(f"{url_prefix}/")
+        return redirect(f"/")
     
     username = str(session["username"]).lower()
     sql = SQLHelper.SQLHelper()
@@ -50,7 +42,7 @@ def home():
     platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
     if user == []:
         # Security measure
-        return redirect(f"{url_prefix}/logout")
+        return redirect(f"/logout")
         
     if platform_message == []:
         platform_message = None
@@ -62,7 +54,7 @@ def home():
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
     if 'username' not in session:
-        return redirect(f'{url_prefix}/')
+        return redirect(f'/')
 
     username = str(session['username']).lower()
     active_chats = []
@@ -74,18 +66,18 @@ def chat(error=None):
 
         # Check if recipient username is valid
         if recipient is None or recipient == username or len(recipient) > 20:
-            return redirect(f'{url_prefix}/chat')
+            return redirect(f'/chat')
 
         # Check if recipient exists
         user_exists = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{recipient}'")
 
         if user_exists == []:
             # User does not exist
-            return redirect(f'{url_prefix}/chat')
+            return redirect(f'/chat')
 
         else:
             # User exists
-            return redirect(f'{url_prefix}/chat/{recipient}')
+            return redirect(f'/chat/{recipient}')
 
     # Fetch active chats from the database
     active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")
@@ -104,7 +96,7 @@ def chat(error=None):
     
     if user == []:
         # Safety check
-        return redirect(f'{url_prefix}/logout')
+        return redirect(f'/logout')
     
     platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
     
@@ -114,7 +106,7 @@ def chat(error=None):
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
     # Render the home page
-    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], url_prefix = url_prefix, status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"])
+    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"])
 
 if __name__ == '__main__':
     app.run(debug=True)
