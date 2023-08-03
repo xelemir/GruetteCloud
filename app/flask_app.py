@@ -35,7 +35,7 @@ def serve_well_known(filename):
     return send_from_directory(well_known_directory, filename)
 
 @app.route('/static/<path:filename>')
-def serve_well_known(filename):
+def serve_static(filename):
     return send_from_directory(static_directory, filename)
     
 @app.route("/home")
