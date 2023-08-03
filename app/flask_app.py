@@ -9,7 +9,7 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import url_prefix, secret_key, well_known_directory
+from config import url_prefix, secret_key, well_known_directory, static_directory
 
 app = Flask("GrütteCloud")
 app.secret_key = secret_key
@@ -33,6 +33,10 @@ def index():
 @app.route('/.well-known/<path:filename>')
 def serve_well_known(filename):
     return send_from_directory(well_known_directory, filename)
+
+@app.route('/static/<path:filename>')
+def serve_well_known(filename):
+    return send_from_directory(static_directory, filename)
     
 @app.route("/home")
 def home():

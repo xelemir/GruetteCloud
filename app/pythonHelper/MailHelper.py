@@ -91,13 +91,13 @@ class MailHelper:
                         <b style="color: #FFFFFF;">Kind regards,<br>Jan from GrütteCloud</b>
                         <br><br><br>
                         <span style="font-size: 0.7em;">
-                            If you think this email was sent by mistake, <a href="https://www.gruettecloud.com/v/support" style="color: #FFFFFF;">contact us</a>.<br>
+                            If you think this email was sent by mistake, <a href="https://www.gruettecloud.com/support" style="color: #FFFFFF;">contact us</a>.<br>
                             <span style="display: inline-flex;">
-                                <a href="https://www.gruettecloud.com/v/about" style="color: #FFFFFF;">About Us</a>
+                                <a href="https://www.gruettecloud.com/about" style="color: #FFFFFF;">About Us</a>
                                 &nbsp;|&nbsp;
-                                <a href="https://www.gruettecloud.com/v/terms" style="color: #FFFFFF;">Terms of Service</a>
+                                <a href="https://www.gruettecloud.com/terms" style="color: #FFFFFF;">Terms of Service</a>
                                 &nbsp;|&nbsp;
-                                <a href="https://www.gruettecloud.com/v/privacy" style="color: #FFFFFF;">Privacy Policy</a>
+                                <a href="https://www.gruettecloud.com/privacy" style="color: #FFFFFF;">Privacy Policy</a>
                             </span>
                         </span>
                     </div>

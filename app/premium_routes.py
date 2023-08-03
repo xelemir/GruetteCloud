@@ -13,7 +13,7 @@ set_config({
     'client_secret': paypal_client_secret
 })
 
-def pay_with_PayPal(success_url="https://www.gruettecloud.com/v/success", cancel_url="https://www.gruettecloud.com/v/cancel", amount=2.99, description="GrütteCloud PLUS"):
+def pay_with_PayPal(success_url="https://www.gruettecloud.com/success", cancel_url="https://www.gruettecloud.com/cancel", amount=2.99, description="GrütteCloud PLUS"):
     """ Pay with PayPal
 
     Args:
