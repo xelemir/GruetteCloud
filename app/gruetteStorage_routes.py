@@ -177,7 +177,7 @@ def delete(username, filename):
 def file(username, filename):
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT is_verified FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT is_verified FROM gruttechat_users WHERE username = '{str(username)}'")
     if user == []:
         return redirect(f"{url_prefix}/")
     
@@ -188,9 +188,6 @@ def file(username, filename):
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y")
             icon_path = IconHelper.IconHelper().get_icon(filename)
             code = "https://www.gruettecloud.com/v/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
-            is_author_verified = False
-            if username in admin_users:
-                is_author_verified = True
             return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=user[0]["is_verified"], is_youtube_video=False)
         else:
             return redirect(f"{url_prefix}/storage")
