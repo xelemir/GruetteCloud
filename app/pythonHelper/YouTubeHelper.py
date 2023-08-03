@@ -37,7 +37,7 @@ class YouTubeHelper:
         yt = YouTube(self.url)
         stream = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc().first()
 
-        filepath_video = os.path.join(gruetteStorage_path, username, "YouTube")
+        filepath_video = os.path.join(gruetteStorage_path, username)
         if not os.path.exists(filepath_video):
             os.makedirs(filepath_video)
 

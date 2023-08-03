@@ -132,11 +132,11 @@
                     </a>
                 {% endif %}
             {% else %}
-                <div style="padding-bottom: 20px;">
-                    <button id="copy-button" class="custom-button" style="background-color: var(--red); margin-right: 10px;" onclick="window.location.href='https://www.youtube.com/results?search_query={{ filename }}'">
+                <a href="{{ youtube_link }}" title="Watch on YouTube" style="text-decoration: none; padding-bottom: 20px;">
+                    <button class="custom-button" style="background-color: var(--red); margin-right: 10px;">
                         <span class="material-symbols-outlined">youtube_activity</span> YouTube
                     </button>
-                </div>
+                </a>
             {% endif %}
             <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
                 <button class="custom-button" style="margin-left: 10px;">
@@ -209,11 +209,11 @@
                     </a>
                 {% endif %}
             {% else %}
-                <div style="padding-bottom: 20px;">
-                    <button id="mobile-copy-button" class="custom-button" style="background-color: var(--red); margin-right: 3vw; width: 37vw;" onclick="window.location.href='https://www.youtube.com/results?search_query={{ filename }}'">
+                <a href="{{ youtube_link }}" title="Watch on YouTube" style="text-decoration: none; padding-bottom: 20px;">
+                    <button class="custom-button" style="background-color: var(--red); margin-right: 3vw; width: 37vw;">
                         <span class="material-symbols-outlined">youtube_activity</span><span style="font-size: 0.7em;"> YouTube</span>
                     </button>
-                </div>
+                </a>
             {% endif %}
             <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
                 <button class="custom-button" style="margin-left: 3vw; width: 37vw;">

@@ -6,7 +6,7 @@ import shutil
 import random
 import string
 
-from pythonHelper import EncryptionHelper, SQLHelper
+from pythonHelper import EncryptionHelper, SQLHelper, YouTubeHelper
 from pythonHelper import IconHelper
 from config import templates_path, gruetteStorage_path, admin_users
     
@@ -75,15 +75,18 @@ def get_files(username):
     file_list = []
     files_database = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE owner = '{username}'")
     for file in files_database:
-        if file["filename"] not in files:
-            sql.writeSQL(f"DELETE FROM gruttestorage_links WHERE filename = '{file['filename']}' AND owner = '{username}'")
-        else:
+        try:
+        #if file["filename"] not in files:
+        # sql.writeSQL(f"DELETE FROM gruttestorage_links WHERE filename = '{file['filename']}' AND owner = '{username}'")
+        #else:
             if bool(file["is_shared"]):
                 file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "shared", "link": file["link_id"]})
             elif bool(file["is_youtube"]):
                 file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "youtube", "link": file["link_id"], "youtube_link": file["youtube_link"]})
             else:
                 file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "private", "link": file["link_id"]})
+        except:
+            pass
     
     return {"file_list": file_list, "size_formatted": size_formatted, "size_percentage": size_percentage}
     
@@ -195,7 +198,7 @@ def file(file_link):
             is_author_verified = False
             if user != []:
                 is_author_verified = bool(user[0]["is_verified"])
-                return render_template("fileinfo.html", username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=file_link, is_gruettecloud_user=False, is_author_verified=is_author_verified, is_youtube_video=False)
+                return render_template("fileinfo.html", username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=file_link, is_gruettecloud_user=False, is_author_verified=is_author_verified, is_youtube_video=False, youtube_link=None)
             
         return redirect(f"/")
     
@@ -209,7 +212,7 @@ def file(file_link):
         is_author_verified = False
         if user != []:
             is_author_verified = bool(user[0]["is_verified"])
-        return render_template("fileinfo.html", username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=True, is_shared=bool(file[0]["is_shared"]), file_icon=icon_path, link_id=file_link, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=bool(file[0]["is_youtube"]))
+        return render_template("fileinfo.html", username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=True, is_shared=bool(file[0]["is_shared"]), file_icon=icon_path, link_id=file_link, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=bool(file[0]["is_youtube"]), youtube_link=file[0]["youtube_link"])
      
 
 @gruetteStorage_route.route("/share/<file_link>")
@@ -259,3 +262,40 @@ def shared(link_id):
         return redirect(f"/file/{link_id}")
     
     return redirect("/")
+
+@gruetteStorage_route.route("/youtube", methods=["GET", "POST"])
+def download_from_youtube():
+    if "username" not in session:
+        return redirect(f"/")
+
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+
+    if user == []:
+        return redirect(f"/")
+    elif not bool(user[0]["has_premium"]):
+        return redirect(f"/premium")
+
+    if request.method == "GET":
+        
+        return render_template("youtube.html")
+    elif request.method == "POST":
+        try:
+            video_url = str(request.form["video_url"])
+            youtube = YouTubeHelper.YouTubeHelper(url=video_url)
+        except:
+            return jsonify({"error": "Something went wrong on our end :/"})
+            
+        youtube.download(username=str(session["username"]))
+        video_id = youtube.get_media_title()
+        
+        not_new_code = True
+        while not_new_code:
+            code = ''.join(random.choice(string.ascii_letters) for _ in range(5))
+            if sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE link_id ='{code}'") == []:
+                not_new_code = False
+                    
+        print(code)
+        sql.writeSQL(f"INSERT INTO gruttestorage_links (filename, owner, link_id, is_shared, is_youtube, youtube_link) VALUES ('{video_id}.mp4', '{str(session['username'])}', '{code}', '0', '1', '{video_url}')")
+
+        return jsonify({"filename": video_id})

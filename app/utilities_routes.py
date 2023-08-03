@@ -4,7 +4,7 @@ import platform
 import pyotp
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
 
-from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, YouTubeHelper
+from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
 from config import templates_path, admin_users, gruetteStorage_path
 
     
@@ -264,33 +264,6 @@ def send_support():
     mail.send_support_mail(name, username, email, message)
     
     return render_template("support.html", error="Your message has been sent!")
-
-@utilities_route.route("/youtube", methods=["GET", "POST"])
-def download_from_youtube():
-    if "username" not in session:
-        return redirect(f"/")
-
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
-
-    if user == []:
-        return redirect(f"/")
-    elif not bool(user[0]["has_premium"]):
-        return redirect(f"/premium")
-
-    if request.method == "GET":
-        
-        return render_template("youtube.html")
-    elif request.method == "POST":
-        try:
-            video_url = str(request.form["video_url"])
-            youtube = YouTubeHelper.YouTubeHelper(url=video_url)
-        except:
-            return jsonify({"error": "Something went wrong on our end :/"})
-            
-        youtube.download(username=str(session["username"]))
-        video_id = youtube.get_media_title()
-        return jsonify({"filename": video_id})
 
 @utilities_route.route("/2fa/enable")
 def enable_2fa():

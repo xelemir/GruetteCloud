@@ -97,11 +97,19 @@
                                     <span class="material-symbols-outlined">download</span>
                                 </button>
                             </a>
-                            <a href="/open/{{ file["link"] }}/preview" title="Preview">
-                                <button class="button-gray" style="{% if file["type"] == "youtube" %}color: var(--white-color); background-color: var(--red); {% endif %}height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
-                                    <span class="material-symbols-outlined">{% if file["type"] == "youtube" %}youtube_activity{% else %}visibility{% endif %}</span>
-                                </button>
-                            </a>
+                            {% if file["type"] != "youtube" %}
+                                <a href="/open/{{ file["link"] }}/preview" title="Preview">
+                                    <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                </a>
+                            {% else %}
+                                <a href="{{ file["youtube_link"] }}" title="Watch on YouTube">
+                                    <button class="button-gray" style="color: var(--white-color); background-color: var(--red); height: 45px; width: 60px; margin-right: 5px; display: flex; align-items: center; justify-content: center;">
+                                        <span class="material-symbols-outlined">youtube_activity</span>
+                                    </button>
+                                </a>
+                            {% endif %}
                             <a href="/file/{{ file["link"] }}" style="color: var(--text-color); display: block; align-items: center; justify-content: center;" title="Info">
                                 <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if file["type"] == "shared" %} background-color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">
                                     <span class="material-symbols-outlined">info</span>
