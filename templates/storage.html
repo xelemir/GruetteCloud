@@ -142,12 +142,12 @@
                 {% for file in files %}
                     <div style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
                         <button class="button-gray text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px; padding-right: 5px;">
-                            <a href="/open/{{ username }}/{{ file["link"] }}/download" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;" title="Download">
+                            <a href="/open/{{ file["link"] }}/download" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center;" title="Download">
                                 <span style="color: var(--text-color); font-size: 18px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file["filename"] }}</span>
                             </a>
                         </button>
                         <button class="button-gray" style="height: 45px; width: 60px;{% if file["type"] == "shared" %} background-color: var(--green);{% elif file["type"] == "youtube" %} background-color: var(--red);{% endif %}">
-                            <a href="/file/{{ username }}/{{ file["link"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
+                            <a href="/file/{{ file["link"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined">info</span>
                             </a>
                         </button>
