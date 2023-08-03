@@ -167,7 +167,7 @@ def delete(file_link):
     
     if file == []:
         return redirect("/")
-    elif file["owner"] == str(session['username']):
+    elif file[0]["owner"] == str(session['username']):
     
         path = os.path.join(gruetteStorage_path, file[0]["owner"], file[0]["filename"])
         os.remove(path)
