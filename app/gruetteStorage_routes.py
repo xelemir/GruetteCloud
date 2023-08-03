@@ -8,7 +8,7 @@ import string
 
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, gruetteStorage_path, admin_users
+from config import templates_path, gruetteStorage_path, admin_users
     
 gruetteStorage_route = Blueprint("GruetteStorage", "GruetteStorage", template_folder=templates_path)
 
@@ -36,7 +36,7 @@ def storage():
     files = get_files(username)
     file_list = files["file_list"]
     
-    return render_template("storage.html", url_prefix=url_prefix, username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None, verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
+    return render_template("storage.html", username=username, files=file_list, total_size_formatted=files["total_size_formatted"], total_size_percentage=files["total_size_percentage"], status=None, verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
 
 
 # Helper function to convert file size to human-readable format
@@ -188,7 +188,7 @@ def file(username, filename):
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(shared_file)).strftime("%d.%m.%Y")
             icon_path = IconHelper.IconHelper().get_icon(filename)
             code = "https://www.gruettecloud.com/s/" + str(SQLHelper.SQLHelper().readSQL(f"SELECT link_id FROM gruttestorage_links WHERE owner='{username}' AND filename='{filename}'")[0]["link_id"])
-            return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=user[0]["is_verified"], is_youtube_video=False)
+            return render_template("fileinfo.html", username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=False, is_shared=True, file_icon=icon_path, link_id=code, is_gruettecloud_user=False, is_author_verified=user[0]["is_verified"], is_youtube_video=False)
         else:
             return redirect(f"/storage")
         
@@ -217,7 +217,7 @@ def file(username, filename):
     is_author_verified = False
     if username in admin_users:
         is_author_verified = True
-    return render_template("fileinfo.html", url_prefix=url_prefix, username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=user[0]["is_verified"], is_youtube_video=is_youtube_video)
+    return render_template("fileinfo.html", username=username, filename=filename, filesize=filesize, created_at=created_at, is_author=True, is_shared=is_shared, file_icon=icon_path, link_id=code, is_gruettecloud_user=True, is_author_verified=user[0]["is_verified"], is_youtube_video=is_youtube_video)
     
 
 @gruetteStorage_route.route("/share/<username>/<filename>")

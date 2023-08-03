@@ -3,7 +3,7 @@ import random
 import pyotp
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
-from config import url_prefix, templates_path
+from config import templates_path
     
 loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=templates_path)
 
@@ -62,7 +62,7 @@ def two_fa():
     if "username" in session or "username_2fa" not in session:
         return redirect(f'/')
     if request.method == "GET":
-        return render_template('2fa.html', url_prefix=url_prefix, username=session['username_2fa'])
+        return render_template('2fa.html', username=session['username_2fa'])
     if request.method == "POST":
         sql = SQLHelper.SQLHelper()
         
@@ -82,7 +82,7 @@ def two_fa():
             return redirect(f'/')
         
         else:
-            return render_template('2fa.html', error="Invalid code", url_prefix=url_prefix, username=username)
+            return render_template('2fa.html', error="Invalid code", username=username)
 
     
     

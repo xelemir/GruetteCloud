@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, session, jsonify, Blueprin
 import logging
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
-from config import url_prefix, templates_path, admin_users
+from config import templates_path, admin_users
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)

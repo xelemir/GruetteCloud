@@ -9,7 +9,7 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import url_prefix, secret_key
+from config import secret_key
 
 app = Flask("GrütteCloud")
 app.secret_key = secret_key
@@ -49,7 +49,7 @@ def home():
     else:
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
-    return render_template("home.html", url_prefix=url_prefix, has_premium=bool(user[0]["has_premium"]), is_admin=user[0]["is_admin"], username=username, status_message=platform_message)
+    return render_template("home.html", has_premium=bool(user[0]["has_premium"]), is_admin=user[0]["is_admin"], username=username, status_message=platform_message)
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):

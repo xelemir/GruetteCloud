@@ -8,7 +8,7 @@ import pyotp
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import MailHelper
 from pythonHelper import IconHelper
-from config import url_prefix, templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, auth_admin_key, excluded_users
+from config import templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, auth_admin_key, excluded_users
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
@@ -84,7 +84,7 @@ def dashboard():
     except:
         pass
     
-    return render_template('dashboard.html', url_prefix=url_prefix, username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status)
+    return render_template('dashboard.html', username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status)
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
 def create_status_message():

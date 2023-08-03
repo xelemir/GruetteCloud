@@ -1,5 +1,5 @@
 import json
-from config import url_prefix, flask_app_path
+from config import flask_app_path
 from cryptography.fernet import Fernet
 
 
