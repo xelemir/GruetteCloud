@@ -2,7 +2,7 @@ import os
 import datetime
 import platform
 import pyotp
-from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint
+from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
 from config import templates_path, admin_users, gruetteStorage_path
@@ -51,6 +51,29 @@ def settings(error=None):
     if "username" not in session:
         return redirect(f"/")
 
+    error = request.args.get("error")
+    if error == "error":
+        error = "Something went wrong on our end :/"
+    elif error == "password_length_error":
+        error = "Your password must between 8 and 40 characters long."
+    elif error == "not_matching_password":
+        error = "Your password is incorrect."
+    elif error == "password_changed":
+        error = "Your password has been changed."
+    elif error == "email_not_valid":
+        error = "Your email is not valid."
+    elif error == "email_changed":
+        error = "Your email has been changed."
+    elif error == "not_matching_username":
+        error = "Your username is incorrect."
+    elif error == "not_matching_email":
+        error = "Your email is incorrect."
+    elif error == "already_unsubscribed":
+        error = "You are already unsubscribed."
+    elif error == "unsubscribed":
+        error = "You have been unsubscribed."
+        
+    
     username = str(session["username"])
     verified = False
     if username in admin_users:
@@ -76,8 +99,7 @@ def settings(error=None):
         provisioning_uri = totp.provisioning_uri(f" {username}", issuer_name="GrütteCloud")
         
         return render_template("settings.html", verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now)
-        
-        
+ 
     else:
         is_two_fa_enabled = False
         qr_image_base64 = None
@@ -93,33 +115,28 @@ def change_password():
         return redirect(f"/settings")
     
     username = str(session["username"])
-    verified = False
-    if username in admin_users:
-        verified = True
 
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
-    selected_personality = "Default"
     new_password = str(request.form["new_password"])
     old_password = str(request.form["old_password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
     
     if user == []:
-        return render_template("settings.html", verified=verified, username=username, error="Something went wrong on our end :/", selected_personality=selected_personality, has_premium=False)
-    else:
-        selected_personality = user[0]["ai_personality"]
+        return redirect(url_for("Utilities.settings", error="error"))
+    
         
     if len(new_password) > 40 or len(new_password) < 8:
-        return render_template('settings.html', error='Password must be between 8 and 40 characters', selected_personality=selected_personality, has_premium=bool(user[0]["has_premium"]))
+        return redirect(url_for("Utilities.settings", error="password_length_error"))
     
     password = eh.decrypt_message(str(user[0]["password"]))
     if password != old_password:
-        return render_template("settings.html", verified=verified, username=username, error="Passwords aren't matching!", selected_personality=selected_personality, has_premium=bool(user[0]["has_premium"]))
+        return redirect(url_for("Utilities.settings", error="not_matching_password"))
     else:
         encrypt_new_password = eh.encrypt_message(str(new_password))
         sql.writeSQL(f"UPDATE gruttechat_users SET password = '{str(encrypt_new_password)}' WHERE username = '{str(session['username'])}'")
 
-    return render_template("settings.html", verified=verified, username=username, error="Password changed successfully!", selected_personality=selected_personality, has_premium=bool(user[0]["has_premium"]))
+    return redirect(url_for("Utilities.settings", error="password_changed"))
 
 @utilities_route.route("/change_email", methods=["GET", "POST"])
 def change_email():
@@ -129,29 +146,25 @@ def change_email():
         return redirect(f"/settings")
     
     username = str(session["username"])
-    verified = False
-    if username in admin_users:
-        verified = True
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
     new_email = str(request.form["new_email"])
     password_form = str(request.form["password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
     
-
     if user == []:
-        return render_template("settings.html", verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return redirect(url_for("Utilities.settings", error="error"))
     else:
         if "@" not in new_email or "." not in new_email:
-            return render_template("settings.html", verified=verified, username=username, error="Please enter a valid email address!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]))
+            return redirect(url_for("Utilities.settings", error="email_not_valid"))
 
         password = eh.decrypt_message(str(user[0]["password"]))
         if password_form != password:
-            return render_template("settings.html", verified=verified, username=username, error="Passwords aren't matching!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]))
+            return redirect(url_for("Utilities.settings", error="not_matching_password"))
         else:
             sql.writeSQL(f"UPDATE gruttechat_users SET email = '{str(new_email)}' WHERE username = '{str(session['username'])}'")
 
-        return render_template("settings.html", verified=verified, username=username, error="Email changed successfully!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]))
+        return redirect(url_for("Utilities.settings", error="email_changed"))
     
 @utilities_route.route("/change_ai_personality/<ai_personality>", methods=["GET"])
 def change_ai_personality(ai_personality):
@@ -186,7 +199,7 @@ def ai_preferences():
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
     
     if user == []:
-        return render_template("settings.html", verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return redirect(url_for("Utilities.settings", error="error"))
     else:
         return render_template("settings.html", verified=verified, username=username, selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]), display_back_to_ai=True)
         
@@ -204,12 +217,9 @@ def delete_account():
     password_form = str(request.form["password"])
     email_form = str(request.form["email"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username_session}'")
-    verified = False
-    if username_session in admin_users:
-        verified = True
         
     if user == []:
-        return render_template("settings.html", verified=verified, username=username_session, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return redirect(url_for("Utilities.settings", error="error"))
     
     username_db = user[0]["username"]
     password_db = eh.decrypt_message(str(user[0]["password"]))
@@ -220,11 +230,11 @@ def delete_account():
         session.pop('username', None)
         return redirect(f'/')
     elif username_db != username_form:
-        return render_template("settings.html", verified=verified, username=username_session, error="Username isn't matching!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]))
+        return redirect(url_for("Utilities.settings", error="not_matching_username"))
     elif password_db != password_form:
-        return render_template("settings.html", verified=verified, username=username_session, error="Password isn't matching!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]))
+        return redirect(url_for("Utilities.settings", error="not_matching_password"))
     elif email_db != email_form:
-        return render_template("settings.html", verified=verified, username=username_session, error="Email isn't matching!", selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]))
+        return redirect(url_for("Utilities.settings", error="not_matching_email"))
 
 @utilities_route.route("/help", methods=["GET"])
 def help():
@@ -320,3 +330,20 @@ def refresh_2fa():
         two_fa_secret_key = str(pyotp.random_base32())
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
         return redirect(f"/settings")
+    
+@utilities_route.route("/unsubscribe")
+def unsubscribe():
+    if "username" not in session:
+        return redirect(url_for("index", target="unsubscribe"))
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT receive_emails FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    
+    if user == []:
+        return redirect(f"/")
+    elif bool(user[0]["receive_emails"]) == False:
+        return redirect(url_for("Utilities.settings", error="already_unsubscribed"))
+    else:
+        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{str(session['username'])}'")
+        return redirect(url_for("Utilities.settings", error="unsubscribed"))

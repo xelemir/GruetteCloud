@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 
 from pythonHelper import EncryptionHelper, SQLHelper
 
@@ -26,9 +26,14 @@ eh = EncryptionHelper.EncryptionHelper()
 @app.route("/")
 def index():
     if "username" in session:
-        return redirect(f"/home")
+        if request.args.get('target') is not None:
+            return redirect(f"/{request.args.get('target')}")
+        else:
+            return redirect("/home")
+    elif request.args.get('target') is not None:
+        return redirect(url_for("LoginSignUp.login", target=request.args.get('target')))
     else:
-        return redirect(f"/login")
+        return redirect("/login")
     
 @app.errorhandler(404)
 def error404(error):

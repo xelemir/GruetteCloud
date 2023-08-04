@@ -15,7 +15,7 @@
     
             function loadMessages() {
                 $.ajax({
-                    url: '{{ url_prefix }}/get_messages',
+                    url: '/get_messages',
                     type: 'GET',
                     data: {
                         username: username,  // Pass the value of username as a query parameter
@@ -81,7 +81,7 @@
         {% endfor %}
     </div>
 
-    <form action="{{ url_prefix }}/chat/{{ recipient }}" method="POST" id="sendMessage">
+    <form action="/chat/{{ recipient }}" method="POST" id="sendMessage">
         <div class="wrapping-tile">
             <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
             <input type="submit" name="send" value="Send" class="send-button">

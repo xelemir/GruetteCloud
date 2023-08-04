@@ -82,7 +82,7 @@ class MailHelper:
                 </head>
                 <body style="color: #FFFFFF;">
                     <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 20px; padding: 20px;">
-                        <img src="{image_url}" alt="GrütteCloud Logo" style="max-width: 200px; margin-top: -20px;">
+                        <img src="{image_url}" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: -20px;">
                         <h1 style="color: #0A84FF; margin-top: -20px;">Hey {username},</h1>
                         <b style="color: #FFFFFF;">
                             {body}
@@ -91,7 +91,8 @@ class MailHelper:
                         <b style="color: #FFFFFF;">Kind regards,<br>Jan from GrütteCloud</b>
                         <br><br><br>
                         <span style="font-size: 0.7em;">
-                            If you think this email was sent by mistake, <a href="https://www.gruettecloud.com/support" style="color: #FFFFFF;">contact us</a>.<br>
+                            You are receiving this email because you are subscribed to GrütteCloud.
+                            If you do not want to receive any more emails, you can unsubscribe <a href="https://www.gruettecloud.com/unsubscribe" style="color: #FFFFFF;">here</a>.<br>
                             <span style="display: inline-flex;">
                                 <a href="https://www.gruettecloud.com/about" style="color: #FFFFFF;">About Us</a>
                                 &nbsp;|&nbsp;
@@ -110,27 +111,49 @@ class MailHelper:
         html = f'Thanks for signing up to GrütteCloud!<br>To get started, please enter the following code on the verification page:<h2 style="color: #0A84FF;"><a style="color: #0A84FF; text-decoration: none;" href="http://jan.gruettefien.com/gruettechat/verify/{username}/{verification_code}">{verification_code}</a></h2>'
         self.send_email(recipient_email, username, "Verify your GrütteID", html, link=True)
 
-    def send_support_mail(self, name, username, email, message):
+    def send_support_mail(self, name="None", username="None", email="None", message="None"):
         html = f'''
             <html>
+                <head>
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
+                    <style>
+                        body {{
+                            font-family: 'Nunito', sans-serif;
+                            font-size: 1em;
+                        }}
+                    </style>
+                </head>
                 <body style="color: #FFFFFF;">
                     <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 20px; padding: 20px;">
-                        <h1 style="color: #0A84FF; margin-top: -20px;">New Support Request</h1>
-                        <b>
+                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: -20px;">
+                        <h1 style="color: #0A84FF; margin-top: -20px;">Request by {name},</h1>
+                        <b style="color: #FFFFFF;">
                             Name: {name}<br>
                             Username: {username}<br>
                             Email: {email}<br>
-                            Message: {message}<br><br>
-                        </b>
+                            Message: {message}
+                        </b><br><br>
+                        <b style="color: #FFFFFF;">GrütteCloud</b>
+                        <br><br><br>
+                        <span style="font-size: 0.7em;">
+                            <span style="display: inline-flex;">
+                                <a href="https://www.gruettecloud.com/about" style="color: #FFFFFF;">About Us</a>
+                                &nbsp;|&nbsp;
+                                <a href="https://www.gruettecloud.com/terms" style="color: #FFFFFF;">Terms of Service</a>
+                                &nbsp;|&nbsp;
+                                <a href="https://www.gruettecloud.com/privacy" style="color: #FFFFFF;">Privacy Policy</a>
+                            </span>
+                        </span>
                     </div>
                 </body>
             </html>
         '''
-        self.send_email_no_template(gmail_mail, "New support ticket", html)
+        self.send_email_no_template(gmail_mail, f"Request by {name}", html)
 
 if __name__ == "__main__":
-    sophia_img = "https://lh3.googleusercontent.com/hUqSAfoaWi3kIS70C2oauHhkWAIHhSNfFlAHjGDBMzkDDSFFLR_H2UiOly7t6zbMFFFsVEw6kaTo1LmwspE=w330-h220-rw"
     mail = MailHelper()
-    mail.send_verification_email("test@gmail.com", "tester2", "468415")
+    #mail.send_verification_email("test@gmail.com", "tester2", "468415")
     #mail.send_email("test@gmail.com", "jan", "Test", "HEHEHEHHE DOPPEL D")
     

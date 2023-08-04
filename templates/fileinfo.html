@@ -106,7 +106,7 @@
             </a>
         </div>
         <img src="{{ file_icon }}" style="width: 200px; height: auto; margin-bottom: 10px;">
-        <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
+        <!--<img src="/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
         <div class="text-offcutter" style="width: 400px; margin-bottom: 20px; font-size: 1.5em;">{{ filename }}</div>
         <p>{{ filesize }} • {{ created_at }}</p>
         {% if is_author %}
@@ -193,7 +193,7 @@
             </a>
         </div>
         <img src="{{ file_icon }}" style="width: 15vh; height: 15vh; margin-bottom: 10px;">
-        <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
+        <!--<img src="/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
         <div class="text-offcutter" style="max-width: 80vw; margin-bottom: 20px; font-size: 1.5em;">{{ filename }}</div>
         <p style="font-size: 0.8em;">{{ filesize }} • {{ created_at }}</p>
         {% if is_author %}

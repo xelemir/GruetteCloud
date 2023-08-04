@@ -63,7 +63,7 @@
                     <img src="https://www.gruettecloud.com/static/GrütteStorage.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
                 </div>
             </div>
-            <form id="youtube-form" action="{{ url_prefix }}/youtube" method="POST" style="flex-direction: column;">
+            <form id="youtube-form" action="/youtube" method="POST" style="flex-direction: column;">
                 <span style="display: flex; width: 300px;" class="login-input">
                     <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
                     <span style="text-align: left;">I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
@@ -183,7 +183,7 @@
             // Check if the response contains the file URL
             if (response && response.filename) {
               // Redirect to the file download URL
-              window.location.href = '{{ url_prefix }}/storage';
+              window.location.href = '/storage';
   
               // Hide the loading animation
               $('#loading-container').hide();

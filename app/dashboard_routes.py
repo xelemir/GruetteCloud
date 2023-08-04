@@ -191,8 +191,8 @@ def send_mail():
         return redirect(f'/dashboard?error=sent')
     
     else:
-        for user in sql.readSQL(f"SELECT username, email FROM gruttechat_users"):
-            if user["username"] not in excluded_users:
+        for user in sql.readSQL(f"SELECT username, email, receive_emails FROM gruttechat_users"):
+            if bool(user["receive_emails"]):
                 email.send_email(user["email"], user["username"], subject, content)
                 
         return redirect(f'/dashboard?error=sent')

@@ -52,7 +52,7 @@
         <div id="error-message" style="display: none;">
             <p style="color: var(--yellow)">{{ error }}</p>
         </div>
-        <form action="{{ url_prefix }}/login" method="POST" style="flex-direction: column;">
+        <form action="{{ url }}" method="POST" style="flex-direction: column;">
             <h1 class="mobile-only" style="font-size: 1.5em; font-weight: bold; margin-bottom: 20px;">Welcome to GrütteCloud</h1>
             <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 250px; margin: 0px;">
             <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 250px; margin: 0px; margin-top: 20px;">

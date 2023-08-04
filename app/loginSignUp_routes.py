@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, session, Blueprint, Flask
+from flask import render_template, request, redirect, session, Blueprint, Flask, url_for
 import random
 import pyotp
 
@@ -14,7 +14,7 @@ def login():
     if "signup" in request.form:
         return redirect(f'/signup')
     elif request.method == "GET":
-        return render_template('login.html')
+        return render_template('login.html', url=request.url)
     
     sql = SQLHelper.SQLHelper()
     username = str(request.form['username']).lower()
@@ -22,7 +22,7 @@ def login():
     
     # Check if input is valid
     if username == '' or password == '':
-        return render_template('login.html', error='Please enter a username and password')
+        return render_template(f'login.html', error='Please enter a username and password', url=request.url)
     
     # Search for user in database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
@@ -41,21 +41,21 @@ def login():
             # Check if 2FA is enabled
             if bool(user[0]["is_2fa_enabled"]) == True:
                 session['username_2fa'] = username
-                return redirect(f'/2fa')
+                return redirect(url_for("LoginSignUp.two_fa", target=request.args.get('target')))
             
             # Log the user in
             else:
                 session['username'] = username
                 session.permanent = True
-                return redirect(f'/')
+                return redirect(url_for("index", target=request.args.get('target')))
 
         # If password is or username is incorrect
         else:
-            return render_template('login.html', error='Invalid login credentials')
+            return render_template('login.html', error='Invalid login credentials', url=request.url)
         
     # If user does not exist
     else:
-        return render_template('login.html', error='Invalid login credentials')
+        return render_template('login.html', error='Invalid login credentials', url=request.url)
     
 @loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
 def two_fa():
@@ -79,14 +79,10 @@ def two_fa():
             session.pop('username_2fa', None)
             session['username'] = username
             session.permanent = True
-            return redirect(f'/')
+            return redirect(url_for("index", target=request.args.get('target')))
         
         else:
             return render_template('2fa.html', error="Invalid code", username=username)
-
-    
-    
-    
 
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():

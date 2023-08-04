@@ -58,7 +58,7 @@
                     GrütteCloud PLUS offers a YouTube downloader.<br>You can download videos from YouTube and save them right to GrütteStorage.
                     <div class="spaced-tile"></div>
                     <div style="display: flex; align-items: center; justify-content: center;">
-                        <button class="button-blue" onclick="window.location.href = '{{ url_prefix }}/youtube'">YouTube Downloader</button>
+                        <button class="button-blue" onclick="window.location.href = '/youtube'">YouTube Downloader</button>
                     </div>
                 </div>
                 <div class="spaced-tile"></div>
@@ -183,7 +183,7 @@
             Download videos from YouTube and save them right to GrütteStorage.
             <div class="spaced-tile"></div>
             <div style="display: flex; align-items: center; justify-content: center;">
-                <button class="button-blue" onclick="window.location.href = '{{ url_prefix }}/youtube'">YouTube Downloader</button>
+                <button class="button-blue" onclick="window.location.href = '/youtube'">YouTube Downloader</button>
             </div>
         </div>
     </div>
@@ -272,7 +272,7 @@
             var formData = new FormData();
             formData.append('file', file);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ url_prefix }}/upload', true);
+            xhr.open('POST', '/upload', true);
             xhr.onload = function () {
                 // Hide the "uploading-message" div and show the "drop-area" div
                 document.getElementById('uploading-message').style.display = 'none';

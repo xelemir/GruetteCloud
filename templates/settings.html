@@ -75,26 +75,26 @@
                     <h1>MyAI personality</h1>
                     <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%; margin-bottom: 10px;">
                         {% if selected_personality != 'Default' %}
-                        <option value="{{ url_prefix }}/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
+                        <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
                         {% endif %}
-                        <option value="{{ url_prefix }}/change_ai_personality/Default">Default</option>
+                        <option value="/change_ai_personality/Default">Default</option>
                         {% if selected_personality != 'UwuGirl'%}
-                            <option value="{{ url_prefix }}/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
+                            <option value="/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
                         {% endif %}
                         {% if selected_personality != 'LeeKnow'%}
-                            <option value="{{ url_prefix }}/change_ai_personality/LeeKnow">Lee Know</option>
+                            <option value="/change_ai_personality/LeeKnow">Lee Know</option>
                         {% endif %}
                         {% if selected_personality != 'Pirate'%}
-                            <option value="{{ url_prefix }}/change_ai_personality/Pirate">Pirate</option>
+                            <option value="/change_ai_personality/Pirate">Pirate</option>
                         {% endif %}
                         {% if selected_personality != 'Pistachio'%}
-                            <option value="{{ url_prefix }}/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
+                            <option value="/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
                         {% endif %}
                         {% if selected_personality != 'Backus'%}
-                            <option value="{{ url_prefix }}/change_ai_personality/Backus">Backus (BNF inventor)</option>
+                            <option value="/change_ai_personality/Backus">Backus (BNF inventor)</option>
                         {% endif %}
                         {% if selected_personality != 'Lorde'%}
-                            <option value="{{ url_prefix }}/change_ai_personality/Lorde">Lorde</option>
+                            <option value="/change_ai_personality/Lorde">Lorde</option>
                         {% endif %}
                     </select>
                     {% if display_back_to_ai %}
@@ -148,7 +148,7 @@
                 <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 30px;">
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                         <h1>Change password</h1>
-                        <form action="{{ url_prefix }}/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                        <form action="/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                             <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input">
                             <div class="spaced-tile"></div>
                             <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input">
@@ -157,7 +157,7 @@
                     </div>
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                         <h1>Change email</h1>
-                        <form action="{{ url_prefix }}/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                        <form action="/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                             <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input">
                             <div class="spaced-tile"></div>
                             <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input">
@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <h1>Delete GrütteID</h1>
-                <form action="{{ url_prefix }}/delete_account" method="POST" id="delete_account">
+                <form action="/delete_account" method="POST" id="delete_account">
                     <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
@@ -192,26 +192,26 @@
             <h1 style="margin-bottom: 0px; font-size: 1.2em;">MyAI personality</h1>
             <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%;">
                 {% if selected_personality != 'Default' %}
-                <option value="{{ url_prefix }}/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
+                <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
                 {% endif %}
-                <option value="{{ url_prefix }}/change_ai_personality/Default">Default</option>
+                <option value="/change_ai_personality/Default">Default</option>
                 {% if selected_personality != 'UwuGirl'%}
-                    <option value="{{ url_prefix }}/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
+                    <option value="/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
                 {% endif %}
                 {% if selected_personality != 'LeeKnow'%}
-                    <option value="{{ url_prefix }}/change_ai_personality/LeeKnow">Lee Know</option>
+                    <option value="/change_ai_personality/LeeKnow">Lee Know</option>
                 {% endif %}
                 {% if selected_personality != 'Pirate'%}
-                    <option value="{{ url_prefix }}/change_ai_personality/Pirate">Pirate</option>
+                    <option value="/change_ai_personality/Pirate">Pirate</option>
                 {% endif %}
                 {% if selected_personality != 'Pistachio'%}
-                    <option value="{{ url_prefix }}/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
+                    <option value="/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
                 {% endif %}
                 {% if selected_personality != 'Backus'%}
-                    <option value="{{ url_prefix }}/change_ai_personality/Backus">Backus (BNF inventor)</option>
+                    <option value="/change_ai_personality/Backus">Backus (BNF inventor)</option>
                 {% endif %}
                 {% if selected_personality != 'Lorde'%}
-                    <option value="{{ url_prefix }}/change_ai_personality/Lorde">Lorde</option>
+                    <option value="/change_ai_personality/Lorde">Lorde</option>
                 {% endif %}
             </select>
             {% if display_back_to_ai %}
@@ -257,7 +257,7 @@
         <div class="spaced-tile"></div>
         <div class="wrapping-tile" style="text-align: center; padding: 20px;">
             <h1 style="font-size: 1.2em;">Change password</h1>
-            <form action="{{ url_prefix }}/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+            <form action="/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                 <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input">
                 <div class="spaced-tile"></div>
                 <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input">
@@ -267,7 +267,7 @@
         <div class="spaced-tile"></div>
         <div class="wrapping-tile" style="text-align: center; padding: 20px;">
             <h1 style="font-size: 1.2em;">Change email</h1>
-            <form action="{{ url_prefix }}/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+            <form action="/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
                 <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input">
                 <div class="spaced-tile"></div>
                 <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input">
@@ -277,7 +277,7 @@
         <div class="spaced-tile"></div>
         <div class="wrapping-tile" style="text-align: center;">
             <h1 style="font-size: 1.2em;">Delete GrütteID</h1>
-            <form action="{{ url_prefix }}/delete_account" method="POST" id="delete_account">
+            <form action="/delete_account" method="POST" id="delete_account">
                 <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                         <div style="display: flex; flex-direction: column; align-items: center;">
@@ -363,7 +363,7 @@
                 statusMessage.style.display = 'none';
                 statusMessage.style.opacity = '1';
             }, 500);
-            window.location.href = '{{ url_prefix }}/settings';
+            window.location.href = '/settings';
         }, 5000);
     {% endif %}
 </script>
