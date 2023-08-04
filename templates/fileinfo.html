@@ -99,16 +99,15 @@
         </div>
     </div>
 
-    <div class="desktop-only" style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
-        <!--<a href="{{ url_prefix }}/open/{{ username }}/{{ filename }}" class="custom-button" title="Open"><span class="material-symbols-outlined">open_in_new</span>Open</a>-->
+    <div class="desktop-only" style="z-index: 1; max-height: 90vh; min-width: 400px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
         <div style="position: absolute; top: 0; right: 0; margin: 20px;">
             <a href="/support" title="Report abuse" style="text-decoration: none; color: var(--text-color);">
                 <span class="material-symbols-outlined">flag</span>
             </a>
         </div>
-        <img src="{{ file_icon }}" style="width: 100px; height: 100px; margin-bottom: 10px;">
+        <img src="{{ file_icon }}" style="width: 200px; height: auto; margin-bottom: 10px;">
         <!--<img src="{{ url_prefix }}/open/{{ username }}/{{ filename }}/preview" style="max-width: 320px; max-height: 320px; margin-bottom: 20px;">-->
-        <div class="text-offcutter" style="max-width: 320px; margin-bottom: 20px; font-size: 28px;">{{ filename }}</div>
+        <div class="text-offcutter" style="width: 400px; margin-bottom: 20px; font-size: 1.5em;">{{ filename }}</div>
         <p>{{ filesize }} • {{ created_at }}</p>
         {% if is_author %}
             {% if is_shared %}
@@ -121,68 +120,73 @@
             <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
         {% endif %}
 
-        
-        <div style="display: flex; justify-content: center; text-decoration: none;">
-            {% if not is_youtube_video %}
-                {% if is_shared %}
-                    <div style="padding-bottom: 20px;">
-                        <button id="copy-button" class="custom-button" onclick="copyToClipboard()" style="margin-right: 10px;">
-                            <span class="material-symbols-outlined">link</span> Copy link
-                        </button>
-                    </div>
+        <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
+            <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                {% if not is_youtube_video %}
+                    {% if is_shared %}
+                        <div style="align-content: center;">
+                            <button id="mobile-copy-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center;" class="settings-button" onclick="mobileCopyToClipboard()">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">link</span>Copy Link
+                            </button>
+                        </div>
+                    {% else %}
+                        <a href="/share/{{ link_id }}" title="Share {{ filename }}" style="text-decoration: none; color: var(--white-color); align-content: center;">
+                            <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center;">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">share</span>Share
+                            </button>
+                        </a>
+                    {% endif %}
                 {% else %}
-                    <a href="/share/{{ link_id }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
-                        <button class="custom-button" style="margin-right: 10px;">
-                            <span class="material-symbols-outlined">share</span> Share
-                        </button>
-                    </a>
-                {% endif %}
-            {% else %}
-                <a href="{{ youtube_link }}" title="Watch on YouTube" style="text-decoration: none; padding-bottom: 20px;">
-                    <button class="custom-button" style="background-color: var(--red); margin-right: 10px;">
-                        <span class="material-symbols-outlined">youtube_activity</span> YouTube
+                <a href="{{ youtube_link }}" title="Watch on YouTube" style="text-decoration: none; color: var(--white-color); align-content: center;">
+                    <button style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center;" class="delete-account-button">
+                        <span style="margin-right: 8px;" class="material-symbols-outlined">youtube_activity</span>YouTube
                     </button>
                 </a>
-            {% endif %}
-            <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
-                <button class="custom-button" style="margin-left: 10px;">
-                    <span class="material-symbols-outlined">visibility</span> Preview
-                </button>
-            </a>
+                {% endif %}
+            </div>
+            <div style="width: 50%; text-align: center; margin-left: 10px;">
+                <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; color: var(--white-color);">
+                    <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center;">
+                        <span style="margin-right: 8px;" class="material-symbols-outlined">visibility</span>Preview
+                    </button>
+                </a>
+            </div>
         </div>
-        <a href="/open/{{ link_id }}/download" title="Download {{ filename }}" style="text-decoration: none;">
-            <button class="custom-button" style="width: 320px;">
-                <span class="material-symbols-outlined">download</span> Download
+
+        <a href="/open/{{ link_id }}/download" title="Download {{ filename }}" style="flex-direction: row; display: flex; width: 100%; margin-top: 20px; text-decoration: none; padding: 0;">
+            <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; max-width: 100%;">
+                <span style="margin-right: 8px;" class="material-symbols-outlined">download</span>Download
             </button>
         </a>
-
         {% if is_author %}
             {% if is_shared %}
-                <div style="display: flex; justify-content: center; text-decoration: none;">
-                    <a href="/stopsharing/{{ link_id }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
-                        <button class="custom-button" style="margin-right: 20px; background-color: var(--red);">
-                            <span class="material-symbols-outlined">link_off</span> Stop sharing
-                        </button>
-                    </a>
-                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
-                        <button class="custom-button" style="background-color: var(--red);">
-                            <span class="material-symbols-outlined">delete</span> Delete
-                        </button>
-                    </a>
+                <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
+                    <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                        <a href="/stopsharing/{{ link_id }}" title="Stop sharing {{ filename }}" style="text-decoration: none; color: var(--white-color); align-content: center;">
+                            <button style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;" class="delete-account-button">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">link_off</span>Stop Sharing
+                            </button>
+                        </a>
+                    </div>
+                    <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                        <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; color: var(--white-color); align-content: center; ">
+                            <button style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center;" class="delete-account-button">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">delete</span>Delete
+                            </button>
+                        </a>
+                    </div>
                 </div>
             {% else %}
-                <div style="display: flex; justify-content: center; text-decoration: none;">
-                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
-                        <button class="custom-button" style="width: 320px; background-color: var(--red);">
-                            <span class="material-symbols-outlined">delete</span> Delete
-                        </button>
-                    </a>
-                </div>
+                <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="flex-direction: row; display: flex; width: 100%; margin-top: 20px; text-decoration: none; padding: 0;">
+                    <button class="delete-account-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; max-width: 100%;">
+                        <span style="margin-right: 8px;" class="material-symbols-outlined">delete</span>Delete
+                    </button>
+                </a>
             {% endif %}
         {% endif %}
     </div>
 
-    <div class="mobile-only" style="z-index: 1; max-height: 90vh; max-width: 90vw; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+    <div class="mobile-only" style="z-index: 1; max-height: 90vh; width: 85vw; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
         <div style="position: absolute; top: 0; right: 0; margin: 20px;">
             <a href="/support" title="Report abuse" style="text-decoration: none; color: var(--text-color);">
                 <span class="material-symbols-outlined">flag</span>
@@ -203,63 +207,68 @@
             <p style="font-size: 0.8em; margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1.2em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
         {% endif %}
 
-        
-        <div style="display: flex; justify-content: center; text-decoration: none;">
-            {% if not is_youtube_video %}
-                {% if is_shared %}
-                <div style="padding-bottom: 20px;">
-                    <button id="mobile-copy-button" class="custom-button" onclick="mobileCopyToClipboard()" style="margin-right: 3vw; width: 37vw;">
-                        <span class="material-symbols-outlined">link</span><span style="font-size: 0.7em;"> Copy link</span>
-                    </button>
-                </div>
+        <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
+            <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                {% if not is_youtube_video %}
+                    {% if is_shared %}
+                        <div style="align-content: center;">
+                            <button id="mobile-copy-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;" class="settings-button" onclick="mobileCopyToClipboard()">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">link</span>Copy Link
+                            </button>
+                        </div>
+                    {% else %}
+                        <a href="/share/{{ link_id }}" title="Share {{ filename }}" style="text-decoration: none; color: var(--white-color); align-content: center;">
+                            <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">share</span>Share
+                            </button>
+                        </a>
+                    {% endif %}
                 {% else %}
-                    <a href="/share/{{ link_id }}" title="Share {{ filename }}" style="text-decoration: none; padding-bottom: 20px;">
-                        <button class="custom-button" style="margin-right: 3vw; width: 37vw;">
-                            <span class="material-symbols-outlined">share</span><span style="font-size: 0.7em;"> Share</span>
-                        </button>
-                    </a>
-                {% endif %}
-            {% else %}
-                <a href="{{ youtube_link }}" title="Watch on YouTube" style="text-decoration: none; padding-bottom: 20px;">
-                    <button class="custom-button" style="background-color: var(--red); margin-right: 3vw; width: 37vw;">
-                        <span class="material-symbols-outlined">youtube_activity</span><span style="font-size: 0.7em;"> YouTube</span>
+                <a href="{{ youtube_link }}" title="Watch on YouTube" style="text-decoration: none; color: var(--white-color); align-content: center;">
+                    <button style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;" class="delete-account-button">
+                        <span style="margin-right: 8px;" class="material-symbols-outlined">youtube_activity</span>YouTube
                     </button>
                 </a>
-            {% endif %}
-            <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; padding-bottom: 20px;">
-                <button class="custom-button" style="margin-left: 3vw; width: 37vw;">
-                    <span class="material-symbols-outlined">visibility</span><span style="font-size: 0.7em;"> Preview</span>
-                </button>
-            </a>
+                {% endif %}
+            </div>
+            <div style="width: 50%; text-align: center; margin-left: 10px;">
+                <a href="/open/{{ link_id }}/preview" title="Preview" style="text-decoration: none; color: var(--white-color);">
+                    <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;">
+                        <span style="margin-right: 8px;" class="material-symbols-outlined">visibility</span>Preview
+                    </button>
+                </a>
+            </div>
         </div>
-        <a href="/open/{{ link_id }}/download" title="Download {{ filename }}" style="text-decoration: none; max-width: 70vw;">
-            <button class="custom-button" style="width: 80vw">
-                <span class="material-symbols-outlined">download</span><span style="font-size: 0.7em;"> Download</span>
+
+        <a href="/open/{{ link_id }}/download" title="Download {{ filename }}" style="flex-direction: row; display: flex; width: 100%; margin-top: 20px; text-decoration: none; padding: 0;">
+            <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; max-width: 100%; padding-left: 5px; padding-right: 5px;">
+                <span style="margin-right: 8px;" class="material-symbols-outlined">download</span>Download
             </button>
         </a>
-
         {% if is_author %}
             {% if is_shared %}
-                <div style="display: flex; justify-content: center; text-decoration: none;">
-                    <a href="/stopsharing/{{ link_id }}" title="Stop sharing {{ filename }}" style="text-decoration: none; padding-top: 20px;">
-                        <button class="custom-button" style="margin-right: 6vw; background-color: var(--red); width: 37vw;">
-                            <span class="material-symbols-outlined">link_off</span><span style="font-size: 0.7em;"> Stop sharing</span>
-                        </button>
-                    </a>
-                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
-                        <button class="custom-button" style="background-color: var(--red); width: 37vw;">
-                            <span class="material-symbols-outlined">delete</span><span style="font-size: 0.7em;"> Delete</span>
-                        </button>
-                    </a>
+                <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
+                    <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                        <a href="/stopsharing/{{ link_id }}" title="Stop sharing {{ filename }}" style="text-decoration: none; color: var(--white-color); align-content: center;">
+                            <button style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;" class="delete-account-button">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">link_off</span>Link Off
+                            </button>
+                        </a>
+                    </div>
+                    <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                        <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; color: var(--white-color); align-content: center; ">
+                            <button style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;" class="delete-account-button">
+                                <span style="margin-right: 8px;" class="material-symbols-outlined">delete</span>Delete
+                            </button>
+                        </a>
+                    </div>
                 </div>
             {% else %}
-                <div style="margin-top: 20px;">
-                    <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="text-decoration: none; padding-top: 20px;">
-                        <button class="custom-button" style="width: 80vw; background-color: var(--red);">
-                            <span class="material-symbols-outlined">delete</span><span style="font-size: 0.7em;"> Delete</span>
-                        </button>
-                    </a>
-                </div>
+                <a href="/delete/{{ link_id }}" title="Delete {{ filename }}" style="flex-direction: row; display: flex; width: 100%; margin-top: 20px; text-decoration: none; padding: 0;">
+                    <button class="delete-account-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; max-width: 100%; padding-left: 5px; padding-right: 5px;">
+                        <span style="margin-right: 8px;" class="material-symbols-outlined">delete</span>Delete
+                    </button>
+                </a>
             {% endif %}
         {% endif %}
     </div>
@@ -329,9 +338,9 @@
         document.body.removeChild(tempInput);
       
         const copyButton = document.getElementById("copy-button");
-        copyButton.innerHTML = '<span class="material-symbols-outlined">done</span> Link copied';
+        copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">done</span>Copied!';
         setTimeout(function() {
-          copyButton.innerHTML = '<span class="material-symbols-outlined">link</span> Copy link';
+          copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">link</span>Copy Link';
         }, 1000);
       }
 
@@ -344,9 +353,9 @@
         document.body.removeChild(tempInput);
       
         const copyButton = document.getElementById("mobile-copy-button");
-        copyButton.innerHTML = '<span class="material-symbols-outlined">done</span><span style="font-size: 0.7em;"> Link copied</span>';
+        copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">done</span>Copied!';
         setTimeout(function() {
-          copyButton.innerHTML = '<span class="material-symbols-outlined">link</span><span style="font-size: 0.7em;"> Copy link</span>';
+          copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">link</span>Copy Link';
         }, 1000);
       }
 </script>
