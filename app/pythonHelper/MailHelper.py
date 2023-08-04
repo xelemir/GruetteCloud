@@ -80,25 +80,25 @@ class MailHelper:
                         }}
                     </style>
                 </head>
-                <body style="color: #FFFFFF;">
-                    <div style="background-color: #282828; text-align: center; color: #FFFFFF; width: auto; height: auto; border-radius: 20px; padding: 20px;">
-                        <img src="{image_url}" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: -20px;">
-                        <h1 style="color: #0A84FF; margin-top: -20px;">Hey {username},</h1>
-                        <b style="color: #FFFFFF;">
+                <body style="color: #F2F2F2;">
+                    <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: auto; height: auto; border-radius: 20px; padding: 20px;">
+                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: -20px;">
+                        <h1 style="color: #007AFF; margin-top: -20px;">Hey {username},</h1>
+                        <b style="color: #000000;">
                             {body}
                             {additional_br}
                         </b>
-                        <b style="color: #FFFFFF;">Kind regards,<br>Jan from GrütteCloud</b>
+                        <b style="color: #000000;">Kind regards,<br>Jan from GrütteCloud</b>
                         <br><br><br>
                         <span style="font-size: 0.7em;">
                             You are receiving this email because you are subscribed to GrütteCloud.
-                            If you do not want to receive any more emails, you can unsubscribe <a href="https://www.gruettecloud.com/unsubscribe" style="color: #FFFFFF;">here</a>.<br>
+                            If you do not want to receive any more emails, you can unsubscribe <a href="https://www.gruettecloud.com/unsubscribe" style="color: #000000;">here</a>.<br>
                             <span style="display: inline-flex;">
-                                <a href="https://www.gruettecloud.com/about" style="color: #FFFFFF;">About Us</a>
+                                <a href="https://www.gruettecloud.com/about" style="color: #000000;">About Us</a>
                                 &nbsp;|&nbsp;
-                                <a href="https://www.gruettecloud.com/terms" style="color: #FFFFFF;">Terms of Service</a>
+                                <a href="https://www.gruettecloud.com/terms" style="color: #000000;">Terms of Service</a>
                                 &nbsp;|&nbsp;
-                                <a href="https://www.gruettecloud.com/privacy" style="color: #FFFFFF;">Privacy Policy</a>
+                                <a href="https://www.gruettecloud.com/privacy" style="color: #000000;">Privacy Policy</a>
                             </span>
                         </span>
                     </div>
@@ -108,7 +108,7 @@ class MailHelper:
         self.send_email_no_template(recipient_email, subject, html)
         
     def send_verification_email(self, recipient_email, username, verification_code):
-        html = f'Thanks for signing up to GrütteCloud!<br>To get started, please enter the following code on the verification page:<h2 style="color: #0A84FF;"><a style="color: #0A84FF; text-decoration: none;" href="http://jan.gruettefien.com/gruettechat/verify/{username}/{verification_code}">{verification_code}</a></h2>'
+        html = f'Thanks for signing up to GrütteCloud!<br>To get started, please enter the following code on the verification page:<h2 style="color: #0A84FF;"><a style="color: #0A84FF; text-decoration: none;" href="https://www.gruettecloud.com/verify/{username}/{verification_code}">{verification_code}</a></h2>'
         self.send_email(recipient_email, username, "Verify your GrütteID", html, link=True)
 
     def send_support_mail(self, name="None", username="None", email="None", message="None"):
@@ -155,5 +155,25 @@ class MailHelper:
 if __name__ == "__main__":
     mail = MailHelper()
     #mail.send_verification_email("test@gmail.com", "tester2", "468415")
-    #mail.send_email("test@gmail.com", "jan", "Test", "HEHEHEHHE DOPPEL D")
     
+    
+    text = """
+    We are excited to announce GrütteCloud's newest feature:
+    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/storage">
+        <h1 style="color: #007AFF;">GrütteStorage</h1>
+    </a>
+    Your Cloud-Storage Service by GrütteCloud.<br>Upload and download your files from anywhere.
+    <div>
+        <img src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage Render 1" style="max-width: 350px; margin-top: 40px; margin-bottom: 40px;">
+    </div>
+    You can even share files via links with non GrütteCloud users.<br>
+    And yes, there's a YouTube Downloader, so you can finally download your favourite videos.
+    <div>
+        <img src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteStorage Render 2" style="max-width: 250px; margin-top: 40px; margin-bottom: 40px;">
+    </div>
+    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/storage">
+        <button style="background-color: #AF52DE; border: none; border-radius: 10px; padding: 20px; color: #F2F2F2; font-size: 1em; margin-bottom: 40px;"><b>Check Out GrütteStorage<b></button>
+    </a>
+    """
+    
+    mail.send_email("email@gmail.com", "jan", "Introducing: GrütteStorage - A Cloud-Storage Service by GrütteCloud",  text)
