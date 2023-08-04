@@ -29,6 +29,15 @@ def index():
         return redirect(f"/home")
     else:
         return redirect(f"/login")
+    
+@app.errorhandler(404)
+def error404(error):
+    return render_template("404.html")
+
+@app.errorhandler(500)
+def error500(error):
+    return render_template("500.html")
+
 
 @app.route("/home")
 def home():
@@ -109,4 +118,4 @@ def chat(error=None):
     return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

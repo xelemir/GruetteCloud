@@ -48,7 +48,7 @@ def get_formatted_file_size(size):
 
     power = 2 ** 10  # 1024
     n = 0
-    power_labels = {0: '', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB'}
+    power_labels = {0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB'}
 
     while size > power:
         size /= power
@@ -67,8 +67,6 @@ def get_files(username):
     
     size_user = sum(os.path.getsize(os.path.join(storage_dir, file)) for file in files)
 
-
-    # Convert file size to human-readable format
     size_formatted = get_formatted_file_size(size_user)
     size_percentage = (size_user / (5 * 1073741824)) * 100  # 5 GB
     
@@ -76,9 +74,6 @@ def get_files(username):
     files_database = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE owner = '{username}'")
     for file in files_database:
         try:
-        #if file["filename"] not in files:
-        # sql.writeSQL(f"DELETE FROM gruttestorage_links WHERE filename = '{file['filename']}' AND owner = '{username}'")
-        #else:
             if bool(file["is_shared"]):
                 file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "shared", "link": file["link_id"]})
             elif bool(file["is_youtube"]):
