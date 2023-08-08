@@ -294,3 +294,36 @@ def download_from_youtube():
         sql.writeSQL(f"INSERT INTO gruttestorage_links (filename, owner, link_id, is_shared, is_youtube, youtube_link) VALUES ('{video_id}.mp4', '{str(session['username'])}', '{code}', '0', '1', '{video_url}')")
 
         return jsonify({"filename": video_id})
+    
+@gruetteStorage_route.route("/pfp/<pfp_id>")
+def get_pfp(pfp_id):
+    if "username" not in session:
+        return redirect(f"/")
+
+    path = os.path.join(gruetteStorage_path, "GruetteCloud", f"{pfp_id}.png")
+    if os.path.exists(path):
+        # return file
+        return send_file(path, mimetype="image/png")
+    else:
+        return redirect("/")
+    
+@gruetteStorage_route.route("/change_pfp", methods=["POST"])
+def change_pfp():
+    if "username" not in session:
+        return redirect("/")
+
+    # Check if a file was uploaded
+    if 'file' not in request.files:
+        return redirect("/")
+    
+    file = request.files['file']
+    
+    # Check if the file has a filename
+    if file.filename == '':
+        return redirect(request.url)
+    
+    filename = file.filename
+    if f'.' in filename and filename.rsplit('.', 1)[1].lower() in {'jpg', 'png', 'heic'}:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return redirect(url_for('uploaded_file', filename=filename))

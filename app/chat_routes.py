@@ -107,7 +107,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"])
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["pfp_id"])
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):

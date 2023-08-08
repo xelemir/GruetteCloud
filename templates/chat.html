@@ -52,7 +52,13 @@
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content" style="display: flex; align-items: center;">
-            <h1 style="display: flex; align-items: center;">{{ recipient }}{% if verified %}<span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-left: 5px; color: var(--primary-color); align-items: center;">verified</span>{% endif %}</h1>
+            <h1 style="display: flex; align-items: center;">
+                <img src="/pfp/{{ pfp }}" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
+                {{ recipient }}
+                {% if verified %}
+                    <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-left: 5px; color: var(--primary-color); align-items: center;">verified</span>
+                    {% endif %}
+                </h1>
         </div>
         
     </div>

@@ -100,10 +100,18 @@ def chat(error=None):
     for chat in active_chats_database:
         if chat["username_send"].lower() == username:
             if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
-                active_chats.append({"username": chat["username_receive"].lower()})
+                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_receive']}'")
+                if user_db != []:
+                    active_chats.append({"username": chat["username_receive"].lower(), "pfp": user_db[0]['pfp_id'], "is_verified": user_db[0]["is_verified"]})
+                else:
+                    active_chats.append({"username": chat["username_receive"].lower()})
         else:
             if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
-                active_chats.append({"username": chat["username_send"].lower()})
+                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_send']}'")
+                if user_db != []:
+                    active_chats.append({"username": chat["username_send"].lower(), "pfp": user_db[0]['pfp_id'], "is_verified": user_db[0]["is_verified"]})
+                else:
+                    active_chats.append({"username": chat["username_send"].lower()})
     
     # Get user's premium status
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
