@@ -39,21 +39,24 @@
             </a>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
-                </button>
-                <div class="dropdown-menu" style="z-index: 2;">
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="dropdown-menu" style="right: -30px;">
                     <div class="inner-tile">
                         <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
                         <div class="spaced-tile blue-on-hover"></div>
-                        <a href="/settings" title="GrütteID & settings"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
+                        <a href="/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
                         <a href="/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
                         <a href="/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
                     </div>
                 </div>
             </div>
+            <a href="/profile/{{ username }}" class="white-button-blue-on-hover" title="Edit Profile"><span class="material-symbols-outlined">settings</span></a>
+            <!--<a href="/profile/{{ username }}" class="white-button-blue-on-hover" style="text-decoration: none; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
+                <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">settings</span>
+            </a>-->
         </div>
     </div>
 
@@ -110,9 +113,6 @@
                         Welcome, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
                     </h1>
                 </div>
-                <a href="/profile/{{ username }}" class="white-button-blue-on-hover" style="text-decoration: none; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
-                    <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">settings</span>
-                </a>
             </div>
 
             <div class="spaced-tile"></div>
