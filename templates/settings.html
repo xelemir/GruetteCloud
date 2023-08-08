@@ -108,15 +108,6 @@
 
                 <div class="spaced-tile"></div>
                 <div class="wrapping-tile" style="padding: 20px;">
-                    <h1 style="display: flex; flex-direction: column; align-items: center;">Change Profile Picture</h1>
-                    <form action="/change_pfp" method="POST" enctype="multipart/form-data">
-                        <input type="file" name="file">
-                        <input type="submit" value="Upload">
-                    </form>
-                </div>
-
-                <div class="spaced-tile"></div>
-                <div class="wrapping-tile" style="padding: 20px;">
                     <h1 style="display: flex; flex-direction: column; align-items: center;">Two-Factor Authentication</h1>
                     {% if is_two_fa_enabled %}
                     <div style="flex-direction: row; display: flex; width: 100%;">

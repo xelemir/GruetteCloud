@@ -1,8 +1,10 @@
-from flask import render_template, request, redirect, session, jsonify, Blueprint
+import os
+import random
+from flask import render_template, request, redirect, session, jsonify, Blueprint, url_for
 import logging
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
-from config import templates_path, admin_users
+from config import templates_path, pfp_path
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -18,12 +20,15 @@ def get_messages():
     """
      
     if "username" not in session:
-        return redirect(f"/")
+        return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username")).lower()
     recipient = str(request.args.get("recipient")).lower()
     messages_list = []
+    
+    if username != session["username"]:
+        return redirect("/")
     
     # Fetch all messages from the database
     get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
@@ -107,7 +112,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
 
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["pfp_id"])
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"])
 
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
 def send(method):
@@ -170,3 +175,62 @@ def send(method):
     
     # Reverse chat history to show most recent messages first and render template
     return render_template("aichat.html", chat_history=chat_history[::-1])
+
+@chat_route.route("/profile/<username>")
+def profile(username):
+    if "username" not in session:
+        return redirect(f"/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    if user == []:
+        return redirect(f'/chat')
+    
+    edit = False
+    if username == str(session["username"]):
+        edit = True
+
+    joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
+    return render_template("profile.html", username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, edit=edit)
+
+@chat_route.route("/change_pfp", methods=["POST"])
+def change_pfp():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    username = str(session["username"])
+
+    if "profilePicture" not in request.files:
+        return redirect(f"/profile/{username}")
+    
+    file = request.files["profilePicture"]
+    filename = file.filename
+    
+    if not f'.' in filename and filename.rsplit('.', 1)[1].lower() in {'png'}:
+        return redirect(url_for('/profile', error="pfp_wrong_format"))
+    
+    id_not_found = False
+    while not id_not_found:
+        potential_id = str(random.randint(10000000, 99999999))
+        if not os.path.exists(os.path.join(pfp_path, f"{potential_id}.png")):
+            filename = potential_id
+            sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{filename}' WHERE username = '{str(session['username'])}'")
+            id_not_found = True
+            
+        file.save(os.path.join(pfp_path, f"{filename}.png"))
+        return redirect(f"/profile/{username}")
+                
+    return redirect(f"/profile/{username}?error=pfp_wrong_format")
+
+@chat_route.route("/remove_pfp")
+def remove_pfp():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    username = str(session["username"])
+    
+    sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}' WHERE username = '{str(session['username'])}'")
+    return redirect(f"/profile/{username}")

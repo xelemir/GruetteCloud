@@ -8,7 +8,7 @@ import pyotp
 from pythonHelper import EncryptionHelper, SQLHelper
 from pythonHelper import MailHelper
 from pythonHelper import IconHelper
-from config import templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, auth_admin_key, excluded_users
+from config import templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)

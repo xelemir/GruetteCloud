@@ -26,7 +26,7 @@ def delete_chat(recipient):
     username = str(session['username'])
     sql = SQLHelper.SQLHelper()
     sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}'")
-    return redirect(f'/')
+    return redirect(f'/chat')
 
 @utilities_route.route('/logout')
 def logout():
@@ -72,6 +72,10 @@ def settings(error=None):
         error = "You are already unsubscribed."
     elif error == "unsubscribed":
         error = "You have been unsubscribed."
+    elif error == "pfp_wrong_format":
+        error = "Your profile picture must be a .png file."
+    elif error == "pfp_changed":
+        error = "Your profile picture has been changed."
         
     
     username = str(session["username"])

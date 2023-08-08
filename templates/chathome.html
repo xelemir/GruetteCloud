@@ -88,16 +88,26 @@
     <div class="spaced-tile"></div>
     <div style="flex-direction: row; display: flex; width: 100%;">
         <div class="wrapping-tile">
-            <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                Welcome, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-            </h1>
+            <div style="display: flex; align-items: center;">
+                <div style="flex-grow: 1;">
+                    <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                        Welcome, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+                    </h1>
+                </div>
+                <a href="/profile/{{ username }}" class="white-button-blue-on-hover" style="text-decoration: none; display: flex; align-items: center; justify-content: center; margin-right: 50px;">
+                    <span class="material-symbols-outlined">settings</span>
+                </a>
+            </div>
+
             <div class="spaced-tile"></div>
-            <div class="inner-tile">
+            <div class="inner-tile" style="padding-top: 0; padding-bottom: 0;">
+
                 <div style="display: flex; align-items: center;">
                     <div style="flex-grow: 1;">
                         <a href="/ai/chat" style="color: var(--text-color); text-decoration: none;">
-                            <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
-                                MyAI
+                            <button class="button-gray text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">
+                                <img src="https://www.gruettecloud.com/static/gruettecloud_logo_padding.png" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
+                                <span style="margin-left: 5px;">MyAI</span>
                             </button>
                         </a>
                     </div>
@@ -106,16 +116,18 @@
                     </button>
                 </div>
                 {% for chat in active_chats %}
+                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px;">
                     <div style="display: flex; align-items: center;">
                         <div style="flex-grow: 1;">
-                            <a href="/chat/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
-                                <button class="button-gray text-offcutter" style="width: 100%; display: flex; justify-content: left; color: var(--text-color); font-size: 18px;">
-                                    <img src="/pfp/{{ chat["pfp"] }}" style="height: 25px; width: auto; border-radius: 50%; margin-right: 10px;">
-                                    {{ chat["username"] }}
+                            <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none;">
+                                <button class="button-gray text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">
+                                    <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
+                                    <span clas="offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
+                                    {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
                                 </button>
-                            </a>                            
+                            </a>
                         </div>
-                        <a href="/chat/delete/{{ chat["username"] }}" style="color: var(--text-color); text-decoration: none;">
+                        <a href="/chat/delete/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none;">
                             <button class="button-delete" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center; color: var(--text-color);">
                                 <span class="material-symbols-outlined">delete</span>
                             </button>
