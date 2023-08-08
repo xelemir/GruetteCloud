@@ -79,7 +79,7 @@ def chat(error=None):
         recipient = str(request.form['recipient'])
 
         # Check if recipient username is valid
-        if recipient is None or recipient == username or len(recipient) > 20:
+        if recipient is None or recipient == username or len(recipient) > 30:
             return redirect(f'/chat')
 
         # Check if recipient exists
