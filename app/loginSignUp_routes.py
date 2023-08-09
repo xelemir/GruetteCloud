@@ -108,7 +108,7 @@ def signup():
             return render_template('signup.html', error='Please do not use special characters in your GrütteID')
         elif len(username) >= 40:
             return render_template('signup.html', error='Username must be less than 40 characters')
-        elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support'] if blocked_phrase in username] != []:
+        elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete'] if blocked_phrase in username] != []:
             return render_template('signup.html', error='Your GrütteID my not contain certain words')
         elif len(password) > 40 or len(password) < 8:
             return render_template('signup.html', error='Password must be between 8 and 40 characters')
