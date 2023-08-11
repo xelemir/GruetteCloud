@@ -208,6 +208,8 @@ def change_pfp():
     file = request.files["profilePicture"]
     filename = file.filename
     
+    # TODO resizing options and conversion to png for all images
+    
     if not f'.' in filename and filename.rsplit('.', 1)[1].lower() in {'png'}:
         return redirect(url_for('/profile', error="pfp_wrong_format"))
     
