@@ -2,6 +2,7 @@ import os
 import random
 from flask import render_template, request, redirect, session, jsonify, Blueprint, url_for
 import logging
+from PIL import Image
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
 from config import templates_path, pfp_path
@@ -207,11 +208,7 @@ def change_pfp():
     
     file = request.files["profilePicture"]
     filename = file.filename
-    
-    # TODO resizing options and conversion to png for all images
-    
-    if not f'.' in filename and filename.rsplit('.', 1)[1].lower() in {'png'}:
-        return redirect(url_for('/profile', error="pfp_wrong_format"))
+    file_extension = filename.split(".")[-1]
     
     id_not_found = False
     while not id_not_found:
@@ -221,10 +218,41 @@ def change_pfp():
             sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{filename}' WHERE username = '{str(session['username'])}'")
             id_not_found = True
             
-        file.save(os.path.join(pfp_path, f"{filename}.png"))
+    file.save(os.path.join(pfp_path, f"{filename}.{file_extension}"))
+    
+    try:
+        # Open the input image
+        with Image.open(os.path.join(pfp_path, f"{filename}.{file_extension}")) as img:
+            # Determine the cropping region
+            aspect_ratio = img.width / img.height
+            if aspect_ratio > 1:
+                # Landscape or square image, crop the center
+                crop_start = (img.width - img.height) // 2
+                img = img.crop((crop_start, 0, crop_start + img.height, img.height))
+            elif aspect_ratio < 1:
+                # Portrait image, crop top and bottom
+                crop_start = (img.height - img.width) // 2
+                img = img.crop((0, crop_start, img.width, crop_start + img.width))
+
+            # Resize the cropped image to the target size
+            img = img.resize((540, 540), Image.ANTIALIAS)
+
+            # Ensure the output image is in JPG format
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+
+            # Save the converted image
+            img.save(os.path.join(pfp_path, f"{filename}.png"), "png")
+            # Remove the original image
+            if file_extension != "png":
+                img.close()
+                os.remove(os.path.join(pfp_path, f"{filename}.{file_extension}"))
+            
+    except Exception as e:
+        logging.error(e)
         return redirect(f"/profile/{username}")
                 
-    return redirect(f"/profile/{username}?error=pfp_wrong_format")
+    return redirect(f"/profile/{username}")
 
 @chat_route.route("/remove_pfp")
 def remove_pfp():

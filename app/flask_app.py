@@ -43,7 +43,6 @@ def error404(error):
 def error500(error):
     return render_template("500.html")
 
-
 @app.route("/home")
 def home():
     if "username" not in session:
