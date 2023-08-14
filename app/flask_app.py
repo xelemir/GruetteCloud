@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 
 from pythonHelper import EncryptionHelper, SQLHelper
+from config import secret_key
 
 from loginSignUp_routes import loginSignUp_route
 from utilities_routes import utilities_route
@@ -9,7 +10,6 @@ from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
 
-from config import secret_key
 
 app = Flask("GrütteCloud")
 app.secret_key = secret_key
