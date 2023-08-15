@@ -139,19 +139,20 @@ def chat(error=None):
     # Render the home page
     return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png")
 
-
-
+# NEW SOCKETIO CHAT, NOT YET WORKING ON SERVER
 @app.route('/openchat', methods=['POST'])
 def openchat():
+    if 'username' not in session:
+        return redirect('/')
+    
     recipient = request.form['recipient']
     if recipient and recipient != session['username']:
         room = generate_hashed_room_name(session['username'], recipient)
         return redirect(url_for('private_chat', room=room, recipient=recipient))
-    return redirect(url_for('index'))
+    return redirect('/chat')
 
 def get_messages_from_database(room):
     sql = SQLHelper.SQLHelper()
-
     sql_query = f"SELECT * FROM gruttechat_chats WHERE chat_id = '{room}'"
     messages = sql.readSQL(sql_query)
     return messages
@@ -162,6 +163,8 @@ def private_chat(room):
         return redirect(url_for('login'))
     
     username = session['username']
+    
+    # TODO check if user is allowed to access this room
 
     recipient = request.args.get('recipient')
     if not recipient:
@@ -183,7 +186,6 @@ def on_join(data):
         room = data['room']
         join_room(room)
         emit('user_join', {'username': username}, room=room)
-
 
 @socketio.on('send_private_message')
 def handle_private_message(data):
@@ -207,7 +209,7 @@ def generate_hashed_room_name(username1, username2):
     # Hash the concatenated string
     hashed = hashlib.sha256(concatenated.encode()).hexdigest()
     return hashed
-
+# END OF NEW SOCKETIO CHAT
 
 
 if __name__ == '__main__':
