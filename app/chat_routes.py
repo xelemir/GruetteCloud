@@ -4,13 +4,14 @@ from flask import render_template, request, redirect, session, jsonify, Blueprin
 import logging
 from PIL import Image
 
-from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper
+from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper, TemplateHelper
 from config import templates_path, pfp_path
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
+th = TemplateHelper.TemplateHelper()
 
 @chat_route.route("/get_messages", methods=["GET"])
 def get_messages():
@@ -177,6 +178,24 @@ def send(method):
     # Reverse chat history to show most recent messages first and render template
     return render_template("aichat.html", chat_history=chat_history[::-1])
 
+@chat_route.route("/account")
+def account():
+    if "username" not in session:
+        return redirect(f"/")
+    
+    username = str(session["username"])
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    if user == []:
+        return redirect(f'/chat')
+
+    joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
+    
+    return render_template("profile.html", menu=th.user(session), username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=True)
+    
+
 @chat_route.route("/profile/<username>")
 def profile(username):
     if "username" not in session:
@@ -193,7 +212,8 @@ def profile(username):
         edit = True
 
     joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
-    return render_template("profile.html", username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, edit=edit)
+    return render_template("profile.html", menu=th.user(session), username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit)
+
 
 @chat_route.route("/change_pfp", methods=["POST"])
 def change_pfp():

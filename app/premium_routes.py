@@ -1,10 +1,12 @@
 from flask import render_template, request, redirect, session, make_response, Blueprint
 from paypalrestsdk import Payment, set_config
 
-from pythonHelper import SQLHelper, MailHelper
+from pythonHelper import SQLHelper, MailHelper, TemplateHelper
 from config import paypal_client_id, paypal_client_secret, templates_path
-    
+
+
 premium_route = Blueprint("Premium", "Premium", template_folder=templates_path)
+th = TemplateHelper.TemplateHelper()
 
 # Configure PayPal SDK
 set_config({
@@ -93,20 +95,20 @@ def payment():
     
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", menu=th.user(session), error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
     
     # If everything looks good, check if user has premium
     else:
         
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            return render_template("settings.html", menu=th.user(session), error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
         
         # Else, create payment and redirect user to PayPal
         else:
             # Gift PLUS as apparently I am not allowed to make money with this!?!
             sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return render_template("settings.html", error="You now have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            return render_template("settings.html", menu=th.user(session), error="You now have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
             
 
             """paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
@@ -134,11 +136,11 @@ def success():
    
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong. Please contact customer support.", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", menu=th.user(session), error="Something went wrong. Please contact customer support.", selected_personality="Default", has_premium=False)
     
     # If good to go, check if user has premium
     if bool(user[0]["has_premium"]) == True:
-        return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+        return render_template("settings.html", menu=th.user(session), error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
     
     try:
 
@@ -150,15 +152,15 @@ def success():
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
             sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return render_template("settings.html", error="You now have GrütteCloud PLUS!", selected_personality="Default", has_premium=True)
+            return render_template("settings.html", menu=th.user(session), error="You now have GrütteCloud PLUS!", selected_personality="Default", has_premium=True)
         
         # Else if payment failed, return error
         else:
-            return render_template("premium.html", error="Payment execution failed, please try again.")
+            return render_template("premium.html", menu=th.user(session), error="Payment execution failed, please try again.")
         
     # Something went wrong
     except:
-        return render_template("settings.html", error="Something went wrong.", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", menu=th.user(session), error="Something went wrong.", selected_personality="Default", has_premium=False)
 
 @premium_route.route('/cancel')
 def cancel():
@@ -171,18 +173,4 @@ def cancel():
         return redirect(f"/")
 
     # Payment cancelled error
-    return render_template("settings.html", error="Payment cancelled.", selected_personality="Default", has_premium=False)
-
-
-@premium_route.route("/tip/<recipient>", methods=["GET"])
-def tip(recipient):
-    if "username" not in session:
-        return redirect(f"/")
-    
-    sql = SQLHelper.SQLHelper()
-    
-    recipient_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
-    if recipient_database == []:
-        return redirect(f"/")
-    
-    return render_template("tip.html", recipient=str(recipient))
+    return render_template("settings.html", menu=th.user(session), error="Payment cancelled.", selected_personality="Default", has_premium=False)

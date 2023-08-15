@@ -6,14 +6,16 @@ import shutil
 import random
 import string
 
-from pythonHelper import EncryptionHelper, SQLHelper, YouTubeHelper
+from pythonHelper import EncryptionHelper, SQLHelper, YouTubeHelper, TemplateHelper
 from pythonHelper import IconHelper
-from config import templates_path, gruetteStorage_path, admin_users
+from config import templates_path, gruetteStorage_path
     
 gruetteStorage_route = Blueprint("GruetteStorage", "GruetteStorage", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
 icon = IconHelper.IconHelper()
+th = TemplateHelper.TemplateHelper()
+
 
 
 @gruetteStorage_route.route('/storage', methods=['POST', 'GET'])
@@ -36,7 +38,7 @@ def storage():
     files = get_files(username)
     file_list = files["file_list"]
     
-    return render_template("storage.html", username=username, files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
+    return render_template("storage.html", menu=th.user(session), username=username, files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
 
 
 # Helper function to convert file size to human-readable format
@@ -207,7 +209,7 @@ def file(file_link):
         is_author_verified = False
         if user != []:
             is_author_verified = bool(user[0]["is_verified"])
-        return render_template("fileinfo.html", username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=True, is_shared=bool(file[0]["is_shared"]), file_icon=icon_path, link_id=file_link, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=bool(file[0]["is_youtube"]), youtube_link=file[0]["youtube_link"])
+        return render_template("fileinfo.html", menu=th.user(session), username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=True, is_shared=bool(file[0]["is_shared"]), file_icon=icon_path, link_id=file_link, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=bool(file[0]["is_youtube"]), youtube_link=file[0]["youtube_link"])
      
 
 @gruetteStorage_route.route("/share/<file_link>")

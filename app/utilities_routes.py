@@ -4,11 +4,12 @@ import platform
 import pyotp
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 
-from pythonHelper import SQLHelper, EncryptionHelper, MailHelper
+from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, TemplateHelper
 from config import templates_path, admin_users, gruetteStorage_path
 
     
 utilities_route = Blueprint("Utilities", "Utilities", template_folder=templates_path)
+th = TemplateHelper.TemplateHelper()
 
 @utilities_route.route('/chat/delete/<recipient>')
 def delete_chat(recipient):
@@ -102,14 +103,14 @@ def settings(error=None):
         totp_now = totp.now()
         provisioning_uri = totp.provisioning_uri(f" {username}", issuer_name="GrütteCloud")
         
-        return render_template("settings.html", verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now)
+        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now)
  
     else:
         is_two_fa_enabled = False
         qr_image_base64 = None
         totp_now = None
         
-    return render_template("settings.html", verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now)
+    return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now)
 
 @utilities_route.route("/change_password", methods=["GET", "POST"])
 def change_password():
@@ -183,12 +184,12 @@ def change_ai_personality(ai_personality):
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
         
     if user == []:
-        return render_template("settings.html", verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
     elif bool(user[0]["has_premium"]) == True:
         sql.writeSQL(f"UPDATE gruttechat_users SET ai_personality = '{str(ai_personality)}' WHERE username = '{str(session['username'])}'")
-        return render_template("settings.html", verified=verified, username=username, error=f"MyAI is set to {ai_personality}", selected_personality=ai_personality, has_premium=True, display_back_to_ai=True)
+        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=f"MyAI is set to {ai_personality}", selected_personality=ai_personality, has_premium=True, display_back_to_ai=True)
     else:
-        return render_template("settings.html", verified=verified, username=username, error="Please purchase GrütteCloud PLUS to change your MyAI personality!", selected_personality="Default", has_premium=False)
+        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error="Please purchase GrütteCloud PLUS to change your MyAI personality!", selected_personality="Default", has_premium=False)
         
 @utilities_route.route("/ai-preferences", methods=["GET"])
 def ai_preferences():
@@ -205,7 +206,7 @@ def ai_preferences():
     if user == []:
         return redirect(url_for("Utilities.settings", error="error"))
     else:
-        return render_template("settings.html", verified=verified, username=username, selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]), display_back_to_ai=True)
+        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]), display_back_to_ai=True)
         
 @utilities_route.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
@@ -242,27 +243,27 @@ def delete_account():
 
 @utilities_route.route("/help", methods=["GET"])
 def help():
-    return render_template("help.html")
+    return render_template("help.html", menu=th.user(session))
         
 @utilities_route.route("/about", methods=["GET"])
 def about():
-    return render_template("about.html")
+    return render_template("about.html", menu=th.user(session))
 
 @utilities_route.route("/discover", methods=["GET"])
 def discover():
-    return render_template("discover.html")
+    return render_template("discover.html", menu=th.user(session))
 
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
-    return render_template("privacy.html")
+    return render_template("privacy.html", menu=th.user(session))
 
 @utilities_route.route("/support", methods=["GET"])
 def support():
-    return render_template("support.html")
+    return render_template("support.html", menu=th.user(session))
 
 @utilities_route.route("/terms", methods=["GET"])
 def terms():
-    return render_template("terms.html")
+    return render_template("terms.html", menu=th.user(session))
 
 @utilities_route.route("/support", methods=["POST"])
 def send_support():
@@ -277,7 +278,7 @@ def send_support():
     mail = MailHelper.MailHelper()
     mail.send_support_mail(name, username, email, message)
     
-    return render_template("support.html", error="Your message has been sent!")
+    return render_template("support.html", menu=th.user(session), error="Your message has been sent!")
 
 @utilities_route.route("/2fa/enable")
 def enable_2fa():

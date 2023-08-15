@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, session, redirect, jsonify, s
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
 
-from pythonHelper import EncryptionHelper, SQLHelper
+from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
 
 from loginSignUp_routes import loginSignUp_route
@@ -26,6 +26,8 @@ app.register_blueprint(dashboard_route)
 socketio = SocketIO(app)
 
 eh = EncryptionHelper.EncryptionHelper()
+th = TemplateHelper.TemplateHelper()
+
 
 @app.route("/")
 def index():
@@ -41,11 +43,11 @@ def index():
     
 @app.errorhandler(404)
 def error404(error):
-    return render_template("404.html")
+    return render_template("404.html", menu=th.user(session))
 
 @app.errorhandler(500)
 def error500(error):
-    return render_template("500.html")
+    return render_template("500.html", menu=th.user(session))
 
 @app.route("/home")
 def home():
@@ -66,7 +68,7 @@ def home():
     else:
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
-    return render_template("home.html", has_premium=bool(user[0]["has_premium"]), is_admin=user[0]["is_admin"], username=username, status_message=platform_message)
+    return render_template("home.html", menu=th.user(session), has_premium=bool(user[0]["has_premium"]), is_admin=user[0]["is_admin"], username=username, status_message=platform_message)
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
@@ -137,7 +139,7 @@ def chat(error=None):
         suggested = None
     
     # Render the home page
-    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png")
+    return render_template('chathome.html', menu=th.user(session), username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png")
 
 # NEW SOCKETIO CHAT, NOT YET WORKING ON SERVER
 @app.route('/openchat', methods=['POST'])

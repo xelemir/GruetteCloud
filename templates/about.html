@@ -26,19 +26,39 @@
                 <img src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
         </div>
-        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+        <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>
-                <div class="dropdown-menu">
-                    <div class="inner-tile">
-                        <h3 style="text-align: center; color: var(--primary-color);">GrütteCloud</h3>
-                        <div class="spaced-tile blue-on-hover"></div>
-                        <a href="/settings" title="GrütteID"><span class="material-symbols-outlined align-icons-center">account_circle</span>&nbsp;&nbsp;GrütteID</a>
-                        <a href="/chat" title="GrütteChat"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                        <a href="/storage" title="GrütteStorage"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
-                    </div>
+                <div class="dropdown-menu" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
+                    {% if menu %}
+                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
+                    {% endif %}
+                    <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                        {% if menu %}
+                            Hi, {{ menu["username"] }}!
+                        {% else %}
+                            Hi, there!
+                        {% endif %}
+                    </h1>
+                    {% if menu %}
+                        <a href="/settings" title="Manage Account" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Manage Account</a>
+                    {% else %}
+                        <a href="/" title="Get Started" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Get Started</a>
+                    {% endif %}
+                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
+                    <a href="/discover" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
+                    <a href="/chat" title="GrütteChat" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                    <a href="/storage" title="GrütteStorage" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
+                    {% if menu %}
+                        <a href="/logout" title="Logout" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
+                    {% else %}
+                        <a href="/about" title="About" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">info</span>&nbsp;&nbsp;About</a>
+                        <a href="/terms" title="Terms of Service" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">description</span>&nbsp;&nbsp;Terms of Service</a>
+                        <a href="/privacy" title="Privacy Policy" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">privacy_tip</span>&nbsp;&nbsp;Privacy Policy</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
