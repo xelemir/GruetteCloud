@@ -40,8 +40,8 @@
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
-                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
-                    <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
+                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none; display: inline-flex; align-items: center; justify-content: center;">
+                    <span class="material-symbols-outlined" style="display: inline-flex; align-items: center; justify-content: center;" title="GrütteCloud">apps</span>
                 </button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="dropdown-menu" style="right: -30px;">
                     <div class="inner-tile">
@@ -53,10 +53,10 @@
                     </div>
                 </div>
             </div>
-            <a href="/profile/{{ username }}" class="white-button-blue-on-hover" title="Edit Profile"><span class="material-symbols-outlined">settings</span></a>
-            <!--<a href="/profile/{{ username }}" class="white-button-blue-on-hover" style="text-decoration: none; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
-                <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">settings</span>
-            </a>-->
+            <!--<a href="/profile/{{ username }}" class="white-button-blue-on-hover" title="Edit Profile"><span class="material-symbols-outlined">settings</span></a>-->
+            <a href="/profile/{{ username }}" title="Edit Profile" style="display: inline-flex; align-items: center; justify-content: center;">
+                <img class="material-symbols-outlined" src="https://www.gruettecloud.com/static/profile_pictures/{{ pfp }}" style="display: inline-flex; align-items: center; justify-content: center; height: 30px; width: 30px; border-radius: 50%;">
+            </a>
         </div>
     </div>
 
@@ -130,6 +130,7 @@
 
             {% if not active_chats %}
             <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 5px; margin-right: 5px;">
+            <p style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">Suggestions:</p>
             <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                 <a href="/chat/{{ suggested['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                     <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">
@@ -144,7 +145,6 @@
 
             {% for chat in active_chats %}
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 5px; margin-right: 5px;">
-                Suggested:
                 <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                     <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                         <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">

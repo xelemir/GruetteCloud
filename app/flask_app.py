@@ -133,7 +133,7 @@ def chat(error=None):
         suggested = None
     
     # Render the home page
-    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested)
+    return render_template('chathome.html', username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png")
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
