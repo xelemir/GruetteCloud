@@ -9,15 +9,74 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <style>
-        .centered-div {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: auto; /* Override width property */
-            height: auto; /* Override height property */
+        
+
+        .container {
+            padding-top: 10vh;
+            display: flex;
         }
+    
+        .side {
+            flex-basis: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .item {
+            width: 100%;
+            text-align: center;
+        }
+    
+        .image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        @media (max-width: 1300px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+
+            .mobile-only {
+                display: block;
+            }
+    
+            .side {
+                flex-basis: auto;
+                height: 50vh;
+            }
+
+            .center-mobile {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @media (min-width: 1300px) {
+            .mobile-only {
+                display: none;
+            }
+
+            .desktop-only {
+                display: block;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -25,21 +84,61 @@
         <div class="dark-mode-toggle">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
-        <div class="centered-content mobile-only">
+        <div class="centered-content">
             <a href="/" class="logo" title="Home">
-                <img class="cycleImage" src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
         </div>
     </div>
 
-    <!--<div class="centered-div" style="top: 25%;">
-        <div style="text-align: center; margin-bottom: 20px; width: auto; height: auto;">
-            <h1 style="font-size: 30px; font-weight: bold">Welcome to GrütteCloud!<h1>
-             TODO: Bug with image carousel not being centered <img id="carousel-image" src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
-            <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 100px; height: 100px; margin-top: 20px;" class="desktop-only">
+    <div class="container">
+        <div class="side">
+            <div class="item">
+                <div class="content">
+                    <div class="desktop-only">
+                        <div style="text-align: center; margin-bottom: 100px; width: auto; height: auto;">
+                            <h1 style="font-size: 4vh; font-weight: bold; margin-bottom: 0;"><span style="font-size: 6vh;">Discover</span> the <span style="font-size: 6vh;">Cloud</span></h1>
+                            <h1 style="font-size: 4vh; font-weight: bold; margin-bottom: 0;">that Works For <span style="font-size: 6vh;">You!</span></h1>
+                        </div>
+                    </div>
+                    <span class="center-mobile">
+                        <div class="mobile-only">
+                            <div style="text-align: center; margin-bottom: 100px; width: auto; height: auto;">
+                                <h1 style="font-size: 40px; font-weight: bold; margin-bottom: 0;">Welcome to GrütteCloud</h1>
+                            </div>
+                        </div>
+
+                        <div style="display: block; font-size: 13px; margin-top: -50px;">
+                            <div id="error-message" style="display: none;">
+                                <p style="color: var(--yellow)">{{ error }}</p>
+                            </div>
+                            <form action="{{ url }}" method="POST" style="flex-direction: column;">
+                                <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 250px; margin: 0px; border-radius: 10px;">
+                                <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 250px; margin: 0px; margin-top: 20px; border-radius: 10px;">
+                                <div style="display: inline-flex; width: 250px; margin-top: 30px;">
+                                    <input type="submit" value="Log In" name="login" style="margin-right: 10px; width: 50%; border-radius: 10px;" class="send-button left-login ">
+                                    <input type="submit" value="Sign Up" name="signup" style="margin-left: 10px; width: 50%; border-radius: 10px;" class="send-button right-login">
+                                </div>
+                            </form>
+                            <br>
+                            <a href="/support" style="color: var(--text-color);">Need help logging in?</a>
+                        </div>
+                    </span>
+                </div>
+            </div>
         </div>
-    </div>-->
-    <div class="centered-div desktop-only" style="top: 25%;">
+        <span class="desktop-only">
+            <div class="side">
+                <div class="item">
+                    <div class="image-container">
+                        <img src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" style="max-width: 50vw">
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+
+    <!--<div class="centered-div desktop-only" style="top: 25%;">
         <div style="text-align: center; margin-bottom: 40px; width: auto; height: auto;">
             <h1 style="font-size: 2.5em; font-weight: bold; margin-bottom: 0;">Welcome to:</h1>
             <div style="display: flex; justify-content: center;">
@@ -63,7 +162,7 @@
         </form>
         <br>
         <a href="/support" style="color: var(--text-color);">Trouble logging in?</a>
-    </div>
+    </div>-->
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
       <div style="display: flex;">
           <div style="width: 50%; margin-right: 20px; text-align: left;">
@@ -81,7 +180,7 @@
                   <a class="footer-link" href="/terms">Terms of Service</a><br>
                   <a class="footer-link" href="/privacy">Privacy Policy</a>
               </div>
-          </div>                
+          </div>
       </div>
   </div>
   <div id="cookie-banner"></div>
@@ -133,27 +232,4 @@
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
 
-<script>
-    // Array to store the image URLs
-    const imageUrls = [
-      "https://www.gruettecloud.com/static/gruettechat.png",
-      "https://www.gruettecloud.com/static/GrütteStorage.png",
-      "https://www.gruettecloud.com/static/GrütteID.png",
-      "https://www.gruettecloud.com/static/gruettecloud_logo.png"
-    ];
-  
-    // Function to cycle through the images
-    function cycleImages() {
-        const imgElements = document.getElementsByClassName("cycleImage");
-        for (let i = 0; i < imgElements.length; i++) {
-            const imgElement = imgElements[i];
-            const currentSrc = imgElement.getAttribute("src");
-            const currentIndex = imageUrls.indexOf(currentSrc);
-            const nextIndex = (currentIndex + 1) % imageUrls.length;
-            imgElement.setAttribute("src", imageUrls[nextIndex]);
-        };
-    };
-    // Call the cycleImages function every 3 seconds (3000 milliseconds)
-    setInterval(cycleImages, 3000);
-</script>
-  
+
