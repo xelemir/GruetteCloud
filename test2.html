@@ -1,0 +1,302 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Discover | GrütteCloud</title>
+    <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
+    <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
+
+    <style>
+        h1 {
+			color: var(--primary-color);
+			font-weight: bold;
+            font-size: 6vh;
+        }
+
+        p {
+            color: var(--text-color);
+            font-size: 2vh;
+        }
+
+        .dynamic-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+    
+        .box {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            height: auto;
+        }
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    
+        .phone {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .tablet {
+            max-height: 70vh;
+            width: auto;
+        }
+    
+        @media (max-width: 767px) {
+            .dynamic-container {
+                flex-direction: column; /* Stack boxes on top of each other */
+                align-items: center; /* Horizontally center the stacked boxes */
+            }
+    
+            .box {
+                width: 100%;
+            }
+
+            .phone {
+                max-height: 50vh;
+                width: auto;
+            }
+
+            .tablet {
+                max-width: 50vw;
+                height: auto;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="fullpage">
+
+        <div class="section" data-anchor="section1">
+            <div class="header">
+                <div style="position: absolute; top: 20px; left: 0; padding-left: 20px">
+                    <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+                </div>
+                <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+                    <a href="/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">login</span></a>
+                </div>
+            </div>
+            <div class="dynamic-container">
+                <div class="box text">
+                    <h1>Introducing  GrütteCloud</h1>
+                    <p>A cloud service tailored to your needs!<br>
+                    <button class="buy-now-button desktop-only" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                </div>
+                <div class="box">
+                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
+                </div>
+                <button class="buy-now-button mobile-only" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <a href="#section2" class="material-symbols-outlined" style="font-size: 4em; color: var(--text-color); text-decoration: none;">expand_more</a>
+            </div>            
+        </div>
+
+
+        <div class="section" data-anchor="section2">
+            <div class="dynamic-container">
+                <div class="box">
+                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/chat1.png" alt="GrütteChat Render">
+                </div>
+                <div class="box text">
+                    <h1>What Is GrütteChat?</h1>
+                    <p>GrütteChat is a new way to keep in touch with friends, family and much more...<br>
+                    It's free, open-source and built with Python and Flask, AJAX and SQL.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section3">
+            <div class="dynamic-container">
+                <div class="box text">
+                    <h1>MyAI</h1>
+                    <p>MyAI is a state of the art AI-powered chatbot that is built into GrütteChat.<br>
+                    You can access MyAI right from the home page.<br>
+                </div>
+                <div class="box">
+                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/ai1.png" alt="MyAI Render">
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section4">
+            <div class="dynamic-container">
+                <div class="box">
+                    <img class="tablet" src="https://www.gruettecloud.com/static/renders/light/chat2.png" alt="GrütteChat Render">
+                </div>
+                <div class="box text">
+                    <h1>Real-Time Messaging</h1>
+                    <p>Text the ones important to you in real-time<br>
+                    while your messages are safe and securely encrypted.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section5">
+            <div class="dynamic-container">
+                <div class="box text">
+                    <h1>Looks Great On Any Screen</h1>
+                    <p>GrütteChat is built with responsive design in mind.<br>
+                    Experience it on your phone, tablet, laptop or desktop computer.</p>
+                </div>
+                <div class="box">
+                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/ai2.png" alt="MyAI Render">
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section6">
+            <div class="dynamic-container">
+                <div class="box">
+                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage Render">
+                </div>
+                <div class="box text">
+                    <h1>GrütteStorage</h1>
+                    <p>A new way to store your files.<br>
+                    It's a fast and secure cloud storage service that is built right into GrütteCloud.<br>
+                    So now you can finally access files from anywhere.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section7">
+            <div class="dynamic-container">
+                <div class="box text">
+                    <h1>Share Files</h1>
+                    <p>Share your files with anyone - even the once without a GrütteID.<br>
+                    Simply press "share" and copy the link - It's that easy!<br>
+                </div>
+                <div class="box">
+                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteStorage Render">
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section8">
+            <div class="dynamic-container">
+                <div class="box">
+                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/id1.png" alt="GrütteID Render">
+                </div>
+                <div class="box text">
+                    <h1>GrütteID - One For Everything</h1>
+                    <p>An account for all GrütteCloud services.<br>
+                    Your data is safe and secure - Now with Two-Factor Authentication.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section9">
+            <div class="dynamic-container">
+                <div class="box text">
+                    <h1>What are you waiting for?</h1>
+                    <p>Sign up today and start chatting, storing and sharing for free!<br>
+                    <button class="buy-now-button" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                </div>
+                <div class="box desktop-only">
+                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/login1.png" alt="GrütteCloud Login Render">
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+                <div style="display: flex;">
+                    <div style="width: 50%; margin-right: 20px; text-align: left;">
+                        <b style="font-size: 0.9em;">GrütteCloud</b>
+                        <div style="white-space: nowrap; line-height: 1em;">
+                            <a class="footer-link" href="https://www.gruettecloud.com/help">Help Center</a><br>
+                            <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
+                            <a class="footer-link" href="https://www.gruettecloud.com/support">Contact Support</a>
+                        </div>
+                    </div>
+                    <div style="width: 50%; text-align: left;">
+                        <b style="font-size: 0.9em;">Legal</b>
+                        <div style="white-space: nowrap; line-height: 1em;">
+                            <a class="footer-link" href="https://www.gruettecloud.com/about">Über Uns</a><br>
+                            <a class="footer-link" href="https://www.gruettecloud.com/terms">Terms of Service</a><br>
+                            <a class="footer-link" href="https://www.gruettecloud.com/privacy">Privacy Policy</a>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            <div id="cookie-banner"></div>
+        </div>
+        
+    </div>
+
+</body>
+
+</html>
+
+<!-- Include fullPage.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
+
+<script>
+    // Initialize fullPage.js
+    new fullpage('#fullpage', {
+        // Options
+        sectionsColor: ['transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)'], // Set background colors for sections
+        anchors: ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10'], // Set anchor names for sections
+        autoScrolling: true, // Enable auto-scrolling
+        scrollBar: false, // Hide the scrollbar
+        navigation: false, // Show navigation dots
+        navigationPosition: 'right', // Position of navigation dots
+        afterLoad: function(origin, destination, direction) {
+            // Add any custom code to be executed after each section loads
+        }
+    });
+</script>
+
+
+<script>
+
+    // Dark mode toggle functionality
+    var darkModeToggle = document.getElementById('darkModeToggle');
+    var body = document.body;
+    var isDarkMode = localStorage.getItem('darkMode');
+
+    if (isDarkMode === 'true') {
+        body.classList.add('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+        var product_renders = document.getElementsByClassName("product-screenshot");
+        for (var i = 0; i < product_renders.length; i++) {
+            product_renders[i].src = product_renders[i].src.replace("light", "dark");
+        };
+    }
+
+    darkModeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'false');
+            document.documentElement.setAttribute('data-theme', 'light');
+            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
+            var product_renders = document.getElementsByClassName("product-screenshot");
+            for (var i = 0; i < product_renders.length; i++) {
+                product_renders[i].src = product_renders[i].src.replace("dark", "light");
+            };
+
+
+        } else {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'true');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+            var product_renders = document.getElementsByClassName("product-screenshot");
+            for (var i = 0; i < product_renders.length; i++) {
+                product_renders[i].src = product_renders[i].src.replace("light", "dark");
+            };
+        }
+    });
+    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
+</script>
+
+<script src="https://www.gruettecloud.com/static/cookies.js"></script>
