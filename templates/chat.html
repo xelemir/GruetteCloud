@@ -92,7 +92,7 @@
         {% endfor %}
     </div>
 
-    <form action="/chat/{{ recipient }}" method="POST" id="sendMessage" style="text-align: center; position: sticky; bottom: 0;">
+    <form action="/chat/{{ recipient }}" method="POST" id="sendMessage">
         <div class="wrapping-tile">
             <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: calc(100% - 120px);">
             <input type="submit" name="send" value="Send" class="send-button">
@@ -140,12 +140,17 @@
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
 
 <script>
-    function updateLayout() {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    
-    window.addEventListener('resize', updateLayout);
-    updateLayout();
-    
+    document.addEventListener('DOMContentLoaded', function() {
+        function checkForNavigationBar() {
+          const isNavigationBarVisible = window.innerHeight < document.documentElement.clientHeight;
+          return isNavigationBarVisible;
+        }
+      
+        if (checkForNavigationBar()) {
+          // Navigation bar issue detected, apply necessary adjustments
+          var messageContainer = document.querySelector('.chat-messages');
+          messageContainer.style.height = 'calc(100vh - 200px)';
+        }
+      });
 </script>
+
