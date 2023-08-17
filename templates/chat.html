@@ -68,28 +68,30 @@
         </div>
     </div>
 
-    <div class="chat-messages">
-        {% for message in messages %}
-            {% if message[0] == "You" %}
-                <div class="message right-bubble">
-                    {% if message[1] == "#!#DecryptionError#!#" %}
-                        <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
-                    {% else %}
-                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                        <div class="message-content">{{ message[1] }}</div>
-                    {% endif %}
-                </div>
-            {% else %}
-                <div class="message left-bubble">
-                    {% if "#!#DecryptionError#!#" in message[1] %}
-                        <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
-                    {% else %}
-                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                        <div class="message-content">{{ message[1] }}</div>
-                    {% endif %}
-                </div>
-            {% endif %}
-        {% endfor %}
+    <div style="height: 100%;">
+        <div class="chat-messages">
+            {% for message in messages %}
+                {% if message[0] == "You" %}
+                    <div class="message right-bubble">
+                        {% if message[1] == "#!#DecryptionError#!#" %}
+                            <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
+                        {% else %}
+                            <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
+                            <div class="message-content">{{ message[1] }}</div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="message left-bubble">
+                        {% if "#!#DecryptionError#!#" in message[1] %}
+                            <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
+                        {% else %}
+                            <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
+                            <div class="message-content">{{ message[1] }}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 
     <form action="/chat/{{ recipient }}" method="POST" id="sendMessage">
