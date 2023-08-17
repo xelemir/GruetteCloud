@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="chat-messages">
+    <div class="chat-messages" style="height: calc(100vh - constant(safe-area-inset-bottom));">
         {% for message in messages %}
             {% if message[0] == "You" %}
                 <div class="message right-bubble">
