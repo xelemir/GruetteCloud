@@ -47,51 +47,49 @@
         });
     </script>    
 </head>
-<body style="margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh;">
-    <div style="flex: 1;">
-        <div class="header">
-            <div class="dark-mode-toggle">
-                <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
-            <div class="centered-content" style="display: flex; align-items: center;">
-                <a href="/profile/{{ recipient }}" style="text-decoration: none; color: var(--text-color);">
-                    <h1 style="display: flex; align-items: center;">
-                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ pfp }}" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
-                        {{ recipient }}
-                        {% if verified %}
-                            <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-left: 5px; color: var(--primary-color); align-items: center;">verified</span>
-                        {% endif %}
-                    </h1>
-                </a>
-            </div>
-            <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-                <a href="/support" title="Report chat" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">flag</span></a>
-            </div>
-        </div>
+<body>
 
-        <div class="chat-messages">
-            {% for message in messages %}
-                {% if message[0] == "You" %}
-                    <div class="message right-bubble">
-                        {% if message[1] == "#!#DecryptionError#!#" %}
-                            <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
-                        {% else %}
-                            <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                            <div class="message-content">{{ message[1] }}</div>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <div class="message left-bubble">
-                        {% if "#!#DecryptionError#!#" in message[1] %}
-                            <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
-                        {% else %}
-                            <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                            <div class="message-content">{{ message[1] }}</div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
+    <div class="header">
+        <div class="dark-mode-toggle">
+            <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
+        <div class="centered-content" style="display: flex; align-items: center;">
+            <a href="/profile/{{ recipient }}" style="text-decoration: none; color: var(--text-color);">
+                <h1 style="display: flex; align-items: center;">
+                    <img src="https://www.gruettecloud.com/static/profile_pictures/{{ pfp }}" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
+                    {{ recipient }}
+                    {% if verified %}
+                        <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-left: 5px; color: var(--primary-color); align-items: center;">verified</span>
+                    {% endif %}
+                </h1>
+            </a>
+        </div>
+        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+            <a href="/support" title="Report chat" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">flag</span></a>
+        </div>
+    </div>
+    <div class="chat-messages">
+        {% for message in messages %}
+            {% if message[0] == "You" %}
+                <div class="message right-bubble">
+                    {% if message[1] == "#!#DecryptionError#!#" %}
+                        <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
+                    {% else %}
+                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
+                        <div class="message-content">{{ message[1] }}</div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="message left-bubble">
+                    {% if "#!#DecryptionError#!#" in message[1] %}
+                        <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
+                    {% else %}
+                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
+                        <div class="message-content">{{ message[1] }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 
     <form action="/chat/{{ recipient }}" method="POST" id="sendMessage" style="text-align: center; position: sticky; bottom: 0;">
