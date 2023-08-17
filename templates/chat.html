@@ -47,7 +47,7 @@
         });
     </script>    
 </head>
-<body style="height: calc(100vh - constant(safe-area-inset-bottom));">
+<body>
     <div class="header">
         <div class="dark-mode-toggle">
             <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="chat-messages" >
+    <div class="chat-messages" style="height: calc(100vh - var(--vh, 0px));">
         {% for message in messages %}
             {% if message[0] == "You" %}
                 <div class="message right-bubble">
@@ -138,3 +138,14 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+<script>
+    function updateLayout() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    window.addEventListener('resize', updateLayout);
+    updateLayout();
+    
+</script>
