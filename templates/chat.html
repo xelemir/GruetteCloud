@@ -47,7 +47,7 @@
         });
     </script>    
 </head>
-<body>
+<body style="height: calc(100vh - var(--vh, 0px));">
     <div class="header">
         <div class="dark-mode-toggle">
             <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="chat-messages" style="height: calc(100vh - var(--vh, 0px));">
+    <div class="chat-messages">
         {% for message in messages %}
             {% if message[0] == "You" %}
                 <div class="message right-bubble">
