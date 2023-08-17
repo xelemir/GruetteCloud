@@ -85,9 +85,6 @@
                     <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
                 </div>
                 <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-                    <a href="/login" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">login</span></a>
-                </div>
-                <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
                     <div class="dropdown">
                         <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                             <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
@@ -128,14 +125,22 @@
                 <div class="box text">
                     <h1>Introducing  GrütteCloud</h1>
                     <p>A cloud service tailored to your needs!<br>
-                    <span class="desktop-only">
-                        <button class="buy-now-button" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                    <span class="desktop-only" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <button class="buy-now-button desktop-only" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/signup'">Get Started!</button>
+                        <div class="desktop-only" style="margin-top: 20px; font-size: 13px; color: var(--text-color);">
+                        Already have an account? <a href="/login" style="color: var(--text-color);">Login here!</a>
+                        </div>
                     </span>
                 </div>
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
                 </div>
-                <button class="buy-now-button mobile-only" style="margin-top: -20px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                <span class="mobile-only" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="buy-now-button mobile-only" style="margin-top: -20px;" onclick="window.location.href='https://www.gruettecloud.com/signup'">Get Started!</button>
+                    <div class="mobile-only" style="margin-top: 20px; font-size: 13px; color: var(--text-color);">
+                        Already have an account? <a href="/login" style="color: var(--text-color);">Login here!</a>
+                    </div>
+                </span>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
                 <a href="#section2" class="material-symbols-outlined" style="color: var(--text-color); text-decoration: none;">expand_more</a>
@@ -240,7 +245,7 @@
                 <div class="box text">
                     <h1>What are you waiting for?</h1>
                     <p>Sign up today and start chatting, storing and sharing for free!<br>
-                    <button class="buy-now-button" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                    <button class="buy-now-button" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/signup'">Get Started!</button>
                 </div>
                 <div class="box desktop-only">
                     <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/login1.png" alt="GrütteCloud Login Render">
@@ -267,15 +272,11 @@
                         </div>
                     </div>
                     <a href="#section1" class="material-symbols-outlined" style="color: var(--text-color); text-decoration: none; margin-top: 20px;">expand_less</a>
-
                 </div>
+                <div id="cookie-banner"></div>
             </div>
-            
-            <div id="cookie-banner"></div>
         </div>
-        
     </div>
-
 </body>
 
 </html>

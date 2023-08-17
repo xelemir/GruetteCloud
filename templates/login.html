@@ -9,7 +9,19 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
     <style>
+
+        h1 {
+			color: var(--primary-color);
+			font-weight: bold;
+            font-size: 6vh;
+        }
+
+        p {
+            color: var(--text-color);
+            font-size: 2vh;
+        }
         
 
         .container {
@@ -81,54 +93,90 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
-        </div>
-        <div class="centered-content">
-            <a href="/" class="logo" title="Home">
-                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
-            </a>
-        </div>
-        <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <div class="dropdown">
-                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
-                    <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
-                </button>
-                <div class="dropdown-menu" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
-                    {% if menu %}
-                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
-                    {% endif %}
-                    <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
-                        {% if menu %}
-                            Hi, {{ menu["username"] }}!
-                        {% else %}
-                            Hi, there!
-                        {% endif %}
-                    </h1>
-                    {% if menu %}
-                        <a href="/account" title="Manage Account" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Manage Account</a>
-                    {% else %}
-                        <a href="/" title="Get Started" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Get Started</a>
-                    {% endif %}
-                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    <a href="/home" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
-                    <a href="/chat" title="GrütteChat" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                    <a href="/storage" title="GrütteStorage" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
-                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    {% if menu %}
-                        <a href="/logout" title="Logout" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
-                    {% else %}
-                        <a href="/about" title="About" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">info</span>&nbsp;&nbsp;About</a>
-                        <a href="/terms" title="Terms of Service" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">description</span>&nbsp;&nbsp;Terms of Service</a>
-                        <a href="/privacy" title="Privacy Policy" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">privacy_tip</span>&nbsp;&nbsp;Privacy Policy</a>
-                    {% endif %}
+    <div id="fullpage">
+        <div class="section" data-anchor="section1">
+            <div class="header">
+                <div style="position: absolute; top: 20px; left: 0; padding-left: 20px">
+                    <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+                </div>
+                <div class="centered-content">
+                    <a href="/" class="logo" title="Home">
+                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+                    </a>
+                </div>
+                <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+                    <div class="dropdown">
+                        <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
+                            <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
+                        </button>
+                        <div class="dropdown-menu" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
+                            {% if menu %}
+                                <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
+                            {% endif %}
+                            <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                                {% if menu %}
+                                    Hi, {{ menu["username"] }}!
+                                {% else %}
+                                    Hi, there!
+                                {% endif %}
+                            </h1>
+                            {% if menu %}
+                                <a href="/account" title="Manage Account" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Manage Account</a>
+                            {% else %}
+                                <a href="/" title="Get Started" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Get Started</a>
+                            {% endif %}
+                            <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
+                            <a href="/home" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
+                            <a href="/chat" title="GrütteChat" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
+                            <a href="/storage" title="GrütteStorage" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteStorage</a>
+                            <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
+                            {% if menu %}
+                                <a href="/logout" title="Logout" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
+                            {% else %}
+                                <a href="/about" title="About" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">info</span>&nbsp;&nbsp;About</a>
+                                <a href="/terms" title="Terms of Service" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">description</span>&nbsp;&nbsp;Terms of Service</a>
+                                <a href="/privacy" title="Privacy Policy" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">privacy_tip</span>&nbsp;&nbsp;Privacy Policy</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="container">
+    
+            <div class="dynamic-container">
+                <div class="box text">
+                    <span class="center-mobile">
+                        <h1>
+                            Good to See You!
+                        </h1>
+                        <div style="display: block; font-size: 13px; margin-top: 80px;">
+                            <div id="error-message" style="display: none; margin-bottom: 20px;">
+                                <p style="color: var(--yellow)">{{ error }}</p>
+                            </div>
+                            <form action="{{ url }}" method="POST" style="flex-direction: column;">
+                                <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 250px; margin: 0px; border-radius: 5px;">
+                                <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 250px; margin: 0px; margin-top: 20px; border-radius: 5px;">
+                                <div style="display: inline-flex; width: 250px; margin-top: 30px; gap: 20px;">
+                                    <input type="submit" value="Log In" name="login" style="width: 100%; border-radius: 20px;" class="send-button left-login">
+                                    <!--<a href="/signup" style="text-decoration: none; width: 50%;" class="send-button right-login">Sign Up</a>-->
+                                </div>
+                            </form>
+                            <br>
+                            
+                            <a href="/signup" style="color: var(--text-color);">Sign Up</a>
+                            or
+                            <a href="/support" style="color: var(--text-color);">need help logging in?</a>
+                        </div>
+                    </span>
+                </div>
+                <div class="box">
+                    <img class="mac desktop-only" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
+                </div>
+            </div>
+        
+    
+
+    <!--<div class="container">
         <div class="side">
             <div class="item">
                 <div class="content">
@@ -173,7 +221,7 @@
                 </div>
             </div>
         </span>
-    </div>
+    </div>-->
 
     <!--<div class="centered-div desktop-only" style="top: 25%;">
         <div style="text-align: center; margin-bottom: 40px; width: auto; height: auto;">
@@ -200,27 +248,31 @@
         <br>
         <a href="/support" style="color: var(--text-color);">Trouble logging in?</a>
     </div>-->
-    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-      <div style="display: flex;">
-          <div style="width: 50%; margin-right: 20px; text-align: left;">
-              <b style="font-size: 0.9em;">GrütteCloud</b>
-              <div style="white-space: nowrap; line-height: 1em;">
-                  <a class="footer-link" href="/help">Help Center</a><br>
-                  <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
-                  <a class="footer-link" href="/support">Contact Support</a>
-              </div>
-          </div>
-          <div style="width: 50%; text-align: left;">
-              <b style="font-size: 0.9em;">Legal</b>
-              <div style="white-space: nowrap; line-height: 1em;">
-                  <a class="footer-link" href="/about">Über Uns</a><br>
-                  <a class="footer-link" href="/terms">Terms of Service</a><br>
-                  <a class="footer-link" href="/privacy">Privacy Policy</a>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div id="cookie-banner"></div>
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
+        <div style="align-items: center; display: flex; flex-direction: column;">
+            <div style="display: flex;">
+                <div style="width: 50%; margin-right: 20px; text-align: left;">
+                    <b style="font-size: 0.9em;">GrütteCloud</b>
+                    <div style="white-space: nowrap; line-height: 1em;">
+                        <a class="footer-link" href="https://www.gruettecloud.com/help">Help Center</a><br>
+                        <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
+                        <a class="footer-link" href="https://www.gruettecloud.com/support">Contact Support</a>
+                    </div>
+                </div>
+                <div style="width: 50%; text-align: left;">
+                    <b style="font-size: 0.9em;">Legal</b>
+                    <div style="white-space: nowrap; line-height: 1em;">
+                        <a class="footer-link" href="https://www.gruettecloud.com/about">Über Uns</a><br>
+                        <a class="footer-link" href="https://www.gruettecloud.com/terms">Terms of Service</a><br>
+                        <a class="footer-link" href="https://www.gruettecloud.com/privacy">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div id="cookie-banner"></div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
 
@@ -265,6 +317,24 @@
             }, 500);
         }, 5000);
     {% endif %}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
+
+<script>
+    // Initialize fullPage.js
+    new fullpage('#fullpage', {
+        // Options
+        sectionsColor: ['transparent'], // Set section colors
+        anchors: ['section1'], // Set anchor names for sections
+        autoScrolling: true, // Enable auto-scrolling
+        scrollBar: false, // Hide the scrollbar
+        navigation: false, // Show navigation dots
+        navigationPosition: 'right', // Position of navigation dots
+        afterLoad: function(origin, destination, direction) {
+            // Add any custom code to be executed after each section loads
+        }
+    });
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>

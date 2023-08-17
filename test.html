@@ -1,293 +1,72 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Discover | GrütteCloud</title>
-    <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
-    <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
-    <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
-    <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
+    <title>Sign In Buttons</title>
     <style>
-        body{
-            width:100%;
-            height:100%;
-        }
-        *{
-            margin:0;
-            padding:0;
-        }
-        .fullscreen-container{
-            overflow:hidden;
-            width:100%;
-            height:100%;
-        }
-        #all-pages{
-            position:relative;
-            top:0;
-            transition:all 800ms ease;
-            /* height set by js */
-        }
-        .page{
-            height:100%;
-            width:100%;
-        }
-        #all-pages .page:nth-child(1){
-            background:linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                       url(https://raw.githubusercontent.com/Juuggo/FELab/master/fullscreen-scroll/images/bg1.jpg)
-                       center / cover;
-        }
-        #all-pages .page:nth-child(2){
-            background:linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                       url(https://raw.githubusercontent.com/Juuggo/FELab/master/fullscreen-scroll/images/bg2.jpg)
-                       center / cover;
-        }
-        #all-pages .page:nth-child(3){
-            background:linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                       url(https://raw.githubusercontent.com/Juuggo/FELab/master/fullscreen-scroll/images/bg3.jpg)
-                       center / cover;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
 
-        #all-pages .page:nth-child(4){
-            background:linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                       url(https://raw.githubusercontent.com/Juuggo/FELab/master/fullscreen-scroll/images/bg3.jpg)
-                       center / cover;
+        h1 {
+            margin-bottom: 20px;
         }
 
-        .text-container{
-            font-family: sans-serif, helvetica, arial;
-            color:white;
-            text-align:center;
-            position:relative;
-            top:50%;
-            margin:0 40px;
-            opacity:0;
-            visibility:visible;
-            transform:translateY(-50%);
-            transition:all 3s ease;
+        button {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
         }
-        .text-container.in-sight{
-            opacity:1;
-            visibility:visible;
+
+        button img {
+            margin-right: 10px;
         }
-        .text-container h2{
-            font-size:6vh;
-            text-transform:uppercase;
+
+        /* Style for Google button */
+        .google-button {
+            color: #757575;
         }
-        .text-container p{
-            font-size:2vh;
-            padding:1em 0;
-        }
-        .nav-dot-container{
-            position:fixed;
-            top:50%;
-            right:20px;
-            transform:translateY(-50%);
-        }
-        .nav-dot{
-            width:20px;
-            height:30px;
-            padding:20px 0px;
-            margin:auto;
-        }
-        .nav-dot span{
-            display:block;
-            width:10px;
-            height:10px;
-            border-radius:50%;
-            background:white;
-            transition:all 200ms ease;
-            margin: auto;
-        }
-        .nav-dot span:hover{
-            width:12px;
-            height:12px;
-        }
-        .nav-dot.dot-active span{
-            width:15px;
-            height:15px;
+
+        /* Style for Apple button */
+        .apple-button {
+            background-color: #000;
+            color: #fff;
         }
     </style>
 </head>
 <body>
+    <h1>Sign In</h1>
+    
+    <!-- Sign in with Google button -->
+    <div>
+        <button class="google-button" onclick="signInWithGoogle()">
+            <img src="google-icon.png" alt="Google Logo" width="20" height="20">
+            Sign in with Google
+        </button>
+    </div>
 
-    <div class="fullscreen-container">
-        <div id="all-pages">
-          <section class="page">
-            <div class="text-container">
-              <h2>The first page</h2>
-              <p>Try: Scroll the page; Click the white dots on the right side; Resize the window; View it on a mobile browser.</p>
-            </div>
-          </section>
-          <section class="page">
-            <div class="text-container">
-              <h2>The second page</h2>
-              <p>Try: Scroll the page; Click the white dots on the right side; Resize the window; View it on a mobile browser.</p>
-            </div>
-          </section>
-          <section class="page">
-            <div class="text-container">
-              <h2>The third page</h2>
-              <p>Try: Scroll the page; Click the white dots on the right side; Resize the window; View it on a mobile browser.</p>
-            </div>
-          </section>
-          <section class="page">
-            <div class="text-container">
-              <h2>The fourth page</h2>
-              <p>Try: Scroll the page; Click the white dots on the right side; Resize the window; View it on a mobile browser.</p>
-            </div>
-          </section>
-        </div>
-      </div>
+    <!-- Sign in with Apple button -->
+    <div>
+        <button class="apple-button" onclick="signInWithApple()">
+            <img src="apple-icon.png" alt="Apple Logo" width="20" height="20">
+            Sign in with Apple
+        </button>
+    </div>
 
+    <!-- Your scripts or other content here -->
+
+    <script>
+        function signInWithGoogle() {
+            // Add your Google sign-in logic here
+        }
+
+        function signInWithApple() {
+            // Add your Apple sign-in logic here
+        }
+    </script>
 </body>
 </html>
-
-<script>
-// Implemetion reference: https://juejin.im/post/5aeef41cf265da0ba0630de0
-// Background image from free image website: https://pixabay.com/
-
-const helper = {
-    getDelta(event) {
-        if(event.wheelDelta) {
-            return event.wheelDelta;
-        } else {
-            return -event.detail;
-        }
-    },
-    throttle(method, delay, context) {
-        let inThrottle = false;
-        return function() {
-            if (!inThrottle) {
-                inThrottle = true;
-                method.apply(context, arguments);
-                setTimeout(() => {
-                    inThrottle = false;
-                }, delay);
-            }
-        }
-    },
-    debounce(method, delay, context) {
-        let inDebounce;
-        return function() {
-            clearTimeout(method.inDebounce);
-            inDebounce = setTimeout(() => {
-                method.apply(context, arguments);
-            }, delay);
-        }
-    }
-}
-class ScrollPages {
-    constructor(currentPageNumber, totalPageNumber, pages){
-        this.currentPageNumber = currentPageNumber;
-        this.totalPageNumber = totalPageNumber;
-        this.pages = pages;
-        this.viewHeight = document.documentElement.clientHeight;
-    }
-    mouseScroll(event) {
-        let delta = helper.getDelta(event);
-        if (delta < 0) {
-            this.scrollDown();
-        } else {
-            this.scrollUp();
-        }
-    }
-    scrollDown() {
-        if (this.currentPageNumber !== this.totalPageNumber){
-            this.pages.style.top = (-this.viewHeight * this.currentPageNumber) + 'px';
-            this.currentPageNumber++;
-            this.updateNav();
-            this.textFadeInOut();
-        }
-    }
-    scrollUp() {
-        if (this.currentPageNumber !== 1) {
-            this.pages.style.top = (-this.viewHeight * (this.currentPageNumber - 2)) + 'px';
-            this.currentPageNumber--;
-            this.updateNav();
-            this.textFadeInOut();
-        }
-    }
-    scrollTo(targetPageNumber) {
-        while (this.currentPageNumber !== targetPageNumber) {
-            if (this.currentPageNumber > targetPageNumber) {
-                this.scrollUp();
-            } else {
-                this.scrollDown();
-            }
-        }
-    }
-    createNav() {
-        const pageNav = document.createElement('div');
-        pageNav.className = 'nav-dot-container';
-        this.pages.appendChild(pageNav);
-        for(let i=0; i < this.totalPageNumber; i++) {
-            pageNav.innerHTML += '<p class="nav-dot"><span></span></p>';
-        }
-        const navDots = document.getElementsByClassName('nav-dot');
-        this.navDots = Array.prototype.slice.call(navDots);
-        this.navDots[0].classList.add('dot-active');
-        this.navDots.forEach((e, index) => {
-            e.addEventListener('click', event => {
-                this.scrollTo(index+1);
-                this.navDots.forEach(e => {
-                    e.classList.remove('dot-active');
-                });
-                e.classList.add('dot-active');
-            });
-        });
-    }
-    updateNav() {
-        this.navDots.forEach(e => {
-            e.classList.remove('dot-active');
-        });
-        this.navDots[this.currentPageNumber-1].classList.add('dot-active');
-    }
-    resize() {
-        this.viewHeight = document.documentElement.clientHeight;
-        this.pages.style.height = this.viewHeight + 'px';
-        this.pages.style.top = -this.viewHeight * (this.currentPageNumber-1) + 'px';
-    }
-    textFadeInOut() {
-        const containersDom = document.getElementsByClassName('text-container');
-        let textContainers = Array.prototype.slice.call(containersDom);
-        textContainers.forEach((e) => {
-            e.classList.remove('in-sight');
-        });
-        let textContainerInSight = textContainers[this.currentPageNumber-1];
-        textContainerInSight.classList.add('in-sight')
-    }
-    init() {
-        let handleMouseWheel = helper.throttle(this.mouseScroll, 500, this);
-        let handleResize = helper.debounce(this.resize, 500, this);
-        this.pages.style.height = this.viewHeight + 'px';
-        this.createNav();
-        this.textFadeInOut();
-        if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
-            document.addEventListener('wheel', handleMouseWheel);
-        } else {
-            document.addEventListener('DOMMouseScroll', handleMouseWheel);
-        }
-        document.addEventListener('touchstart', (event) => {
-            this.startY = event.touches[0].pageY;
-        });
-        document.addEventListener('touchend', (event) => {
-            let endY = event.changedTouches[0].pageY;
-            if (this.startY - endY < 0) {
-                this.scrollUp();
-            }
-            if (this.startY - endY > 0) {
-                this.scrollDown();
-            }
-        });
-        document.addEventListener('touchmove', (event) => {
-            event.preventDefault();
-        });
-        window.addEventListener('resize', handleResize);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    var s = new ScrollPages(1,4,document.getElementById('all-pages'));
-    s.init();
-})
-</script>
