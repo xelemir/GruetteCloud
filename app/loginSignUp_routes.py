@@ -2,12 +2,13 @@ from flask import render_template, request, redirect, session, Blueprint, Flask,
 import random
 import pyotp
 
-from pythonHelper import EncryptionHelper, SQLHelper, MailHelper
+from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, TemplateHelper
 from config import templates_path
     
 loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
+th = TemplateHelper.TemplateHelper()
 
 @loginSignUp_route.route('/login', methods=['POST', 'GET'])
 def login():
@@ -51,11 +52,11 @@ def login():
 
         # If password is or username is incorrect
         else:
-            return render_template('login.html', error='Invalid login credentials', url=request.url)
+            return render_template('login.html', menu=th.user(session), error='Invalid login credentials', url=request.url)
         
     # If user does not exist
     else:
-        return render_template('login.html', error='Invalid login credentials', url=request.url)
+        return render_template('login.html', menu=th.user(session), error='Invalid login credentials', url=request.url)
     
 @loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
 def two_fa():

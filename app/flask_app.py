@@ -39,7 +39,7 @@ def index():
     elif request.args.get('target') is not None:
         return redirect(url_for("LoginSignUp.login", target=request.args.get('target')))
     else:
-        return redirect("/login")
+        return redirect("/discover")
     
 @app.errorhandler(404)
 def error404(error):

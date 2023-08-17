@@ -90,15 +90,17 @@
                 <div class="box text">
                     <h1>Introducing  GrütteCloud</h1>
                     <p>A cloud service tailored to your needs!<br>
-                    <button class="buy-now-button desktop-only" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                    <span class="desktop-only">
+                        <button class="buy-now-button" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                    </span>
                 </div>
                 <div class="box">
                     <img class="mac" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
                 </div>
-                <button class="buy-now-button mobile-only" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
+                <button class="buy-now-button mobile-only" style="margin-top: -20px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
             </div>
-            <div style="display: flex; justify-content: center;">
-                <a href="#section2" class="material-symbols-outlined" style="font-size: 4em; color: var(--text-color); text-decoration: none;">expand_more</a>
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
+                <a href="#section2" class="material-symbols-outlined" style="color: var(--text-color); text-decoration: none;">expand_more</a>
             </div>            
         </div>
 
@@ -206,8 +208,7 @@
                     <img class="phone" src="https://www.gruettecloud.com/static/renders/light/login1.png" alt="GrütteCloud Login Render">
                 </div>
             </div>
-            
-            <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
                 <div style="display: flex;">
                     <div style="width: 50%; margin-right: 20px; text-align: left;">
                         <b style="font-size: 0.9em;">GrütteCloud</b>
@@ -224,9 +225,10 @@
                             <a class="footer-link" href="https://www.gruettecloud.com/terms">Terms of Service</a><br>
                             <a class="footer-link" href="https://www.gruettecloud.com/privacy">Privacy Policy</a>
                         </div>
-                    </div>                
+                    </div>
                 </div>
             </div>
+            
             <div id="cookie-banner"></div>
         </div>
         
