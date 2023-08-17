@@ -149,6 +149,7 @@
         if (checkForNavigationBar()) {
           // Navigation bar issue detected, apply necessary adjustments
           var messageContainer = document.querySelector('.chat-messages');
+          messageContainer.style.backgroundColor = 'var(--primary-color)';
           messageContainer.style.height = 'calc(100vh - 200px)';
         }
       });
