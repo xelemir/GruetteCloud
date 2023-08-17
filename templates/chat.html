@@ -48,7 +48,6 @@
     </script>    
 </head>
 <body>
-
     <div class="header">
         <div class="dark-mode-toggle">
             <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -138,20 +137,3 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        function checkForNavigationBar() {
-          const isNavigationBarVisible = window.innerHeight < document.documentElement.clientHeight;
-          return isNavigationBarVisible;
-        }
-      
-        if (checkForNavigationBar()) {
-          // Navigation bar issue detected, apply necessary adjustments
-          var messageContainer = document.querySelector('.chat-messages');
-          messageContainer.style.backgroundColor = 'var(--primary-color)';
-          messageContainer.style.height = 'calc(100vh - 200px)';
-        }
-      });
-</script>
-
