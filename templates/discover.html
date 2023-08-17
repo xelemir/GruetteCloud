@@ -131,7 +131,7 @@
                     </span>
                 </div>
                 <div class="box">
-                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
                 </div>
                 <button class="buy-now-button mobile-only" style="margin-top: -20px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
             </div>
@@ -144,7 +144,7 @@
         <div class="section" data-anchor="section2">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/chat1.png" alt="GrütteChat Render">
+                    <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/chat1.png" alt="GrütteChat Render">
                 </div>
                 <div class="box text">
                     <h1>What Is GrütteChat?</h1>
@@ -162,7 +162,7 @@
                     You can access MyAI right from the home page.<br>
                 </div>
                 <div class="box">
-                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/ai1.png" alt="MyAI Render">
+                    <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/ai1.png" alt="MyAI Render">
                 </div>
             </div>
         </div>
@@ -170,7 +170,7 @@
         <div class="section" data-anchor="section4">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="tablet" src="https://www.gruettecloud.com/static/renders/light/chat2.png" alt="GrütteChat Render">
+                    <img class="tablet product-renders" src="https://www.gruettecloud.com/static/renders/light/chat2.png" alt="GrütteChat Render">
                 </div>
                 <div class="box text">
                     <h1>Real-Time Messaging</h1>
@@ -188,7 +188,7 @@
                     Experience it on your phone, tablet, laptop or desktop computer.</p>
                 </div>
                 <div class="box">
-                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/ai2.png" alt="MyAI Render">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/ai2.png" alt="MyAI Render">
                 </div>
             </div>
         </div>
@@ -196,7 +196,7 @@
         <div class="section" data-anchor="section6">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage Render">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage Render">
                 </div>
                 <div class="box text">
                     <h1>GrütteStorage</h1>
@@ -215,7 +215,7 @@
                     Simply press "share" and copy the link - It's that easy!<br>
                 </div>
                 <div class="box">
-                    <img class="mac" src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteStorage Render">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteStorage Render">
                 </div>
             </div>
         </div>
@@ -223,7 +223,7 @@
         <div class="section" data-anchor="section8">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/id1.png" alt="GrütteID Render">
+                    <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/id1.png" alt="GrütteID Render">
                 </div>
                 <div class="box text">
                     <h1>GrütteID - One For Everything</h1>
@@ -241,7 +241,7 @@
                     <button class="buy-now-button" style="margin-top: 80px;" onclick="window.location.href='https://www.gruettecloud.com/login'">Get Started!</button>
                 </div>
                 <div class="box desktop-only">
-                    <img class="phone" src="https://www.gruettecloud.com/static/renders/light/login1.png" alt="GrütteCloud Login Render">
+                    <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/login1.png" alt="GrütteCloud Login Render">
                 </div>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
@@ -308,7 +308,7 @@
         body.classList.add('dark-mode');
         document.documentElement.setAttribute('data-theme', 'dark');
         darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-        var product_renders = document.getElementsByClassName("product-screenshot");
+        var product_renders = document.getElementsByClassName("product-renders");
         for (var i = 0; i < product_renders.length; i++) {
             product_renders[i].src = product_renders[i].src.replace("light", "dark");
         };
@@ -320,7 +320,7 @@
             localStorage.setItem('darkMode', 'false');
             document.documentElement.setAttribute('data-theme', 'light');
             darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-            var product_renders = document.getElementsByClassName("product-screenshot");
+            var product_renders = document.getElementsByClassName("product-renders");
             for (var i = 0; i < product_renders.length; i++) {
                 product_renders[i].src = product_renders[i].src.replace("dark", "light");
             };
@@ -331,7 +331,7 @@
             localStorage.setItem('darkMode', 'true');
             document.documentElement.setAttribute('data-theme', 'dark');
             darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-            var product_renders = document.getElementsByClassName("product-screenshot");
+            var product_renders = document.getElementsByClassName("product-renders");
             for (var i = 0; i < product_renders.length; i++) {
                 product_renders[i].src = product_renders[i].src.replace("light", "dark");
             };
