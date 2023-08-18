@@ -62,9 +62,9 @@
     </script>
     
 </head>
-<body>
+<body style="padding: 10px;">
     <div class="header">
-        <div class="dark-mode-toggle">
+        <div style="padding: 10px;">
             <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="centered-content" style="display: flex; align-items: center;">
@@ -83,36 +83,39 @@
         </div>
     </div>
 
-        <div class="chat-messages">
-            {% for message in messages %}
-                {% if message[0] == "You" %}
-                    <div class="message right-bubble">
-                        {% if message[1] == "#!#DecryptionError#!#" %}
-                            <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
-                        {% else %}
-                            <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                            <div class="message-content">{{ message[1] }}</div>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <div class="message left-bubble">
-                        {% if "#!#DecryptionError#!#" in message[1] %}
-                            <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
-                        {% else %}
-                            <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                            <div class="message-content">{{ message[1] }}</div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
+    <div class="chat-messages">
+        {% for message in messages %}
+            {% if message[0] == "You" %}
+                <div class="message right-bubble">
+                    {% if message[1] == "#!#DecryptionError#!#" %}
+                        <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
+                    {% else %}
+                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
+                        <div class="message-content">{{ message[1] }}</div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="message left-bubble">
+                    {% if "#!#DecryptionError#!#" in message[1] %}
+                        <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
+                    {% else %}
+                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
+                        <div class="message-content">{{ message[1] }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 
     <div style="position: sticky; bottom: 0px; margin: 0; width: 100% ">
         <form action="/chat/{{ recipient }}" method="POST" id="sendMessage" style="display: flex; gap: 10px;" enctype="multipart/form-data">
             <input type="file" name="file" accept="image/*" id="file" style="display: none;">
-            <label for="file" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
+            <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
                 <span class="material-symbols-outlined">add</span>
-            </label>
+            </div>
+            <div id="removeDiv" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
+                <span class="material-symbols-outlined">remove</span>
+            </div>
             <input type="text" name="message" placeholder="Type your message..." autocomplete="off" style="width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
             <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">send</span>
@@ -163,3 +166,37 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fileInput = document.getElementById("file");
+        const fileLabel = document.getElementById("fileLabel");
+        const removeDiv = document.getElementById("removeDiv");
+        const messageInput = document.querySelector('input[name="message"]');
+
+        fileLabel.addEventListener("click", function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function() {
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                messageInput.value = selectedFile.name;
+                fileLabel.style.display = "none";
+                removeDiv.style.display = "flex";
+            } else {
+                messageInput.value = '';
+                fileLabel.style.display = "flex";
+                removeDiv.style.display = "none";
+            }
+        });
+
+        removeDiv.addEventListener("click", function() {
+            fileInput.value = ''; // Clear the selected file
+            messageInput.value = ''; // Clear the message
+            fileLabel.style.display = "flex";
+            removeDiv.style.display = "none";
+        });
+    });
+</script>
