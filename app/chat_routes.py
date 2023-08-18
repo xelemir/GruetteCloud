@@ -22,19 +22,20 @@ def get_messages():
         str: The messages list as JSON
     """
      
-    if "username" not in session:
-        return redirect("/")
-    
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username")).lower()
     recipient = str(request.args.get("recipient")).lower()
+    last_timestamp = request.args.get("lastTimestamp")  # Get the lastTimestamp from the request
     messages_list = []
     
     if username != session["username"]:
         return redirect("/")
     
-    # Fetch all messages from the database
-    get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
+    # Construct the SQL query to fetch new messages based on lastTimestamp
+    query = f"SELECT * FROM gruttechat_messages WHERE ((username_send = '{username}' AND username_receive = '{recipient}') OR (username_send = '{recipient}' AND username_receive = '{username}')) AND created_at > '{last_timestamp}' ORDER BY created_at DESC"
+    
+    # Fetch new messages from the database
+    get_messages = sql.readSQL(query)
     
     for message in get_messages:
         # Decrypt the message
@@ -43,13 +44,13 @@ def get_messages():
         except:
             decrypted_message = "Decryption Error!"
 
-        # Check if the message was sent by the user or the recipient abd add it to the list
+        # Check if the message was sent by the user or the recipient and add it to the list
         if message["username_send"] == username:
-            messages_list.append(["You", decrypted_message])
+            messages_list.append({"sender": "You", "content": decrypted_message, "timestamp": message["created_at"]})
         else:
-            messages_list.append([recipient, decrypted_message])
+            messages_list.append({"sender": recipient, "content": decrypted_message, "timestamp": message["created_at"]})
         
-    # Return the list as JSON
+    # Return the list of new messages as JSON
     return jsonify(messages=messages_list)
 
 
@@ -86,18 +87,14 @@ def chat_with(recipient):
     # Post is used to send a message
     if request.method == 'POST':
         
-        if 'file' in request.files:
-        
+        if 'file' in request.files and request.files['file'].filename != '':
 
             file = request.files['file']
-
-            if file.filename == '':
-                return redirect(f'/chat/{recipient}')
             
             filename = secure_filename(file.filename)
 
             file.save(os.path.join(gruetteStorage_path, 'GruetteCloud', filename))
-
+            
             encypted_message = str(eh.encrypt_message(f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"))
             sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
             return redirect(f'/chat/{recipient}')
