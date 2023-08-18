@@ -143,7 +143,7 @@
                 </div>
             </div>
             <div id="showSearchButton" style="background-color: var(--background-color); z-index: 1;">
-                <div  style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <div  style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                     <span class="material-symbols-outlined" title="Search">search</span>
                 </div>
             </div>
@@ -166,7 +166,6 @@
                     <p style="margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">Suggestions:</p>
                 {% for chat in suggested %}
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
-
                     <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                         <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                             <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
@@ -177,7 +176,6 @@
                             </button>
                         </a>
                     </div>
-
                 {% endfor %}
             {% endif %}
 
