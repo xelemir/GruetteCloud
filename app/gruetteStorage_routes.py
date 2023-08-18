@@ -133,8 +133,13 @@ def upload():
 
 @gruetteStorage_route.route("/open/<file_link>/<preview>")
 def download(file_link, preview="Default"):
-    if len(file_link) != 5:
-        return redirect("/")
+    if "GruetteCloud" in file_link:
+        # Links are like this: GruetteCloud12345
+        actual_link = file_link[12:]
+        print(actual_link)
+        path = os.path.join(gruetteStorage_path, "GruetteCloud", actual_link)
+        if os.path.exists(path):
+            return send_file(path, as_attachment=False)
     
     sql = SQLHelper.SQLHelper()
     file = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE link_id = '{file_link}'")

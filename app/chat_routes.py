@@ -2,10 +2,11 @@ import os
 import random
 from flask import render_template, request, redirect, session, jsonify, Blueprint, url_for
 import logging
+from werkzeug.utils import secure_filename
 from PIL import Image
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper, TemplateHelper
-from config import templates_path, pfp_path
+from config import templates_path, pfp_path, gruetteStorage_path
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -85,6 +86,22 @@ def chat_with(recipient):
     # Post is used to send a message
     if request.method == 'POST':
         
+        if 'file' in request.files:
+        
+
+            file = request.files['file']
+
+            if file.filename == '':
+                return redirect(f'/chat/{recipient}')
+            
+            filename = secure_filename(file.filename)
+
+            file.save(os.path.join(gruetteStorage_path, 'GruetteCloud', filename))
+
+            encypted_message = str(eh.encrypt_message(f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"))
+            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
+            return redirect(f'/chat/{recipient}')
+            
         # Check if the message is empty or too long
         if request.form['message'] == '' or len(request.form['message']) > 1000:
             print(f"Invalid message: {request.form['message']}")

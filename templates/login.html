@@ -89,7 +89,11 @@
                 display: block;
             }
         }
-
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +153,11 @@
                         <h1>
                             Good to See You!
                         </h1>
-                        <div style="display: block; font-size: 13px; margin-top: 80px;">
+                        <div class="spaced-tile desktop-only"></div>
+                        <div class="spaced-tile desktop-only"></div>
+                        <div class="spaced-tile desktop-only"></div>
+                        <div class="spaced-tile desktop-only"></div>
+                        <div style="display: block; font-size: 13px;">
                             <div id="error-message" style="display: none; margin-bottom: 20px;">
                                 <p style="color: var(--yellow)">{{ error }}</p>
                             </div>
