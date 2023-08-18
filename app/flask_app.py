@@ -35,7 +35,7 @@ def index():
         if request.args.get('target') is not None:
             return redirect(f"/{request.args.get('target')}")
         else:
-            return redirect("/home")
+            return redirect("/chat")
     elif request.args.get('target') is not None:
         return redirect(url_for("LoginSignUp.login", target=request.args.get('target')))
     else:
