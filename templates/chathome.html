@@ -100,10 +100,14 @@
         <div class="spaced-tile"></div>
     {% endif %}
 
-    <div class="wrapping-tile" style="padding-left: 0; padding-right: 0;">
+        
         <form method="POST">
-            <input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
-            <input type="submit" name="new" value="Start Chat" class="send-button">
+            <input class="message-input" type="text" name="recipient" placeholder="Seach username" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-color: transparent; border-radius: 30px; border-width: 2px; margin-right: 0; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+            <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 28px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined">search</span>
+            </button>
+            <!--<input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
+            <input type="submit" name="new" value="Start Chat" class="send-button">-->
         </form>
     </div>
 
@@ -122,7 +126,7 @@
 
     <div class="spaced-tile"></div>
     <div style="flex-direction: row; display: flex; width: 100%;">
-        <div class="wrapping-tile" style="padding-bottom: 5px;">
+        <div class="wrapping-tile" style="padding-bottom: 5px; border-radius: 30px;">
             <div style="display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
                     <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
@@ -133,41 +137,41 @@
 
             <div class="spaced-tile"></div>
 
-            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 5px; margin-right: 5px;">
+            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
             <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                 <a href="/ai/chat" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
-                    <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">
-                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo_padding.png" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
+                    <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
+                        <img src="https://www.gruettecloud.com/static/profile_pictures/ai.png" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                         <span class="text-offcutter" style="margin-left: 5px;">MyAI</span>
-                        <a title="MyAI" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">smart_toy</span></a>
+                        <a title="MyAI" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">smart_toy</span></a>
                     </button>
                 </a>
             </div>
 
             {% if not active_chats %}
-            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 5px; margin-right: 5px;">
+            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
             <p style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">Suggestions:</p>
             <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                 <a href="/chat/{{ suggested['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
-                    <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">
-                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ suggested['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
+                    <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
+                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ suggested['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                         <span class="text-offcutter" style="margin-left: 5px;">{{ suggested['username'] }}</span>
                         {% if suggested['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                        <a href="/chat/delete/{{ suggested['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></a>
+                        <a href="/chat/delete/{{ suggested['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                     </button>
                 </a>
             </div>
             {% endif %}
 
             {% for chat in active_chats %}
-                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 5px; margin-right: 5px;">
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
                 <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                     <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
-                        <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 18px;">
-                            <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
+                        <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
+                            <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                             <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
                             {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                            <a href="/chat/delete/{{ chat['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></a>
+                            <a href="/chat/delete/{{ chat['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                         </button>
                     </a>
                 </div>
