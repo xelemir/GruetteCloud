@@ -14,7 +14,7 @@
         $(document).ready(function() {
             var username = "{{ username }}";
             var recipient = "{{ recipient }}";
-            var lastTimestamp = null;
+            var totalMessageCount = 0; // To track the total number of messages
     
             function loadMessages() {
                 $.ajax({
@@ -23,11 +23,11 @@
                     data: {
                         username: username,
                         recipient: recipient,
-                        lastTimestamp: lastTimestamp
+                        totalMessageCount: totalMessageCount // Send the total message count with each request
                     },
                     success: function(response) {
                         if (response.messages.length > 0) {
-                            lastTimestamp = response.messages[response.messages.length - 1].timestamp;
+                            totalMessageCount = response.totalMessageCount; // Update the total message count
                             
                             // Clear existing messages before appending new ones
                             $('.chat-messages').empty();
@@ -66,6 +66,7 @@
             loadMessages();
         });
     </script>
+    
     
     
 </head>

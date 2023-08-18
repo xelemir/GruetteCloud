@@ -25,17 +25,14 @@ def get_messages():
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username")).lower()
     recipient = str(request.args.get("recipient")).lower()
-    last_timestamp = request.args.get("lastTimestamp")  # Get the lastTimestamp from the request
+    total_message_count = int(request.args.get("totalMessageCount"))  # Get the total message count
     messages_list = []
-    
+
     if username != session["username"]:
         return redirect("/")
     
-    # Construct the SQL query to fetch new messages based on lastTimestamp
-    query = f"SELECT * FROM gruttechat_messages WHERE ((username_send = '{username}' AND username_receive = '{recipient}') OR (username_send = '{recipient}' AND username_receive = '{username}')) AND created_at > '{last_timestamp}' ORDER BY created_at DESC"
-    
-    # Fetch new messages from the database
-    get_messages = sql.readSQL(query)
+    # Fetch all messages from the database
+    get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE ((username_send = '{username}' AND username_receive = '{recipient}') OR (username_send = '{recipient}' AND username_receive = '{username}')) ORDER BY created_at DESC")
     
     for message in get_messages:
         # Decrypt the message
@@ -44,15 +41,15 @@ def get_messages():
         except:
             decrypted_message = "Decryption Error!"
 
-        # Check if the message was sent by the user or the recipient and add it to the list
         if message["username_send"] == username:
-            messages_list.append({"sender": "You", "content": decrypted_message, "timestamp": message["created_at"]})
+            messages_list.append({"sender": "You", "content": decrypted_message})
         else:
-            messages_list.append({"sender": recipient, "content": decrypted_message, "timestamp": message["created_at"]})
-        
-    # Return the list of new messages as JSON
-    return jsonify(messages=messages_list)
+            messages_list.append({"sender": recipient, "content": decrypted_message})
 
+    if len(messages_list) > total_message_count:
+        return jsonify(messages=messages_list, totalMessageCount=len(messages_list))
+    else:
+        return jsonify(messages=[], totalMessageCount=len(messages_list))  # No new messages
 
 @chat_route.route('/chat/<recipient>', methods=['GET', 'POST'])
 def chat_with(recipient):
