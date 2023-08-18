@@ -1,5 +1,5 @@
 import datetime
-from flask import render_template, request, redirect, session, Blueprint, send_file, jsonify, url_for
+from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify, url_for
 from werkzeug.utils import secure_filename
 import os
 import shutil
@@ -140,6 +140,8 @@ def download(file_link, preview="Default"):
         path = os.path.join(gruetteStorage_path, "GruetteCloud", actual_link)
         if os.path.exists(path):
             return send_file(path, as_attachment=False)
+        else:
+            abort(404)
     
     sql = SQLHelper.SQLHelper()
     file = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE link_id = '{file_link}'")
