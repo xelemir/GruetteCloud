@@ -134,7 +134,11 @@ def chat(error=None):
     
     if active_chats == []:
         suggest_jan = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = 'jan'")
-        suggested = {"username": suggest_jan[0]["username"], "pfp": f"{suggest_jan[0]['profile_picture']}.png", "is_verified": suggest_jan[0]["is_verified"]}
+        suggest_random = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username != '{username}' AND username != 'jan' ORDER BY RAND() LIMIT 3")
+        #suggest_random = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username != '{username}' ORDER BY RAND() LIMIT 3")
+        suggested = [{"username": suggest_jan[0]["username"], "pfp": f"{suggest_jan[0]['profile_picture']}.png", "is_verified": suggest_jan[0]["is_verified"]}]
+        for suggest_user in suggest_random:
+            suggested.append({"username": suggest_user["username"], "pfp": f"{suggest_user['profile_picture']}.png", "is_verified": suggest_user["is_verified"]})
     else:
         suggested = None
     

@@ -78,11 +78,11 @@
 
     {% if not has_premium %}
         <div id="premium-banner" style="display: block;">
-            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 60px; right: 5px; height: 30px; width: 30px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 10px;">
+            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 60px; right: 5px; height: 30px; width: 30px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 30px;">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <a href="/premium" style="text-decoration: none; color: var(--white-color);">
-                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px;">
+                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 30px;">
                     <h1>Unlock GrütteCloud PLUS</h1>
                     <!--for only 2.99 € once!-->
                     It's free!
@@ -93,28 +93,36 @@
     {% endif %}
 
     {% if status_message %}
-        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
+        <div class="wrapping-tile" style="text-align: center; padding: 20px; border-radius: 30px;">
             <h2 style="color: var(--{{ status_message["color"] }})">{{ status_message["subject"] }}</h2>
             <p style="color: var(--{{ status_message["color"] }})">{{ status_message["content"] }}</p>
         </div>
         <div class="spaced-tile"></div>
     {% endif %}
 
-        
+    <!-- center vertically -->
+    <div id="searchFormDiv" style="display: none;">
         <form method="POST">
             <input class="message-input" type="text" name="recipient" placeholder="Seach username" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-color: transparent; border-radius: 30px; border-width: 2px; margin-right: 0; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
-            <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 28px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 78px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">search</span>
             </button>
+            <div id="close" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 28px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
+                <span class="material-symbols-outlined">close</span>
+            </div>
             <!--<input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
             <input type="submit" name="new" value="Start Chat" class="send-button">-->
         </form>
+        
+        
     </div>
+
+    
 
     {% if error %}
         <div id="error-message" style="display: none;">
             <div class="spaced-tile"></div>
-            <div class="wrapping-tile" style="text-align: center;">
+            <div class="wrapping-tile" style="text-align: center; border-radius: 30px;">
                 <div class="inner-tile">
                     <div class="spaced-tile"></div>
                         <h2 style="color: var(--yellow)">{{ error }}</h2>
@@ -134,6 +142,11 @@
                     </h1>
                 </div>
             </div>
+            <div id="showSearchButton" style="background-color: var(--background-color); z-index: 1;">
+                <div  style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <span class="material-symbols-outlined" title="Search">search</span>
+                </div>
+            </div>
 
             <div class="spaced-tile"></div>
 
@@ -149,18 +162,23 @@
             </div>
 
             {% if not active_chats %}
-            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
-            <p style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">Suggestions:</p>
-            <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
-                <a href="/chat/{{ suggested['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
-                    <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
-                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ suggested['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
-                        <span class="text-offcutter" style="margin-left: 5px;">{{ suggested['username'] }}</span>
-                        {% if suggested['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                        <a href="/chat/delete/{{ suggested['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
-                    </button>
-                </a>
-            </div>
+                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
+                    <p style="margin-left: 30px; margin-top: 10px; margin-bottom: 10px;">Suggestions:</p>
+                {% for chat in suggested %}
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
+
+                    <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
+                        <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
+                            <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
+                                <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
+                                <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
+                                {% if suggested['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+                                <a href="/chat/delete/{{ chat['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
+                            </button>
+                        </a>
+                    </div>
+
+                {% endfor %}
             {% endif %}
 
             {% for chat in active_chats %}
@@ -272,6 +290,28 @@
                 errorMessage.style.opacity = '1';
             }, 500);
         }, 5000);
+    {% endif %}
+</script>
+
+<script>
+    const searchForm = document.getElementById('searchFormDiv');
+    const showSearch = document.getElementById('showSearchButton');
+    const closeSearch = document.getElementById('close');
+
+    showSearch.addEventListener('click', function() {
+        searchForm.style.display = 'block';
+        showSearch.style.display = 'none';
+    });
+
+    closeSearch.addEventListener('click', function() {
+        searchForm.style.display = 'none';
+        showSearch.style.display = 'block';
+    });
+
+
+    {% if not active_chats %}
+        searchForm.style.display = 'block';
+        showSearch.style.display = 'none';
     {% endif %}
 </script>
 
