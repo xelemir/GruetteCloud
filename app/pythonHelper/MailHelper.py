@@ -91,8 +91,8 @@ class MailHelper:
                         <b style="color: #000000;">Kind regards,<br>Jan from GrütteCloud</b>
                         <br><br><br>
                         <span style="font-size: 0.7em;">
-                            You are receiving this email because you are subscribed to GrütteCloud emails.<br>
-                            If you do not want to receive any more emails, you can unsubscribe <a href="https://www.gruettecloud.com/unsubscribe" style="color: #000000;">here</a>.<br>
+                            You are receiving this email because you are subscribed to GrütteCloud communication emails.<br>
+                            If you do not want to receive any more emails, you can <a href="https://www.gruettecloud.com/unsubscribe" style="color: #000000;">unsubscribe here</a>.<br>
                             <span style="display: inline-flex;">
                                 <a href="https://www.gruettecloud.com/about" style="color: #000000;">About Us</a>
                                 &nbsp;|&nbsp;
