@@ -126,7 +126,7 @@
                         <div class="search-item file-search-item" style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px; border: none; border-radius: 5px; cursor: text;">
                             <a href="/file/{{ file["link"] }}" style="margin-left: 10px; flex-grow: 1; text-align: left;">
                                 <div>
-                                    <p class="filename" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
+                                    <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
                                 </div>
                             </a>
                             <div style="margin-left: 20px; width: 125px; text-align: right; margin-right: 20px;">
@@ -166,21 +166,15 @@
             {% endif %}
             <div class="file-list">
                 {% for file in files %}
-
-
                     <hr style="border: 1px solid var(--secondary-color); border-radius: 5px;">
-                        <div class="search-item file-search-item" style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px; border: none; border-radius: 5px; cursor: text;">
+                        <div style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px; border: none; border-radius: 5px; cursor: text;">
                             <a href="/file/{{ file["link"] }}" style="margin-left: 10px; flex-grow: 1; text-align: left;">
                                 <div class="text-offcutter">
-                                    <p class="filename" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: flex; color: var(--text-color); font-size: 18px; text-decoration: none; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
+                                    <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: flex; color: var(--text-color); font-size: 18px; text-decoration: none; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
                                 </div>
                             </a>
                             <a href="/file/{{ file["link"] }}" title="More Info" style="margin-right: 10px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
-                        </div>
-
-                    
-                    
-                    
+                        </div>                   
                 {% endfor %}
             </div>
         </div>
