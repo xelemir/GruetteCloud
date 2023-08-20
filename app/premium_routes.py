@@ -73,7 +73,7 @@ def premium():
 
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return url_for("Utilities.settings", error="already_premium")
+            return redirect(url_for("Utilities.settings", error="already_premium"))
         
         # If user does not have premium, render premium ad page
         else:
@@ -95,14 +95,14 @@ def payment():
     
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return url_for("Utilities.settings", error="error")
+        return redirect(url_for("Utilities.settings", error="error"))
     
     # If everything looks good, check if user has premium
     else:
         
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return url_for("Utilities.settings", error="already_premium")
+            return redirect(url_for("Utilities.settings", error="already_premium"))
         
         # Else, create payment and redirect user to PayPal
         else:
