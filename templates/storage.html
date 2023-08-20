@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/GrütteStorage.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
     <style>
@@ -37,6 +38,14 @@
             .upload {
                 height: auto; 
             }
+
+            .showdesktop {
+                display: none;
+            }
+
+            .hidedesktop {
+                display: block;
+            }
         }
 
         @media (min-width: 1200px) {
@@ -46,6 +55,14 @@
 
             .box.right {
                 padding-left: 10px;
+            }
+
+            .showdesktop {
+                display: block;
+            }
+
+            .hidedesktop {
+                display: none;
             }
         }
       </style>
@@ -68,7 +85,7 @@
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>
-                <div class="dropdown-menu" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
+                <div class="dropdown-menu animate__animated animate__zoomIn" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
                     {% if menu %}
                         <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
                     {% endif %}
@@ -102,19 +119,20 @@
     </div>
 
     <div class="dynamic-container">
-        <div class="box left" style="margin-bottom: 20px;">
+        <div class="box left">
             <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px; margin-bottom: 20px;">
                 <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
                     <div style="display: flex; align-items: center; justify-content: center;">
                         <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--primary-color);">upload_file</span>
-                        Drag and drop files here<br>or click to select a file
+                        <span class="desktop-only">Drag and drop files here<br>or click to select a file.</span>
+                        <span class="mobile-only">Upload a file.</span>
                     </div>
                 </label>
                 <input id="file-input" type="file" onchange="handleFile(this.files)">
                 <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
                 <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green);">File uploaded successfully!</p>
             </div>
-            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+            <div class="wrapping-tile showdesktop" style="padding: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
                 <div>
                     <div style="display: flex; align-items: center;">
@@ -129,7 +147,20 @@
             </div>
         </div>
 
+
         <div class="box right">
+            <div class="animate__animated animate__zoomIn" id="file-search-input-div" style="display: none; margin-bottom: 20px;">
+                <input id="file-search-input" class="message-input" type="text" placeholder="Search files" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-radius: 30px; border-width: 2px; border-color: var(--secondary-color); color: var(--text-color); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+                <div style="position: absolute; right: 8px; margin-top: -47px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    <button name="send" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                    <div id="closeSearchButton" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
+                        <span class="material-symbols-outlined">close</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Your Files</h2>
                 <div id="openSearchButton" style="background-color: var(--background-color); z-index: 1;">
@@ -138,20 +169,11 @@
                     </div>
                 </div>
 
-                <div id="file-search-input-div" style="display: none;">
-                    <input id="file-search-input" class="message-input" type="text" placeholder="Search files" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-radius: 30px; border-width: 2px; border-color: var(--secondary-color); color: var(--text-color); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
-                    <div style="position: absolute; right: 48px; margin-top: -47px; display: flex; align-items: center; justify-content: center; gap: 5px;">
-                        <button name="send" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                            <span class="material-symbols-outlined">search</span>
-                        </button>
-                        <div id="closeSearchButton" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
-                            <span class="material-symbols-outlined">close</span>
-                        </div>
-                    </div>
-                </div>
+                
                 
                 <div class="file-list">
                     {% if not files %}
+                    <hr style="border: 1px solid var(--secondary-color); border-radius: 5px;">
                         <div class="no-files">
                             <div style="display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--red);">scan_delete</span>
@@ -181,7 +203,23 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>        
+        </div>
+        <div class="box hidedesktop" style="margin-top: 20px;">
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+                <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
+                <div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-grow: 1;">
+                            <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px; border-radius: 30px;">
+                                <div class="progress-bar-fill" style="width: {{ size_percentage }}%; border-radius: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
+                </div>
+            </div>
+        </div>
+
     </div>
        
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
@@ -322,18 +360,22 @@
 
     openSearchButton.addEventListener('click', function() {
         if (searchForm.style.display === 'none') {
+            searchForm.classList.remove('animate__zoomOut');
+            searchForm.classList.add('animate__animated', 'animate__zoomIn');
             openSearchButton.style.display = 'none';
             searchForm.style.display = 'block';
             searchForm.focus();
-        } else {
-            searchForm.style.display = 'none';
-            openSearchButton.style.display = 'block';
         }
     });
 
     closeSearchButton.addEventListener('click', function() {
-        searchForm.style.display = 'none';
-        openSearchButton.style.display = 'block';
+        searchForm.classList.remove('animate__zoomIn');
+        searchForm.classList.add('animate__animated', 'animate__zoomOut');
+        setTimeout(function() {
+            searchForm.style.display = 'none';
+            openSearchButton.style.display = 'block';
+        }, 500);
+        
     });
 
     // Function to handle file search functionality

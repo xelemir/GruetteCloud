@@ -6,6 +6,7 @@
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
     <style>
@@ -43,7 +44,7 @@
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
                 </button>
-                <div class="dropdown-menu" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
+                <div class="dropdown-menu animate__animated animate__zoomIn" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
                     {% if menu %}
                         <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
                     {% endif %}
@@ -101,13 +102,13 @@
     {% endif %}
 
     <!-- center vertically -->
-    <div id="searchFormDiv" style="display: none;">
+    <div class="animate__animated animate__zoomIn" id="searchFormDiv" style="display: none;">
         <form method="POST">
             <input class="message-input" type="text" name="recipient" placeholder="Search username" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-color: transparent; border-radius: 30px; border-width: 2px; margin-right: 0; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
-            <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 78px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 53px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">search</span>
             </button>
-            <div id="close" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 28px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
+            <div id="close" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
                 <span class="material-symbols-outlined">close</span>
             </div>
             <!--<input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
@@ -297,13 +298,19 @@
     const closeSearch = document.getElementById('close');
 
     showSearch.addEventListener('click', function() {
+        searchForm.classList.remove('animate__zoomOut');
+        searchForm.classList.add('animate__animated', 'animate__zoomIn');
         searchForm.style.display = 'block';
         showSearch.style.display = 'none';
     });
 
     closeSearch.addEventListener('click', function() {
-        searchForm.style.display = 'none';
-        showSearch.style.display = 'block';
+        searchForm.classList.remove('animate__zoomIn');
+        searchForm.classList.add('animate__animated', 'animate__zoomOut');
+        setTimeout(function() {
+            searchForm.style.display = 'none';
+            showSearch.style.display = 'block';
+        }, 500);
     });
 
 
