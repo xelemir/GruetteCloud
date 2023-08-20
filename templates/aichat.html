@@ -60,7 +60,7 @@
         const userAgent = navigator.userAgent;
         chatMessages.scrollTop = chatMessages.scrollHeight;
         input.focus();
-        if (userAgent.includes('iPhone') || userAgent.includes('iPad') || userAgent.includes('iPod')) {
+        if (userAgent.includes('iPhone')) {
             var body = document.body;
             body.style.maxHeight = '85vh';
         }
