@@ -63,7 +63,8 @@ class MailHelper:
         
     
         
-    def send_email(self, recipient_email, username, subject, body, image_url="https://www.gruettecloud.com/static/gruettecloud_logo.png", link=False):
+    def send_email(self, recipient_email, username, subject, body, token="None", image_url="https://www.gruettecloud.com/static/gruettecloud_logo.png", link=False):
+        
         additional_br = ""
         if not link:
             additional_br = "<br><br>"
@@ -92,7 +93,7 @@ class MailHelper:
                         <br><br><br>
                         <span style="font-size: 0.7em;">
                             You are receiving this email because you are subscribed to GrütteCloud communication emails.<br>
-                            If you do not want to receive any more emails, you can <a href="https://www.gruettecloud.com/unsubscribe" style="color: #000000;">unsubscribe here</a>.<br>
+                            If you do not want to receive any more emails, you can <a href="https://www.gruettecloud.com/unsubscribe?username={username}&email={recipient_email}&token={token}" style="color: #000000;">unsubscribe here</a>.<br>
                             <span style="display: inline-flex;">
                                 <a href="https://www.gruettecloud.com/about" style="color: #000000;">About Us</a>
                                 &nbsp;|&nbsp;
@@ -109,7 +110,7 @@ class MailHelper:
         
     def send_verification_email(self, recipient_email, username, verification_code):
         html = f'Thanks for signing up to GrütteCloud!<br>To get started, please enter the following code on the verification page:<h2 style="color: #0A84FF;"><a style="color: #0A84FF; text-decoration: none;" href="https://www.gruettecloud.com/verify/{username}/{verification_code}">{verification_code}</a></h2>'
-        self.send_email(recipient_email, username, "Verify your GrütteID", html, link=True)
+        self.send_email(recipient_email, username, "Verify your GrütteID", html, token=verification_code, link=True)
 
     def send_support_mail(self, name="None", username="None", email="None", message="None"):
         html = f'''

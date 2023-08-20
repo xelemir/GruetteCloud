@@ -347,19 +347,41 @@ def refresh_2fa():
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
         return redirect(f"/settings")
     
-@utilities_route.route("/unsubscribe")
-def unsubscribe():
-    if "username" not in session:
-        return redirect(url_for("index", target="unsubscribe"))
+@utilities_route.route("/resubscribe")
+def resubscribe():
+    username = request.args.get("username")
+    email = request.args.get("email")
+    token = request.args.get("token")
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT receive_emails FROM gruttechat_users WHERE username = '{str(session['username'])}'")
-    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     if user == []:
-        return redirect(f"/")
-    elif bool(user[0]["receive_emails"]) == False:
-        return redirect(url_for("Utilities.settings", error="already_unsubscribed"))
+        return redirect("/")
+    elif user[0]["email"] != email or user[0]["verification_code"] != token:
+        return redirect("/")
     else:
-        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{str(session['username'])}'")
-        return redirect(url_for("Utilities.settings", error="unsubscribed"))
+        # Gift the user GrütteCloud PLUS
+        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {True}, has_premium = {True} WHERE username = '{username}'")
+        return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="resubscribe")
+    
+@utilities_route.route("/unsubscribe", methods=["GET", "POST"])
+def unsubscribe():
+    username = request.args.get("username")
+    email = request.args.get("email")
+    token = request.args.get("token")
+    confirmed = request.args.get("confirmed")
+    
+    if confirmed != "true":
+        return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    if user == []:
+        return redirect("/")
+    elif user[0]["email"] != email or user[0]["verification_code"] != token:
+        return redirect("/")
+    else:
+        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{username}'")
+        return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe_confirmed")

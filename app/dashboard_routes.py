@@ -180,19 +180,17 @@ def send_mail():
     
     if not send_to_all:
     
-        recipient = sql.readSQL(f"SELECT email FROM gruttechat_users WHERE username = '{recipient_username}'")
+        recipient = sql.readSQL(f"SELECT email, verification_code FROM gruttechat_users WHERE username = '{recipient_username}'")
     
         if recipient == []:
             return redirect(f'/dashboard?error=invalid_recipient')
-        else:
-            recipient_email = recipient[0]["email"]
             
-        email.send_email(recipient_email, recipient_username, subject, content)
+        email.send_email(recipient[0]["email"], recipient_username, subject, content, token=recipient[0]["verification_code"])
         return redirect(f'/dashboard?error=sent')
     
     else:
         for user in sql.readSQL(f"SELECT username, email, receive_emails FROM gruttechat_users"):
             if bool(user["receive_emails"]):
-                email.send_email(user["email"], user["username"], subject, content)
+                email.send_email(user["email"], user["username"], subject, content, token=user["verification_code"])
                 
         return redirect(f'/dashboard?error=sent')
