@@ -204,7 +204,7 @@
                 </div>
             </div>
 
-            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+            <div class="wrapping-tile" style="padding-top: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Your Files</h2>
                 <div id="openSearchButton" style="background-color: var(--background-color); z-index: 1;">
                     <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
@@ -224,16 +224,16 @@
                     {% endif %}
 
                     {% for file in files %}
-                        <hr style="border: 1px solid var(--secondary-color); border-radius: 5px;">
-                        <div class="search-item file-search-item" style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px; border: none; border-radius: 5px; cursor: text;">
-                            <img src="{{ file["icon"] }}" style="width: 30px; height: 30px; margin-right: 10px;">
-                            <a href="/file/{{ file["link"] }}" style="margin-left: 10px; flex-grow: 1; text-align: left;">
+                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 20px;">
+                        <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 5px; margin-bottom: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;">
+                            <a href="/file/{{ file["link"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;">
+                                <img src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 10px; margin-right: 10px;">
                                 <div>
-                                    <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
+                                    <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.2em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
                                 </div>
                             </a>
                             <div class="desktop-only" style="margin-left: 20px; width: 110px; text-align: right; margin-right: 20px;">
-                                <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
+                                <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.2em; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
                             </div>
                             <a class="desktop-only" href="/open/{{ file["link"] }}/download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
                             {% if file["type"] != "youtube" %}
