@@ -103,7 +103,7 @@
 
     <div class="dynamic-container">
         <div class="box left" style="margin-bottom: 20px;">
-            <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px;">
+            <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px; margin-bottom: 20px;">
                 <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
                     <p>Drag and drop files here<br>or click to select a file</p>
                 </label>
@@ -111,9 +111,22 @@
                 <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
                 <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green);">File uploaded successfully!</p>
             </div>
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+                <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
+                <div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="flex-grow: 1;">
+                            <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px; border-radius: 30px;">
+                                <div class="progress-bar-fill" style="width: {{ size_percentage }}%; border-radius: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
+                </div>
+            </div>
         </div>
 
-        <div class="box right" style="margin-bottom: 20px;">
+        <div class="box right">
             <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Your Files</h2>
                 <div id="openSearchButton" style="background-color: var(--background-color); z-index: 1;">
@@ -162,30 +175,7 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
-
-        <div class="clearfix"></div>
-
-
-        
-
-        <div class="box left">
-            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
-                <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
-                <div>
-                    <div style="display: flex; align-items: center;">
-                        <div style="flex-grow: 1;">
-                            <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px; border-radius: 30px;">
-                                <div class="progress-bar-fill" style="width: {{ size_percentage }}%; border-radius: 30px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
-                </div>
-            </div>
-        </div>
-        
-
+        </div>        
     </div>
        
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
