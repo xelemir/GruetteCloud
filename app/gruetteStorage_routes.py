@@ -16,8 +16,6 @@ eh = EncryptionHelper.EncryptionHelper()
 ih = IconHelper.IconHelper()
 th = TemplateHelper.TemplateHelper()
 
-
-
 @gruetteStorage_route.route('/storage', methods=['POST', 'GET'])
 def storage():
     if "username" not in session:
@@ -32,8 +30,6 @@ def storage():
     if username_database == []:
         # Security check: Username is invalid and should be deleted. This may happen if the user was deleted from the database.
         return redirect(f'/logout')
-    elif not bool(username_database[0]["has_premium"]):
-        return redirect(f'/premium')
 
     files = get_files(username)
     file_list = files["file_list"]
@@ -97,12 +93,11 @@ def upload():
 
     if request.method == 'POST':
         sql = SQLHelper.SQLHelper()
-        user = sql.readSQL(f"SELECT has_premium FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
 
         if user == []:
-            return redirect(f"/")
-        elif not bool(user[0]["has_premium"]):
-            return redirect(f"/premium")
+            # Security check
+            return redirect(f"/logout")
 
         file = request.files['file']
         if file:
@@ -110,7 +105,13 @@ def upload():
             storage_dir = os.path.join(gruetteStorage_path, username)
             if not os.path.exists(storage_dir):
                 os.makedirs(storage_dir)
-                    
+                
+            # Free users can only upload three files
+            if not bool(user[0]["has_premium"]):
+                files = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE owner = '{username}'")
+                if len(files) >= 3:
+                    return redirect(f"/premium")
+
             filename = secure_filename(file.filename)
             file.save(os.path.join(storage_dir, filename))
             
