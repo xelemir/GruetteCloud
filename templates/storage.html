@@ -185,7 +185,7 @@
                             </div>
                         </div>
                     </div>
-                    <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
+                    <p style="margin-top: 1em;">{{ size_formatted }} of 5 GB used</p>
                 </div>
             </div>
         </div>
@@ -207,7 +207,7 @@
             <div class="wrapping-tile" style="padding-top: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Your Files</h2>
                 <div id="openSearchButton" style="background-color: var(--background-color); z-index: 1;">
-                    <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <div style="width: 40px; height: 40px; position: absolute; right: 55px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <span class="material-symbols-outlined" title="Search">search</span>
                     </div>
                 </div>
@@ -224,16 +224,16 @@
                     {% endif %}
 
                     {% for file in files %}
-                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 20px;">
+                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                         <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 3px; margin-bottom: 3px; padding-bottom: 5px; padding-top: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;">
                             <a href="/file/{{ file["link"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;">
-                                <img src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 10px; margin-right: 10px;">
+                                <img src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 0px; margin-right: 10px;">
                                 <div>
-                                    <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.2em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
+                                    <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
                                 </div>
                             </a>
                             <div class="desktop-only" style="margin-left: 20px; width: 110px; text-align: right; margin-right: 20px;">
-                                <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.2em; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
+                                <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
                             </div>
                             <a class="desktop-only" href="/open/{{ file["link"] }}/download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
                             {% if file["type"] != "youtube" %}
@@ -241,7 +241,7 @@
                             {% else %}
                                 <a class="desktop-only" href="{{ file["youtube_link"] }}" title="Watch on YouTube" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">youtube_activity</span></a>
                             {% endif %}
-                            <a href="/file/{{ file["link"] }}" title="More Info" style="width: 30px; margin-right: 10px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
+                            <a href="/file/{{ file["link"] }}" title="More Info" style="width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
                         </div>
                     {% endfor %}
                 </div>
@@ -258,7 +258,7 @@
                             </div>
                         </div>
                     </div>
-                    <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
+                    <p style="margin-top: 1em;">{{ size_formatted }} of 5 GB used</p>
                 </div>
             </div>
         </div>
@@ -447,6 +447,7 @@
     var searchForm = document.getElementById('file-search-input-div');
     var openSearchButton = document.getElementById('openSearchButton');
     var closeSearchButton = document.getElementById('closeSearchButton');
+    var searchInput = document.getElementById('file-search-input');
 
     openSearchButton.addEventListener('click', function() {
         if (searchForm.style.display === 'none') {
@@ -459,6 +460,8 @@
     });
 
     closeSearchButton.addEventListener('click', function() {
+        searchInput.value = '';
+        handleFileSearch();
         searchForm.classList.remove('animate__zoomIn');
         searchForm.classList.add('animate__animated', 'animate__zoomOut');
         setTimeout(function() {
@@ -470,7 +473,6 @@
 
     // Function to handle file search functionality
     function handleFileSearch() {
-        const searchInput = document.getElementById('file-search-input');
         const fileItems = document.getElementsByClassName('file-search-item');
 
         // Get the search term from the input, or set it to an empty string if the input is hidden
