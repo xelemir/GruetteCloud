@@ -118,19 +118,61 @@
         </div>
     </div>
 
+    {% if not has_premium %}
+        <div id="premium-banner" style="display: block;">
+            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 55px; right: 5px; height: 40px; width: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 30px;">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <a href="/premium" style="text-decoration: none; color: var(--white-color);">
+                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 30px;">
+                    <h1>Unlock GrütteCloud PLUS</h1>
+                    only 2.99 € once!
+                    <!-- It's free! -->
+                </div>
+            </a>
+            <div class="spaced-tile"></div>
+        </div>
+    {% endif %}
+
     <div class="dynamic-container">
         <div class="box left">
             <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px; margin-bottom: 20px;">
                 <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
                     <div style="display: flex; align-items: center; justify-content: center;">
                         <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--primary-color);">upload_file</span>
-                        <span class="desktop-only">Drag and drop files here<br>or click to select a file.</span>
-                        <span class="mobile-only">Upload a file.</span>
+                        <div class="desktop-only">Drag and drop files here<br>or click to select a file.</div>
+                        <div class="mobile-only">Upload a file.</div>
                     </div>
                 </label>
                 <input id="file-input" type="file" onchange="handleFile(this.files)">
-                <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
-                <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green);">File uploaded successfully!</p>
+
+                <div class="drop-area-style" id="uploading-message" style="display: none;">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-spinner fa-spin" style="font-size: 2em; margin-right: 20px; color: var(--yellow);"></i>
+                        <p>Uploading file...</p>
+                    </div>
+                </div>
+                
+                <div class="drop-area-style" id="upload-confirmed" style="display: none;">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--green);">cloud_done</span>
+                        <p>File uploaded successfully!</p>
+                    </div>
+                </div>
+
+                <div class="drop-area-style" id="upload-error" style="display: none;">
+                    <div style="display: flex; align-items: center; justify-content: center; text-align: left;">
+                        <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--red);">error</span>
+                        <p>Upload failed!<br>Please try again.</p>
+                    </div>
+                </div>
+
+                <div class="drop-area-style" id="upload-premium" style="display: none;">
+                    <div style="display: flex; align-items: center; justify-content: center; text-align: left;">
+                        <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--purple);">error</span>
+                        <p>Free limit exceeded!<br>Upgrade to GrütteCloud PLUS</p>
+                    </div>
+                </div>
             </div>
             <div class="wrapping-tile showdesktop" style="padding: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
@@ -150,7 +192,7 @@
 
         <div class="box right">
             <div class="animate__animated animate__zoomIn" id="file-search-input-div" style="display: none; margin-bottom: 20px;">
-                <input id="file-search-input" class="message-input" type="text" placeholder="Search files" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-radius: 30px; border-width: 2px; border-color: var(--secondary-color); color: var(--text-color); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+                <input id="file-search-input" class="message-input" type="text" placeholder="Search files" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-radius: 30px; color: var(--text-color); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
                 <div style="position: absolute; right: 8px; margin-top: -47px; display: flex; align-items: center; justify-content: center; gap: 5px;">
                     <button name="send" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                         <span class="material-symbols-outlined">search</span>
@@ -297,10 +339,8 @@
             // Show the "uploading-message" div and hide the "drop-area" div
             document.getElementById('uploading-message').style.display = 'flex';
 
-            var dropAreas = document.getElementsByClassName('drop-area');
-            for (var i = 0; i < dropAreas.length; i++) {
-                dropAreas[i].style.display = 'none';
-            }
+            var dropArea = document.getElementById('drop-area');
+            dropArea.style.display = 'none';
     
             var formData = new FormData();
             formData.append('file', file);
@@ -314,20 +354,46 @@
                     document.getElementById('file-input').value = ''; // Clear the file input value
 
                     var uploadConfirmedMessage = document.getElementById('upload-confirmed');
-
                     uploadConfirmedMessage.style.display = 'flex';
                     setTimeout(function() {
                         uploadConfirmedMessage.style.display = 'none';
 
-                        var dropAreas = document.getElementsByClassName('drop-area');
-                        for (var i = 0; i < dropAreas.length; i++) {
-                            dropAreas[i].style.display = 'flex';
-                        }
+                        var dropArea = document.getElementById('drop-area');
+                        dropArea.style.display = 'flex';
 
                         window.location.reload(); // Refresh the page to update the file list
                     }, 2000);
+
+                } else if (xhr.status === 403) {
+                    document.getElementById('file-input').value = '';
+                    var uploadErrorMessage = document.getElementById('upload-premium');
+                    const banner = document.getElementById('premium-banner');
+                    const cookieExists = document.cookie.indexOf('premiumBannerDismissed=true') !== -1;
+                    
+                    uploadErrorMessage.style.display = 'flex';
+                    banner.style.display = 'block';
+                    setTimeout(function() {
+                        uploadErrorMessage.style.display = 'none';
+
+                        if (cookieExists) {
+                            banner.style.display = 'none';
+                        } else {
+                            banner.style.display = 'block';
+                        }
+                        
+                        var dropArea = document.getElementById('drop-area');
+                        dropArea.style.display = 'flex';
+                    }, 5000);
+                    
                 } else {
-                    alert('Error uploading file. Please try again.');
+                    document.getElementById('file-input').value = '';
+                    var uploadErrorMessage = document.getElementById('upload-error');
+                    uploadErrorMessage.style.display = 'none';
+                    setTimeout(function() {
+                        uploadErrorMessage.style.display = 'none';
+                        var dropArea = document.getElementById('drop-area');
+                        dropArea.style.display = 'flex';
+                    }, 3000);
                 }
             };
             xhr.send(formData);
@@ -345,6 +411,34 @@
         var files = event.dataTransfer.files;
         handleFile(files);
     }
+
+    {% if not has_premium %}
+    // GrütteCloud PLUS banner functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const banner = document.getElementById('premium-banner');
+        const dismissButton = document.getElementById('dismiss-button');
+
+        // Check if the cookie 'premiumBannerDismissed' exists
+        const cookieExists = document.cookie.indexOf('premiumBannerDismissed=true') !== -1;
+
+        if (cookieExists) {
+            banner.style.display = 'none';
+        } else {
+            banner.style.display = 'block';
+        }
+
+        // Set the cookie and hide the banner when the 'Dismiss' button is clicked
+        dismissButton.addEventListener('click', function () {
+            // Set the cookie to expire in 7 days
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 7);
+            document.cookie = 'premiumBannerDismissed=true; expires=' + expirationDate.toUTCString();
+
+            // Hide the banner
+            banner.style.display = 'none';
+        });
+    });
+    {% endif %}
 </script>
 
 <script>

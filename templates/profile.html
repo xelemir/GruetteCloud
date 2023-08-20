@@ -139,7 +139,7 @@
         </div>
     </div>
 
-    <div class="variable-width" style="z-index: 1; max-height: 90vh;  text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 15px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+    <div class="variable-width" style="z-index: 1; max-height: 90vh;  text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
         <div style="position: absolute; top: 0; right: 0; margin: 20px; display: column;">
             {% if not edit %}
                 <a href="/support" title="Report User" style="text-decoration: none; color: var(--text-color);">
@@ -157,13 +157,13 @@
         <div id="editView" style="flex-direction: row; display: none; width: 100%;">
             <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
                 <a href="/remove_pfp" title="Remove profile picture" style="text-decoration: none; color: var(--white-color);">
-                    <button class="settings-button" style="margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;">Remove</button>
+                    <button class="settings-button" style="background-color: var(--red); border-radius: 30px; margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;">Remove</button>
                 </a>
             </div>
             <div style="width: 50%; text-align: center; margin-left: 10px;">
                 <form action="/change_pfp" method="post" enctype="multipart/form-data" id="uploadForm">
                     <input type="file" name="profilePicture" accept="image/*" style="display: none;" id="profilePictureInput">
-                    <label class="settings-button" for="profilePictureInput" style="font-size: 0.8em; margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px; cursor: pointer;">Change</label>
+                    <label class="settings-button" for="profilePictureInput" style="border-radius: 30px; font-size: 0.8em; margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px; cursor: pointer;">Change</label>
                 </form>
             </div>
         </div>

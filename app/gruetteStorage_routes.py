@@ -110,8 +110,8 @@ def upload():
             if not bool(user[0]["has_premium"]):
                 files = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE owner = '{username}'")
                 if len(files) >= 3:
-                    return redirect(f"/premium")
-
+                    abort(403)
+                    
             filename = secure_filename(file.filename)
             file.save(os.path.join(storage_dir, filename))
             

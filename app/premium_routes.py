@@ -106,19 +106,18 @@ def payment():
         
         # Else, create payment and redirect user to PayPal
         else:
-            # Gift PLUS as apparently I am not allowed to make money with this!?!
-            sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return render_template("settings.html", menu=th.user(session), error="You now have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            # Gift PLUS as apparently I am not allowed to make money with this!?! idc tho
+            #sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
+            #return render_template("settings.html", menu=th.user(session), error="You now have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
             
-
-            """paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
+            paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
             
             if paypal_response != "Something went wrong on our end :/":
                 return paypal_response
             
             # Payment creation failed
             else:
-                return render_template("premium.html", error="Payment error, please try again.")"""
+                return render_template("premium.html", error="Payment error, please try again.")
 
 @premium_route.route('/success')
 def success():

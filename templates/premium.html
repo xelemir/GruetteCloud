@@ -8,26 +8,8 @@
 	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/GrütteCloud.png">
 	<style>
-		.centered-div {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			padding-top: 20px;
-			height: auto;
-			max-height: calc(100vh - 120px);
-			overflow-y: auto;
-		}
-
-		@media (max-width: 768px) {
-			.centered-div {
-				max-width: 350px;
-			}
-		}
-
 		@media (min-width: 768px) {
-			.centered-div {
+			.wrapping-tile {
 				max-width: 500px;
 			}
 		}
@@ -42,7 +24,7 @@
 		</div>
 		<div class="centered-content">
             <a href="/" class="logo" title="Home">
-                <img src="//jan.gruettefien.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+                <img src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
         </div>
 	</div>
@@ -59,35 +41,34 @@
     {% endif %}
 
 
-	<div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px; padding-top: 20px;">
+	<div class="wrapping-tile" style="border-radius: 30px; text-align: center; margin-top: 5vh; padding: 20px;">
 		<div class="spaced-tile"></div>
-        <h1>Upgrade to GrütteCloud PLUS</h1>
-		<div class="spaced-tile"><br></div>
-		<div class="inner-tile" style="text-align: left;">
-			<p style="padding-bottom: 20px;">• Unlock all MyAI personalities</p>
-			<p style="padding-bottom: 20px;">• 4x longer MyAI conversations</p>
-			<p style="padding-bottom: 20px;">• Up to 10x longer MyAI replies</p>
-			<p style="padding-bottom: 20px;">• Access to GrütteStorage</p>
-			<p>• Access to all upcoming features</p>
+        <h1>GrütteCloud PLUS</h1>
+		<div class="inner-tile" style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px; margin-top: 30px;">
+			<p style="padding-bottom: 1em;">• Unlock all MyAI personalities</p>
+			<p style="padding-bottom: 1em;">• 4x longer MyAI conversations</p>
+			<p style="padding-bottom: 1em;">• Up to 10x longer MyAI replies</p>
+			<p style="padding-bottom: 1em;">• Upload unlimited files GrütteStorage</p>
+			<p style="padding-bottom: 1em;">• Access to all upcoming features</p>
 		</div>
-		<div class="spaced-tile"><br></div>
-		<!--<p>Only 2.99 € for lifetime access*</p>-->
-		<p>Get lifetime access*. It's FREE</p>
+		<p>Only 2.99 € for lifetime access*</p>
+		<!--<p>Get lifetime access*. It's FREE</p>-->
 		<form action="/payment" method="POST">
 			<input type="submit" value="Unlock now!*" class="buy-now-button">
 		</form>
 		<div class="spaced-tile"><br></div>
-		<div style="text-align: center; font-size: 10px;">
+		<div style="text-align: center; font-size: 0.6em;">
 			<!--* We currently only accept PayPal as a payment method, sorry about that :/<br>
 			14-day money-back guarantee if you are not satisfied with GrütteCloud PLUS.<br>-->
-			GrütteCloud PLUS is free. We reserve the right to change this at any time.<br>
-			GrütteCloud PLUS will give you lifetime access to all PLUS features as mentioned above.<br>
+			GrütteCloud PLUS is currently 2.99 €. We reserve the right to change this at any time.
+			After purchasing GrütteCloud PLUS, you will have access to the above mentioned features for lifetime.
+			However we reserve the right to change the features of GrütteCloud PLUS at any time.
 			Lifetime means as long as the service is available. Visit the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> for more info.<br>
-			However we reserve the right to change the features of GrütteCloud PLUS at any time.<br>
 			EU-platform for online dispute resolution: <a href="https://ec.europa.eu/consumers/odr" style="color: var(--text-color);">https://ec.europa.eu/consumers/odr</a>
 		</div>
-		<div class="spaced-tile"></div>
 	</div>
+
+		
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
             <div style="width: 50%; margin-right: 20px; text-align: left;">
