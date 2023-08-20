@@ -34,7 +34,7 @@ def storage():
     files = get_files(username)
     file_list = files["file_list"]
     
-    return render_template("storage.html", menu=th.user(session), username=username, files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
+    return render_template("storage.html", menu=th.user(session), username=username, files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, has_premium=bool(username_database[0]["has_premium"]), verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
 
 
 # Helper function to convert file size to human-readable format
