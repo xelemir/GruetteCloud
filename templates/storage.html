@@ -105,7 +105,10 @@
         <div class="box left" style="margin-bottom: 20px;">
             <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px; margin-bottom: 20px;">
                 <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
-                    <p>Drag and drop files here<br>or click to select a file</p>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--primary-color);">upload_file</span>
+                        Drag and drop files here<br>or click to select a file
+                    </div>
                 </label>
                 <input id="file-input" type="file" onchange="handleFile(this.files)">
                 <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
@@ -150,7 +153,10 @@
                 <div class="file-list">
                     {% if not files %}
                         <div class="no-files">
-                            <p>No files found</p>
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--red);">scan_delete</span>
+                                No files uploaded yet.
+                            </div>
                         </div>
                     {% endif %}
                     {% for file in files %}
