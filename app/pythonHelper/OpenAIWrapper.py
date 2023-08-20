@@ -52,8 +52,8 @@ class OpenAIWrapper:
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
             conversation_log[-1]["content"] = conversation_log[-1]["content"][:500]
-
-        #  Inject the AI personality into the conversation log
+        
+        # Inject the AI personality into the conversation log
         conversation_log.insert(0, {"role": "system", "content": ai_personality})
         
         # Get the response from the GPT-3.5 API and append it to the conversation log
@@ -62,6 +62,10 @@ class OpenAIWrapper:
         
         # Remove the AI personality from the conversation log
         conversation_log.pop(0)
+        
+        # Remove welcome request from the conversation log
+        if len(conversation_log) == 2:
+            conversation_log.pop(0)
 
         # Remove the oldest messages from the conversation log if more than 5 user messages have been sent
         if has_premium == "False" and len(conversation_log) > 5:

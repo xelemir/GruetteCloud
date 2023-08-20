@@ -15,8 +15,11 @@
             <a href="/ai/back" class="white-button-blue-on-hover" title="Back to home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
-        <div class="centered-content">
-            <h1>MyAI</h1>
+        <div class="centered-content" style="display: flex; align-items: center;">
+            <h1 style="display: flex; align-items: center;">
+                <img src="https://www.gruettecloud.com/static/profile_pictures/ai.png" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
+                MyAI
+            </h1>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <a href="/ai-preferences" class="white-button-purple-on-hover" title="Change MyAI personality"><span class="material-symbols-outlined">temp_preferences_custom</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -51,10 +54,16 @@
 </html>
 
 <script>
-    // JavaScript code for autoscrolling to the bottom
     window.onload = function() {
         var chatMessages = document.querySelector('.chat-messages');
+        var input = document.querySelector('input[name="message"]');
+        const userAgent = navigator.userAgent;
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        input.focus();
+        if (userAgent.includes('iPhone') || userAgent.includes('iPad') || userAgent.includes('iPod')) {
+            var body = document.body;
+            body.style.maxHeight = '85vh';
+        }
     };
 
     // Dark mode toggle functionality

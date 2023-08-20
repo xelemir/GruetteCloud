@@ -158,8 +158,11 @@ def send(method):
         return redirect(f"/ai/chat")
 
     # Check if new message is sent, then append it to chat history, get AI response, and refresh page
-    elif "send" in request.form and request.form["message"] != "":
-        chat_history.append({"role": "user", "content": request.form["message"]})
+    elif "send" in request.form or chat_history == []:
+        if chat_history == []:
+            chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
+        else:
+            chat_history.append({"role": "user", "content": request.form["message"]})
         
         # Get user selected AI personality from database
         user = sql.readSQL(f"SELECT ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
