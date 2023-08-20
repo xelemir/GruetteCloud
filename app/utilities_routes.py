@@ -354,15 +354,16 @@ def resubscribe():
     token = request.args.get("token")
     
     sql = SQLHelper.SQLHelper()
-    
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    
     if user == []:
         return redirect("/")
     elif user[0]["email"] != email or user[0]["verification_code"] != token:
         return redirect("/")
     else:
-        # Gift the user GrütteCloud PLUS
-        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {True}, has_premium = {True} WHERE username = '{username}'")
+        mail = MailHelper.MailHelper()
+        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {True} WHERE username = '{username}'")
+        mail.send_support_mail("Resubscribed", username, email, f"{username} changed their mind and resubscribed to communication emails. Please manually gift them GrütteCloud PLUS")
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="resubscribe")
     
 @utilities_route.route("/unsubscribe", methods=["GET", "POST"])
@@ -376,12 +377,18 @@ def unsubscribe():
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe")
     
     sql = SQLHelper.SQLHelper()
-    
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+
     if user == []:
         return redirect("/")
     elif user[0]["email"] != email or user[0]["verification_code"] != token:
         return redirect("/")
     else:
+        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+        if user[0]["receive_emails"] == False:
+            return redirect("/")
+
+        mail = MailHelper.MailHelper()
         sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{username}'")
+        mail.send_support_mail("Unsubscribed", username, email, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}")
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe_confirmed")

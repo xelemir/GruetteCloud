@@ -80,13 +80,13 @@
             <h1 style="margin-bottom: 40px;">We're sad to see you go :/</h1>
             <p>Please tell us why you want to unsubscribe.</p>
             <form action="/unsubscribe?username={{ username }}&email={{ email }}&token={{ token }}&confirmed=true" method="POST" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <select id="color" name="myAI" class="login-input" style="width: 100%; margin-bottom: 10px; border-radius: 30px;" required>
+                <select name="reason" class="login-input" style="width: 100%; margin-bottom: 10px; border-radius: 30px;" required>
                     <option value="">Please select a reason</option>
-                    <option value="2">I am not interested in GrütteCloud anymore</option>
-                    <option value="3">The emails are annoying</option>
-                    <option value="4">The emails are ugly</option>
-                    <option value="5">I don't like the current features</option>
-                    <option value="6">I don't like Jan :(</option>
+                    <option value="Not interested">I am not interested in GrütteCloud anymore</option>
+                    <option value="Emails annoying">The emails are annoying</option>
+                    <option value="Emails ugly">The emails are ugly</option>
+                    <option value="Bad features">I don't like the current features</option>
+                    <option value="Doesnt like Jan">I don't like Jan :(</option>
                 </select>
                 <input type="submit" value="Unsubscribe" style="color: var(--text-color); background-color: transparent; border: none; cursor: pointer; margin-top: 10px;">
             </form>
