@@ -77,6 +77,16 @@ def settings(error=None):
         error = "Your profile picture must be a .png file."
     elif error == "pfp_changed":
         error = "Your profile picture has been changed."
+    elif error == "payment_cancelled":
+        error = "Your payment has been cancelled."
+    elif error == "payment_failed":
+        error = "Your payment has failed."
+    elif error == "payment_success":
+        error = "You unlocked GrütteCloud PLUS!"
+    elif error == "already_premium":
+        error = "You already have GrütteCloud PLUS!"
+    elif error == "payment_creation_failed":
+        error = "Payment creation failed. Please try again."
         
     
     username = str(session["username"])

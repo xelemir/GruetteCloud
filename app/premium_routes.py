@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, session, make_response, Blueprint
+from flask import render_template, request, redirect, session, make_response, Blueprint, url_for
 from paypalrestsdk import Payment, set_config
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
@@ -48,7 +48,7 @@ def pay_with_PayPal(success_url="https://www.gruettecloud.com/success", cancel_u
             if link.method == "REDIRECT":
                 return redirect(link.href)
     else:
-        return "Something went wrong on our end :/"
+        return "error"
 
 @premium_route.route("/premium", methods=["GET"])
 def premium():
@@ -66,14 +66,14 @@ def premium():
 
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return redirect(url_for("Utilities.settings", error="error"))
     
     # If good to go, check if user has premium
     else:
 
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            return url_for("Utilities.settings", error="already_premium")
         
         # If user does not have premium, render premium ad page
         else:
@@ -95,14 +95,14 @@ def payment():
     
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", menu=th.user(session), error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
+        return url_for("Utilities.settings", error="error")
     
     # If everything looks good, check if user has premium
     else:
         
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return render_template("settings.html", menu=th.user(session), error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+            return url_for("Utilities.settings", error="already_premium")
         
         # Else, create payment and redirect user to PayPal
         else:
@@ -112,12 +112,12 @@ def payment():
             
             paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
             
-            if paypal_response != "Something went wrong on our end :/":
+            if paypal_response != "error":
                 return paypal_response
             
             # Payment creation failed
             else:
-                return render_template("premium.html", error="Payment error, please try again.")
+                return redirect(url_for("Utilities.settings", error="payment_creation_failed"))
 
 @premium_route.route('/success')
 def success():
@@ -135,11 +135,11 @@ def success():
    
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return render_template("settings.html", menu=th.user(session), error="Something went wrong. Please contact customer support.", selected_personality="Default", has_premium=False)
+        return redirect(url_for("Utilities.settings", error="error"))
     
     # If good to go, check if user has premium
     if bool(user[0]["has_premium"]) == True:
-        return render_template("settings.html", menu=th.user(session), error="You already have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
+        return redirect(url_for("Utilities.settings", error="already_premium"))
     
     try:
 
@@ -151,16 +151,16 @@ def success():
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
             sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return render_template("settings.html", menu=th.user(session), error="You now have GrütteCloud PLUS!", selected_personality="Default", has_premium=True)
+            return redirect(url_for("Utilities.settings", error="payment_success"))
         
         # Else if payment failed, return error
         else:
-            return render_template("premium.html", menu=th.user(session), error="Payment execution failed, please try again.")
+            return redirect(url_for("Utilities.settings", error="payment_failed"))
         
     # Something went wrong
     except:
-        return render_template("settings.html", menu=th.user(session), error="Something went wrong.", selected_personality="Default", has_premium=False)
-
+        return redirect(url_for("Utilities.settings", error="error"))
+    
 @premium_route.route('/cancel')
 def cancel():
     """ Cancel payment route
@@ -172,4 +172,4 @@ def cancel():
         return redirect(f"/")
 
     # Payment cancelled error
-    return render_template("settings.html", menu=th.user(session), error="Payment cancelled.", selected_personality="Default", has_premium=False)
+    return redirect(url_for("Utilities.settings", error="payment_cancelled"))
