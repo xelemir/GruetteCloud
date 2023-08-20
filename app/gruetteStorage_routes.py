@@ -13,7 +13,7 @@ from config import templates_path, gruetteStorage_path
 gruetteStorage_route = Blueprint("GruetteStorage", "GruetteStorage", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
-icon = IconHelper.IconHelper()
+ih = IconHelper.IconHelper()
 th = TemplateHelper.TemplateHelper()
 
 
@@ -75,13 +75,14 @@ def get_files(username):
     file_list = []
     files_database = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE owner = '{username}'")
     for file in files_database:
+        icon = ih.get_icon(file["filename"])
         try:
             if bool(file["is_shared"]):
-                file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "shared", "link": file["link_id"]})
+                file_list.append({"filename": file["filename"], "icon": icon, "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "shared", "link": file["link_id"]})
             elif bool(file["is_youtube"]):
-                file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "youtube", "link": file["link_id"], "youtube_link": file["youtube_link"]})
+                file_list.append({"filename": file["filename"], "icon": icon, "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "youtube", "link": file["link_id"], "youtube_link": file["youtube_link"]})
             else:
-                file_list.append({"filename": file["filename"], "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "private", "link": file["link_id"]})
+                file_list.append({"filename": file["filename"], "icon": icon, "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file["filename"]))), "type": "private", "link": file["link_id"]})
         except:
             pass
     
@@ -196,7 +197,7 @@ def file(file_link):
             file_path = os.path.join(gruetteStorage_path, file[0]["owner"], file[0]["filename"])
             filesize = get_formatted_file_size(os.path.getsize(file_path))
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(file_path)).strftime("%d.%m.%Y")
-            icon_path = IconHelper.IconHelper().get_icon(file_path)
+            icon_path = ih.get_icon(file_path)
             code = "https://www.gruettecloud.com/s/" + str(file_link)
             user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{file[0]['owner']}'")
             is_author_verified = False
@@ -210,7 +211,7 @@ def file(file_link):
         file_path = os.path.join(gruetteStorage_path, file[0]["owner"], file[0]["filename"])
         filesize = get_formatted_file_size(os.path.getsize(file_path))
         created_at = datetime.datetime.fromtimestamp(os.path.getctime(file_path)).strftime("%d.%m.%Y")
-        icon_path = IconHelper.IconHelper().get_icon(file_path)
+        icon_path = ih.get_icon(file_path)
         code = "https://www.gruettecloud.com/s/" + str(file_link)
         user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{file[0]['owner']}'")
         is_author_verified = False

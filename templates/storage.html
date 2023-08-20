@@ -168,8 +168,6 @@
                         <span class="material-symbols-outlined" title="Search">search</span>
                     </div>
                 </div>
-
-                
                 
                 <div class="file-list">
                     {% if not files %}
@@ -181,9 +179,11 @@
                             </div>
                         </div>
                     {% endif %}
+
                     {% for file in files %}
                         <hr style="border: 1px solid var(--secondary-color); border-radius: 5px;">
                         <div class="search-item file-search-item" style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px; border: none; border-radius: 5px; cursor: text;">
+                            <img src="{{ file["icon"] }}" style="width: 30px; height: 30px; margin-right: 10px;">
                             <a href="/file/{{ file["link"] }}" style="margin-left: 10px; flex-grow: 1; text-align: left;">
                                 <div>
                                     <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
@@ -296,7 +296,6 @@
     
             // Show the "uploading-message" div and hide the "drop-area" div
             document.getElementById('uploading-message').style.display = 'flex';
-            document.getElementById('mobile-uploading-message').style.display = 'flex';
 
             var dropAreas = document.getElementsByClassName('drop-area');
             for (var i = 0; i < dropAreas.length; i++) {
@@ -310,19 +309,15 @@
             xhr.onload = function () {
                 // Hide the "uploading-message" div and show the "drop-area" div
                 document.getElementById('uploading-message').style.display = 'none';
-                document.getElementById('mobile-uploading-message').style.display = 'none';
     
                 if (xhr.status === 200) {
                     document.getElementById('file-input').value = ''; // Clear the file input value
 
                     var uploadConfirmedMessage = document.getElementById('upload-confirmed');
-                    var mobileUploadConfirmedMessage = document.getElementById('mobile-upload-confirmed');
 
                     uploadConfirmedMessage.style.display = 'flex';
-                    mobileUploadConfirmedMessage.style.display = 'flex';
                     setTimeout(function() {
                         uploadConfirmedMessage.style.display = 'none';
-                        mobileUploadConfirmedMessage.style.display = 'none';
 
                         var dropAreas = document.getElementsByClassName('drop-area');
                         for (var i = 0; i < dropAreas.length; i++) {
