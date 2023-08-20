@@ -24,29 +24,11 @@
         .clearfix {
           clear: both;
         }
-
-        .upload {
-            height: 30vh; 
-        }
       
         @media (max-width: 767px) {
-            .box {
-                width: 100%;
-            }
-
-            .upload {
-                height: auto; 
-            }
-        }
-
-        @media (min-width: 768px) {
-            .box.left {
-                padding-right: 10px;
-            }
-
-            .box.right {
-                padding-left: 10px;
-            }
+          .box {
+            width: 100%;
+          }
         }
       </style>
 </head>
@@ -100,21 +82,42 @@
             </div>
         </div>
     </div>
-
-    <div class="dynamic-container">
-        <div class="box left" style="margin-bottom: 20px;">
-            <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px;">
-                <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
-                    <p>Drag and drop files here<br>or click to select a file</p>
-                </label>
-                <input id="file-input" type="file" onchange="handleFile(this.files)">
-                <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
-                <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green);">File uploaded successfully!</p>
+    
+    <div class="desktop-only">
+        <div style="flex-direction: row; display: flex; width: 100%;">
+            <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
+                <div class="wrapping-tile" style="height: 30vh; padding: 15px; border-radius: 30px;">
+                    <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
+                        <p>Drag and drop files here<br>or click to select a file</p>
+                    </label>
+                    <input id="file-input" type="file" onchange="handleFile(this.files)">
+                    <p class="drop-area-style" id="uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
+                    <p class="drop-area-style" id="upload-confirmed" style="display: none; color: var(--green);">File uploaded successfully!</p>
+                </div>
+                <!--<div class="spaced-tile"></div>
+                <div class="wrapping-tile" style="padding: 20px; text-align: center;">
+                    <h2 align="center" style="margin-bottom: 10px;">YouTube Downloader</h2>
+                    <a href="/youtube" class="button-gray" style="width: 100%; height: 45px; font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined">arrow_downward</span>
+                        <span style="margin-left: 10px;">Download</span>
+                    </a>
+                </div>-->
+                <div class="spaced-tile"></div>
+                <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+                    <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
+                    <div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="flex-grow: 1;">
+                                <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px; border-radius: 30px;">
+                                    <div class="progress-bar-fill" style="width: {{ size_percentage }}%; border-radius: 30px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="box right" style="margin-bottom: 20px;">
-            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+            <div class="wrapping-tile" style="width: 60%; padding: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Your Files</h2>
                 <div id="openSearchButton" style="background-color: var(--background-color); z-index: 1;">
                     <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
@@ -148,46 +151,71 @@
                                     <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
                                 </div>
                             </a>
-                            <div class="desktop-only" style="margin-left: 20px; width: 110px; text-align: right; margin-right: 20px;">
+                            <div style="margin-left: 20px; width: 125px; text-align: right; margin-right: 20px;">
                                 <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 18px; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
                             </div>
-                            <a class="desktop-only" href="/open/{{ file["link"] }}/download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
+                            <a href="/open/{{ file["link"] }}/download" title="Download" style="text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
                             {% if file["type"] != "youtube" %}
-                                <a class="desktop-only" href="/open/{{ file["link"] }}/preview" title="Preview" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
+                                <a href="/open/{{ file["link"] }}/preview" title="Preview" style="margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
                             {% else %}
-                                <a class="desktop-only" href="{{ file["youtube_link"] }}" title="Watch on YouTube" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">youtube_activity</span></a>
+                                <a href="{{ file["youtube_link"] }}" title="Watch on YouTube" style="margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">youtube_activity</span></a>
                             {% endif %}
-                            <a href="/file/{{ file["link"] }}" title="More Info" style="width: 30px; margin-right: 10px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
+                            <a href="/file/{{ file["link"] }}" title="More Info" style="margin-right: 10px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
                         </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-
-        <div class="clearfix"></div>
-
-
-        
-
-        <div class="box left">
-            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
-                <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
-                <div>
-                    <div style="display: flex; align-items: center;">
-                        <div style="flex-grow: 1;">
-                            <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px; border-radius: 30px;">
-                                <div class="progress-bar-fill" style="width: {{ size_percentage }}%; border-radius: 30px;"></div>
-                            </div>
-                        </div>
+    </div>
+    <div class="mobile-only">
+        <div class="wrapping-tile" style="border-radius: 30px;">
+            <label for="file-input" class="drop-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
+                <p>Drag and drop files here<br>or click to select a file</p>
+            </label>
+            <input id="file-input" type="file" onchange="handleFile(this.files)">
+            <p class="drop-area-style" id="mobile-uploading-message" style="display: none; color: var(--yellow);"><i class="fa fa-spinner fa-spin" style="margin-right: 10px;"></i> Uploading</p>
+            <p class="drop-area-style" id="mobile-upload-confirmed" style="display: none; color: var(--green);">File uploaded successfully!</p>
+        </div>
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="margin-bottom: 10px; padding: 20px; border-radius: 30px;">
+            <h2 align="center">Your Files</h2>
+            {% if not files %}
+                <div class="inner-tile" style="height: 100%">
+                    <div class="no-files">
+                        <p>You have not uploaded anything yet.</p>
                     </div>
-                    <p style="margin-top: 10px;">{{ size_formatted }} of 5 GB used</p>
                 </div>
+            {% endif %}
+            <div class="file-list">
+                {% for file in files %}
+                    <hr style="border: 1px solid var(--secondary-color); border-radius: 5px;">
+                        <div style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px; border: none; border-radius: 5px; cursor: text;">
+                            <a href="/file/{{ file["link"] }}" style="margin-left: 10px; flex-grow: 1; text-align: left;">
+                                <div class="text-offcutter">
+                                    <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: flex; color: var(--text-color); font-size: 18px; text-decoration: none; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
+                                </div>
+                            </a>
+                            <a href="/file/{{ file["link"] }}" title="More Info" style="margin-right: 10px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
+                        </div>                   
+                {% endfor %}
             </div>
         </div>
-        
-
+        <div class="spaced-tile"></div>
+        <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+            <h2 align="center" style="margin-bottom: 10px;">Storage</h2>
+            <div>
+                <div style="display: flex; align-items: center;">
+                    <div style="flex-grow: 1;">
+                        <div class="progress-bar" style="background-color: var(--secondary-color); height: 1em; margin-top: 0px; border-radius: 30px;">
+                            <div class="progress-bar-fill" style="width: {{ size_percentage }}%; border-radius: 30px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 10px; text-align: center;">{{ size_formatted }} of 5 GB used</p>
+            </div>
+        </div>
     </div>
-       
+    
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
             <div style="width: 50%; margin-right: 20px; text-align: left;">

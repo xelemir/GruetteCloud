@@ -23,6 +23,24 @@
             font-size: 2vh;
         }
         
+        .box {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            height: auto;
+        }
+        
+        .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dynamic-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
 
         .container {
             padding-top: 10vh;
@@ -54,7 +72,7 @@
             align-items: center;
         }
     
-        @media (max-width: 1300px) {
+        @media (max-width: 768px) {
             .container {
                 flex-direction: column;
             }
@@ -78,9 +96,18 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+
+            .dynamic-container {
+                flex-direction: column; /* Stack boxes on top of each other */
+                align-items: center; /* Horizontally center the stacked boxes */
+            }
+        
+            .box {
+                width: 100%;
+            }
         }
 
-        @media (min-width: 1300px) {
+        @media (min-width: 768px) {
             .mobile-only {
                 display: none;
             }
