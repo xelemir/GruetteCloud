@@ -124,7 +124,7 @@
             </div>
             <div class="dynamic-container">
                 <div class="box text">
-                    <div id="default" style="display: block;">
+                    <div id="default" class="animate__animated animate__slideInLeft" style="display: block;">
                         <h1 style="margin-bottom: 30px; margin-top: -30px;">Introducing  GrütteCloud</h1>
                         <p>A cloud service tailored to your needs!</p>
                         <span class="desktop-only" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -134,7 +134,7 @@
                             </div>
                         </span>
                     </div>
-                    <div id="loginSignup" style="display: none;">
+                    <div id="loginSignup" style="display: none;"  class="animate__animated animate__slideInLeft">
                         <div style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center;">
                             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
                                 <div style="display: flex; margin-right: 20px;">
@@ -411,6 +411,7 @@
     var signup = document.getElementById('signup');
 
     function openLogin() {
+        loginSignupView.classList.remove('animate__slideOutLeft');
         defaultView.style.display = 'none';
         loginSignupView.style.display = 'block';
         loginSignupHeadline.innerHTML = 'Login';
@@ -420,9 +421,11 @@
             heroImage.style.display = 'none';
             defaultViewMobile.style.display = 'none';
         }
+        
     }
 
     function openSignUp() {
+        loginSignupView.classList.remove('animate__slideOutLeft');
         defaultView.style.display = 'none';
         loginSignupView.style.display = 'block';
         loginSignupHeadline.innerHTML = 'Sign Up';
@@ -435,12 +438,17 @@
     }
 
     function closeLoginSignup() {
-        defaultView.style.display = 'block';
-        loginSignupView.style.display = 'none';
-        heroImage.style.display = 'block';
-        if (onMobile()) {
-            defaultViewMobile.style.display = 'flex';
-        }
+        loginSignupView.classList.add('animate__slideOutLeft');
+        setTimeout(function() {
+            loginSignupView.style.display = 'none';
+            heroImage.style.display = 'block';
+            if (onMobile()) {
+                defaultViewMobile.style.display = 'flex';
+            } else {
+                defaultView.style.display = 'block';
+            }
+          }, 500);
+        
     }
 
     function onMobile() {
