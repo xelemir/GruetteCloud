@@ -368,6 +368,18 @@ def resubscribe():
     
 @utilities_route.route("/unsubscribe", methods=["GET", "POST"])
 def unsubscribe():
+    if request.args.get("username") == None or request.args.get("email") == None or request.args.get("token") == None:
+        if request.method == "GET":
+            return render_template("unsubscribe.html", menu=th.user(session), mode="unsubscribe_input")
+        else:
+            sql = SQLHelper.SQLHelper()
+            if "email" not in request.form or request.form["email"] == "":
+                return redirect("/unsubscribe")
+            email = str(request.form["email"])
+            sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE email = '{email}'")
+            return render_template("unsubscribe.html", menu=th.user(session), mode="unsubscribe_confirmed")
+
+    
     username = request.args.get("username")
     email = request.args.get("email")
     token = request.args.get("token")
