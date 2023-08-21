@@ -15,7 +15,7 @@ def login():
     if "signup" in request.form:
         return redirect(f'/signup')
     elif request.method == "GET":
-        return render_template('login.html', url=request.url)
+        return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     username = str(request.form['username']).lower()
@@ -23,7 +23,7 @@ def login():
     
     # Check if input is valid
     if username == '' or password == '':
-        return render_template(f'login.html', error='Please enter a username and password', url=request.url)
+        return redirect("/?error=username_or_password_empty&traceback=login")
     
     # Search for user in database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
@@ -52,11 +52,11 @@ def login():
 
         # If password is or username is incorrect
         else:
-            return render_template('login.html', menu=th.user(session), error='Invalid login credentials', url=request.url)
+            return redirect("/?error=invalid_credentials&traceback=login")
         
     # If user does not exist
     else:
-        return render_template('login.html', menu=th.user(session), error='Invalid login credentials', url=request.url)
+        return redirect("/?error=invalid_credentials&traceback=login")
     
 @loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
 def two_fa():
@@ -102,24 +102,24 @@ def signup():
                 
         # Check if input is valid
         if password != password_confirm:
-            return render_template('signup.html', error='Passwords do not match')
+            return redirect("/?error=passwords_not_matching")
         elif username == '' or password == '':
-            return render_template('signup.html', error='Please enter a username and password')
+            return redirect("/?error=username_or_password_empty")
         elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/']] != []:
-            return render_template('signup.html', error='Please do not use special characters in your GrütteID')
+            return redirect("/?error=forbidden_characters")
         elif len(username) >= 40:
-            return render_template('signup.html', error='Username must be less than 40 characters')
+            return redirect("/?error=username_less_40")
         elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete'] if blocked_phrase in username] != []:
-            return render_template('signup.html', error='Your GrütteID my not contain certain words')
+            return redirect("/?error=forbidden_words")
         elif len(password) > 40 or len(password) < 8:
-            return render_template('signup.html', error='Password must be between 8 and 40 characters')
+            return redirect("/?error=password_between_8_40")
         elif '@' not in email or '.' not in email:
-            return render_template('signup.html', error='Please enter a valid email address')
+            return redirect("?error=invalid_email")
         
         # Check if the username already exists
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
         if search_username != []:
-            return render_template('signup.html', error='GrütteID already taken')
+            return redirect("/?error=username_already_exists")
         
         # Else create new user
         else:
@@ -136,7 +136,7 @@ def signup():
             return redirect(f"/verify/{username}")
 
     # If Method is GET, render the signup page
-    return render_template('signup.html')
+    return redirect("/")
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):

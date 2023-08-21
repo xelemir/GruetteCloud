@@ -262,7 +262,18 @@ def about():
 
 @utilities_route.route("/discover", methods=["GET"])
 def discover():
-    return render_template("discover.html", menu=th.user(session))
+    error = request.args.get("error")
+    if error == "username_or_password_empty": error = "Please enter your username and password."
+    elif error == "invalid_credentials": error = "Invalid username or password."
+    elif error == "passwords_not_matching": error = "Passwords do not match."
+    elif error == "forbidden_characters": error = "Your username contains forbidden characters."
+    elif error == "username_less_40": error = "Your username must be less than 40 characters."
+    elif error == "forbidden_words": error = "Your username contains forbidden words."
+    elif error == "password_between_8_40": error = "Your password must be between 8 and 40 characters."
+    elif error == "invalid_email": error = "Please enter a valid email address."
+    elif error == "username_already_exists": error = "This username is already taken."
+
+    return render_template("discover.html", menu=th.user(session), error=error, traceback=request.args.get("traceback"))
 
 @utilities_route.route("/privacy", methods=["GET"])
 def privacy():
