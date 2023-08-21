@@ -442,11 +442,8 @@
         setTimeout(function() {
             loginSignupView.style.display = 'none';
             heroImage.style.display = 'block';
-            if (onMobile()) {
-                defaultViewMobile.style.display = 'flex';
-            } else {
-                defaultView.style.display = 'block';
-            }
+            defaultView.style.display = 'block';
+            defaultViewMobile.style.display = 'flex';
           }, 500);
         
     }
