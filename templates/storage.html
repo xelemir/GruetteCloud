@@ -192,6 +192,17 @@
 
 
         <div class="box right">
+            <div id="confirmDelete" class="animate__animated animate__zoomIn wrapping-tile" style="display: none; padding: 20px; border-radius: 30px; margin-bottom: 20px;">
+                <div style="flex-grow: 1;">
+                    <p align="center" style="margin-bottom: 20px;">Are you sure you want to delete <b id="filename"></b>?</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+                        <button name="Do not delete" class="button-blue" onclick="document.getElementById('confirmDelete').style.display = 'none';" style="width: 50%; border-radius: 30px;">Cancel</button>
+                        <button name="Delete" class="button-blue" style="background-color: var(--red); width: 50%; border-radius: 30px;" onclick="">Yes, delete forever</button>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="animate__animated animate__zoomIn" id="file-search-input-div" style="display: none; margin-bottom: 20px;">
                 <input id="file-search-input" class="message-input" type="text" placeholder="Search files" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-radius: 30px; color: var(--text-color); box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
                 <div style="position: absolute; right: 8px; margin-top: -47px; display: flex; align-items: center; justify-content: center; gap: 5px;">
@@ -241,7 +252,8 @@
                             {% else %}
                                 <a class="desktop-only" href="{{ file["youtube_link"] }}" title="Watch on YouTube" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">youtube_activity</span></a>
                             {% endif %}
-                            <a href="/file/{{ file["link"] }}" title="More Info" style="width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">info</span></a>
+                                <button onclick="confirmDelete('{{ file["link"] }}', '{{ file["filename"] }}')" title="Delete" style="cursor: pointer; background-color: transparent; border: none; width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></button>
+                            <!--<a href="/delete/{{ file["link"] }}" title="Delete" style="width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">delete</span></a>-->
                         </div>
                     {% endfor %}
                 </div>
@@ -262,7 +274,6 @@
                 </div>
             </div>
         </div>
-
     </div>
        
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
@@ -489,6 +500,14 @@
     // Add event listener to the search input field
     const fileSearchInput = document.getElementById('file-search-input');
     fileSearchInput.addEventListener('input', handleFileSearch);
+
+
+    // Function to confirm file deletion
+    function confirmDelete(link, filename) {
+        document.getElementById('filename').innerHTML = filename;
+        document.getElementById('confirmDelete').style.display = 'flex';
+        document.getElementById('confirmDelete').querySelector('button[name="Delete"]').setAttribute('onclick', 'window.location.href="/delete/' + link + '"');
+    }
 </script>
 
 
