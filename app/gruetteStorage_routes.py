@@ -138,7 +138,6 @@ def download(file_link, preview="Default"):
     if "GruetteCloud" in file_link:
         # Links are like this: GruetteCloud12345
         actual_link = file_link[12:]
-        print(actual_link)
         path = os.path.join(gruetteStorage_path, "GruetteCloud", actual_link)
         if os.path.exists(path):
             return send_file(path, as_attachment=False)

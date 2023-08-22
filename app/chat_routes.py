@@ -185,7 +185,6 @@ def send(method):
         # Save chat history to session and refresh page
         session.pop("chat_history", None)
         session["chat_history"] = chat_history
-        print(chat_history)
         
         return redirect(f"/ai/chat")
     

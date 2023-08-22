@@ -62,24 +62,7 @@ def error500(error):
 
 @app.route("/home")
 def home():
-    if "username" not in session:
-        return redirect(f"/")
-    
-    username = str(session["username"]).lower()
-    sql = SQLHelper.SQLHelper()
-    
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
-    platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
-    if user == []:
-        # Security measure
-        return redirect(f"/logout")
-        
-    if platform_message == []:
-        platform_message = None
-    else:
-        platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
-    
-    return render_template("home.html", menu=th.user(session), has_premium=bool(user[0]["has_premium"]), is_admin=user[0]["is_admin"], username=username, status_message=platform_message)
+    return redirect("/")
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
