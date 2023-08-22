@@ -37,6 +37,7 @@ def logout():
         str: Redirect to home page
     """    
     session.pop('username', None)
+    session.clear()
     return redirect(f'/')
 
 @utilities_route.route("/settings", methods=["GET", "POST"])

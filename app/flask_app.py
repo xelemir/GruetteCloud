@@ -64,8 +64,8 @@ def error500(error):
 def home():
     return redirect("/")
 
-@app.route("/chat", methods=["GET", "POST"])
-def chat(error=None):
+@app.route("/chat/<username>", methods=["GET", "POST"])
+def chat(username, error=None):
     if 'username' not in session:
         return redirect(f'/')
 
