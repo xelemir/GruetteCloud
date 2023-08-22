@@ -55,6 +55,11 @@
             font-size: 0.8em;
         }
 
+        .centered-div {
+            max-width: 90vw;
+
+        }
+
         @media (min-width: 768px) {
             .wrapping-tile {
                 max-width: 400px;
@@ -88,7 +93,6 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            {% if is_gruettecloud_user %}<a href="/storage" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -97,9 +101,6 @@
             </a>
         </div>
         <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <a href="/support" title="Report abuse" style="text-decoration: none; color: var(--text-color);">
-                <span class="material-symbols-outlined">flag</span>
-            </a>&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="dropdown">
                 <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
                     <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
@@ -137,7 +138,19 @@
         </div>
     </div>
 
-    <div class="wrapping-tile" style="z-index: 1; text-align: center; margin-top: 10%; padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+    <div class="wrapping-tile centered-div " style="z-index: 1; text-align: center; padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+        {% if is_gruettecloud_user %}
+            <div style="position: absolute; top: 20px; left: 0; padding-left: 20px;">
+                <a href="/storage" title="Back" style="text-decoration: none; color: var(--text-color);">
+                    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                </a>
+            </div>
+        {% endif %}
+        <div style="position: absolute; top: 20px; right: 0; padding-right: 20px;">
+            <a href="/support" title="Report file" style="text-decoration: none; color: var(--text-color);">
+                <span class="material-symbols-outlined">flag</span>
+            </a>
+        </div>
         <img class="resize-logo" src="{{ file_icon }}" style="margin-bottom: 10px;">
         <h2 class="text-offcutter" style="margin-bottom: 20px;">{{ filename }}</h2>
         <p>{{ filesize }} • {{ created_at }}</p>
