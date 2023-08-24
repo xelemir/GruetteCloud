@@ -283,9 +283,9 @@ def change_pfp():
             
     except Exception as e:
         logging.error(e)
-        return redirect(f"/profile/{username}")
+        return redirect(f"/settings")
                 
-    return redirect(f"/profile/{username}")
+    return redirect(f"/settings")
 
 @chat_route.route("/remove_pfp")
 def remove_pfp():
@@ -296,4 +296,4 @@ def remove_pfp():
     username = str(session["username"])
     
     sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}' WHERE username = '{str(session['username'])}'")
-    return redirect(f"/profile/{username}")
+    return redirect(f"/settings")

@@ -9,6 +9,56 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/GrütteID.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
+
+    <style>
+        .dynamic-container {
+          display: flex;
+          flex-wrap: wrap;
+        }
+      
+        .box {
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        .clearfix {
+          clear: both;
+        }
+      
+        @media (max-width: 1200px) {
+            .box {
+                width: 100%;
+            }
+
+            .showdesktop {
+                display: none;
+            }
+
+            .hidedesktop {
+                display: block;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .box.left {
+                padding-right: 10px;
+                width: 50%;
+            }
+
+            .box.right {
+                padding-left: 10px;
+                width: 50%;
+            }
+
+            .showdesktop {
+                display: flex;
+            }
+
+            .hidedesktop {
+                display: none;
+            }
+        }
+      </style>
 </head>
 <body>
 
@@ -78,110 +128,204 @@
         <div class="spaced-tile"></div>
     {% endif %}
 
-    <div class="desktop-only">
-        <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
-            Signed in as {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-        </h1>
-        <div class="spaced-tile"></div>
-    </div>
-
-    <!---   -->
-
-   <div class="desktop-only">
-        <div style="flex-direction: row; display: flex; width: 100%;" >
-            <div style="width: 40%; text-align: center; margin-left: 0; margin-right: 10px; align-content: center;">
-                <div class="wrapping-tile">
-                    <h1>MyAI personality</h1>
-                    <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%; margin-bottom: 10px;">
-                        {% if selected_personality != 'Default' %}
-                        <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
-                        {% endif %}
-                        <option value="/change_ai_personality/Default">Default</option>
-                        {% if selected_personality != 'UwuGirl'%}
-                            <option value="/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
-                        {% endif %}
-                        {% if selected_personality != 'LeeKnow'%}
-                            <option value="/change_ai_personality/LeeKnow">Lee Know</option>
-                        {% endif %}
-                        {% if selected_personality != 'Pirate'%}
-                            <option value="/change_ai_personality/Pirate">Pirate</option>
-                        {% endif %}
-                        {% if selected_personality != 'Pistachio'%}
-                            <option value="/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
-                        {% endif %}
-                        {% if selected_personality != 'Backus'%}
-                            <option value="/change_ai_personality/Backus">Backus (BNF inventor)</option>
-                        {% endif %}
-                        {% if selected_personality != 'Lorde'%}
-                            <option value="/change_ai_personality/Lorde">Lorde</option>
-                        {% endif %}
-                    </select>
-                    {% if display_back_to_ai %}
-                        <a href="/ai/chat" style="text-decoration: none;">
-                            <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
-                                Back to MyAI
-                            </div>
-                        </a>
+    <div class="dynamic-container">
+        <div class="box left">
+            <div class="wrapping-tile" style="padding: 15px; border-radius: 30px; margin-bottom: 20px;">
+                <h1>MyAI personality</h1>
+                <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%; padding-left: 20px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    {% if selected_personality != 'Default' %}
+                    <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
                     {% endif %}
-                </div>
-
-                <div class="spaced-tile"></div>
-                <div class="wrapping-tile" style="padding: 20px;">
-                    <h1 style="display: flex; flex-direction: column; align-items: center;">Two-Factor Authentication</h1>
-                    {% if is_two_fa_enabled %}
-                    <div style="flex-direction: row; display: flex; width: 100%;">
-                        <div style="width: 50%; text-align: center; align-content: center;">
-                            <div class="inner-tile" style="display: flex; flex-direction: column; align-items: center;">
-                                <p style="color: var(--green);">You have 2FA enabled.</p><br><p>If you want to disable it, click the button below. You can also generate a new code.</p>
-                                <div style="flex-direction: row; display: flex; width: 100%; margin-top: 30px;">
-                                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                                        <a href="/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
-                                    </div>
-                                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                                        <a href="/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
-                                    </div>
-                                </div>
-                            </div>
+                    <option value="/change_ai_personality/Default">Default</option>
+                    {% if selected_personality != 'UwuGirl'%}
+                        <option value="/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
+                    {% endif %}
+                    {% if selected_personality != 'LeeKnow'%}
+                        <option value="/change_ai_personality/LeeKnow">Lee Know</option>
+                    {% endif %}
+                    {% if selected_personality != 'Pirate'%}
+                        <option value="/change_ai_personality/Pirate">Pirate</option>
+                    {% endif %}
+                    {% if selected_personality != 'Pistachio'%}
+                        <option value="/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
+                    {% endif %}
+                    {% if selected_personality != 'Backus'%}
+                        <option value="/change_ai_personality/Backus">Backus (BNF inventor)</option>
+                    {% endif %}
+                    {% if selected_personality != 'Lorde'%}
+                        <option value="/change_ai_personality/Lorde">Lorde</option>
+                    {% endif %}
+                </select>
+                {% if display_back_to_ai %}
+                    <a href="/ai/chat" style="text-decoration: none;">
+                        <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
+                            Back to MyAI
                         </div>
-                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px; margin-bottom: 20px;">
+                <h1>Two-Factor Authentication</h1>
+                <div class="dynamic-container">
+                    <div class="box left">
+                        {% if is_two_fa_enabled %}
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <div>
-                                    <div class="qr-code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;"></div>
-                                    <!--<img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px;">-->
+                                    <div class="qr-code" style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 30px;"></div>
                                 </div>
                             </div>
-                        </div>
+                        {% else %}
+                            <p>Two-Factor Authentication (2FA) is a feature that adds an extra layer of security to your GrütteID.</p>
+                        {% endif %}
                     </div>
-                    {% else %}
-                    <div class="inner-tile">
-                        <p style="color: var(--red);">WARNING: You have 2FA disabled!</p><br>
-                        <p>Please scan this code with your authenticator app.</p>
-                        <p>Two-Factor Authentication (2FA) is a feature that adds an extra layer of security to your GrütteID.</p>
-                        <p>When you log in, you'll be asked for a special one-time password from an app like Google Authenticator.</p>
-                        <p>Click the button below to enable it.</p>
+                    <div class="box right">
+                        {% if is_two_fa_enabled %}
+                            <p>You have enabled 2FA.</p><br><p>Please scan this code with your authenticator app.</p>If you want to disable it, click the button below. You can also generate a new code.</p>
+                            <div style="display: flex; flex-direction: inline-flex; align-items: center; justify-content: center; margin-top: 20px;">
+                                <a href="/2fa/refresh" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">refresh</span>Refresh</a>
+                                <a href="/2fa/disable" class="settings-button" style="background-color: var(--red); margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">remove_moderator</span>Disable</a>
+                            </div>
+                        {% else %}
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div class="spaced-tile hidedesktop"></div>
+                                <a href="/2fa/enable" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 5px;">encrypted</span>Enable 2FA</a>
+                            </div>
+                        {% endif %}
                     </div>
-                    <a href="/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button class="settings-button">Enable 2FA</button></a>
-                    {% endif %}
                 </div>
             </div>
-            <div class="wrapping-tile" style="width: 60%; margin: 0 auto; margin-right: 0; margin-left: 10px;">
+        </div>
+
+        <div class="box right">
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+                <h1>GrütteID settings</h1>
+                <div class="dynamic-container">
+                    <div class="box left">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: auto; max-height: 172px; margin-bottom: 20px; border-radius: 50%;">
+
+                            <div id="editView" style="flex-direction: row; display: flex; width: 100%; margin: 0; gap: 10px; margin-bottom: 20px;">
+                                <div style="width: 50%; text-align: center; align-content: center;">
+                                    <a href="/remove_pfp" title="Remove profile picture" style="text-decoration: none; color: var(--white-color);">
+                                        <button class="settings-button" style="margin-left: 5px; margin-right: 0px; width: 100%; height: 42px; font-size: 17px; background-color: var(--red); text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">remove</span>Remove</button>
+                                    </a>
+                                </div>
+                                <div style="width: 50%; text-align: center;">
+                                    <form action="/change_pfp" method="post" enctype="multipart/form-data" id="uploadForm">
+                                        <input type="file" name="profilePicture" accept="image/*" style="display: none;" id="profilePictureInput">
+                                        <label class="settings-button" for="profilePictureInput" style="margin-right: 5px; margin-left: 0px; width: 100%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;"><span class="material-symbols-outlined" style="margin-right: 10px;">add_a_photo</span>Upload</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <button class="settings-button" style="margin: 0; min-width: 50%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleEditPfp()"><span class="material-symbols-outlined" style="margin-right: 10px;">add_a_photo</span>Change profile picture</button>
+                            <div class="spaced-tile hidedesktop"></div>
+                        </div>
+
+                        
+                    </div>
+                    <div class="box right">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <button class="settings-button" style="margin: 0; min-width: 50%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeUsername()"><span class="material-symbols-outlined" style="margin-right: 10px;">edit</span>Change username</button>
+                            <button class="settings-button" style="min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeEmail()"><span class="material-symbols-outlined" style="margin-right: 10px;">mail</span>Change email</button>
+                            <button class="settings-button" style="min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangePassword()"><span class="material-symbols-outlined" style="margin-right: 10px;">key</span>Change password</button>
+                            <button class="settings-button" style="background-color: var(--red); min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleDeleteAccount()"><span class="material-symbols-outlined" style="margin-right: 10px;">person_cancel</span>Delete account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="changeUsername" class="animate__animated animate__zoomIn wrapping-tile" style="display: none; padding: 20px; border-radius: 30px; margin-top: 20px;">
+                <div style="position: absolute; top: 15px; right: 15px; transform: translateX(100%-20px);">
+                    <button onclick="toggleChangeUsername()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent;">
+                        <span class="material-symbols-outlined" title="Close">close</span>
+                    </button>
+                </div>
+                <h1>Change username</h1>
+                <form action="/change_username" method="POST" id="change_username" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                    <input type="text" id="new_username" name="new_username" placeholder="New username" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="submit" value="Change username" class="settings-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                </form>
+            </div>
+            <div id="changeEmail" class="animate__animated animate__zoomIn wrapping-tile" style="display: none; padding: 20px; border-radius: 30px; margin-top: 20px;">
+                <div style="position: absolute; top: 15px; right: 15px; transform: translateX(100%-20px);">
+                    <button onclick="toggleChangeEmail()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent;">
+                        <span class="material-symbols-outlined" title="Close">close</span>
+                    </button>
+                </div>
+                <h1>Change email</h1>
+                <form action="/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                    <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="submit" value="Change email" class="settings-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                </form>
+            </div>
+            <div id="changePassword" class="animate__animated animate__zoomIn wrapping-tile" style="display: none; padding: 20px; border-radius: 30px; margin-top: 20px;">
+                <div style="position: absolute; top: 15px; right: 15px; transform: translateX(100%-20px);">
+                    <button onclick="toggleChangePassword()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent;">
+                        <span class="material-symbols-outlined" title="Close">close</span>
+                    </button>
+                </div>
+                <h1>Change password</h1>
+                <form action="/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                    <input type="password" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="password" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="submit" value="Change password" class="settings-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                </form>
+            </div>
+            <div id="deleteAccount" class="animate__animated animate__zoomIn wrapping-tile" style="display: none; padding: 20px; border-radius: 30px; margin-top: 20px;">
+                <div style="position: absolute; top: 15px; right: 15px; transform: translateX(100%-20px);">
+                    <button onclick="toggleDeleteAccount()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent;">
+                        <span class="material-symbols-outlined" title="Close">close</span>
+                    </button>
+                </div>
+                <h1>Delete account</h1>
+                <form action="/delete_account" method="POST" id="delete_account" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                    <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="password" id="password" name="password" placeholder="Your password" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <input type="email" id="email" name="email" placeholder="Your email" autocomplete="off" required class="login-input" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <select name="reason" class="login-input" style="width: 100%; margin-bottom: 10px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                        <option value="">Please select a reason</option>
+                        <option value="Not interested">I am not interested in GrütteCloud anymore</option>
+                        <option value="Emails annoying">The emails are annoying</option>
+                        <option value="Bad features">I don't like the current features</option>
+                        <option value="Bad support">The support is bad</option>
+                        <option value="Bad design">The design is bad</option>
+                        <option value="Bad performance">The performance is bad</option>
+                        <option value="Doesnt like Jan">I don't like Jan :(</option>
+                        <option value="Other">Something else</option>
+                    </select>
+                    <textarea name="message" resizable="false;" maxlength="500" placeholder="Your message (optional)" autocomplete="off" class="login-input" style="resize: none; width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);"></textarea>
+                    <input type="submit" value="Delete account forever" class="delete-account-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                </form>
+            </div>
+
+            <!--<div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
+                <h1>Change username</h1>
+                <form action="/change_username" method="POST" id="delete_account">
+                    <input type="text" id="new_username" name="new_username" placeholder="New username" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                    <div class="spaced-tile"></div>
+                    <input type="submit" value="Change password" class="settings-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                </form>
+            </div>
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
                 <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 30px;">
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                         <h1>Change password</h1>
                         <form action="/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-                            <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input">
+                            <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
                             <div class="spaced-tile"></div>
-                            <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input">
-                            <input type="submit" value="Change password" class="settings-button" style="min-width: 100%;">
+                            <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                            <input type="submit" value="Change password" class="settings-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
                         </form>
                     </div>
                     <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                         <h1>Change email</h1>
                         <form action="/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-                            <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input">
+                            <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
                             <div class="spaced-tile"></div>
-                            <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input">
-                            <input type="submit" value="Change email" class="settings-button" style="min-width: 100%;">
+                            <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                            <input type="submit" value="Change email" class="settings-button" style="min-width: 100%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
                         </form>
                     </div>
                 </div>
@@ -190,133 +334,24 @@
                     <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="settings-input">
+                                <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
                                 <div class="spaced-tile"></div>
-                                <input type="text" id="password" name="password" placeholder="Your password" autocomplete="off" required class="settings-input">
+                                <input type="text" id="password" name="password" placeholder="Your password" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
                             </div>
                         </div>
                         <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <input type="text" id="email" name="email" placeholder="Your email" autocomplete="off" required class="settings-input">
+                                <input type="text" id="email" name="email" placeholder="Your email" autocomplete="off" required class="settings-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
                                 <div class="spaced-tile"></div>
-                                <input type="submit" value="Delete my account" class="delete-account-button" style="margin-top: 0px; min-width: 100%;">
+                                <input type="submit" value="Delete account" class="delete-account-button" style="min-width: 100%; margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
+            </div>-->
         </div>
     </div>
-    <div class="mobile-only">
-        <div class="wrapping-tile" style="padding: 20px;">
-            <h1 style="margin-bottom: 0px; font-size: 1.2em;">MyAI personality</h1>
-            <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="width: 100%;">
-                {% if selected_personality != 'Default' %}
-                <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
-                {% endif %}
-                <option value="/change_ai_personality/Default">Default</option>
-                {% if selected_personality != 'UwuGirl'%}
-                    <option value="/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
-                {% endif %}
-                {% if selected_personality != 'LeeKnow'%}
-                    <option value="/change_ai_personality/LeeKnow">Lee Know</option>
-                {% endif %}
-                {% if selected_personality != 'Pirate'%}
-                    <option value="/change_ai_personality/Pirate">Pirate</option>
-                {% endif %}
-                {% if selected_personality != 'Pistachio'%}
-                    <option value="/change_ai_personality/Pistachio">Pistachio the dinosaur</option>
-                {% endif %}
-                {% if selected_personality != 'Backus'%}
-                    <option value="/change_ai_personality/Backus">Backus (BNF inventor)</option>
-                {% endif %}
-                {% if selected_personality != 'Lorde'%}
-                    <option value="/change_ai_personality/Lorde">Lorde</option>
-                {% endif %}
-            </select>
-            {% if display_back_to_ai %}
-                <a href="/ai/chat" style="text-decoration: none;">
-                    <div class="ai-personality-button" style="margin-top: 20px; background-color: var(--purple); color: var(--white-color); border: none;">
-                        Back to MyAI
-                    </div>
-                </a>
-            {% endif %} 
-        </div>
-        <div class="spaced-tile"></div>
-        <div class="wrapping-tile" style="padding: 20px;">
-            <h1 style="font-size: 1.2em;">Two-Factor Authentication</h1>
-            {% if is_two_fa_enabled %}
-                <div style="display: flex; flex-direction: column; align-items: center;">
-                    <span class="desktop-only">
-                        <p style="color: var(--green);">You have 2FA enabled.</p><br><p style="text-align: center;">Please scan this code with your authenticator app. If you want to disable it, click the button below. You can also generate a new code.</p>
-                    </span>
-                    <div class="mobile-only" style="display: flex; flex-direction: column; align-items: center;">
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <div style="display: flex; flex-direction: column; align-items: center; width: 200px; height: 200px; border-radius: 10px; margin-bottom: 20px;" class="qr-code"></div>
-                        </div>
-                        <p style="color: var(--green); text-align: center;">You have 2FA enabled.</p><p style="text-align: center;">Please scan this code with your authenticator app.</p>
-                    </div>
-                    <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">
-                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                            <a href="/2fa/refresh" style="text-decoration: none; color: var(--white-color); align-content: center;"><button style="align-content: center; margin: 0; width: 100%;" class="settings-button">Refresh code</button></a>
-                        </div>
-                        <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                            <a href="/2fa/disable" style="text-decoration: none; color: var(--white-color); align-content: center; "><button style="align-content: center; margin: 0; width: 100%;" class="delete-account-button">Disable 2FA</button></a>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 0.7em;">
-                    <p style="color: var(--red);">WARNING: You have 2FA disabled!</p>
-                    <p>2FA adds an extra layer of security to your GrütteID.</p>
-                    <p>When you log in, you'll be asked for a special one-time password from an app like Google Authenticator.</p>
-                    <a href="/2fa/enable" style="text-decoration: none; color: var(--white-color);"><button style="margin-left: 0;" class="settings-button">Enable Two-Factor Authentication</button></a>
-                </div>
-            {% endif %}
-        </div>
-        <div class="spaced-tile"></div>
-        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
-            <h1 style="font-size: 1.2em;">Change password</h1>
-            <form action="/change_password" method="POST" id="change_password" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-                <input type="text" id="old_password" name="old_password" placeholder="Old password" autocomplete="off" required class="settings-input">
-                <div class="spaced-tile"></div>
-                <input type="text" id="new_password" name="new_password" placeholder="New password" autocomplete="off" required class="settings-input">
-                <input type="submit" value="Change password" class="settings-button" style="min-width: 100%;">
-            </form>
-        </div>
-        <div class="spaced-tile"></div>
-        <div class="wrapping-tile" style="text-align: center; padding: 20px;">
-            <h1 style="font-size: 1.2em;">Change email</h1>
-            <form action="/change_email" method="POST" id="change_email" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-                <input type="text" id="new_email" name="new_email" placeholder="New email" autocomplete="off" required class="settings-input">
-                <div class="spaced-tile"></div>
-                <input type="text" id="password" name="password" placeholder="Password" autocomplete="off" required class="settings-input">
-                <input type="submit" value="Change email" class="settings-button" style="min-width: 100%;">
-            </form>
-        </div>
-        <div class="spaced-tile"></div>
-        <div class="wrapping-tile" style="text-align: center;">
-            <h1 style="font-size: 1.2em;">Delete GrütteID</h1>
-            <form action="/delete_account" method="POST" id="delete_account">
-                <div style="flex-direction: row; display: flex; width: 100%; margin-bottom: 10px; margin-top: 0px;">
-                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <input type="text" id="username" name="username" placeholder="Your username" autocomplete="off" required class="settings-input">
-                            <div class="spaced-tile"></div>
-                            <input type="text" id="password" name="password" placeholder="Your password" autocomplete="off" required class="settings-input">
-                        </div>
-                    </div>
-                    <div style="width: 50%; text-align: center; margin-left: 10px; margin-right: 10px; align-content: center;">
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <input type="text" id="email" name="email" placeholder="Your email" autocomplete="off" required class="settings-input">
-                            <div class="spaced-tile"></div>
-                            <input type="submit" value="Delete" class="delete-account-button" style="margin-top: 0px; min-width: 100%;">
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+
     <div id="cookie-banner"></div>
 
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
@@ -408,5 +443,73 @@
             width: 200,
             height: 200,
         });
+    });
+</script>
+
+<script>
+    var changeUsername = document.getElementById('changeUsername');
+    var changeEmail = document.getElementById('changeEmail');
+    var changePassword = document.getElementById('changePassword');
+    var deleteAccount = document.getElementById('deleteAccount');
+
+
+    function toggleChangeUsername() {
+        if (changeUsername.style.display == 'block') {
+            changeUsername.style.display = 'none';
+        } else {
+            changeUsername.style.display = 'block';
+        }
+        changeEmail.style.display = 'none';
+        changePassword.style.display = 'none';
+        deleteAccount.style.display = 'none';
+    }
+
+    function toggleChangeEmail() {
+        if (changeEmail.style.display == 'block') {
+            changeEmail.style.display = 'none';
+        } else {
+            changeEmail.style.display = 'block';
+        }
+        changeUsername.style.display = 'none';
+        changePassword.style.display = 'none';
+        deleteAccount.style.display = 'none';
+    }
+
+    function toggleChangePassword() {
+        if (changePassword.style.display == 'block') {
+            changePassword.style.display = 'none';
+        } else {
+            changePassword.style.display = 'block';
+        }
+        changeUsername.style.display = 'none';
+        changeEmail.style.display = 'none';
+        deleteAccount.style.display = 'none';
+    }
+
+    function toggleDeleteAccount() {
+        if (deleteAccount.style.display == 'block') {
+            deleteAccount.style.display = 'none';
+        } else {
+            deleteAccount.style.display = 'block';
+        }
+        changeUsername.style.display = 'none';
+        changeEmail.style.display = 'none';
+        changePassword.style.display = 'none';
+    }
+
+    function toggleEditPfp() {
+        var editView = document.getElementById('editView');
+        var line = document.getElementById('line');
+        if (editView.style.display == 'flex') {
+            editView.style.display = 'none';
+            line.style.display = 'none';
+        } else {
+            editView.style.display = 'flex';
+            line.style.display = 'block';
+        }
+    }
+
+    profilePictureInput.addEventListener('change', function() {
+        document.getElementById('uploadForm').submit();
     });
 </script>

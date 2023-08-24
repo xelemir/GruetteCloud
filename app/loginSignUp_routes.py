@@ -109,7 +109,7 @@ def signup():
             return redirect("/?error=forbidden_characters")
         elif len(username) >= 40:
             return redirect("/?error=username_less_40")
-        elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete'] if blocked_phrase in username] != []:
+        elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete', 'administrator', 'moderator', 'mod'] if blocked_phrase in username] != []:
             return redirect("/?error=forbidden_words")
         elif len(password) > 40 or len(password) < 8:
             return redirect("/?error=password_between_8_40")

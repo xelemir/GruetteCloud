@@ -88,7 +88,14 @@ def settings(error=None):
         error = "You already have GrütteCloud PLUS!"
     elif error == "payment_creation_failed":
         error = "Payment creation failed. Please try again."
-        
+    elif error == "username_less_40":
+        error = "Your username must be less than 40 characters."
+    elif error == "forbidden_words":
+        error = "Your username contains forbidden words."
+    elif error == "username_already_exists":
+        error = "This username is already taken."
+    elif error == "username_changed":
+        error = "Your username has been changed."
     
     username = str(session["username"])
     verified = False
@@ -123,14 +130,10 @@ def settings(error=None):
         
     return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now)
 
-@utilities_route.route("/change_password", methods=["GET", "POST"])
+@utilities_route.route("/change_password", methods=["POST"])
 def change_password():
     if "username" not in session:
         return redirect(f"/")
-    if request.method == "GET":
-        return redirect(f"/settings")
-    
-    username = str(session["username"])
 
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
@@ -154,12 +157,10 @@ def change_password():
 
     return redirect(url_for("Utilities.settings", error="password_changed"))
 
-@utilities_route.route("/change_email", methods=["GET", "POST"])
+@utilities_route.route("/change_email", methods=["POST"])
 def change_email():
     if "username" not in session:
         return redirect(f"/")
-    if request.method == "GET":
-        return redirect(f"/settings")
     
     username = str(session["username"])
     sql = SQLHelper.SQLHelper()
@@ -181,6 +182,39 @@ def change_email():
             sql.writeSQL(f"UPDATE gruttechat_users SET email = '{str(new_email)}' WHERE username = '{str(session['username'])}'")
 
         return redirect(url_for("Utilities.settings", error="email_changed"))
+    
+@utilities_route.route("/change_username", methods=["POST"])
+def change_username():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    eh = EncryptionHelper.EncryptionHelper()
+    new_username = str(request.form["new_username"])
+    password_form = str(request.form["password"])
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    all_users = sql.readSQL(f"SELECT username FROM gruttechat_users")
+    all_users_list = [x["username"].lower() for x in all_users]
+    
+    
+    if user == []:
+        return redirect(url_for("Utilities.settings", error="error"))
+    else:
+        if len(new_username) > 40:
+            return redirect(url_for("Utilities.settings", error="username_less_40"))
+        elif new_username.lower() in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete', 'administrator', 'moderator', 'mod']:
+            return redirect(url_for("Utilities.settings", error="forbidden_words"))
+        elif new_username.lower() in all_users_list:
+            return redirect(url_for("Utilities.settings", error="username_already_exists"))
+        
+        password = eh.decrypt_message(str(user[0]["password"]))
+        if password_form != password:
+            return redirect(url_for("Utilities.settings", error="not_matching_password"))
+        else:
+            sql.writeSQL(f"UPDATE gruttechat_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
+            session["username"] = new_username
+        return redirect(url_for("Utilities.settings", error="username_changed"))
+
     
 @utilities_route.route("/change_ai_personality/<ai_personality>", methods=["GET"])
 def change_ai_personality(ai_personality):
