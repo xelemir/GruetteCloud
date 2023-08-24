@@ -141,7 +141,7 @@ def signup():
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):
     if "username" in session or username is None:
-        return redirect(f'/')
+        return redirect('/')
     
     error = None
     username = str(username).lower()
