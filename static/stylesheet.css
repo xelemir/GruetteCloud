@@ -284,7 +284,6 @@ input[type="text"] {
     padding: 10px 20px;
     background-color: var(--primary-color);
     color: var(--white-color);
-    border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-top:20px;
