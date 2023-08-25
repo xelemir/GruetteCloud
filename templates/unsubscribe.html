@@ -80,7 +80,7 @@
             <h1 style="margin-bottom: 40px;">We're sad to see you go :/</h1>
             <p>Please tell us why you want to unsubscribe.</p>
             <form action="/unsubscribe?username={{ username }}&email={{ email }}&token={{ token }}&confirmed=true" method="POST" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <select name="reason" class="login-input" style="width: 100%; margin-bottom: 10px; border-radius: 30px;" required>
+                <select name="reason" class="login-input" style="-webkit-appearance: none; width: 100%; margin-bottom: 10px; border-radius: 30px;" required>
                     <option value="">Please select a reason</option>
                     <option value="Not interested">I am not interested in GrütteCloud anymore</option>
                     <option value="Emails annoying">The emails are annoying</option>
@@ -95,7 +95,7 @@
             <h1 style="margin-bottom: 40px;">We're sad to see you go :/</h1>
             <form action="/unsubscribe" method="POST" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <input type="text" name="email" placeholder="Your email" class="login-input" autocomplete="off" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                <select name="reason" class="login-input" style="width: 100%; margin-bottom: 10px; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
+                <select name="reason" class="login-input" style="-webkit-appearance: none; width: 100%; margin-bottom: 10px; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
                     <option value="">Please select a reason</option>
                     <option value="Not interested">I am not interested in GrütteCloud anymore</option>
                     <option value="Emails annoying">The emails are annoying</option>
