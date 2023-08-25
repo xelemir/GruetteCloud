@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
-    <img width=200px src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud logo">
+    <img width=600px src="https://www.gruettecloud.com/static/renders/dark/mobileAndDesktop.png" alt="GrütteCloud logo">
   </a>
 </p>
 <br>
@@ -35,9 +35,11 @@ You can learn more about GrütteCloud's services at [www.gruettecloud.com/discov
 
 ## 🚀 ToDo <a name = "todo"></a>
 
-- Use Flasks' socketio to update the chat in real time, instead of manually polling the server every 5 seconds
-- Switch to TailwindCSS for more maintainable CSS code
-- Host Google material icons locally, as the current implementation is not GDPR compliant
+- Use Flasks' socketio to update the chat in real time, instead of manually polling the server every 5 seconds.
+- Add a "forgot password" feature to GrütteID.
+- Introduce folders in GrütteStorage.
+- Remove difficult to maintain CSS from html tags and update stylesheet with better classes.
+- Host Google material icons locally.
 
 ## ✍️ Authors <a name = "authors"></a>
 
@@ -45,18 +47,22 @@ You can learn more about GrütteCloud's services at [www.gruettecloud.com/discov
 
 ## 🎉 Screenshots <a name = "screenshots"></a>
 <p align="center">
-<img width=80% src="static/marketing/ad.png" alt="GrütteChat ad"><br>
-An ad for GrütteChat.<br><br>
+  <img width=800px src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud" style="padding:30px;">
+  <hr>
 </p>
-<br>
 <p align="center">
-  <img width=200px src="https://www.gruettecloud.com/static/renders/light/chat1.png" alt="GrütteChat" style="padding:30px;">
+  <img width=200px src="https://www.gruettecloud.com/static/renders/light/chat4.png" alt="GrütteChat" style="padding:30px;">
   <img width=200px src="https://www.gruettecloud.com/static/renders/light/ai1.png" alt="GrütteChat" style="padding:30px;">
   <img width=200px src="https://www.gruettecloud.com/static/renders/light/id1.png" alt="GrütteID" style="padding:30px;">
-  <br> Chat view, MyAi with pirate personality, GrütteID settings (from left to right)<br><br>
+  <br><br>Chat view, MyAi with pirate personality, GrütteID settings (from left to right)</b><br><br>
+  <hr>
 </p>
 <p align="center">
-  <img width=40% src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage" style="padding:30px;">
-  <img width=30% src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteStorage" style="padding:30px;">
-  <br> GrütteStorage<br><br>
+  <img width=800px src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage" style="padding:30px;">
+  <br><b>GrütteStorage</b><br><br>
+  <hr>
+</p>
+<p align="center">
+  <img width=400px src="https://www.gruettecloud.com/static/renders/light/chat3.png" alt="GrütteChat" style="padding:30px;">
+  <br><b>GrütteChat</b><br><br>
 </p>
