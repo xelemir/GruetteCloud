@@ -112,6 +112,7 @@ def settings(error=None):
     else:
         selected_personality = user[0]["ai_personality"]
         has_premium = bool(user[0]["has_premium"])
+        created_at = user[0]["created_at"].strftime("%d.%m.%Y")
         
     if bool(user[0]["is_2fa_enabled"]) == True and user[0]["2fa_secret_key"] != '0':
         
@@ -121,14 +122,14 @@ def settings(error=None):
         totp_now = totp.now()
         provisioning_uri = totp.provisioning_uri(f" {username}", issuer_name="GrütteCloud")
         
-        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now)
+        return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now, admin=user[0]["is_admin"])
  
     else:
         is_two_fa_enabled = False
         qr_image_base64 = None
         totp_now = None
         
-    return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now)
+    return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now, admin=user[0]["is_admin"])
 
 @utilities_route.route("/change_password", methods=["POST"])
 def change_password():
@@ -212,6 +213,9 @@ def change_username():
             return redirect(url_for("Utilities.settings", error="not_matching_password"))
         else:
             sql.writeSQL(f"UPDATE gruttechat_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
+            sql.writeSQL(f"UPDATE gruttechat_messages SET username_send = '{str(new_username)}' WHERE username_send = '{str(session['username'])}'")
+            sql.writeSQL(f"UPDATE gruttechat_messages SET username_receive = '{str(new_username)}' WHERE username_receive = '{str(session['username'])}'")
+            sql.writeSQL(f"UPDATE gruttestorage_links SET owner = '{str(new_username)}' WHERE owner = '{str(session['username'])}'")
             session["username"] = new_username
         return redirect(url_for("Utilities.settings", error="username_changed"))
 
