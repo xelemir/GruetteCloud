@@ -14,6 +14,7 @@
         .dynamic-container {
           display: flex;
           flex-wrap: wrap;
+          gap: 20px;
         }
       
         .box {
@@ -48,14 +49,9 @@
         }
 
         @media (min-width: 1200px) {
-            .box.left {
-                padding-right: 10px;
-                width: 50%;
-            }
 
-            .box.right {
-                padding-left: 10px;
-                width: 50%;
+            .box {
+                width: 49%;
             }
 
             .showdesktop {
@@ -71,10 +67,8 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            {% if is_admin %}
-                <span id="dashboard" style="display: inline;"><a href="/dashboard" class="white-button-blue-on-hover" title="Dashboard"><span class="material-symbols-outlined">code</span></a></span>
-            {% endif %}
+            <a href="/dashboard" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
             <a href="/storage" class="logo" title="Home">
@@ -119,9 +113,9 @@
         </div>
     </div>
 
-    <div class="dynamic-container">
+    <div id="dynamic-container" class="dynamic-container" style="display: flex;">
         <div class="box left">
-            <form action="/create_render" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; justify-content: center; height: 100%; margin-bottom: 40px;">
+            <form action="/create_render" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
                 <div class="wrapping-tile upload" style="padding: 15px; border-radius: 30px;">
                     <label for="file-input" class="drop-area" onclick="selectFile()" style="display: flex; border-radius: 20px;" id="drop-area">
                         <div style="display: flex; align-items: center; justify-content: center;">
@@ -131,27 +125,64 @@
                     </label>
                     <input id="file-input" type="file" name="file" style="display: none;" required onchange="updateTitle(this.files[0].name)">
                 </div>
-                <select name="device" class="login-input" style="-webkit-appearance: none; width: 100%; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
-                    <option value="">Please select the appropriate device</option>
-                    <option value="iPhone14ProSilver">iPhone 14 Pro Silver</option>
-                    <option value="iPhone14ProDeepPurple">iPhone 14 Pro Deep Purple</option>
-                    <option value="MacBookPro14Silver">MacBook Pro 14" Silver</option>
-                    <option value="iPadAirSpaceGrayPortrait">iPad Air Space Gray Portrait</option>
-                    <option value="iPadAirSpaceGrayLandscape">iPad Air Space Gray Landscape</option>
-                    <option value="iMac24Silver">iMac 24" Silver</option>
-                </select>
-                <button type="submit" class="button-blue" style="margin-top: 20px; border-radius: 30px; border: 2px solid var(--box-shadow-color);">Create Render</button>
+                <div class="wrapping-tile" style="padding: 20px; border-radius: 30px; margin-top: 20px;">
+                    <h1>Create Render</h1>
+                    <select name="device" class="login-input" style="-webkit-appearance: none; width: 100%; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
+                        <option value="">Please select the appropriate device</option>
+                        <option value="iPhone14ProSilver">iPhone 14 Pro Silver</option>
+                        <option value="iPhone14ProDeepPurple">iPhone 14 Pro Deep Purple</option>
+                        <option value="MacBookPro14Silver">MacBook Pro 14" Silver</option>
+                        <option value="iPadAirSpaceGrayPortrait">iPad Air Space Gray Portrait</option>
+                        <option value="iPadAirSpaceGrayLandscape">iPad Air Space Gray Landscape</option>
+                        <option value="iMac24Silver">iMac 24" Silver</option>
+                    </select>
+                    <button type="submit" class="button-blue " style="border-radius: 30px; margin-top: 20px;"><span class="material-symbols-outlined align-icons-center">upload</span>&nbsp;&nbsp;Create Render</button>
+                </div>
+                <div class="wrapping-tile" style="padding: 20px; border-radius: 30px; margin-top: 20px;">
+                    <h1>Show All Renders</h1>
+                    <button type="button" class="button-blue " style="border-radius: 30px;" onclick="show()"><span class="material-symbols-outlined align-icons-center">devices</span>&nbsp;&nbsp;Show All Renders</button>
+                </div>
             </form>
         </div>
 
         <div class="box right">
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px;">
                 <h2 align="center" style="margin-bottom: 10px;">Last Render</h2>
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-                    <img src="/static/renders/render.png" style="max-height: 50vh; width: auto; border-radius: 20px;">
+                    <img src="https://www.gruettecloud.com/static/renders/render.png" style="max-height: 40vh; width: auto; border-radius: 20px;">
                 </div>
-                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-                    <a href="/open/GruetteCloudRenderResult.png/chat" class="button-blue" style="border-radius: 30px; border: 2px solid var(--box-shadow-color);">Download Render</a>
+                <!--<h2 align="center" style="margin-bottom: 10px;">Replace Render</h2>
+                <select name="device" class="login-input" style="-webkit-appearance: none; width: 100%; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
+                    <option value="">Select render to replace</option>
+                    {% for render in renders_in_use_light %}
+                        <option value="{{ render }}">{{ render }}</option>
+                    {% endfor %}
+                </select>
+                <div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
+                    <div onclick="hide()" class="send-button" style="width: 50px; height: 50px; border-radius: 30px; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
+                        <span class="material-symbols-outlined">close</span>
+                    </div>
+                    <div onclick="hide()" class="send-button" style="width: 50px; height: 50px; border-radius: 30px; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--green);">
+                        <span class="material-symbols-outlined">check</span>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+
+
+    <div id="all-renders" style="display: none;">
+        <h1>All Renders</h1>
+        <div onclick="hide()" class="send-button" style="margin-top: -50px; width: 40px; height: 40px; position: absolute; right: 30px; border-radius: 20px; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
+            <span class="material-symbols-outlined">close</span>
+        </div>
+        <div class="dynamic-container">
+            {% for render in renders_in_use_light %}
+                <div class="box wrapping-tile">
+                    <img src="https://www.gruettecloud.com/static/renders/light/{{ render }}" style="max-width: 20vw; max-height: 20vh; margin-top: 20px;"><br>
+                    {{ render }}
                 </div>
+            {% endfor %}
         </div>
     </div>
        
@@ -218,7 +249,18 @@
     function updateTitle(filename) {
         document.getElementById('upload-title').innerHTML = filename;
     }
-
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+<script>
+    function hide() {
+        document.getElementById('all-renders').style.display = 'none';
+        document.getElementById('dynamic-container').style.display = 'flex';
+    }
+
+    function show() {
+        document.getElementById('all-renders').style.display = 'block';
+        document.getElementById('dynamic-container').style.display = 'none';
+    }
+</script>

@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 
 
 from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, TemplateHelper
-from config import templates_path, admin_users, gruetteStorage_path
+from config import templates_path, render_path, gruetteStorage_path
 
     
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
@@ -19,11 +19,14 @@ def createRender():
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
     
+    renders_in_use_light = os.listdir(os.path.join(render_path, "light"))
+    renders_in_use_dark = os.listdir(os.path.join(render_path, "dark"))
+    
     if not bool(user["is_admin"]):
         return redirect("/")
     
     elif request.method == "GET":
-        return render_template("createRender.html", menu=th.user(session), render_created=False)
+        return render_template("createRender.html", menu=th.user(session), render_created=False, renders_in_use_light=renders_in_use_light, renders_in_use_dark=renders_in_use_dark)
     
     else:
         device_selection = request.form['device']
@@ -69,6 +72,6 @@ def createRender():
         result_image.paste(device, (0, 0), device)
 
         # Save the final result
-        result_image.save("/home/jan/wwwroot/htdocs-gruettecloud/static/renders/render.png")
+        result_image.save(os.path.join(render_path, "render.png"))
         
-        return render_template("createRender.html", menu=th.user(session), render_created=True)
+        return render_template("createRender.html", menu=th.user(session), render_created=True, renders_in_use_light=renders_in_use_light, renders_in_use_dark=renders_in_use_dark)
