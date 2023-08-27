@@ -31,8 +31,8 @@ def createRender():
         
         screenshot_image.save(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "screenshot.png"))
         
-        device = Image.open(f"{gruetteStorage_path}/GruetteCloudRenders/{device_selection}.png")
-        screenshot = Image.open(f"{gruetteStorage_path}/GruetteCloudRenders/screenshot.png")
+        device = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", f"{device_selection}.png"))
+        screenshot = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "screenshot.png"))
 
         if "Mac" not in device_selection:
             rad = 100
@@ -69,6 +69,6 @@ def createRender():
         result_image.paste(device, (0, 0), device)
 
         # Save the final result
-        result_image.save(f"{gruetteStorage_path}/GruetteCloud/RenderResult.png")
+        result_image.save("/home/jan/wwwroot/htdocs-gruettecloud/static/renders/render.png")
         
         return render_template("createRender.html", menu=th.user(session), render_created=True)
