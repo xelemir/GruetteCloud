@@ -136,11 +136,16 @@
                         <option value="iPadAirSpaceGrayLandscape">iPad Air Space Gray Landscape</option>
                         <option value="iMac24Silver">iMac 24" Silver</option>
                     </select>
-                    <button type="submit" class="button-blue " style="border-radius: 30px; margin-top: 20px;"><span class="material-symbols-outlined align-icons-center">upload</span>&nbsp;&nbsp;Create Render</button>
+                    <select name="theme" class="login-input" style="-webkit-appearance: none; width: 100%; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
+                        <option value="false">Light theme</option>
+                        <option value="true">Dark theme</option>
+                        
+                    </select>
+                    <button type="submit" class="button-blue " style="padding-left: 20px; padding-right: 20px; border-radius: 30px; margin-top: 20px;"><span class="material-symbols-outlined align-icons-center">upload</span>&nbsp;&nbsp;Create Render</button>
                 </div>
                 <div class="wrapping-tile" style="padding: 20px; border-radius: 30px; margin-top: 20px;">
                     <h1>Show All Renders</h1>
-                    <button type="button" class="button-blue " style="border-radius: 30px;" onclick="show()"><span class="material-symbols-outlined align-icons-center">devices</span>&nbsp;&nbsp;Show All Renders</button>
+                    <button type="button" class="button-blue " style="padding-left: 20px; padding-right: 20px;  border-radius: 30px;" onclick="show()"><span class="material-symbols-outlined align-icons-center">devices</span>&nbsp;&nbsp;Show All Renders</button>
                 </div>
             </form>
         </div>
