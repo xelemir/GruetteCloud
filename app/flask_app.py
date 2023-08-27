@@ -12,6 +12,7 @@ from chat_routes import chat_route
 from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
 from dashboard_routes import dashboard_route
+from tool_routes import tool_route
 
 
 app = Flask("GrütteCloud")
@@ -23,6 +24,7 @@ app.register_blueprint(chat_route)
 app.register_blueprint(premium_route)
 app.register_blueprint(gruetteStorage_route)
 app.register_blueprint(dashboard_route)
+app.register_blueprint(tool_route)
 socketio = SocketIO(app)
 
 eh = EncryptionHelper.EncryptionHelper()

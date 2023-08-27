@@ -57,13 +57,8 @@
     window.onload = function() {
         var chatMessages = document.querySelector('.chat-messages');
         var input = document.querySelector('input[name="message"]');
-        const userAgent = navigator.userAgent;
         chatMessages.scrollTop = chatMessages.scrollHeight;
         input.focus();
-        if (userAgent.includes('iPhone')) {
-            var body = document.body;
-            body.style.maxHeight = '85vh';
-        }
     };
 
     // Dark mode toggle functionality

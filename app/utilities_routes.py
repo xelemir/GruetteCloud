@@ -203,7 +203,7 @@ def change_username():
     else:
         if len(new_username) > 40:
             return redirect(url_for("Utilities.settings", error="username_less_40"))
-        elif new_username.lower() in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete', 'administrator', 'moderator', 'mod']:
+        elif new_username.lower() in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete', 'administrator', 'moderator', 'mod', 'gruettecloudrenders', 'gruettecloud', 'grüttecloud', 'gruettechat', 'grüttechat']:
             return redirect(url_for("Utilities.settings", error="forbidden_words"))
         elif new_username.lower() in all_users_list:
             return redirect(url_for("Utilities.settings", error="username_already_exists"))
