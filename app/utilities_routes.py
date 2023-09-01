@@ -1,6 +1,7 @@
 import os
 import datetime
 import platform
+import secrets
 import pyotp
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -446,3 +447,92 @@ def unsubscribe():
         sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{username}'")
         mail.send_support_mail("Unsubscribed", username, email, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}")
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe_confirmed")
+    
+@utilities_route.route("/reset_password", methods=["GET", "POST"])
+def reset_password():
+    if request.method == "GET":
+        if request.args.get("token") == None:
+            return render_template("reset_password.html", menu=th.user(session), action="default")
+        else:
+            sql = SQLHelper.SQLHelper()
+            token = str(request.args.get("token"))
+            
+            token_db = sql.readSQL(f"SELECT * FROM reset_password WHERE token = '{token}'")
+            if token_db == []:
+                return redirect("/reset_password")
+            
+            # check if token is less than 15 minutes old
+            token_time = token_db[0]["created_at"]
+            time_now = datetime.datetime.now()
+            time_difference = time_now - token_time
+            if time_difference.seconds > 900:
+                return redirect("/reset_password")
+            
+            # Check if token has already been used
+            if bool(token_db[0]["is_used"]):
+                return redirect("/reset_password")
+            
+            return render_template("reset_password.html", menu=th.user(session), action="create_new", token=token)
+        
+    else:
+        if request.args.get("token") == None:
+            email = str(request.form["email"])
+            username = str(request.form["username"]).lower()
+            mail = MailHelper.MailHelper()
+            sql = SQLHelper.SQLHelper()
+            
+            user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}' AND email = '{email}'")
+            if user == []:
+                return render_template("reset_password.html", menu=th.user(session), action="email_sent")
+            
+            else:
+                generate_token = secrets.token_hex(15)
+                
+                sql.writeSQL(f"INSERT INTO reset_password (username, token) VALUES ('{username}', '{generate_token}')")
+                
+                text = f"""
+                    You have requested to reset your password.<br>
+                    You can do so by clicking on the following link:<br>
+                    <h2 style="color: #0A84FF;">
+                        <a style="color: #0A84FF; text-decoration: none;" href="https://www.gruettecloud.com/reset_password?token={generate_token}">Reset password</a>
+                    </h2>
+                    or by pasting the following link into your browser:<br>
+                    https://www.gruettecloud.com/reset_password?token={generate_token}<br>
+                    this link will expire in 24 hours.<br><br>
+                """
+                
+                mail.send_email(email, username, "Reset your password", text)
+                
+            return render_template("reset_password.html", menu=th.user(session), action="email_sent", email=email)
+        
+        else:
+            token = str(request.args.get("token"))
+            password = str(request.form["password"])
+            password_confirm = str(request.form["password_confirm"])
+            
+            if password != password_confirm:
+                return redirect(f"/reset_password?token={token}")
+            
+            sql = SQLHelper.SQLHelper()
+            token_db = sql.readSQL(f"SELECT * FROM reset_password WHERE token = '{token}'")
+            if token_db == []:
+                return redirect("/reset_password")
+            
+            # check if token is less than 15 minutes old
+            token_time = token_db[0]["created_at"]
+            time_now = datetime.datetime.now()
+            time_difference = time_now - token_time
+            if time_difference.seconds > 900:
+                return redirect("/reset_password")
+            
+            # Check if token has already been used
+            if bool(token_db[0]["is_used"]):
+                return redirect("/reset_password")
+            
+            username = token_db[0]["username"]
+            print("updating")
+            sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(password, method='pbkdf2')}' WHERE username = '{username}'")
+            sql.writeSQL(f"UPDATE reset_password SET is_used = {True} WHERE token = '{token}'")
+            
+            return render_template("reset_password.html", menu=th.user(session), action="password_reset")
+            

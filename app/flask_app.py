@@ -211,7 +211,7 @@ def generate_hashed_room_name(username1, username2):
     # Hash the concatenated string
     hashed = hashlib.sha256(concatenated.encode()).hexdigest()
     return hashed
-# END OF NEW SOCKETIO CHAT
+    # END OF NEW SOCKETIO CHAT
 
 
 if __name__ == '__main__':
