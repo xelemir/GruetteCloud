@@ -8,11 +8,55 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .tiblock {
+            align-items: center;
+            display: flex;
+            height: 1.4em;
+        }
+
+        .ticontainer .tidot {
+            background-color: var(--text-color);
+        }
+        
+        .tidot {
+            -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
+            border-radius: 2px;
+            display: inline-block;
+            height: 4px;
+            margin-right: 2px;
+            width: 4px;
+        }
+        
+        @-webkit-keyframes mercuryTypingAnimation{
+        0%{
+          -webkit-transform:translateY(0px)
+        }
+        28%{
+          -webkit-transform:translateY(-5px)
+        }
+        44%{
+          -webkit-transform:translateY(0px)
+        }
+        }
+        
+        .tidot:nth-child(1){
+        -webkit-animation-delay:200ms;
+        }
+        .tidot:nth-child(2){
+        -webkit-animation-delay:300ms;
+        }
+        .tidot:nth-child(3){
+        -webkit-animation-delay:400ms;
+        }
+    </style>
+
 </head>
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="/ai/back" class="white-button-blue-on-hover" title="Back to home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/chat" class="white-button-blue-on-hover" title="Back to home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content" style="display: flex; align-items: center;">
@@ -40,10 +84,11 @@
             {% endif %}
         {% endfor %}
     </div>
+    
 
     <div style="position: sticky; bottom: 0px; margin: 0; width: 100% ">
-        <form action="/ai/chat" method="POST" id="sendMessage" style="display: flex; gap: 10px;" enctype="multipart/form-data">
-            <input class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
+        <form action="/ai/chat" method="POST" id="sendMessageForm" style="display: flex; gap: 10px;" enctype="multipart/form-data">
+            <input class="message-input" type="text" name="message" id="messageInput" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
             <button id="submitButton" name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">send</span>
             </button>
@@ -92,8 +137,87 @@
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
 
 <script>
-    function disableSubmitButton() {
-      document.getElementById("submitButton").disabled = true;
-      return true; // This allows the form to be submitted after disabling the button
-    }
+    $(document).ready(function() {
+        var sendMessageForm = $("#sendMessageForm");
+        var chatMessages = $(".chat-messages");
+        var messageInput = $("#messageInput");
+        var submitButton = $("#submitButton");
+        var loadingAnimation = $("#loadingAnimation");
+    
+        function appendMessage(message) {
+            var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
+            chatMessages.prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+        }
+    
+        function sendMessage(message) {
+            // Add the user's message to the top of the chat instantly
+            if (message !== "#!# Requesting Welcome Message #!#") {
+                appendMessage({ role: "user", content: message });
+            }
+    
+            $.ajax({
+                type: "POST",
+                url: "/ai/chat",
+                data: { message: message },
+                dataType: "json",
+                success: function(response) {
+                    // Clear all old messages
+                    chatMessages.empty();
+    
+                    // Append all new AI responses to the chat
+                    for (var i = 0; i < response.chat_history.length; i++) {
+                        appendMessage(response.chat_history[i]);
+                    }
+    
+                    // Enable input and button
+                    messageInput.prop("disabled", false);
+                    submitButton.prop("disabled", false);
+    
+                    // Scroll to the bottom of the chat
+                    chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
+    
+                    // Hide the loading animation
+                    loadingAnimation.hide();
+                },
+                error: function(error) {
+                    console.error(error);
+                    // Handle error here if needed
+                }
+            });
+        }
+    
+        sendMessageForm.on("submit", function(e) {
+            e.preventDefault(); // Prevent form submission
+    
+            var message = messageInput.val(); // Get the message text
+    
+            // Disable input and button
+            messageInput.prop("disabled", true);
+            submitButton.prop("disabled", true);
+            loadingAnimation.show();
+
+            // Send the message
+            sendMessage(message);
+
+            // Send typing indicator
+            appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
+    
+            // Clear the input
+            messageInput.val("");
+        });
+    
+        // Function to check if chat is empty and request welcome message if needed
+        function checkAndRequestWelcomeMessage() {
+            if (chatMessages.children().length === 0) {
+                sendMessage("#!# Requesting Welcome Message #!#");
+                // Send typing indicator
+                appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
+            }
+        }
+    
+        // Call the checkAndRequestWelcomeMessage function when the page loads
+        checkAndRequestWelcomeMessage();
+    });
+    
+        
 </script>

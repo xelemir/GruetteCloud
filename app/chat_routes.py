@@ -127,69 +127,76 @@ def chat_with(recipient):
     # Render the template
     return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"])
 
+from flask import render_template, request, redirect, session, jsonify
+
 @chat_route.route("/ai/<method>", methods=["POST", "GET"])
-def send(method):
+def ai_chat(method):
     """ AI Chat route
 
-    Args:
-        method (str): The method to be executed
-
     Returns:
-        str: The rendered template or a redirect
+        str: The rendered template or a JSON response
     """
-    
+
+    # Ensure the user is authenticated
     if "username" not in session:
-        return redirect(f"/")
-
-    ai = OpenAIWrapper.OpenAIWrapper()
-    sql = SQLHelper.SQLHelper()
+        return redirect("/")
     
-    # Get chat history from session
-    chat_history = session.get("chat_history", [])
-
-    # Check if the method is back, clear chat history and redirect to home
-    if method == "back":
-        session.pop("chat_history", None)
-        return redirect(f"/chat")
+    if method == "restart":
+        session["chat_history"] = []
+        return redirect("/ai/chat")
     
-    # Check if the method is restart, clear chat history and redirect to AI chat
-    elif method == "restart":
-        session.pop("chat_history", None)
-        return redirect(f"/ai/chat")
+    elif method == "back":
+        session["chat_history"] = []
+        return redirect("/chat")
 
-    # Check if new message is sent, then append it to chat history, get AI response, and refresh page
-    elif "send" in request.form or chat_history == []:
-        if chat_history == []:
-            chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
-        else:
-            chat_history.append({"role": "user", "content": request.form["message"]})
-        
-        # Get user selected AI personality from database
-        user = sql.readSQL(f"SELECT ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
-        if user == []:
-            selected_ai_personality = "Default"
-            has_premium = False
-        else:
-            selected_ai_personality = user[0]["ai_personality"]
-            has_premium = bool(user[0]["has_premium"])
+    elif method == "chat":
+        # Get AI instance and SQL helper
+        ai = OpenAIWrapper.OpenAIWrapper()
+        sql = SQLHelper.SQLHelper()
 
-        # Get AI response (response is appended to chat history internally)
-        try:
-            chat_history = ai.get_openai_response(chat_history, username=session["username"], ai_personality=selected_ai_personality, has_premium=has_premium)
+        # Get or initialize the chat history from the session
+        chat_history = session.get("chat_history", [])
 
-        # If there is an error, append error message to chat history
-        except Exception as e:
-            logging.error(e)
-            chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
+        if request.method == "POST":
+            message = request.form.get("message")
             
-        # Save chat history to session and refresh page
-        session.pop("chat_history", None)
-        session["chat_history"] = chat_history
-        
-        return redirect(f"/ai/chat")
+            if message == "#!# Requesting Welcome Message #!#":
+                chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
+            else:
+                # Append the user's message to chat history
+                chat_history.append({"role": "user", "content": message})
     
-    # Reverse chat history to show most recent messages first and render template
-    return render_template("aichat.html", chat_history=chat_history[::-1])
+
+            # Retrieve user's selected AI personality and premium status
+            user = sql.readSQL(f"SELECT ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
+
+            if not user:
+                selected_ai_personality = "Default"
+                has_premium = False
+            else:
+                selected_ai_personality = user[0]["ai_personality"]
+                has_premium = bool(user[0]["has_premium"])
+
+            try:
+
+                # Get AI response and append it to chat history
+                chat_history = ai.get_openai_response(chat_history, username=session["username"], ai_personality=selected_ai_personality, has_premium=has_premium)
+
+            except Exception as e:
+                logging.error(e)
+                chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
+
+            # Save chat history to session
+            session["chat_history"] = chat_history
+
+            # Prepare the chat response as JSON
+            chat_response = [{"role": message["role"], "content": message["content"]} for message in chat_history]
+
+            return jsonify({"chat_history": chat_response})
+
+        # Reverse chat history to show most recent messages first and render template
+        return render_template("aichat.html", chat_history=chat_history[::-1])
+
 
 @chat_route.route("/account")
 def account():
