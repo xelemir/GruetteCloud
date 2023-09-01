@@ -1,13 +1,13 @@
 from flask import render_template, request, redirect, session, Blueprint, Flask, url_for
 import random
 import pyotp
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, TemplateHelper
+from pythonHelper import SQLHelper, MailHelper, TemplateHelper
 from config import templates_path
     
 loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=templates_path)
 
-eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
 
 @loginSignUp_route.route('/login', methods=['POST', 'GET'])
@@ -30,10 +30,8 @@ def login():
     
     # If user exists, check if password is correct
     if user != []:
-        decrypted_password = eh.decrypt_message(user[0]["password"])
-        
         # If username and password are correct
-        if user[0]["username"].lower() == username and decrypted_password == password:
+        if user[0]["username"].lower() == username and check_password_hash(user[0]["password"], password):
             
             # Check if the user has verified their account
             if bool(user[0]["is_email_verified"]) == False:
@@ -123,11 +121,11 @@ def signup():
         
         # Else create new user
         else:
-            encrypted_password = str(eh.encrypt_message(str(password)))        
+            hashed_password = generate_password_hash(password, method="pbkdf2")
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture) VALUES ('{username}', '{encrypted_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}')" )
+            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}')" )
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)

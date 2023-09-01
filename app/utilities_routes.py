@@ -3,8 +3,9 @@ import datetime
 import platform
 import pyotp
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from pythonHelper import SQLHelper, EncryptionHelper, MailHelper, TemplateHelper
+from pythonHelper import SQLHelper, MailHelper, TemplateHelper
 from config import templates_path, admin_users, gruetteStorage_path
 
     
@@ -137,7 +138,6 @@ def change_password():
         return redirect(f"/")
 
     sql = SQLHelper.SQLHelper()
-    eh = EncryptionHelper.EncryptionHelper()
     new_password = str(request.form["new_password"])
     old_password = str(request.form["old_password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
@@ -149,12 +149,10 @@ def change_password():
     if len(new_password) > 40 or len(new_password) < 8:
         return redirect(url_for("Utilities.settings", error="password_length_error"))
     
-    password = eh.decrypt_message(str(user[0]["password"]))
-    if password != old_password:
+    if not check_password_hash(user[0]["password"], old_password):
         return redirect(url_for("Utilities.settings", error="not_matching_password"))
     else:
-        encrypt_new_password = eh.encrypt_message(str(new_password))
-        sql.writeSQL(f"UPDATE gruttechat_users SET password = '{str(encrypt_new_password)}' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(new_password, method='pbkdf2')}' WHERE username = '{str(session['username'])}'")
 
     return redirect(url_for("Utilities.settings", error="password_changed"))
 
@@ -165,7 +163,6 @@ def change_email():
     
     username = str(session["username"])
     sql = SQLHelper.SQLHelper()
-    eh = EncryptionHelper.EncryptionHelper()
     new_email = str(request.form["new_email"])
     password_form = str(request.form["password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
@@ -176,8 +173,7 @@ def change_email():
         if "@" not in new_email or "." not in new_email:
             return redirect(url_for("Utilities.settings", error="email_not_valid"))
 
-        password = eh.decrypt_message(str(user[0]["password"]))
-        if password_form != password:
+        if not check_password_hash(user[0]["password"], password_form):
             return redirect(url_for("Utilities.settings", error="not_matching_password"))
         else:
             sql.writeSQL(f"UPDATE gruttechat_users SET email = '{str(new_email)}' WHERE username = '{str(session['username'])}'")
@@ -190,7 +186,6 @@ def change_username():
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    eh = EncryptionHelper.EncryptionHelper()
     new_username = str(request.form["new_username"])
     password_form = str(request.form["password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
@@ -208,8 +203,7 @@ def change_username():
         elif new_username.lower() in all_users_list:
             return redirect(url_for("Utilities.settings", error="username_already_exists"))
         
-        password = eh.decrypt_message(str(user[0]["password"]))
-        if password_form != password:
+        if not check_password_hash(user[0]["password"], password_form):
             return redirect(url_for("Utilities.settings", error="not_matching_password"))
         else:
             sql.writeSQL(f"UPDATE gruttechat_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
@@ -266,7 +260,6 @@ def delete_account():
         return redirect(f"/settings")
     
     sql = SQLHelper.SQLHelper()
-    eh = EncryptionHelper.EncryptionHelper()
     username_session = str(session["username"])
     username_form = str(request.form["username"])
     password_form = str(request.form["password"])
@@ -277,19 +270,18 @@ def delete_account():
         return redirect(url_for("Utilities.settings", error="error"))
     
     username_db = user[0]["username"]
-    password_db = eh.decrypt_message(str(user[0]["password"]))
     email_db = user[0]["email"]
-    
-    if username_db == username_form and password_db == password_form and email_db == email_form:
-        sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
-        session.pop('username', None)
-        return redirect(f'/')
-    elif username_db != username_form:
+            
+    if username_db != username_form:
         return redirect(url_for("Utilities.settings", error="not_matching_username"))
-    elif password_db != password_form:
+    elif not check_password_hash(user[0]["password"], password_form):
         return redirect(url_for("Utilities.settings", error="not_matching_password"))
     elif email_db != email_form:
         return redirect(url_for("Utilities.settings", error="not_matching_email"))
+    else:
+        sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
+        session.pop('username', None)
+        return redirect(f'/')
 
 @utilities_route.route("/help", methods=["GET"])
 def help():

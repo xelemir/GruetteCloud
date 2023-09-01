@@ -5,7 +5,8 @@ from cryptography.fernet import Fernet
 
 class EncryptionHelper:
     def __init__(self):
-        self.key = self.get_key()
+        #self.key = self.get_key()
+        self.key = "Cj9NLQh9-00f7DFVRnjVWBPZSoRqI5dHfRLQEegjdL0="
 
     def create_new_key(self):
         key = Fernet.generate_key()
