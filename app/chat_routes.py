@@ -3,10 +3,9 @@ import random
 from flask import render_template, request, redirect, session, jsonify, Blueprint, url_for
 import logging
 from werkzeug.utils import secure_filename
-from PIL import Image
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper, TemplateHelper
-from config import templates_path, pfp_path, gruetteStorage_path
+from config import templates_path, gruetteStorage_path
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -16,7 +15,7 @@ th = TemplateHelper.TemplateHelper()
 
 @chat_route.route("/get_messages", methods=["GET"])
 def get_messages():
-    """ Route to load messages into the chat
+    """ Route to load messages into the chat if there are new messages on the server
 
     Returns:
         str: The messages list as JSON
@@ -59,7 +58,7 @@ def chat_with(recipient):
         recipient (str): the username of the recipient
 
     Returns:
-        str: The rendered template or a redirect
+        HTML: Rendered HTML page
     """
 
     if "username" not in session:
@@ -129,27 +128,23 @@ def chat_with(recipient):
 
 from flask import render_template, request, redirect, session, jsonify
 
-@chat_route.route("/ai/<method>", methods=["POST", "GET"])
-def ai_chat(method):
-    """ AI Chat route
+@chat_route.route("/ai/<action>", methods=["POST", "GET"])
+def ai_chat(action):
+    """ Route to chat with the AI
 
     Returns:
-        str: The rendered template or a JSON response
+        HTML: Rendered HTML page
     """
 
     # Ensure the user is authenticated
     if "username" not in session:
         return redirect("/")
     
-    if method == "restart":
+    if action == "restart":
         session["chat_history"] = []
         return redirect("/ai/chat")
-    
-    elif method == "back":
-        session["chat_history"] = []
-        return redirect("/chat")
 
-    elif method == "chat":
+    elif action == "chat":
         # Get AI instance and SQL helper
         ai = OpenAIWrapper.OpenAIWrapper()
         sql = SQLHelper.SQLHelper()
@@ -196,15 +191,37 @@ def ai_chat(method):
 
         # Reverse chat history to show most recent messages first and render template
         return render_template("aichat.html", chat_history=chat_history[::-1])
-
-
-@chat_route.route("/account")
-def account():
-    return redirect("/settings")
     
+@chat_route.route('/chat/delete/<recipient>')
+def delete_chat(recipient):
+    """ Delete chat route
+
+    Args:
+        recipient (str): The chat to delete
+
+    Returns:
+        str: Redirect to home page
+    """    
+    if 'username' not in session:
+        return redirect(f'/')
+
+    username = str(session['username'])
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}'")
+    return redirect(f'/chat')
+
 
 @chat_route.route("/profile/<username>")
 def profile(username):
+    """ Route to view a user's profile
+
+    Args:
+        username (str): The username of the user
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+    
     if "username" not in session:
         return redirect(f"/")
     
@@ -220,74 +237,3 @@ def profile(username):
 
     joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
     return render_template("profile.html", menu=th.user(session), username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit)
-
-
-@chat_route.route("/change_pfp", methods=["POST"])
-def change_pfp():
-    if "username" not in session:
-        return redirect("/")
-    
-    sql = SQLHelper.SQLHelper()
-    username = str(session["username"])
-
-    if "profilePicture" not in request.files:
-        return redirect(f"/profile/{username}")
-    
-    file = request.files["profilePicture"]
-    filename = file.filename
-    file_extension = filename.split(".")[-1]
-    
-    id_not_found = False
-    while not id_not_found:
-        potential_id = str(random.randint(10000000, 99999999))
-        if not os.path.exists(os.path.join(pfp_path, f"{potential_id}.png")):
-            filename = potential_id
-            sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{filename}' WHERE username = '{str(session['username'])}'")
-            id_not_found = True
-            
-    file.save(os.path.join(pfp_path, f"{filename}.{file_extension}"))
-    
-    try:
-        # Open the input image
-        with Image.open(os.path.join(pfp_path, f"{filename}.{file_extension}")) as img:
-            # Determine the cropping region
-            aspect_ratio = img.width / img.height
-            if aspect_ratio > 1:
-                # Landscape or square image, crop the center
-                crop_start = (img.width - img.height) // 2
-                img = img.crop((crop_start, 0, crop_start + img.height, img.height))
-            elif aspect_ratio < 1:
-                # Portrait image, crop top and bottom
-                crop_start = (img.height - img.width) // 2
-                img = img.crop((0, crop_start, img.width, crop_start + img.width))
-
-            # Resize the cropped image to the target size
-            img = img.resize((540, 540), Image.ANTIALIAS)
-
-            # Ensure the output image is in JPG format
-            if img.mode != 'RGB':
-                img = img.convert('RGB')
-
-            # Save the converted image
-            img.save(os.path.join(pfp_path, f"{filename}.png"), "png")
-            # Remove the original image
-            if file_extension != "png":
-                img.close()
-                os.remove(os.path.join(pfp_path, f"{filename}.{file_extension}"))
-            
-    except Exception as e:
-        logging.error(e)
-        return redirect(f"/settings")
-                
-    return redirect(f"/settings")
-
-@chat_route.route("/remove_pfp")
-def remove_pfp():
-    if "username" not in session:
-        return redirect("/")
-    
-    sql = SQLHelper.SQLHelper()
-    username = str(session["username"])
-    
-    sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}' WHERE username = '{str(session['username'])}'")
-    return redirect(f"/settings")

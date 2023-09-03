@@ -66,14 +66,14 @@ def premium():
 
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return redirect(url_for("Utilities.settings", error="error"))
+        return redirect(url_for("Settings.settings", error="error"))
     
     # If good to go, check if user has premium
     else:
 
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return redirect(url_for("Utilities.settings", error="already_premium"))
+            return redirect(url_for("Settings.settings", error="already_premium"))
         
         # If user does not have premium, render premium ad page
         else:
@@ -95,14 +95,14 @@ def payment():
     
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return redirect(url_for("Utilities.settings", error="error"))
+        return redirect(url_for("Settings.settings", error="error"))
     
     # If everything looks good, check if user has premium
     else:
         
         # If user has premium, redirect to settings page
         if bool(user[0]["has_premium"]) == True:
-            return redirect(url_for("Utilities.settings", error="already_premium"))
+            return redirect(url_for("Settings.settings", error="already_premium"))
         
         # Else, create payment and redirect user to PayPal
         else:
@@ -117,7 +117,7 @@ def payment():
             
             # Payment creation failed
             else:
-                return redirect(url_for("Utilities.settings", error="payment_creation_failed"))
+                return redirect(url_for("Settings.settings", error="payment_creation_failed"))
 
 @premium_route.route('/success')
 def success():
@@ -135,11 +135,11 @@ def success():
    
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
-        return redirect(url_for("Utilities.settings", error="error"))
+        return redirect(url_for("Settings.settings", error="error"))
     
     # If good to go, check if user has premium
     if bool(user[0]["has_premium"]) == True:
-        return redirect(url_for("Utilities.settings", error="already_premium"))
+        return redirect(url_for("Settings.settings", error="already_premium"))
     
     try:
 
@@ -151,15 +151,15 @@ def success():
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
             sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            return redirect(url_for("Utilities.settings", error="payment_success"))
+            return redirect(url_for("Settings.settings", error="payment_success"))
         
         # Else if payment failed, return error
         else:
-            return redirect(url_for("Utilities.settings", error="payment_failed"))
+            return redirect(url_for("Settings.settings", error="payment_failed"))
         
     # Something went wrong
     except:
-        return redirect(url_for("Utilities.settings", error="error"))
+        return redirect(url_for("Settings.settings", error="error"))
     
 @premium_route.route('/cancel')
 def cancel():
@@ -172,4 +172,4 @@ def cancel():
         return redirect(f"/")
 
     # Payment cancelled error
-    return redirect(url_for("Utilities.settings", error="payment_cancelled"))
+    return redirect(url_for("Settings.settings", error="payment_cancelled"))

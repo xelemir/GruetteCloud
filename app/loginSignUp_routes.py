@@ -12,9 +12,17 @@ th = TemplateHelper.TemplateHelper()
 
 @loginSignUp_route.route('/login', methods=['POST', 'GET'])
 def login():
+    """ Post route to login. If 2fa is enabled, redirect to 2fa page and set session variable username_2fa instead of username
+        as username is used to entirly log the user in.
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "signup" in request.form:
         return redirect(f'/signup')
     elif request.method == "GET":
+        # Deprecated, simply used as people might have the old url saved
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -58,6 +66,12 @@ def login():
     
 @loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
 def two_fa():
+    """ Route to render the 2fa page if 2fa is enabled
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" in session or "username_2fa" not in session:
         return redirect(f'/')
     if request.method == "GET":
@@ -85,6 +99,12 @@ def two_fa():
 
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """ Post route to signup and create a new user.
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+    
     if 'username' in session:
         return redirect(f'/')
     
@@ -133,11 +153,20 @@ def signup():
             # Redirect to verification page
             return redirect(f"/verify/{username}")
 
-    # If Method is GET, render the signup page
+    # If Method is GET, render the signup page, deprecated, simply used as people might have the old url saved TODO remove
     return redirect("/")
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):
+    """ Route to verify the user's email. If the user is already verified, redirect to home page.
+
+    Args:
+        username (str): The username of the user to verify
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" in session or username is None:
         return redirect('/')
     
@@ -179,6 +208,16 @@ def verify(username):
 
 @loginSignUp_route.route('/verify/<username>/<code>')
 def verify_code(username, code):
+    """ Route to auto verify the user's email via the token in the url.
+        TODO: Merge this route with the verify route and use request.args.get('code') instead of code as an argument
+
+    Args:
+        username (str): The username of the user to verify
+        code (str): The verification code
+
+    Returns:
+        HTML: Rendered HTML page
+    """    
     if "username" in session or username is None:
         return redirect(f'/')
     

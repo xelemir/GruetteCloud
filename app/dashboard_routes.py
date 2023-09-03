@@ -1,12 +1,11 @@
-import subprocess
 from flask import render_template, request, redirect, session, Blueprint, send_file, jsonify
-
+from PIL import Image, ImageDraw, ImageOps
 import os
 import re
 import pyotp
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, IconHelper, TemplateHelper
-from config import templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip
+from config import templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, render_path
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
@@ -18,6 +17,14 @@ th = TemplateHelper.TemplateHelper()
 
 # Helper function to convert file size to human-readable format
 def get_formatted_file_size(size):
+    """ Gets the formatted file size in KB, MB, GB or TB of a given file size in bytes.
+
+    Args:
+        size (int): The file size in bytes.
+
+    Returns:
+        str: The formatted file size in KB, MB, GB or TB.
+    """    
     # 1 kilobyte (KB) = 1024 bytes
     # 1 megabyte (MB) = 1024 kilobytes
     # 1 gigabyte (GB) = 1024 megabytes
@@ -35,6 +42,12 @@ def get_formatted_file_size(size):
 
 @dashboard_route.route('/dashboard', methods=['POST', 'GET'])
 def dashboard():
+    """ Route to render the admins' dashboard page
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if 'username' not in session:
         return redirect(f'/')
     elif session['username'] not in admin_users:
@@ -88,6 +101,12 @@ def dashboard():
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
 def create_status_message():
+    """ Post route to create a new status message, which will be displayed on the app
+
+    Returns:
+        HTML: Redirect to the dashboard page
+    """
+
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'/')
     
@@ -104,6 +123,12 @@ def create_status_message():
 
 @dashboard_route.route('/dashboard/deletestatusmessage')
 def delete_status_message():
+    """ Route to delete the current status message
+
+    Returns:
+        HTML: Redirect to the dashboard page
+    """
+
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'/')
 
@@ -115,6 +140,15 @@ def delete_status_message():
 
 @dashboard_route.route('/dashboard/deleteuser/<username>')
 def delete_user(username):
+    """ Route to delete a user from the database
+
+    Args:
+        username (str): The username of the user to delete
+
+    Returns:
+        HTML: Redirect to the dashboard page
+    """
+
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'/')
 
@@ -126,6 +160,15 @@ def delete_user(username):
 
 @dashboard_route.route('/dashboard/giftplus/<username>')
 def gift_plus(username):
+    """ Route to gift a user GrütteCloud PLUS instantly and for free
+
+    Args:
+        username (str): The username of the user to gift GrütteCloud PLUS to
+
+    Returns:
+       HTML: Redirect to the dashboard page
+    """
+
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'/')
 
@@ -137,6 +180,15 @@ def gift_plus(username):
 
 @dashboard_route.route('/dashboard/revokeplus/<username>')
 def revoke_plus(username):
+    """ Route to revoke a user's GrütteCloud PLUS subscription, even if they paid for it
+
+    Args:
+        username (str): The username of the user to revoke GrütteCloud PLUS from
+
+    Returns:
+        HTML: Redirect to the dashboard page
+    """
+
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'/')
 
@@ -148,6 +200,12 @@ def revoke_plus(username):
 
 @dashboard_route.route('/dashboard/sendemail', methods=['POST'])
 def send_mail():
+    """ Route to send an email to a specific or all users. Requires 2FA.
+
+    Returns:
+        HTML: Redirect to the dashboard page
+    """
+    
     if 'username' not in session or session['username'] not in admin_users:
         return redirect(f'/')
     
@@ -194,3 +252,87 @@ def send_mail():
                 email.send_email(user["email"], user["username"], subject, content, token=user["verification_code"])
                 
         return redirect(f'/dashboard?error=sent')
+    
+@dashboard_route.route("/create_render", methods=["GET", "POST"])
+def createRender():
+    if "username" not in session:
+        return redirect("/")
+
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    
+    renders_in_use_light = os.listdir(os.path.join(render_path, "light"))
+    renders_in_use_dark = os.listdir(os.path.join(render_path, "dark"))
+    
+    if not bool(user["is_admin"]):
+        return redirect("/")
+    
+    elif request.method == "GET":
+        return render_template("createRender.html", menu=th.user(session), render_created=False, renders_in_use_light=renders_in_use_light, renders_in_use_dark=renders_in_use_dark)
+    
+    else:
+        device_selection = request.form['device']
+        screenshot_image = request.files["file"]
+        darkMode = request.form['theme']
+        
+        screenshot_image.save(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "screenshot.png"))
+        
+        # Load the screenshot image
+        screenshot_image = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "screenshot.png"))
+
+        # Load the device frame
+        device = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", f"{device_selection}.png"))
+
+        # Load the navbar image
+        if darkMode == "true":
+            navbar_image = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "ChromeDark.png"))
+        else:
+            navbar_image = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "ChromeLight.png"))
+        
+        
+        # Check the dimensions of the images
+        width1, height1 = device.size
+        width2, height2 = screenshot_image.size
+
+        # Calculate the maximum dimensions
+        max_width = max(width1, width2)
+        max_height = max(height1, height2)
+        
+        rad = 100
+        # Create a circle mask for rounded corners
+        circle = Image.new('L', (rad * 2, rad * 2), 0)
+        draw = ImageDraw.Draw(circle)
+        draw.ellipse((0, 0, rad * 2 - 1, rad * 2 - 1), fill=255)
+        alpha = Image.new('L', screenshot_image.size, 255)
+
+        # Apply rounded corners to the screenshot image
+        alpha.paste(circle.crop((0, 0, rad, rad)), (0, 0))
+        alpha.paste(circle.crop((0, rad, rad, rad * 2)), (0, height2 - rad))
+        alpha.paste(circle.crop((rad, 0, rad * 2, rad)), (width2 - rad, 0))
+        alpha.paste(circle.crop((rad, rad, rad * 2, rad * 2)), (width2 - rad, height2 - rad))
+        screenshot_image.putalpha(alpha)
+
+        # Create a new image with a transparent background
+        result_image = Image.new('RGBA', (max_width, max_height), (0, 0, 0, 0))
+
+        # Calculate the position to center the screenshot
+        x_offset2 = (max_width - width2) // 2
+        y_offset2 = (max_height - height2) // 2
+
+        # Paste the screenshot onto the new image
+        result_image.paste(screenshot_image, (x_offset2, y_offset2))
+
+        # Check if the device is an iPhone (to add rounded corners)
+        if "iPhone" in device_selection:
+            
+            # Paste the navbar image on top of the screenshot (adjust position as needed)
+            result_image.paste(navbar_image, (x_offset2, y_offset2), navbar_image)
+
+        # Paste the device frame onto the new image
+        result_image.paste(device, (0, 0), device)
+
+        # Save the final result
+        result_image.save(os.path.join(render_path, "render.png"))
+
+        
+        return render_template("createRender.html", menu=th.user(session), render_created=True, renders_in_use_light=renders_in_use_light, renders_in_use_dark=renders_in_use_dark)

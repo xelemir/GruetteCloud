@@ -7,7 +7,7 @@ from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
 
 from loginSignUp_routes import loginSignUp_route
-from utilities_routes import utilities_route
+from settings_routes import settings_route
 from chat_routes import chat_route
 from premium_routes import premium_route
 from gruetteStorage_routes import gruetteStorage_route
@@ -17,9 +17,9 @@ from tool_routes import tool_route
 
 app = Flask("GrütteCloud")
 app.secret_key = secret_key
-app.permanent_session_lifetime = 1209600 # 2 weeks
+app.permanent_session_lifetime = 1209600*2 # 4 weeks
 app.register_blueprint(loginSignUp_route)
-app.register_blueprint(utilities_route)
+app.register_blueprint(settings_route)
 app.register_blueprint(chat_route)
 app.register_blueprint(premium_route)
 app.register_blueprint(gruetteStorage_route)
@@ -68,6 +68,14 @@ def home():
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
+    """ Route to render the chat home page
+
+    Args:
+        error (str, optional): Error message to display. Defaults to None.
+
+    Returns:
+        HTML: Rendered HTML page
+    """    
     if 'username' not in session:
         return redirect(f'/')
 
@@ -131,7 +139,6 @@ def chat(error=None):
     if active_chats == []:
         suggest_jan = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = 'jan'")
         suggest_random = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username != '{username}' AND username != 'jan' ORDER BY RAND() LIMIT 3")
-        #suggest_random = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username != '{username}' ORDER BY RAND() LIMIT 3")
         suggested = [{"username": suggest_jan[0]["username"], "pfp": f"{suggest_jan[0]['profile_picture']}.png", "is_verified": suggest_jan[0]["is_verified"]}]
         for suggest_user in suggest_random:
             suggested.append({"username": suggest_user["username"], "pfp": f"{suggest_user['profile_picture']}.png", "is_verified": suggest_user["is_verified"]})
@@ -211,6 +218,7 @@ def generate_hashed_room_name(username1, username2):
     # Hash the concatenated string
     hashed = hashlib.sha256(concatenated.encode()).hexdigest()
     return hashed
+
     # END OF NEW SOCKETIO CHAT
 
 

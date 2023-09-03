@@ -18,6 +18,12 @@ th = TemplateHelper.TemplateHelper()
 
 @gruetteStorage_route.route('/storage', methods=['POST', 'GET'])
 def storage():
+    """ Route to GrütteStorage home view
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" not in session:
         return redirect(f'/')
 
@@ -37,8 +43,16 @@ def storage():
     return render_template("storage.html", menu=th.user(session), username=username, files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, has_premium=bool(username_database[0]["has_premium"]), verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
 
 
-# Helper function to convert file size to human-readable format
 def get_formatted_file_size(size):
+    """ Get the formatted file size in bytes, kilobytes, megabytes, gigabytes or terabytes, based on input size in bytes
+
+    Args:
+        size (int): Size in bytes
+
+    Returns:
+        str: Formatted file size
+    """
+
     # 1 kilobyte (KB) = 1024 bytes
     # 1 megabyte (MB) = 1024 kilobytes
     # 1 gigabyte (GB) = 1024 megabytes
@@ -55,6 +69,15 @@ def get_formatted_file_size(size):
     return f"{size:.2f} {power_labels[n]}"
 
 def get_files(username):
+    """ Get all files of a user
+
+    Args:
+        username (str): Username of the user
+
+    Returns:
+        dict: Dictionary containing the file list, the formatted size and the size percentage
+    """
+
     sql = SQLHelper.SQLHelper()
     
     storage_dir = os.path.join(gruetteStorage_path, username)
@@ -86,6 +109,12 @@ def get_files(username):
     
 @gruetteStorage_route.route('/upload', methods=['POST'])
 def upload():
+    """ Post route to upload a file to GrütteStorage
+
+    Returns:
+        JSON: JSON object containing the filename, or an error message
+    """
+
     if "username" not in session:
         return redirect(f"/")
     
@@ -135,6 +164,16 @@ def upload():
 
 @gruetteStorage_route.route("/open/<file_link>/<preview>")
 def download(file_link, preview="Default"):
+    """ Route to download a file from GrütteStorage
+
+    Args:
+        file_link (str): Link ID of the file
+        preview (str, optional): Whether to preview the file or download. Defaults to "Default".
+
+    Returns:
+        File: File to download
+    """
+
     if "GruetteCloud" in file_link:
         # Links are like this: GruetteCloud12345
         actual_link = file_link[12:]
@@ -167,6 +206,15 @@ def download(file_link, preview="Default"):
 
 @gruetteStorage_route.route("/delete/<file_link>")
 def delete(file_link):
+    """ Route to delete a file from GrütteStorage
+
+    Args:
+        file_link (str): Link ID of the file
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" not in session:
         return redirect(f"/")
         
@@ -186,6 +234,15 @@ def delete(file_link):
 
 @gruetteStorage_route.route("/file/<file_link>")
 def file(file_link):
+    """ Route to render the file info page
+
+    Args:
+        file_link (str): Link ID of the file
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     sql = SQLHelper.SQLHelper()
     
     file = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE link_id = '{file_link}'")
@@ -198,7 +255,6 @@ def file(file_link):
             filesize = get_formatted_file_size(os.path.getsize(file_path))
             created_at = datetime.datetime.fromtimestamp(os.path.getctime(file_path)).strftime("%d.%m.%Y")
             icon_path = ih.get_icon(file_path)
-            code = "https://www.gruettecloud.com/s/" + str(file_link)
             user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{file[0]['owner']}'")
             is_author_verified = False
             if user != []:
@@ -212,16 +268,23 @@ def file(file_link):
         filesize = get_formatted_file_size(os.path.getsize(file_path))
         created_at = datetime.datetime.fromtimestamp(os.path.getctime(file_path)).strftime("%d.%m.%Y")
         icon_path = ih.get_icon(file_path)
-        code = "https://www.gruettecloud.com/s/" + str(file_link)
         user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{file[0]['owner']}'")
         is_author_verified = False
         if user != []:
             is_author_verified = bool(user[0]["is_verified"])
         return render_template("fileinfo.html", menu=th.user(session), username=file[0]["owner"], filename=file[0]["filename"], filesize=filesize, created_at=created_at, is_author=True, is_shared=bool(file[0]["is_shared"]), file_icon=icon_path, link_id=file_link, is_gruettecloud_user=True, is_author_verified=is_author_verified, is_youtube_video=bool(file[0]["is_youtube"]), youtube_link=file[0]["youtube_link"])
      
-
 @gruetteStorage_route.route("/share/<file_link>")
 def share(file_link):
+    """ Route to share a file
+
+    Args:
+        file_link (str): Link ID of the file
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" not in session:
         return redirect(f"/storage")
     
@@ -237,11 +300,18 @@ def share(file_link):
         return redirect(f"/file/{file_link}")
     else:
         return redirect(f"/storage")
-    
-
 
 @gruetteStorage_route.route("/stopsharing/<file_link>")
 def stopsharing(file_link):
+    """ Route to disable file sharing for a file
+
+    Args:
+        file_link (str): Link ID of the file
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" not in session:
         return redirect(f"/storage")
     
@@ -255,10 +325,18 @@ def stopsharing(file_link):
         return redirect(f"/file/{file_link}")
     else:
         return redirect(f"/storage")
-    
 
 @gruetteStorage_route.route("/s/<link_id>")
 def shared(link_id):
+    """ Route to view a shared file (short link)
+
+    Args:
+        link_id (str): Link ID of the file
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     sql = SQLHelper.SQLHelper()
     result = sql.readSQL(f"SELECT * FROM gruttestorage_links WHERE link_id ='{link_id}'")
     if result == []:
@@ -270,6 +348,13 @@ def shared(link_id):
 
 @gruetteStorage_route.route("/youtube", methods=["GET", "POST"])
 def download_from_youtube():
+    """ Route to download a YouTube video
+        TODO: This feature will be phased out in the future and may stop working at any time
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
     if "username" not in session:
         return redirect(f"/")
 
