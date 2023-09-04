@@ -1,5 +1,6 @@
 import datetime
 from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify, url_for
+import psutil
 from werkzeug.utils import secure_filename
 import os
 import shutil
@@ -58,15 +59,32 @@ def get_formatted_file_size(size):
     # 1 gigabyte (GB) = 1024 megabytes
     # 1 terabyte (TB) = 1024 gigabytes
 
-    power = 2 ** 10  # 1024
+    power_labels = ['B', 'KB', 'MB', 'GB', 'TB']
     n = 0
-    power_labels = {0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB'}
 
-    while size > power:
-        size /= power
+    while size >= 1024 and n < len(power_labels) - 1:
+        size /= 1024
         n += 1
 
     return f"{size:.2f} {power_labels[n]}"
+
+
+def get_total_file_size(directory):
+    total_size = 0
+
+    # Walk through the directory and its subdirectories
+    for root, _, files in os.walk(directory):
+        for file in files:
+            file_path = os.path.join(root, file)
+            try:
+                file_size = os.path.getsize(file_path)
+                total_size += file_size
+            except OSError:
+                # Handle permission issues, file not found, etc.
+                pass
+
+    return total_size
+
 
 def get_files(username, folder_dir=None):
     """ Get all files of a user
@@ -92,21 +110,51 @@ def get_files(username, folder_dir=None):
 
     files = os.listdir(storage_dir)
     
-    size_user = sum(os.path.getsize(os.path.join(storage_dir, file)) for file in files)
+    #size_user = psutil.disk_usage(storage_dir).used
+    size_user = get_total_file_size(storage_dir)
     
     #print(shutil.disk_usage(storage_dir).used)
 
     size_formatted = get_formatted_file_size(size_user)
-    size_percentage = (size_user / (5 * 1073741824)) * 100  # 5 GB
+    # of 5 GB
+    size_percentage = int((size_user / 5368709120) * 100)
     
     file_list = []
     for file in files:
-        # check if file is folder
-        
-        
-        file_list.append({"filename": file, "icon": ih.get_icon(os.path.join(storage_dir, file)), "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file))), "type": "private"})
+        # check if file is not a folder
+        if not os.path.isdir(os.path.join(storage_dir, file)):
+            file_list.append({"filename": file, "icon": ih.get_icon(os.path.join(storage_dir, file)), "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file))), "type": "file"})
+        else:
+            file_list.append({"filename": file, "icon": "https://www.gruettecloud.com/static/icons/folder_blue.svg", "size": get_formatted_file_size(get_total_file_size(os.path.join(storage_dir, file))), "type": "folder"})
         
     return {"file_list": file_list, "size_formatted": size_formatted, "size_percentage": size_percentage}
+
+@gruetteStorage_route.route("/movefile")
+def move_file():
+    if "username" not in session:
+        return redirect("/")
+
+    sql = SQLHelper.SQLHelper()
+    
+    username = str(session["username"]).lower()
+    file_path = request.args.get("file")
+    new_path = request.args.get("folder")
+    
+    
+    if file_path == None or file_path == "None":
+        return redirect("/storage")
+    
+    if new_path == "None":
+        new_path = ""
+        
+    if os.path.exists(os.path.join(gruetteStorage_path, username, file_path)) and os.path.exists(os.path.join(gruetteStorage_path, username, new_path)):
+        shutil.move(os.path.join(gruetteStorage_path, username, file_path), os.path.join(gruetteStorage_path, username, new_path))
+        if new_path != "":
+            return redirect(f"/file/{new_path}")
+        else:
+            return redirect("/storage")
+    else:
+        return redirect("/storage")
 
 
 @gruetteStorage_route.route("/file/<path:file_path>")

@@ -139,12 +139,22 @@
                 <span class="material-symbols-outlined">flag</span>
             </a>
         </div>
-        <img class="resize-logo" src="https://www.gruettecloud.com/static/icons/folder-azure-pipelines.svg" style="margin-bottom: 10px;">
+        <img class="resize-logo" src="https://www.gruettecloud.com/static/icons/folder_blue.svg" style="margin-bottom: 10px;" ondrop="drop(event, '{{ back }}')" ondragover="allowDrop(event)">
         <h2 class="text-offcutter" style="margin-bottom: 20px;">{{ folder }}</h2>
+        {% if not files %}
+            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
+            <div class="no-files">
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--red);">scan_delete</span>
+                    This folder is empty.
+                </div>
+            </div>
+        {% endif %}
+
         {% for file in files %}
             <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
             <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 3px; margin-bottom: 3px; padding-bottom: 5px; padding-top: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;">
-                <a href="/file/{{ folder }}/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center; text-decoration: none;">
+                <a href="/file/{{ folder }}/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center; text-decoration: none;" {% if file["type"] != "folder" %}draggable="true" ondragstart="drag(event)" data-file="{{ folder }}/{{ file["filename"] }}"{% else %}ondrop="drop(event, '{{ folder }}/{{ file["filename"] }}')" ondragover="allowDrop(event)"{% endif %}>
                     <img src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 0px; margin-right: 10px;">
                     <div style="max-width: 40vw;">
                         <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
@@ -156,7 +166,6 @@
                 <a class="desktop-only" href="/open/{{ folder }}/{{ file["filename"] }}?action=download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
                 <a class="desktop-only" href="/open/{{ folder }}/{{ file["filename"] }}?action=preview" title="Preview" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
                 <a href="/delete/{{ folder }}/{{ file["filename"] }}" title="Delete" style="cursor: pointer; background-color: transparent; border: none; width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></a>
-                <!--<a href="/delete/{{ file["link"] }}" title="Delete" style="width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">delete</span></a>-->
             </div>
         {% endfor %}
     </div>
@@ -249,6 +258,26 @@
 
       
 </script>
+
+<script>
+    function drag(event) {
+        const fileName = event.target.dataset.file;
+        event.dataTransfer.setData("text", fileName);
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drop(event, folder) {
+        event.preventDefault();
+        var fileName = event.dataTransfer.getData("text");
+        // Execute the Flask route with the file and folder information
+        window.location.href = `/movefile?file=${fileName}&folder=${folder}`;
+    }
+</script>
+
+
 
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>

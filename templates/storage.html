@@ -208,28 +208,15 @@
                 </div>
                 <div style="flex-grow: 1;">
                     <p align="center" style="margin-bottom: 20px;">Create a new folder</p>
-                    <img id="folder-image" src="https://www.gruettecloud.com/static/icons/folder-azure-pipelines.svg" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
+                    <img id="folder-image" src="https://www.gruettecloud.com/static/icons/folder_blue.svg" style="width: 80px; height: 80px; margin-bottom: 10px;">
                     <form action="/create_folder" method="POST" style="display: flex; flex-direction: column;">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%;">
                             <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Folder name" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                            <select id="color" name="color" class="login-input" style="-webkit-appearance: none; width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);">
-                                <option value="blue">Blue</option>
-                                <option value="red">Red</option>
-                                <option value="green">Green</option>
-                                <option value="yellow">Yellow</option>
-                                <option value="purple">Purple</option>
-                                <option value="orange">Orange</option>
-                                <option value="pink">Pink</option>
-                                <option value="brown">Brown</option>
-                                <option value="grey">Grey</option>
-                            </select>
+                            <button name="Create" class="button-blue" style="width: 100%; border-radius: 30px;">Create</button>
                             <!--<button name="Delete" class="button-blue" style="background-color: var(--red); width: 50%; border-radius: 30px;" onclick="">Delete</button>
                             <button name="Do not delete" class="button-blue" onclick="document.getElementById('confirmDelete').style.display = 'none';" style="width: 50%; border-radius: 30px;">Cancel</button>-->
                         </div>
-                        <button name="Create" class="button-blue" style="width: 100%; border-radius: 30px; margin-top: 20px;">
-                            <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;" title="Create new folder">create_new_folder</span>
-                            Create Folder
-                        </button>
+                        
                     </form>
                 </div>
             </div>
@@ -248,7 +235,7 @@
             </div>
 
             <div class="wrapping-tile" style="padding-top: 20px; border-radius: 30px;">
-                <!--<div onclick="toggleCreateNewFolder()" class="desktop-only" style="background-color: var(--background-color); z-index: 1;">
+                <div onclick="toggleCreateNewFolder()" class="desktop-only" style="background-color: var(--background-color); z-index: 1;">
                     <div style="width: 40px; height: 40px; position: absolute; right: 105px; margin-top: -5px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <span class="material-symbols-outlined" title="Create new folder">create_new_folder</span>
                     </div>
@@ -257,7 +244,7 @@
                     <div style="width: 40px; height: 40px; position: absolute; left: 55px; margin-top: -5px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <span class="material-symbols-outlined" title="Create new folder">create_new_folder</span>
                     </div>
-                </div>-->
+                </div>
                 <h2 align="center" style="margin-bottom: 10px;">Your Files</h2>
                 <div id="openSearchButton" style="background-color: var(--background-color); z-index: 1;">
                     <div style="width: 40px; height: 40px; position: absolute; right: 55px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
@@ -267,7 +254,7 @@
                 
                 <div class="file-list">
                     {% if not files %}
-                    <hr style="border: 1px solid var(--secondary-color); border-radius: 5px;">
+                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                         <div class="no-files">
                             <div style="display: flex; align-items: center; justify-content: center;">
                                 <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--red);">scan_delete</span>
@@ -278,8 +265,8 @@
 
                     {% for file in files %}
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
-                        <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 3px; margin-bottom: 3px; padding-bottom: 5px; padding-top: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;">
-                            <a href="/file/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;">
+                        <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 3px; margin-bottom: 3px; padding-bottom: 5px; padding-top: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;" >
+                            <a href="/file/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;" {% if file["type"] != "folder" %}draggable="true" ondragstart="drag(event)" data-file="{{ file["filename"] }}"{% else %}ondrop="drop(event, '{{ file["filename"] }}')" ondragover="allowDrop(event)"{% endif %}>
                                 <img src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 0px; margin-right: 10px;">
                                 <div>
                                     <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
@@ -288,13 +275,9 @@
                             <div class="desktop-only" style="margin-left: 20px; width: 110px; text-align: right; margin-right: 20px;">
                                 <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
                             </div>
-                            <a class="desktop-only" href="/open/{{ file["link"] }}/download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
-                            {% if file["type"] != "youtube" %}
-                                <a class="desktop-only" href="/open/{{ file["link"] }}/preview" title="Preview" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
-                            {% else %}
-                                <a class="desktop-only" href="{{ file["youtube_link"] }}" title="Watch on YouTube" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">youtube_activity</span></a>
-                            {% endif %}
-                                <button onclick="confirmDelete('{{ file["link"] }}', '{{ file["filename"] }}')" title="Delete" style="cursor: pointer; background-color: transparent; border: none; width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></button>
+                            <a class="desktop-only" href="/open/{{ file["filename"] }}?action=download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
+                            <a class="desktop-only" href="/open/{{ file["filename"] }}?action=preview" title="Preview" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
+                            <button onclick="confirmDelete('{{ file["filename"] }}', '{{ file["filename"] }}')" title="Delete" style="cursor: pointer; background-color: transparent; border: none; width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></button>
                             <!--<a href="/delete/{{ file["link"] }}" title="Delete" style="width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="{% if file["type"] == "shared" %}color: var(--green); {% endif %}display: flex; align-items: center; justify-content: center;">delete</span></a>-->
                         </div>
                     {% endfor %}
@@ -342,6 +325,23 @@
 </body>
 </html>
 
+<script>
+    function drag(event) {
+        const fileName = event.target.dataset.file;
+        event.dataTransfer.setData("text", fileName);
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drop(event, folder) {
+        event.preventDefault();
+        var fileName = event.dataTransfer.getData("text");
+        // Execute the Flask route with the file and folder information
+        window.location.href = `/movefile?file=${fileName}&folder=${folder}`;
+    }
+</script>
 
 <script>
     // Dark mode toggle functionality
@@ -565,32 +565,7 @@
             }, 500);
         }
     }
-
-    // Automatically update the image of create new folder based on selected color
-    const colorSelect = document.getElementById('color');
-    const folderImage = document.getElementById('folder-image');
-    colorSelect.addEventListener('change', function() {
-        const color = colorSelect.value;
-        if (color === 'blue') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-azure-pipelines.svg';
-        } else if (color === 'red') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-app.svg';
-        } else if (color === 'green') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-buildkite.svg';
-        } else if (color === 'yellow') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-aws.svg';
-        } else if (color === 'purple') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-apollo.svg';
-        } else if (color === 'orange') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-export.svg';
-        } else if (color === 'pink') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-animation.svg';
-        } else if (color === 'brown') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-archive.svg';
-        } else if (color === 'grey') {
-            folderImage.src = 'https://www.gruettecloud.com/static/icons/folder-admin.svg';
-        }
-    });
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
