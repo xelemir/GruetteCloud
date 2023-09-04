@@ -59,7 +59,7 @@ def index():
         elif error == "invalid_email": error = "Please enter a valid email address."
         elif error == "username_already_exists": error = "This username is already taken."
 
-        return render_template("discover.html", menu=th.user(session), error=error, traceback=request.args.get("traceback"), status_message=platform_message)
+        return render_template("discover.html", menu=th.user(session), error=error, traceback=request.args.get("traceback"), platform_message=platform_message)
     
 @app.errorhandler(404)
 def error404(error):
