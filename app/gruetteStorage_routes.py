@@ -389,3 +389,21 @@ def download_from_youtube():
         sql.writeSQL(f"INSERT INTO gruttestorage_links (filename, owner, link_id, is_shared, is_youtube, youtube_link) VALUES ('{video_id}.mp4', '{str(session['username'])}', '{code}', '0', '1', '{video_url}')")
 
         return jsonify({"filename": video_id})
+    
+@gruetteStorage_route.route("/create_folder", methods=["POST"])
+def create_folder():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+
+    folder_name = str(request.form["name"])
+    folder_color = str(request.form["color"])
+    
+    os.makedirs(os.path.join(gruetteStorage_path, str(session["username"]), folder_name))
+    
+    sql.writeSQL(f"INSERT INTO gruttestorage_folders (owner, folder_name, color) VALUES ('{str(session['username'])}', '{folder_name}', '{folder_color}')")
+    sql.writeSQL(f"INSERT INTO gruttestorage_links (filename, owner, link_id, is_shared, is_youtube, youtube_link) VALUES ('{folder_name}', '{str(session['username'])}', '{folder_name}', '0', '0', '0')")
+    
+    return redirect("/storage")
+    
