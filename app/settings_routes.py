@@ -219,7 +219,7 @@ def change_password():
     if not check_password_hash(user[0]["password"], old_password):
         return redirect(url_for("Settings.settings", error="not_matching_password"))
     else:
-        sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(new_password, method='pbkdf2')}' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(new_password)}' WHERE username = '{str(session['username'])}'")
 
     return redirect(url_for("Settings.settings", error="password_changed"))
 

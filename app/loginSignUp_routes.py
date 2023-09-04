@@ -141,7 +141,7 @@ def signup():
         
         # Else create new user
         else:
-            hashed_password = generate_password_hash(password, method="pbkdf2")
+            hashed_password = generate_password_hash(password)
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database

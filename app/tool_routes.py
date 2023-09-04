@@ -178,7 +178,7 @@ def reset_password():
                 return redirect("/reset_password")
             
             username = token_db[0]["username"]
-            sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(password, method='pbkdf2')}' WHERE username = '{username}'")
+            sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(password)}' WHERE username = '{username}'")
             sql.writeSQL(f"UPDATE reset_password SET is_used = {True} WHERE token = '{token}'")
             
             return render_template("reset_password.html", menu=th.user(session), action="password_reset")
