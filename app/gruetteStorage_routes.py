@@ -1,6 +1,5 @@
 import datetime
 from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify, url_for
-import psutil
 from werkzeug.utils import secure_filename
 import os
 import shutil
