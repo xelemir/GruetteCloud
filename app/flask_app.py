@@ -34,12 +34,11 @@ th = TemplateHelper.TemplateHelper()
 @app.route("/")
 def index():
     if "username" in session:
-        if request.args.get('target') is not None:
-            return redirect(f"/{request.args.get('target')}")
-        else:
-            return redirect("/chat")
-    elif request.args.get('target') is not None:
-        return redirect(url_for("LoginSignUp.login", target=request.args.get('target')))
+        sql = SQLHelper.SQLHelper()
+        default_app = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]["default_app"]
+        
+        return redirect(f"/{default_app}")
+    
     else:
         sql = SQLHelper.SQLHelper()
         platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")

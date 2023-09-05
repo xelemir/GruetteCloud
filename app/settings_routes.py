@@ -99,14 +99,14 @@ def settings(error=None):
         totp_now = totp.now()
         provisioning_uri = totp.provisioning_uri(f" {username}", issuer_name="GrütteCloud")
         
-        return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now, admin=user[0]["is_admin"])
+        return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now, admin=user[0]["is_admin"], default_app=user[0]["default_app"])
  
     else:
         is_two_fa_enabled = False
         qr_image_base64 = None
         totp_now = None
         
-    return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now, admin=user[0]["is_admin"])
+    return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now, admin=user[0]["is_admin"], default_app=user[0]["default_app"])
 
 @settings_route.route("/change_pfp", methods=["POST"])
 def change_pfp():
@@ -289,6 +289,17 @@ def change_username():
             sql.writeSQL(f"UPDATE gruttestorage_links SET owner = '{str(new_username)}' WHERE owner = '{str(session['username'])}'")
             session["username"] = new_username
         return redirect(url_for("Settings.settings", error="username_changed"))
+    
+@settings_route.route("/change_default_app/<app>", methods=["POST", "GET"])
+def change_default_app(app):
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    sql.writeSQL(f"UPDATE gruttechat_users SET default_app = '{str(app)}' WHERE username = '{str(session['username'])}'")
+    
+    return redirect("/settings")
 
     
 @settings_route.route("/change_ai_personality/<ai_personality>", methods=["GET"])
