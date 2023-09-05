@@ -230,6 +230,11 @@ def download(file_path):
         return send_file(os.path.join(gruetteStorage_path, "GruetteCloud",filename), as_attachment=False)
             
     if os.path.exists(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path)):
+        if os.path.isdir(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path)):
+            # zip folder
+            shutil.make_archive(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path), 'zip', os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path))
+            return send_file(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path + ".zip"), as_attachment=True)
+            
         action = request.args.get("action")
         if action == "download":
             return send_file(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path), as_attachment=True)
