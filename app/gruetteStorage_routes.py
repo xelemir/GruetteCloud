@@ -223,6 +223,11 @@ def download(file_path):
     
     if "username" not in session:
         return redirect("/")
+    
+    if "GruetteCloud" in file_path:
+        filename = file_path.split("/")[-2]
+        filename = filename.replace("GruetteCloud", "")
+        return send_file(os.path.join(gruetteStorage_path, filename), as_attachment=True)
             
     if os.path.exists(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path)):
         action = request.args.get("action")
