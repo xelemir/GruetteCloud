@@ -40,13 +40,6 @@ def index():
         return redirect(f"/{default_app}")
     
     else:
-        sql = SQLHelper.SQLHelper()
-        platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
-        if platform_message == []:
-            platform_message = None
-        else:
-            platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
-        
         error = request.args.get("error")
         if error == "username_or_password_empty": error = "Please enter your username and password."
         elif error == "invalid_credentials": error = "Invalid username or password."
@@ -58,7 +51,7 @@ def index():
         elif error == "invalid_email": error = "Please enter a valid email address."
         elif error == "username_already_exists": error = "This username is already taken."
 
-        return render_template("discover.html", menu=th.user(session), error=error, traceback=request.args.get("traceback"), platform_message=platform_message)
+        return render_template("discover.html", menu=th.user(session), error=error, traceback=request.args.get("traceback"))
     
 @app.errorhandler(404)
 def error404(error):
