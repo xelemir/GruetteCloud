@@ -160,10 +160,12 @@ def move_file():
         
     if os.path.exists(os.path.join(gruetteStorage_path, username, file_path)) and os.path.exists(os.path.join(gruetteStorage_path, username, new_path)):
         shutil.move(os.path.join(gruetteStorage_path, username, file_path), os.path.join(gruetteStorage_path, username, new_path))
-        if new_path != "":
-            return redirect(f"/file/{new_path}")
+        
+        old_folder = file_path.split("/")[:-1]
+        if old_folder == []:
+            return redirect(f"/storage")
         else:
-            return redirect("/storage")
+            return redirect(f"/file/{'/'.join(old_folder)}")
     else:
         return redirect("/storage")
 
