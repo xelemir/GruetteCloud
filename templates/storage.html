@@ -207,16 +207,20 @@
                     <span class="material-symbols-outlined" title="Close">close</span>
                 </div>
                 <div style="flex-grow: 1;">
-                    <p align="center" style="margin-bottom: 20px;">Create a new folder</p>
-                    <img id="folder-image" src="https://www.gruettecloud.com/static/icons/folder_blue.svg" style="width: 80px; height: 80px; margin-bottom: 10px;">
-                    <form action="/create_folder" method="POST" style="display: flex; flex-direction: column;">
+                    <p align="center" style="margin-bottom: 20px;">Create New Folder</p>
+                    <img id="folder-image" src="https://www.gruettecloud.com/static/icons/folder-blue.svg" style="width: 80px; height: 80px; margin-bottom: 10px;">
+                    <form action="/create_folder/home" method="POST" style="display: flex; flex-direction: column;">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%;">
                             <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Folder name" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                            <button name="Create" class="button-blue" style="width: 100%; border-radius: 30px;">Create</button>
-                            <!--<button name="Delete" class="button-blue" style="background-color: var(--red); width: 50%; border-radius: 30px;" onclick="">Delete</button>
-                            <button name="Do not delete" class="button-blue" onclick="document.getElementById('confirmDelete').style.display = 'none';" style="width: 50%; border-radius: 30px;">Cancel</button>-->
+                            <select id="color" name="color" class="login-input" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
+                                <option value="blue">Blue</option>
+                                <option value="red">Red</option>
+                                <option value="green">Green</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="purple">Purple</option>
+                            </select>
                         </div>
-                        
+                        <button name="Create" class="button-blue" style="width: 100%; border-radius: 30px; margin-top: 20px;">Create Folder</button>
                     </form>
                 </div>
             </div>
@@ -267,7 +271,7 @@
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                         <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 3px; margin-bottom: 3px; padding-bottom: 5px; padding-top: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;" >
                             <a href="/file/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;" {% if file["type"] != "folder" %}draggable="true" ondragstart="drag(event)" data-file="{{ file["filename"] }}"{% else %}ondrop="drop(event, '{{ file["filename"] }}')" ondragover="allowDrop(event)"{% endif %}>
-                                <img src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 0px; margin-right: 10px;">
+                                <img {% if file["type"] == "folder" %}class="folder" {% endif %}src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 0px; margin-right: 10px;">
                                 <div>
                                     <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
                                 </div>
@@ -341,6 +345,21 @@
         // Execute the Flask route with the file and folder information
         window.location.href = `/movefile?file=${fileName}&folder=${folder}`;
     }
+
+    // if item is dragged around, change the folder icon to a file icon
+    document.addEventListener('dragstart', function (event) {
+        var folderList = document.getElementsByClassName('folder');
+        for (var i = 0; i < folderList.length; i++) {
+            folderList[i].src = folderList[i].src.replace('.svg', '-open.svg');
+        }
+    });
+    
+    document.addEventListener('dragend', function (event) {
+        var folderList = document.getElementsByClassName('folder');
+        for (var i = 0; i < folderList.length; i++) {
+            folderList[i].src = folderList[i].src.replace('-open.svg', '.svg');
+        }
+    });
 </script>
 
 <script>
@@ -564,6 +583,28 @@
                 createNewFolder.style.display = 'none';
             }, 500);
         }
+    }
+</script>
+
+<script>
+    // change folder on src of folder image on change of select
+    document.getElementById('color').addEventListener('change', function() {
+        const folderImage = document.getElementById('folder-image');
+        const color = this.value;
+        folderImage.src = `https://www.gruettecloud.com/static/icons/folder-${color}.svg`;
+    });
+
+    // change folder icon on hover
+    const folderImages = document.getElementsByClassName('folder');
+    for (let folderImage of folderImages) {
+        folderImage.addEventListener('mouseover', function() {
+            const old_src = this.querySelector('img').src;
+            this.querySelector('img').src = old_src.replace('.svg', '-open.svg');
+        });
+        folderImage.addEventListener('mouseout', function() {
+            const old_src = this.querySelector('img').src;
+            this.querySelector('img').src = old_src.replace('-open.svg', '.svg');
+        });
     }
 </script>
 

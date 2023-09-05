@@ -1,4 +1,5 @@
 import datetime
+import json
 from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify, url_for
 from werkzeug.utils import secure_filename
 import os
@@ -108,6 +109,8 @@ def get_files(username, folder_dir=None):
         storage_dir = os.path.join(*sub_dir)
 
     files = os.listdir(storage_dir)
+    if ".#folderconfig.json" in files:
+        files.remove(".#folderconfig.json")
     
     #size_user = psutil.disk_usage(storage_dir).used
     size_user = get_total_file_size(storage_dir)
@@ -124,7 +127,16 @@ def get_files(username, folder_dir=None):
         if not os.path.isdir(os.path.join(storage_dir, file)):
             file_list.append({"filename": file, "icon": ih.get_icon(os.path.join(storage_dir, file)), "size": get_formatted_file_size(os.path.getsize(os.path.join(storage_dir, file))), "type": "file"})
         else:
-            file_list.append({"filename": file, "icon": "https://www.gruettecloud.com/static/icons/folder_blue.svg", "size": get_formatted_file_size(get_total_file_size(os.path.join(storage_dir, file))), "type": "folder"})
+            # try to get the icon of the folder, its in a .#folderconfig.json file
+            if os.path.exists(os.path.join(storage_dir, file, ".#folderconfig.json")):
+                f = open(os.path.join(storage_dir, file, ".#folderconfig.json"), "r")
+                data = json.load(f)
+                color = data["color"]
+                f.close()
+            else:
+                color = "blue"
+            
+            file_list.append({"filename": file, "icon": f"https://www.gruettecloud.com/static/icons/folder-{color}.svg", "size": get_formatted_file_size(get_total_file_size(os.path.join(storage_dir, file))), "type": "folder"})
         
     return {"file_list": file_list, "size_formatted": size_formatted, "size_percentage": size_percentage}
 
@@ -170,7 +182,16 @@ def open_file(file_path):
         if os.path.isdir(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path)):
             files_in_folder = get_files(str(session["username"]).lower(), file_path)["file_list"]
             
-            return render_template("folder.html", menu=th.user(session), username=str(session["username"]).lower(), folder=file_path, files=files_in_folder, back=back_track)
+            if os.path.exists(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path, ".#folderconfig.json")):
+                f = open(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path, ".#folderconfig.json"), "r")
+                data = json.load(f)
+                color = data["color"]
+                f.close()
+            else:
+                color = "blue"
+                
+            return render_template("folder.html", menu=th.user(session), username=str(session["username"]).lower(), folder=file_path, files=files_in_folder, back=back_track, color=color)
+        
         else:
             sql = SQLHelper.SQLHelper()
             filesize = get_formatted_file_size(os.path.getsize(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path)))
@@ -380,14 +401,26 @@ def shared(short_code):
         else:
             return redirect(f"/file/{file[0]['file_path']}")
     
-@gruetteStorage_route.route("/create_folder", methods=["POST"])
-def create_folder():
+@gruetteStorage_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
+def create_folder(folder_path):
     if "username" not in session:
         return redirect("/")
     
     folder_name = str(request.form["name"])
+    folder_color = str(request.form["color"])
     
-    os.makedirs(os.path.join(gruetteStorage_path, str(session["username"]), folder_name))
+    if folder_name in [".#folderconfig.json", "shared", "trash"]:
+        return redirect("/storage")
     
+    if folder_path == "home":
+        os.mkdir(os.path.join(gruetteStorage_path, str(session["username"]), folder_name))
+        os.chdir(os.path.join(gruetteStorage_path, str(session["username"]), folder_name))
+    else:
+        os.mkdir(os.path.join(gruetteStorage_path, str(session["username"]), folder_path, folder_name))
+        os.chdir(os.path.join(gruetteStorage_path, str(session["username"]), folder_path, folder_name))
+
+    f = open(".#folderconfig.json", "w")
+    f.write(json.dumps({"color": folder_color}))
+    f.close()
     return redirect("/storage")
     
