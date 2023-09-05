@@ -270,7 +270,7 @@
                     {% for file in files %}
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                         <div class="search-item file-search-item button-chat" style="display: flex; align-items: center; margin-top: 3px; margin-bottom: 3px; padding-bottom: 5px; padding-top: 5px; border: none; border-radius: 5px; cursor: text; border-radius: 30px;" >
-                            <a href="/file/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;" {% if file["type"] != "folder" %}draggable="true" ondragstart="drag(event)" data-file="{{ file["filename"] }}"{% else %}ondrop="drop(event, '{{ file["filename"] }}')" ondragover="allowDrop(event)"{% endif %}>
+                            <a href="/file/{{ file["filename"] }}" style="flex-grow: 1; text-align: left; display: inline-flex; align-items: center;" {% if file["type"] != "folder" %}draggable="true" ondragstart="drag(event)" data-file="{{ file["filename"] }}"{% else %}ondrop="drop(event, '{{ file["filename"] }}')" ondragover="allowDrop(event)" class="folder"{% endif %}>
                                 <img {% if file["type"] == "folder" %}class="folder" {% endif %}src="{{ file["icon"] }}" style="height: 30px; width: 30px; margin-left: 0px; margin-right: 10px;">
                                 <div>
                                     <p class="filename text-offcutter" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: left;">{{ file["filename"] }}</p>
