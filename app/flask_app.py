@@ -70,7 +70,7 @@ def error500(error):
 
 @app.route("/home")
 def home():
-    return redirect("/")
+    return redirect("/discover")
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
