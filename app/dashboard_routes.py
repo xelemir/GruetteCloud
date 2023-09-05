@@ -90,6 +90,10 @@ def dashboard():
 
         for entry in log_lines:
             if str(local_ip) not in entry:
+                if "python-requests" in entry:
+                    continue
+                elif "172.25." in entry:
+                    continue
                 date_regex = re.search(r'\[([^\]]+)\]', entry)
                 ip_regex = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry)
                 if date_regex is not None:
