@@ -227,7 +227,7 @@ def download(file_path):
     if "GruetteCloud" in file_path:
         filename = file_path.split("/")[-2]
         filename = filename.replace("GruetteCloud", "")
-        return send_file(os.path.join(gruetteStorage_path, filename), as_attachment=True)
+        return send_file(os.path.join(gruetteStorage_path, "GruetteCloud",filename), as_attachment=False)
             
     if os.path.exists(os.path.join(gruetteStorage_path, str(session["username"]).lower(), file_path)):
         action = request.args.get("action")
