@@ -168,7 +168,6 @@ if __name__ == "__main__":
         <img src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteDrive Render 1" style="max-width: 350px; margin-top: 40px; margin-bottom: 40px;">
     </div>
     You can even share files via links with non GrütteCloud users.<br>
-    And yes, there's a YouTube Downloader, so you can finally download your favourite videos.
     <div>
         <img src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteDrive Render 2" style="max-width: 250px; margin-top: 40px; margin-bottom: 40px;">
     </div>

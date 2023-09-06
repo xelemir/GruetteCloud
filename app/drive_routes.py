@@ -7,17 +7,17 @@ import shutil
 import random
 import string
 
-from pythonHelper import EncryptionHelper, SQLHelper, YouTubeHelper, TemplateHelper
+from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from pythonHelper import IconHelper
 from config import templates_path, gruettedrive_path
     
-gruettedrive_route = Blueprint("Gruettedrive", "Gruettedrive", template_folder=templates_path)
+drive_route = Blueprint("Drive", "Drive", template_folder=templates_path)
 
 eh = EncryptionHelper.EncryptionHelper()
 ih = IconHelper.IconHelper()
 th = TemplateHelper.TemplateHelper()
 
-@gruettedrive_route.route('/drive', methods=['POST', 'GET'])
+@drive_route.route('/drive', methods=['POST', 'GET'])
 def drive():
     """ Route to Grüttedrive home view
 
@@ -140,7 +140,7 @@ def get_files(username, folder_dir=None):
         
     return {"file_list": file_list, "size_formatted": size_formatted, "size_percentage": size_percentage}
 
-@gruettedrive_route.route("/movefile")
+@drive_route.route("/movefile")
 def move_file():
     if "username" not in session:
         return redirect("/")
@@ -170,7 +170,7 @@ def move_file():
         return redirect("/drive")
 
 
-@gruettedrive_route.route("/file/<path:file_path>")
+@drive_route.route("/file/<path:file_path>")
 def open_file(file_path):
     if "username" not in session:
         return redirect("/")
@@ -212,7 +212,7 @@ def open_file(file_path):
     
     return redirect("/drive")
 
-@gruettedrive_route.route("/open/<path:file_path>")
+@drive_route.route("/open/<path:file_path>")
 def download(file_path):
     """ Route to download or preview a file from Grüttedrive
 
@@ -245,7 +245,7 @@ def download(file_path):
     else:
         return redirect("/drive")
      
-@gruettedrive_route.route('/upload', methods=['POST'])
+@drive_route.route('/upload', methods=['POST'])
 def upload():
     """ Post route to upload a file to Grüttedrive
 
@@ -282,27 +282,12 @@ def upload():
             filename = secure_filename(file.filename)
             file.save(os.path.join(drive_dir, filename))
             
-            not_new_code = True
-            while not_new_code:
-                code = ''.join(random.choice(string.ascii_letters) for _ in range(5))
-                if sql.readSQL(f"SELECT * FROM gruttedrive_links WHERE link_id ='{code}'") == []:
-                    not_new_code = False
-            
-            files = sql.readSQL(f"SELECT * FROM gruttedrive_links WHERE owner = '{username}'")
-            if files != []:
-                for file in files:
-                    if file["filename"] == filename:
-                        # File already exists
-                        return redirect("/drive")
-    
-            sql.writeSQL(f"INSERT INTO gruttedrive_links (filename, owner, link_id, is_shared, is_youtube, youtube_link) VALUES ('{filename}', '{username}', '{code}', '0', '0', '0')")
-            
             return jsonify({"filename": filename})
         return jsonify({"error": "No file selected!"})
 
 
 
-@gruettedrive_route.route("/delete/<path:file_path>")
+@drive_route.route("/delete/<path:file_path>")
 def delete(file_path):
     """ Route to delete a file from Grüttedrive
 
@@ -326,7 +311,7 @@ def delete(file_path):
     else:
         return redirect("/drive")
      
-@gruettedrive_route.route("/share/<path:file_path>")
+@drive_route.route("/share/<path:file_path>")
 def share(file_path):
     """ Route to share a file
 
@@ -359,7 +344,7 @@ def share(file_path):
         return redirect("/drive")
     
 
-@gruettedrive_route.route("/stopsharing/<path:file_path>")
+@drive_route.route("/stopsharing/<path:file_path>")
 def stopsharing(file_path):
     """ Route to disable file sharing for a file
 
@@ -380,7 +365,7 @@ def stopsharing(file_path):
     else:
         return redirect("/drive")
 
-@gruettedrive_route.route("/s/<short_code>")
+@drive_route.route("/s/<short_code>")
 def shared(short_code):
     """ Route to view a shared file (short link)
 
@@ -413,7 +398,7 @@ def shared(short_code):
         else:
             return redirect(f"/file/{file[0]['file_path']}")
     
-@gruettedrive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
+@drive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
 def create_folder(folder_path):
     if "username" not in session:
         return redirect("/")
