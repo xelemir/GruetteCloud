@@ -407,7 +407,9 @@
             typingTimer = setTimeout(() => {
                 const password = passwordInput.value;
 
-                if (password.length < 8 && password.length > 0) {
+                if (password.length == 0) {
+                    passwordMessage.textContent = "";
+                } else if (password.length < 8) {
                     passwordMessage.textContent = "Password must be at least 8 characters long.";
                     passwordMessage.style.color = "var(--red)";
                 } else if (password.length < 12) {
