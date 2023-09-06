@@ -165,17 +165,34 @@
 
                         <div id="signup" style="display: none;">
                             <form action="/signup" method="POST" style="flex-direction: column;">
-                                <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 250px; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                                <input type="email" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email" style="width: 250px; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                                <input type="password" id="password" name="password" class="login-input" autocomplete="off" placeholder="Password" style="width: 250px; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                                <input type="password" id="password2" name="password2" class="login-input" autocomplete="off" placeholder="Repeat password" style="width: 250px; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                                <span style="display: flex; align-items: center; width: 250px; padding: 10px; padding-top: 20px;">
+                                <div style="display: inline-flex; width: 300px; margin: 0; gap: 20px;">
+                                    <input type="text" id="firstname" name="first_name" class="login-input" autocomplete="off" placeholder="First name*" style="width: 100%; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                    <input type="text" id="lastname" name="last_name" class="login-input" autocomplete="off" placeholder="Last name" style="width: 100%; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                                </div>
+                                <span id="availability-message" style="font-size: 0.8em; margin-top: 15px;"></span>
+                                <input type="text" id="usernameSignUp" name="username" class="login-input" autocomplete="off" placeholder="Username*" style="width: 300px; margin: 0px; margin-top: 5px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                
+                                <!--<input type="email" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email" style="width: 300px; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                <input type="phone" id="phone" name="phone" class="login-input" autocomplete="off" placeholder="Phone number (optional)" style="width: 300px; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">-->
+                                <div style="display: inline-flex; width: 300px; gap: 20px;">
+                                    <input type="email" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email*" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                    <input type="phone" id="phone" name="phone" class="login-input" autocomplete="off" placeholder="Phone" style="width: 100%; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                                </div>
+                                
+                                <span id="password-message" style="font-size: 0.8em; margin-top: 15px;"></span>
+                                <input type="password" id="passwordSignUp" name="password" class="login-input" autocomplete="off" placeholder="Password*" style="width: 300px; margin: 0px; margin-top: 5px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                <input type="password" id="password2SignUp" name="password2" class="login-input" autocomplete="off" placeholder="Repeat password*" style="width: 300px; margin: 0px; margin-top: 20px; border-radius: 30px;padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                <span style="display: flex; align-items: center; width: 300px; padding: 10px; padding-top: 20px;">
                                     <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
-                                    <span style="font-size: 0.8em; text-align: left;">I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and the <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.</span>
+                                    <span style="font-size: 0.8em; text-align: left;">
+                                        I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                                        Fields marked with * are required.
+                                    </span>
+
                                 </span>
-                                <div style="display: inline-flex; width: 250px; margin-top: 30px; gap: 20px;">
+                                <div style="display: inline-flex; width: 300px; margin-top: 30px; gap: 20px;">
                                     <input type="submit" value="Create GrütteID" name="login" style="width: 100%; border-radius: 30px;" class="send-button left-login">
-                                    <!--<a href="/signup" style="text-decoration: none; width: 50%;" class="send-button right-login">Sign Up</a>-->
+                                    <!--<a href="/signup" le="text-decoration: none; width: 50%;" class="send-button right-login">Sign Up</a>-->
                                 </div>
                             </form>
                            
@@ -337,6 +354,106 @@
 </body>
 
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const usernameInput = document.getElementById("usernameSignUp");
+        const availabilityMessage = document.getElementById("availability-message");
+        let typingTimer;
+        const doneTypingInterval = 1000; // 3 seconds
+
+        usernameInput.addEventListener("input", function () {
+            clearTimeout(typingTimer);
+            availabilityMessage.textContent = ""; // Clear the message
+            
+            typingTimer = setTimeout(() => {
+                const username = usernameInput.value;
+                // Replace this URL with the actual URL for checking username availability
+                const availabilityCheckURL = `/username_available/${username}`;
+                
+                fetch(availabilityCheckURL)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.available) {
+                            availabilityMessage.textContent = "Username is available!";
+                            availabilityMessage.style.color = "var(--green)";
+                        } else {
+                            availabilityMessage.textContent = "Username is not available.";
+                            availabilityMessage.style.color = "var(--red)";
+                        }
+                    })
+            }, doneTypingInterval);
+        });
+
+        // Add a blur event listener to remove the message when the input loses focus
+        usernameInput.addEventListener("blur", function () {
+            if (availabilityMessage.textContent !== "Username is not available.") {
+                availabilityMessage.textContent = "";
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const passwordInput = document.getElementById("passwordSignUp");
+        const password2Input = document.getElementById("password2SignUp");
+        const passwordMessage = document.getElementById("password-message");
+        let typingTimer;
+        const doneTypingInterval = 1000; // 3 seconds
+
+        passwordInput.addEventListener("input", function () {
+            clearTimeout(typingTimer);
+            passwordMessage.textContent = ""; // Clear the message
+            
+            typingTimer = setTimeout(() => {
+                const password = passwordInput.value;
+
+                if (password.length < 8) {
+                    passwordMessage.textContent = "Password must be at least 8 characters long.";
+                    passwordMessage.style.color = "var(--red)";
+                } else if (password.length < 12) {
+                    passwordMessage.textContent = "Weak password.";
+                    passwordMessage.style.color = "var(--yellow)";
+                    // if password contains letters and numbers and special characters
+                } else if (password.length < 20) {
+                    passwordMessage.textContent = "Medium password.";
+                    passwordMessage.style.color = "var(--yellow)";
+                } else if (password.length <= 40) {
+                    passwordMessage.textContent = "Strong password.";
+                    passwordMessage.style.color = "var(--green)";
+                } else {
+                    passwordMessage.textContent = "Password must be less than 40 characters long.";
+                    passwordMessage.style.color = "var(--red)";
+                }
+
+            }, doneTypingInterval);
+        });
+
+        password2Input.addEventListener("input", function () {
+            clearTimeout(typingTimer);
+            passwordMessage.textContent = ""; // Clear the message
+            
+            typingTimer = setTimeout(() => {
+                const password = passwordInput.value;
+                const password2 = password2Input.value;
+
+                if (password !== password2) {
+                    passwordMessage.textContent = "Passwords do not match.";
+                    passwordMessage.style.color = "var(--red)";
+                }
+
+            }, doneTypingInterval);
+        });
+
+        // Add a blur event listener to remove the message when the input loses focus
+        passwordInput.addEventListener("blur", function () {
+            if (passwordMessage.textContent !== "Passwords do not match." && passwordMessage.textContent !== "Password must be less than 40 characters long." && passwordMessage.textContent !== "Password must be at least 8 characters long.") {
+                passwordMessage.textContent = "";
+            }
+        });
+    });
+</script>
+
+
 
 <!-- Include fullPage.js library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>

@@ -113,8 +113,13 @@ def signup():
         
         mail = MailHelper.MailHelper()
         sql = SQLHelper.SQLHelper()
+        first_name = str(request.form['first_name'])
+        last_name = str(request.form['last_name'])
+        if last_name == "": last_name = "0"
         username = str(request.form['username']).lower()
         email = str(request.form['email']).lower()
+        phone = str(request.form['phone'])
+        if phone == "": phone = "0"
         password = str(request.form['password'])
         password_confirm = str(request.form['password2'])
                 
@@ -145,7 +150,7 @@ def signup():
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat')" )
+            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}')")
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)
@@ -155,6 +160,24 @@ def signup():
 
     # If Method is GET, render the signup page, deprecated, simply used as people might have the old url saved TODO remove
     return redirect("/")
+
+@loginSignUp_route.route("/username_available/<username>")
+def username_available(username):
+    """ Route to check if a username is available
+
+    Args:
+        username (str): The username to check
+
+    Returns:
+        str: True if the username is available, False if not
+    """
+
+    sql = SQLHelper.SQLHelper()
+    search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    if search_username != []:
+        return {"available": False}
+    else:
+        return {"available": True}
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):
