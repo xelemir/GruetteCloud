@@ -160,21 +160,21 @@ if __name__ == "__main__":
     
     text = """
     We are excited to announce GrütteCloud's newest feature:
-    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/storage">
-        <h1 style="color: #007AFF;">GrütteStorage</h1>
+    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/drive">
+        <h1 style="color: #007AFF;">GrütteDrive</h1>
     </a>
     Your Cloud-Storage Service by GrütteCloud.<br>Upload and download your files from anywhere.
     <div>
-        <img src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteStorage Render 1" style="max-width: 350px; margin-top: 40px; margin-bottom: 40px;">
+        <img src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteDrive Render 1" style="max-width: 350px; margin-top: 40px; margin-bottom: 40px;">
     </div>
     You can even share files via links with non GrütteCloud users.<br>
     And yes, there's a YouTube Downloader, so you can finally download your favourite videos.
     <div>
-        <img src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteStorage Render 2" style="max-width: 250px; margin-top: 40px; margin-bottom: 40px;">
+        <img src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteDrive Render 2" style="max-width: 250px; margin-top: 40px; margin-bottom: 40px;">
     </div>
-    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/storage">
-        <button style="background-color: #AF52DE; border: none; border-radius: 10px; padding: 20px; color: #F2F2F2; font-size: 1em; margin-bottom: 40px;"><b>Check Out GrütteStorage<b></button>
+    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/drive">
+        <button style="background-color: #AF52DE; border: none; border-radius: 10px; padding: 20px; color: #F2F2F2; font-size: 1em; margin-bottom: 40px;"><b>Check Out GrütteDrive<b></button>
     </a>
     """
     
-    mail.send_email("email@gmail.com", "jan", "Introducing: GrütteStorage - A Cloud-Storage Service by GrütteCloud",  text)
+    mail.send_email("email@gmail.com", "jan", "Introducing: GrütteDrive - A Cloud-Storage Service by GrütteCloud",  text)

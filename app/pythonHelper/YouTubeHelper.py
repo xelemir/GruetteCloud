@@ -3,7 +3,7 @@ import platform
 from werkzeug.utils import secure_filename
 from pytube import YouTube
 
-from config import gruetteStorage_path
+from config import gruettedrive_path
 
 class YouTubeHelper:
     """ Class to download a YouTube video from a given url
@@ -37,7 +37,7 @@ class YouTubeHelper:
         yt = YouTube(self.url)
         stream = yt.streams.filter(progressive=True, file_extension="mp4").order_by("resolution").desc().first()
 
-        filepath_video = os.path.join(gruetteStorage_path, username)
+        filepath_video = os.path.join(gruettedrive_path, username)
         if not os.path.exists(filepath_video):
             os.makedirs(filepath_video)
 

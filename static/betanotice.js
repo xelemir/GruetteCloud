@@ -14,7 +14,7 @@ function getBetaStatus() {
       <div class="cookie-banner">
       <div class="inner-tile">
         <b>Beta Notice</b><br>
-        <p>GrütteStorage is currently in beta and may be unstable. Please excuse any weird behavior. We currently cannot guarantee the availability of your uploaded files. By using GrütteStorage you agree to this.</p><br>
+        <p>Grüttedrive is currently in beta and may be unstable. Please excuse any weird behavior. We currently cannot guarantee the availability of your uploaded files. By using Grüttedrive you agree to this.</p><br>
         <div style="display: inline;">
           <button id="accept-beta" class="cookie-button">Accept</button>
         </div><br>

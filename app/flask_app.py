@@ -10,7 +10,7 @@ from loginSignUp_routes import loginSignUp_route
 from settings_routes import settings_route
 from chat_routes import chat_route
 from premium_routes import premium_route
-from gruetteStorage_routes import gruetteStorage_route
+from gruettedrive_routes import gruettedrive_route
 from dashboard_routes import dashboard_route
 from tool_routes import tool_route
 
@@ -22,7 +22,7 @@ app.register_blueprint(loginSignUp_route)
 app.register_blueprint(settings_route)
 app.register_blueprint(chat_route)
 app.register_blueprint(premium_route)
-app.register_blueprint(gruetteStorage_route)
+app.register_blueprint(gruettedrive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
 socketio = SocketIO(app)

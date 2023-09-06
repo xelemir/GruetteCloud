@@ -5,7 +5,7 @@ import re
 import pyotp
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, IconHelper, TemplateHelper
-from config import templates_path, admin_users, gruetteStorage_path, logfiles_path, local_ip, render_path
+from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip, render_path
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
@@ -75,7 +75,7 @@ def dashboard():
     else:
         platform_message = {"subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
     
-    used_space_unformatted = sum(os.path.getsize(os.path.join(gruetteStorage_path, item)) for item in os.listdir(gruetteStorage_path))
+    used_space_unformatted = sum(os.path.getsize(os.path.join(gruettedrive_path, item)) for item in os.listdir(gruettedrive_path))
     used_space = get_formatted_file_size(used_space_unformatted)
     used_space_percent = (used_space_unformatted / (8 * 1073741824)) * 100  # 8 GB
 
@@ -279,19 +279,19 @@ def createRender():
         screenshot_image = request.files["file"]
         darkMode = request.form['theme']
         
-        screenshot_image.save(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "screenshot.png"))
+        screenshot_image.save(os.path.join(gruettedrive_path, "GruetteCloudRenders", "screenshot.png"))
         
         # Load the screenshot image
-        screenshot_image = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "screenshot.png"))
+        screenshot_image = Image.open(os.path.join(gruettedrive_path, "GruetteCloudRenders", "screenshot.png"))
 
         # Load the device frame
-        device = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", f"{device_selection}.png"))
+        device = Image.open(os.path.join(gruettedrive_path, "GruetteCloudRenders", f"{device_selection}.png"))
 
         # Load the navbar image
         if darkMode == "true":
-            navbar_image = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "ChromeDark.png"))
+            navbar_image = Image.open(os.path.join(gruettedrive_path, "GruetteCloudRenders", "ChromeDark.png"))
         else:
-            navbar_image = Image.open(os.path.join(gruetteStorage_path, "GruetteCloudRenders", "ChromeLight.png"))
+            navbar_image = Image.open(os.path.join(gruettedrive_path, "GruetteCloudRenders", "ChromeLight.png"))
         
         
         # Check the dimensions of the images

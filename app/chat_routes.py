@@ -5,7 +5,7 @@ import logging
 from werkzeug.utils import secure_filename
 
 from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper, TemplateHelper
-from config import templates_path, gruetteStorage_path
+from config import templates_path, gruettedrive_path
 
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -89,7 +89,7 @@ def chat_with(recipient):
             
             filename = secure_filename(file.filename)
 
-            file.save(os.path.join(gruetteStorage_path, 'GruetteCloud', filename))
+            file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
             
             encypted_message = str(eh.encrypt_message(f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"))
             sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
