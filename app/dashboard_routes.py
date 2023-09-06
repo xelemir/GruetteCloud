@@ -302,19 +302,20 @@ def createRender():
         max_width = max(width1, width2)
         max_height = max(height1, height2)
         
-        rad = 100
-        # Create a circle mask for rounded corners
-        circle = Image.new('L', (rad * 2, rad * 2), 0)
-        draw = ImageDraw.Draw(circle)
-        draw.ellipse((0, 0, rad * 2 - 1, rad * 2 - 1), fill=255)
-        alpha = Image.new('L', screenshot_image.size, 255)
+        if "iPhone" in device_selection:
+            rad = 100
+            # Create a circle mask for rounded corners
+            circle = Image.new('L', (rad * 2, rad * 2), 0)
+            draw = ImageDraw.Draw(circle)
+            draw.ellipse((0, 0, rad * 2 - 1, rad * 2 - 1), fill=255)
+            alpha = Image.new('L', screenshot_image.size, 255)
 
-        # Apply rounded corners to the screenshot image
-        alpha.paste(circle.crop((0, 0, rad, rad)), (0, 0))
-        alpha.paste(circle.crop((0, rad, rad, rad * 2)), (0, height2 - rad))
-        alpha.paste(circle.crop((rad, 0, rad * 2, rad)), (width2 - rad, 0))
-        alpha.paste(circle.crop((rad, rad, rad * 2, rad * 2)), (width2 - rad, height2 - rad))
-        screenshot_image.putalpha(alpha)
+            # Apply rounded corners to the screenshot image
+            alpha.paste(circle.crop((0, 0, rad, rad)), (0, 0))
+            alpha.paste(circle.crop((0, rad, rad, rad * 2)), (0, height2 - rad))
+            alpha.paste(circle.crop((rad, 0, rad * 2, rad)), (width2 - rad, 0))
+            alpha.paste(circle.crop((rad, rad, rad * 2, rad * 2)), (width2 - rad, height2 - rad))
+            screenshot_image.putalpha(alpha)
 
         # Create a new image with a transparent background
         result_image = Image.new('RGBA', (max_width, max_height), (0, 0, 0, 0))
@@ -326,7 +327,7 @@ def createRender():
         # Paste the screenshot onto the new image
         result_image.paste(screenshot_image, (x_offset2, y_offset2))
 
-        # Check if the device is an iPhone (to add rounded corners)
+        # Check if the device is an iPhone (to add the navbar)
         if "iPhone" in device_selection:
             
             # Paste the navbar image on top of the screenshot (adjust position as needed)
