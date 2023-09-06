@@ -11,9 +11,23 @@
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
-
     <style>
+        @font-face {
+            font-family: 'Montserrat VariableFont';
+            src: url('https://www.gruettecloud.com/static/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito VariableFont';
+        }
+
         h1 {
+            font-family: 'Montserrat VariableFont';
 			color: var(--primary-color);
 			font-weight: bold;
             font-size: 6vh;
@@ -128,8 +142,8 @@
             <div class="dynamic-container">
                 <div class="box text">
                     <div id="default" style="display: block;">
-                        <h1 style="margin-bottom: 30px; margin-top: -30px;">Introducing  GrütteCloud</h1>
-                        <p>A cloud service tailored to your needs!</p>
+                        <h1 style="margin-bottom: 30px; margin-top: -30px;">Discover GrütteCloud</h1>
+                        <p>Empowering You with Cloud Solutions for Your Digital Life!</p>
                         <span class="desktop-only" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <button class="buy-now-button desktop-only" style="margin-top: 80px;" onclick="openSignUp()">Get Started!</button>
                             <div class="desktop-only" style="margin-top: 20px; font-size: 12px; color: var(--text-color);">
@@ -228,9 +242,10 @@
                     <img class="tablet product-renders" src="https://www.gruettecloud.com/static/renders/light/chat3.png" alt="GrütteChat Render">
                 </div>
                 <div class="box text">
-                    <h1>What Is GrütteChat?</h1>
-                    <p>GrütteChat is a new way to keep in touch with friends, family and much more...<br>
-                    It's free, open-source and built with Python and Flask, AJAX and SQL.</p>
+                    <h1>Introducing GrütteChat</h1>
+                    <p>Stay Connected with GrütteChat<br>
+                    Your free, open-source messaging app.<br>
+                    Connect with friends and family effortlessly.</p>
                 </div>
             </div>
         </div>
@@ -238,9 +253,10 @@
         <div class="section" data-anchor="section3">
             <div class="dynamic-container">
                 <div class="box text">
-                    <h1>MyAI</h1>
-                    <p>MyAI is a state of the art AI-powered chatbot that is built into GrütteChat.<br>
-                    You can access MyAI right from the home page.<br>
+                    <h1>Meet MyAI</h1>
+                    <p>Enhance Your Conversations with MyAI<br>
+                    MyAI, powered by the same technology as ChatGPT, is here to assist you.<br>
+                    Access it right from GrütteChat's home page for smarter conversations.<br>
                 </div>
                 <div class="box">
                     <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/ai1.png" alt="MyAI Render">
@@ -255,8 +271,9 @@
                 </div>
                 <div class="box text">
                     <h1>Real-Time Messaging</h1>
-                    <p>Text the ones important to you in real-time<br>
-                    while your messages are safe and securely encrypted.</p>
+                    <p>Stay in Touch with Confidence<br>
+                    Chat in real-time with the ones who matter, securely encrypted.
+                    Your privacy is our priority.</p>
                 </div>
             </div>
         </div>
@@ -264,9 +281,10 @@
         <div class="section" data-anchor="section5">
             <div class="dynamic-container">
                 <div class="box text">
-                    <h1>Looks Great On Any Screen</h1>
-                    <p>GrütteChat is built with responsive design in mind.<br>
-                    Experience it on your phone, tablet, laptop or desktop computer.</p>
+                    <h1>Looks Great</h1>
+                    <p>Experience GrütteCloud Everywhere<br>
+                    All our services are designed with responsiveness in mind.<br>
+                    Enjoy GrütteCloud on your phone, tablet, laptop, or desktop computer.</p>
                 </div>
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/ai2.png" alt="MyAI Render">
@@ -280,10 +298,10 @@
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteDrive Render">
                 </div>
                 <div class="box text">
-                    <h1>GrütteDrive</h1>
-                    <p>A new way to store your files.<br>
-                    It's a fast and secure cloud storage service that is built right into GrütteCloud.<br>
-                    So now you can finally access files from anywhere.</p>
+                    <h1>Introducing GrütteDrive</h1>
+                    <p>Your Files, Anywhere, Anytime<br>
+                    Access and securely store your files from anywhere in the world.<br>
+                    Store up to 5 GB of files for free.<br>
                 </div>
             </div>
         </div>
@@ -291,9 +309,10 @@
         <div class="section" data-anchor="section7">
             <div class="dynamic-container">
                 <div class="box text">
-                    <h1>Share Files</h1>
-                    <p>Share your files with anyone - even the once without a GrütteID.<br>
-                    Simply press "share" and copy the link.<br>
+                    <h1>Share with Ease</h1>
+                    <p>Effortless File Sharing<br>
+                    Share your files with anyone, even if they don't have a GrütteCloud account.<br>
+                    Simplify collaboration with sharing links.</p>
                 </div>
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteDrive Render">
@@ -307,9 +326,10 @@
                     <img class="phone product-renders" src="https://www.gruettecloud.com/static/renders/light/id1.png" alt="GrütteID Render">
                 </div>
                 <div class="box text">
-                    <h1>GrütteID - One For Everything</h1>
+                    <h1>GrütteID</h1>
                     <p>An account for all GrütteCloud services.<br>
-                    Your data is safe and secure - Now with Two-Factor Authentication.</p>
+                    Your data is safe and securely stored on our servers.<br>
+                    To protect your data even further, you can enable two-factor authentication.</p>
                 </div>
             </div>
         </div>
@@ -317,9 +337,11 @@
         <div class="section" data-anchor="section9">
             <div class="dynamic-container">
                 <div class="box text">
-                    <h1>What are you waiting for?</h1>
-                    <p>Sign up today and start chatting, storing and sharing for free!<br>
-                    <button class="buy-now-button" style="margin-top: 80px;" onclick="openSignUpBottom()">Get Started!</button>
+                    <h1>Join GrütteCloud Today</h1>
+                    <p>Start Chatting, Storing, and Sharing for Free!<br>
+                        Sign up now and discover a better way to manage your digital life.<br>
+                        <button class="buy-now-button" style="margin-top: 80px;" onclick="openSignUpBottom()">Get Started!</button>
+                    </p>
                 </div>
                 <div class="box desktop-only">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
