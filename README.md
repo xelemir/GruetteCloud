@@ -30,14 +30,12 @@
 
 ## 🧐 About <a name = "about"></a>
 
-GrütteCloud is web app that offers multiple services: GrütteChat is an encrypted chat that allows you to chat with your friends. You can even chat with an AI chat bot with customizable personalities, based on OpenAI's GPT-3.5 API. GrütteCloud also offers a cloud storage, Grüttedrive, where you can upload files and share them via links with non GrütteCloud users. All of these services can be used after creating your personal GrütteID. Your GrütteID even supports Two-Factor-Authenticationfor extra security. GrütteCloud is built using Python, Flask, HTML, CSS and JavaScript.
+GrütteCloud is web app that offers multiple services: GrütteChat is an encrypted chat that allows you to chat with your friends. You can even chat with an AI chat bot with customizable personalities, based on OpenAI's GPT-3.5 API. GrütteCloud also offers a cloud storage, GrütteDrive, where you can upload files and share them via links with non GrütteCloud users. All of these services can be used after creating your personal GrütteID. Your GrütteID even supports Two-Factor-Authenticationfor extra security. GrütteCloud is built using Python, Flask, HTML, CSS and JavaScript.
 You can learn more about GrütteCloud's services at [www.gruettecloud.com/discover](https://www.gruettecloud.com/discover)
 
 ## 🚀 ToDo <a name = "todo"></a>
 
 - Use Flasks' socketio to update the chat in real time, instead of manually polling the server every 5 seconds.
-- Add a "forgot password" feature to GrütteID.
-- Introduce folders in GrütteDrive.
 - Remove difficult to maintain CSS from html tags and update stylesheet with better classes.
 - Host Google material icons locally.
 
@@ -58,8 +56,8 @@ You can learn more about GrütteCloud's services at [www.gruettecloud.com/discov
   <hr>
 </p>
 <p align="center">
-  <img width=800px src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="Grüttedrive" style="padding:30px;">
-  <br><b>Grüttedrive</b><br><br>
+  <img width=800px src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteDrive" style="padding:30px;">
+  <br><b>GrütteDrive</b><br><br>
   <hr>
 </p>
 <p align="center">
