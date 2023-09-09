@@ -183,6 +183,8 @@
     var darkModeToggle = document.getElementById('darkModeToggle');
     var body = document.body;
     var isDarkMode = localStorage.getItem('darkMode');
+    updateLogoColors();
+
 
     if (isDarkMode === 'true') {
         body.classList.add('dark-mode');
