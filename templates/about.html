@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<title>Über Uns | GrütteCloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Über Uns | GrütteDrive</title>
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
-	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="icon" href="https://www.gruettecloud.com/static/GrütteCloud.png">
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
-	<style>
-		h2 {
-			color: var(--primary-color);
-			font-weight: bold;
+    <style>
+        .resize-logo {
+            width: 8em;
+            height: auto;
         }
-	</style>
+
+        .centered-div {
+            max-width: 90vw;
+            position: relative;
+            left: 0;
+            transform: translateX(0%);
+            top: 0;
+        }
+
+        @media (min-width: 768px) {
+            .wrapping-tile {
+                max-width: 700px;
+            }
+
+            .centered-div {
+                position: absolute;
+                top: 15%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 </head>
 <body>
-	<div class="header">
+    <div class="header">
         <div class="dark-mode-toggle">
-            <a href="/chat" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
-		<div class="centered-content">
+        <div class="centered-content">
             <a href="/" class="logo" title="Home">
-                <img src="https://www.gruettecloud.com/static/GrütteCloud.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
             </a>
         </div>
         <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
@@ -49,7 +69,7 @@
                         <a href="/" title="Get Started" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Get Started</a>
                     {% endif %}
                     <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    <a href="/home" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
+                    <a href="/discover" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
                     <a href="/chat" title="GrütteChat" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
                     <a href="/drive" title="GrütteDrive" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteDrive</a>
                     <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
@@ -63,25 +83,77 @@
                 </div>
             </div>
         </div>
-	</div>
+    </div>
 
+    <div class="wrapping-tile centered-div " style="z-index: 1; text-align: center; padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+        <h2 style="margin-bottom: 30px;">Impressum</h2>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+            <div style="display: flex; justify-content: center; align-items: center; width: 100%; gap: 20px;">
+                <div style="width: 50%;">
+                    <img src="https://www.gruettecloud.com/static/profile_pictures/{{ pfp_jan }}" style="border-radius: 50%; width: 150px; height: 150px;">
+                </div>
+                <div style="text-align: left; width: 50%;">
+                    <h2>Jan Grüttefien</h2>
+                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-top: 10px; margin-bottom: 10px;">
 
-	<div class="wrapping-tile" style="font-size: 13px; padding: 20px;">
-		<div class="spaced-tile"></div>
-        <h1>Über Uns</h1>
-        <h2>Jan Grüttefien</h2>
-        <p>Kapellenweg 47a</p>
-        <p>70378 Stuttgart</p>
-        <p>Germany</p>
-        <p><a href="mailto:jan@gruettecloud.com" style="color: var(--text-color);">jan@gruettecloud.com</a></p><br>
-        
-        <p>GrütteCloud is a hobby project by Jan Grüttefien. It an open source service. You can check out the source code on <a href="https://github.com/xelemir/GruetteChat" style="color: var(--text-color);">GitHub</a>.</p>
-        <div align="center">
-            <div class="spaced-tile"></div>
-            <a href="/support" style="text-decoration: none; color: var(--white-color);"><button class="button-blue" style="min-width: 0px;">Send us a message</button></a>
+                    <p>Kapellenweg 47a</p>
+                    <p>70378 Stuttgart</p>
+                    <p>Germany</p>
+
+                    <p><a href="mailto:jan@gruettecloud.com" style="color: var(--text-color);">jan@gruettecloud.com</a></p><br>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <a href="https://github.com/xelemir" style="text-decoration: none;" title="GitHub">
+                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/github/black">
+                        </a>
+                        <a href="mailto:jan@gruettecloud.com" style="text-decoration: none;" title="Email">
+                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/gmail/black">
+                        </a>
+                        <a href="https://www.linkedin.com/in/jan-gruettefien/" style="text-decoration: none;" title="LinkedIn">
+                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/linkedin/black">
+                        </a>
+                        <a href="https://www.instagram.com/jan.gtm" style="text-decoration: none;" title="Instagram">
+                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/instagram/black">
+                        </a>
+                        <a href="https://open.spotify.com/user/n0c39jatc5pksdv4rhxizx2xy" style="text-decoration: none;" title="Spotify">
+                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/spotify/black">
+                        </a>
+                    </div>
+                    <a href="/support">
+                        <button class="button-blue" style="background-color: var(--primary-color); border-radius: 30px; width: 100%;">Contact Jan</button>
+                    </a>
+
+                </div>
+            </div>
+
+            <div style="text-align: left; width: 100%;">
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
+
+                <p id="story-en" style="display: block;">
+                    Hello there!<br><br>
+                    I'm Jan Grüttefien, and GrütteCloud is my digital creation. It's my playground where I bring my digital dreams to life and tinker with technology.<br><br>
+                    Think of GrütteCloud as my digital sketchbook, a place where I've assembled some exciting projects that I'm passionate about. It's simply me having a blast with technology and sharing my creations with you.<br><br>
+                    Whether it's staying connected with GrütteChat or safeguarding your files with GrütteDrive, my hope is that you find using GrütteCloud as enjoyable as I find building it.<br><br>
+                    GrütteCloud is a project fueled by my curiosity and love for technology.<br><br>
+                    If you're curious about the inner workings, you can explore the source code on <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a>.<br><br>
+                    Let's embark on this digital journey together and see where our curiosity takes us.<br><br>
+                    ~ Jan Grüttefien
+                </p>
+                <p id="story-de" style="display: none;">
+                    Hi!<br><br>
+                    Ich bin Jan Grüttefien, und GrütteCloud ist meine digitale Spielwiese. Hier lasse ich meine digitalen Träume Wirklichkeit werden und code an Technologie herum.<br><br>
+                    GrütteCloud ist sozusagen mein digitales Skizzenbuch, ein Ort, an dem ich einige spannende Projekte zusammengestellt habe, die mir am Herzen liegen. Ganz einfach: Ich habe Spaß an der Technik und teile meine Kreationen gerne mit dir.<br><br>
+                    Ob du nun GrütteChat nutzt, um in Verbindung zu bleiben, oder GrütteDrive verwendest, um deine Dateien sicher zu verwahren, mein Wunsch ist, dass du GrütteCloud genauso gerne nutzt, wie ich Freude daran habe, es zu bauen.<br><br>
+                    GrütteCloud ist ein Projekt, das aus meiner Neugier und meiner Liebe zur Technologie entstanden ist.<br><br>
+                    Wenn dich interessiert, wie die Dinge hinter den Kulissen funktionieren, kannst du den Quellcode auf <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a> erkunden.<br><br>
+                    Lass uns gemeinsam in die digitale Welt eintauchen und sehen, wohin unsere Neugier uns führt.<br><br>
+                    ~ Jan Grüttefien
+                </p>
+            </div>
         </div>
-	</div>
-    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+    </div>
+
+    <div id="cookie-banner"></div>
+    <div class="desktop-only-flex" style="justify-content: center; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
             <div style="width: 50%; margin-right: 20px; text-align: left;">
                 <b style="font-size: 0.9em;">GrütteCloud</b>
@@ -101,9 +173,10 @@
             </div>                
         </div>
     </div>
-	<div id="cookie-banner"></div>
+    
 </body>
 </html>
+
 
 <script>
     // Dark mode toggle functionality
@@ -112,26 +185,50 @@
     var isDarkMode = localStorage.getItem('darkMode');
 
     if (isDarkMode === 'true') {
-            body.classList.add('dark-mode');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+        body.classList.add('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+        updateLogoColors();
     }
 
     darkModeToggle.addEventListener('click', function() {
-            if (body.classList.contains('dark-mode')) {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('darkMode', 'false');
-                    document.documentElement.setAttribute('data-theme', 'light');
-                    darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-            } else {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('darkMode', 'true');
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-            }
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'false');
+            document.documentElement.setAttribute('data-theme', 'light');
+            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
+            updateLogoColors();
+        } else {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'true');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+            updateLogoColors();
+        }
     });
 
     darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
-</script>
 
+
+    function updateLogoColors() {
+        var logos = document.getElementsByClassName('brand-logo');
+        for (var i = 0; i < logos.length; i++) {
+            var logo = logos[i];
+            if (localStorage.getItem('darkMode') === 'true') {
+                logo.src = logo.src.replace('black', 'white');
+            } else {
+                logo.src = logo.src.replace('white', 'black');
+            }
+        }
+    }
+</script>
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+<script>
+    // check useragent for german language
+    var userLang = navigator.language || navigator.userLanguage;
+    if (userLang == 'de-DE' || userLang == 'de') {
+        document.getElementById('story-en').style.display = 'none';
+        document.getElementById('story-de').style.display = 'block';
+    }
+</script>

@@ -307,7 +307,7 @@ def delete(file_path):
         except:
             shutil.rmtree(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path))
         
-        return redirect("/drive")
+        return redirect(f"/file/{'/'.join(file_path.split('/')[:-1])}")
     else:
         return redirect("/drive")
      

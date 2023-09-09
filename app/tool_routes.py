@@ -189,7 +189,9 @@ def help():
         
 @tool_route.route("/about", methods=["GET"])
 def about():
-    return render_template("about.html", menu=th.user(session))
+    sql = SQLHelper.SQLHelper()
+    pfp_jan = sql.readSQL("SELECT profile_picture FROM gruttechat_users WHERE username = 'jan'")[0]["profile_picture"]
+    return render_template("about.html", menu=th.user(session), pfp_jan=pfp_jan)
 
 @tool_route.route("/discover", methods=["GET"])
 def discover():

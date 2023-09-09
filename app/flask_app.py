@@ -61,10 +61,6 @@ def error404(error):
 def error500(error):
     return render_template("500.html", menu=th.user(session))
 
-@app.route("/home")
-def home():
-    return redirect("/discover")
-
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
     """ Route to render the chat home page
