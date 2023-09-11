@@ -363,6 +363,7 @@
                     url: '/search_username/' + inputUsername,
                     type: 'GET',
                         success: function(data) {
+                            console.log(data);
                             $('#matching-usernames').empty();
                             $('#matching-usernames').css("display", "block");
                             const headingElement = document.createElement("p");
@@ -380,6 +381,10 @@
                                 noResultsElement.style.marginTop = "10px";
                                 noResultsElement.textContent = "No users found.";
                                 $('#matching-usernames').append(noResultsElement);
+                            }
+
+                            if (data.length > 5) {
+                                data = data.slice(0, 5);
                             }
         
                             for (let i = 0; i < data.length; i++) {

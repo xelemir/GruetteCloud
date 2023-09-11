@@ -197,7 +197,6 @@ def search_username(username):
 
     if username.startswith("email: "):
         email = username.replace("email: ", "")
-        print(email)
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE email = '{email}'")
     else:
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{username}%'")
