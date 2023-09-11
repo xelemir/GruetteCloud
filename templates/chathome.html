@@ -368,24 +368,33 @@
                         inputUsername = "email: " + inputUsername.substring("email:".length);
                         inputElement.val(inputUsername);
                     }
-                    // Show the email tag
+                    // Show the email tag and hide the other tags
                     $('#email-tag').css("display", "flex");
+                    $('#phone-tag').css("display", "none");
+                    $('#name-tag').css("display", "none");
+
                 } else if (inputUsername.startsWith("phone:")) {
                     // Add a single space if it's not already there
                     if (!inputUsername.startsWith("phone: ")) {
                         inputUsername = "phone: " + inputUsername.substring("phone:".length);
                         inputElement.val(inputUsername);
                     }
-                    // Show the phone tag
+                    // Show the phone tag and hide the other tags
                     $('#phone-tag').css("display", "flex");
+                    $('#email-tag').css("display", "none");
+                    $('#name-tag').css("display", "none");
+
                 } else if (inputUsername.startsWith("name:")) {
                     // Add a single space if it's not already there
                     if (!inputUsername.startsWith("name: ")) {
                         inputUsername = "name: " + inputUsername.substring("name:".length);
                         inputElement.val(inputUsername);
                     }
-                    // Show the name tag
+                    // Show the name tag and hide the other tags
                     $('#name-tag').css("display", "flex");
+                    $('#email-tag').css("display", "none");
+                    $('#phone-tag').css("display", "none");
+
                 } else {
                     // Hide all tags
                     $('#email-tag').css("display", "none");
