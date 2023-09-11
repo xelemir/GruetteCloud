@@ -201,7 +201,8 @@ def search_username(username):
     else:
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{username}%'")
     
-    return [{"username": user["username"], "profile_picture": user["profile_picture"], "is_verified": user["is_verified"]} for user in search_username][:5]    
+    # Dict because WSGI cries otherwise
+    return {"users": [{"username": user["username"], "profile_picture": user["profile_picture"], "is_verified": user["is_verified"]} for user in search_username][:5]}
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):

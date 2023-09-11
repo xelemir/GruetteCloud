@@ -334,6 +334,7 @@
         function updateSearchResults() {
             var inputUsername = $('#searchFormInput').val();
             var inputElement = $('#searchFormInput');
+            $('#email-tag').css("display", "none");
             if (inputUsername.length < 1) {
                 $('#matching-usernames').css("display", "none");
                 return;
@@ -363,7 +364,6 @@
                     url: '/search_username/' + inputUsername,
                     type: 'GET',
                         success: function(data) {
-                            console.log(data);
                             $('#matching-usernames').empty();
                             $('#matching-usernames').css("display", "block");
                             const headingElement = document.createElement("p");
@@ -373,7 +373,7 @@
                             headingElement.textContent = "Search results:";
                             $('#matching-usernames').append(headingElement);
         
-                            if (data.length == 0) {
+                            if (data.users.length == 0) {
                                 $('#matching-usernames').empty();
                                 const noResultsElement = document.createElement("p");
                                 noResultsElement.style.marginLeft = "25px";
@@ -383,12 +383,12 @@
                                 $('#matching-usernames').append(noResultsElement);
                             }
 
-                            if (data.length > 5) {
-                                data = data.slice(0, 5);
+                            if (data.users.length > 5) {
+                                data.users = data.users.slice(0, 5);
                             }
         
-                            for (let i = 0; i < data.length; i++) {
-                                const chat = data[i];
+                            for (let i = 0; i < data.users.length; i++) {
+                                const chat = data.users[i];
                                 const username = chat.username;
                                 const profile_picture = "https://www.gruettecloud.com/static/profile_pictures/" + chat.profile_picture + ".png";
                     
