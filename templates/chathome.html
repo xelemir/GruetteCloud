@@ -102,7 +102,25 @@
         <div class="spaced-tile"></div>
     {% endif %}
 
-    <!-- center vertically -->
+    <div class="animate__animated animate__zoomIn" id="help" style="display: none; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <div class="wrapping-tile" style="text-align: center; padding: 20px; border-radius: 30px;">
+                <h2 style="margin-bottom: 10px;">How does search work?</h2>
+                <p>Simply enter a search query in the search bar. We will then suggest users based on your query.</p>
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px; margin-top: 10px; margin-bottom: 10px;">
+                <p>Tags - Search more precicely</p>
+                <p>Available tags are <b>email</b>, <b>phone</b> and <b>name</b>.</p>
+                <p>Simply type <b>email:</b>, <b>phone:</b> or <b>name:</b> followed by your search query.</p>
+                <p>The email and phone tags will list all users with the exact email address or phone number you entered.</p>
+                <p>The name tag will list users that match the name you entered.</p>
+                <p>Only one tag can be used at a time.</p>
+            </div>
+        </div>
+        <div onclick="closeHelp()" style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <span class="material-symbols-outlined" style="color: var(--text-color); font-size: 2em; cursor: pointer;">close</span>
+        </div>
+    </div>
+
     <div class="animate__animated animate__zoomIn" id="searchFormDiv" style="display: none;">
         <form method="POST">
             <input id="searchFormInput" class="message-input" type="text" name="recipient" placeholder="Search username" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; background-color: var(--background-tile-color); border-style: solid; border-color: transparent; border-radius: 30px; border-width: 2px; margin-right: 0; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
@@ -155,6 +173,11 @@
             <div id="showSearchButton" style="background-color: var(--background-color); z-index: 1;">
                 <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                     <span class="material-symbols-outlined" title="Search">search</span>
+                </div>
+            </div>
+            <div id="toggleHelpButton" style="display: none; background-color: var(--background-color); z-index: 1;">
+                <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <span class="material-symbols-outlined" title="Help">help</span>
                 </div>
             </div>
 
@@ -310,13 +333,16 @@
 <script>
     const searchForm = document.getElementById('searchFormDiv');
     const showSearch = document.getElementById('showSearchButton');
+    const toggleHelp = document.getElementById('toggleHelpButton');
     const closeSearch = document.getElementById('close');
+    const help = document.getElementById('help');
 
     showSearch.addEventListener('click', function() {
         searchForm.classList.remove('animate__zoomOut');
         searchForm.classList.add('animate__animated', 'animate__zoomIn');
         searchForm.style.display = 'block';
         showSearch.style.display = 'none';
+        toggleHelp.style.display = 'block';
     });
 
     closeSearch.addEventListener('click', function() {
@@ -325,13 +351,32 @@
         setTimeout(function() {
             searchForm.style.display = 'none';
             showSearch.style.display = 'block';
+            toggleHelp.style.display = 'none';
+            help.style.display = 'none';
         }, 500);
     });
+
+    toggleHelp.addEventListener('click', function() {
+        if (help.style.display == 'none') {
+            help.style.display = 'block';
+        } else {
+            help.style.display = 'none';
+        }
+    });
+
+    function closeHelp() {
+        if (help.style.display == 'none') {
+            help.style.display = 'block';
+        } else {
+            help.style.display = 'none';
+        }
+    };
 
 
     {% if not active_chats %}
         searchForm.style.display = 'block';
         showSearch.style.display = 'none';
+        toggleHelp.style.display = 'block';
     {% endif %}
 </script>
 
