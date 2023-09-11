@@ -198,6 +198,12 @@ def search_username(username):
     if username.startswith("email: "):
         email = username.replace("email: ", "")
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE email = '{email}'")
+    elif username.startswith("phone: "):
+        phone = username.replace("phone: ", "")
+        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE phone = '{phone}'")
+    elif username.startswith("name: "):
+        name = username.replace("name: ", "")
+        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE first_name LIKE '%{name}%' OR last_name LIKE '%{name}%'")
     else:
         search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{username}%'")
     

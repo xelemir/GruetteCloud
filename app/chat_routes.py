@@ -20,13 +20,16 @@ def get_messages():
     Returns:
         str: The messages list as JSON
     """
-     
+    
+    if "username" not in session:
+        return redirect("/")
+    
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username")).lower()
     recipient = str(request.args.get("recipient")).lower()
     total_message_count = int(request.args.get("totalMessageCount"))  # Get the total message count
     messages_list = []
-
+    
     if username != session["username"]:
         return redirect("/")
     
@@ -80,8 +83,20 @@ def chat_with(recipient):
     if user == []:
         return redirect(f'/chat')
     
+    blocked = sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{recipient}' OR username = '{recipient}' AND username_blocked = '{session['username']}'")
+    if blocked != []:
+        if blocked[0]["username"] == session["username"]:
+            blocked = "other"
+        else:
+            blocked = "self"
+    else:
+        blocked = "none"
+    
     # Post is used to send a message
     if request.method == 'POST':
+        
+        if blocked != "none":
+            return redirect(f'/chat/{recipient}')
         
         if 'file' in request.files and request.files['file'].filename != '':
 
@@ -122,11 +137,9 @@ def chat_with(recipient):
             messages_list.append(["You", decrypted_message])
         else:
             messages_list.append([recipient, decrypted_message])
-
+            
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"])
-
-from flask import render_template, request, redirect, session, jsonify
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked)
 
 @chat_route.route("/ai/<action>", methods=["POST", "GET"])
 def ai_chat(action):
@@ -223,9 +236,13 @@ def profile(username):
     """
     
     if "username" not in session:
-        return redirect(f"/")
+        return redirect("/")
     
     sql = SQLHelper.SQLHelper()
+    
+    is_blocked = sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{username}' OR username = '{username}' AND username_blocked = '{session['username']}'")
+    if is_blocked != []:
+        return redirect(f"/chat/{username}")
     
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     if user == []:
@@ -237,3 +254,43 @@ def profile(username):
 
     joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
     return render_template("profile.html", menu=th.user(session), username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit)
+
+@chat_route.route("/block/<username>")
+def block(username):
+    """ Route to block a user
+
+    Args:
+        username (str): The username of the user to block
+
+    Returns:
+        str: Redirect to home page
+    """
+    if "username" not in session:
+        return redirect("/")
+
+    if (username == session["username"]):
+        return redirect("/chat")
+
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"INSERT INTO gruttechat_blocked_users (username, username_blocked) VALUES ('{session['username']}', '{username}')")
+    return redirect(f"/chat/{username}")
+
+@chat_route.route("/unblock/<username>")
+def unblock(username):
+    """ Route to unblock a user
+
+    Args:
+        username (str): The username of the user to unblock
+
+    Returns:
+        str: Redirect to home page
+    """
+    if "username" not in session:
+        return redirect("/")
+    
+    if (username == session["username"]):
+        return redirect("/chat")
+    
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"DELETE FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{username}'")
+    return redirect(f"/chat/{username}")

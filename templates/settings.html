@@ -247,13 +247,16 @@
                     <div class="box left">
                         <div style="display: flex; flex-direction: column; align-items: center;">
                             <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: auto; max-height: 172px; margin-bottom: 20px; border-radius: 50%;">
-                            <h2 style="margin: 0; margin-bottom: 30px; display: flex; align-items: center; justify-content: center;">
+                            <h2 style="margin: 0; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
                                 {{ menu["username"] }}
                                 {% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color);">verified</span>{% endif %}
                                 {% if admin %}<span title="GrütteCloud Admin" class="material-symbols-outlined" style="margin-left: 5px; color: var(--indigo);">code</span>{% endif %}
                                 {% if has_premium %}<span title="GrütteCloud PLUS Member" class="material-symbols-outlined" style="margin-left: 5px; color: var(--purple);">workspace_premium</span>{% endif %}
                             </h2>
-                            <p>{{ email }}</p>
+
+                            <p style="margin-bottom: 10px;">{{ first_name }}{% if last_name != "0" %} {{ last_name }}{% endif %}</p>
+                            <p style="margin-bottom: 10px;">{{ email }}</p>
+                            {% if phone != "0" %}<p style="margin-bottom: 10px;">{{ phone }}</p>{% endif %}
                             <p style="margin-bottom: 20px;">Joined on {{ created_at }}</p>
                         </div>
                     </div>

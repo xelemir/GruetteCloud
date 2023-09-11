@@ -109,6 +109,12 @@
             <div id="email-tag" style="width: 47px; height: 25px; display: none; position: absolute; left: 20px; top: 15px; border-radius: 10px; color: var(--text-color); font-size: 0.8em; background-color: var(--secondary-color); justify-content: center; align-items: center;">
             email
             </div>
+            <div id="phone-tag" style="width: 50px; height: 25px; display: none; position: absolute; left: 20px; top: 15px; border-radius: 10px; color: var(--text-color); font-size: 0.8em; background-color: var(--secondary-color); justify-content: center; align-items: center;">
+                phone
+            </div>
+            <div id="name-tag" style="width: 47px; height: 25px; display: none; position: absolute; left: 20px; top: 15px; border-radius: 10px; color: var(--text-color); font-size: 0.8em; background-color: var(--secondary-color); justify-content: center; align-items: center;">
+                name
+            </div>
             
             <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 53px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">search</span>
@@ -189,7 +195,11 @@
                 <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                     <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                         <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
-                            <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
+                            {% if not chat["blocked"] %}
+                                <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
+                            {% else %}
+                                <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-right: 10px; color: var(--red); align-items: center; height: 40px; width: 40px; margin-left: 10px; font-size: 40px;">block</span>
+                            {% endif %}
                             <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
                             {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
                             <a href="/chat/delete/{{ chat['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
@@ -334,8 +344,10 @@
         function updateSearchResults() {
             var inputUsername = $('#searchFormInput').val();
             var inputElement = $('#searchFormInput');
-            if (!inputUsername.startsWith("email:")) {
+            if (!inputUsername.startsWith("email:") && !inputUsername.startsWith("phone:") && !inputUsername.startsWith("name:")) {
                 $('#email-tag').css("display", "none");
+                $('#phone-tag').css("display", "none");
+                $('#name-tag').css("display", "none");
             }
             if (inputUsername.length < 1) {
                 $('#matching-usernames').css("display", "none");
@@ -356,9 +368,27 @@
                     }
                     // Show the email tag
                     $('#email-tag').css("display", "flex");
+                } else if (inputUsername.startsWith("phone:")) {
+                    // Add a single space if it's not already there
+                    if (!inputUsername.startsWith("phone: ")) {
+                        inputUsername = "phone: " + inputUsername.substring("phone:".length);
+                        inputElement.val(inputUsername);
+                    }
+                    // Show the phone tag
+                    $('#phone-tag').css("display", "flex");
+                } else if (inputUsername.startsWith("name:")) {
+                    // Add a single space if it's not already there
+                    if (!inputUsername.startsWith("name: ")) {
+                        inputUsername = "name: " + inputUsername.substring("name:".length);
+                        inputElement.val(inputUsername);
+                    }
+                    // Show the name tag
+                    $('#name-tag').css("display", "flex");
                 } else {
-                    // Hide the email tag
+                    // Hide all tags
                     $('#email-tag').css("display", "none");
+                    $('#phone-tag').css("display", "none");
+                    $('#name-tag').css("display", "none");
                 }
 
                 // Continue with the AJAX request and other code

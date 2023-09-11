@@ -131,7 +131,7 @@ def reset_password():
             
             user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}' AND email = '{email}'")
             if user == []:
-                return render_template("reset_password.html", menu=th.user(session), action="email_sent")
+                return render_template("reset_password.html", menu=th.user(session), action="email_sent", email=email)
             
             else:
                 generate_token = secrets.token_hex(15)

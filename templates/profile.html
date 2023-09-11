@@ -179,6 +179,9 @@
         {% if edit %}
         <br>
         <a href="/settings" title="More Settings" style="color: var(--text-color);">More Settings</a>
+        {% else %}
+        <br>
+        <a href="/block/{{ username }}" title="Block {{ username }}" style="color: var(--text-color);">Block {{ username }}</a>
         {% endif %}
         
         <!--<div style="justify-content: center; flex-direction: row; display: flex; width: 100%; text-align: center; align-content: center;">
