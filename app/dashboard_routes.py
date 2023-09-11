@@ -50,10 +50,12 @@ def dashboard():
 
     if 'username' not in session:
         return redirect(f'/')
-    elif session['username'] not in admin_users:
-        return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
+    
+    is_admin = sql.readSQL(f"SELECT is_admin FROM gruttechat_users WHERE username = '{session['username']}'")[0]["is_admin"]
+    if not bool(is_admin):
+        return redirect('/')
     
     status = str(request.args.get('error'))
     if status == "None":

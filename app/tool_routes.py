@@ -239,4 +239,4 @@ def send_support():
     mail = MailHelper.MailHelper()
     mail.send_support_mail(name, username, email, message)
     
-    return render_template("support.html", menu=th.user(session), error="Your message has been sent!")
+    return render_template("support.html", menu=th.user(session), error="success")

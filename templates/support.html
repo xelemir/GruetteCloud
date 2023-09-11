@@ -28,7 +28,9 @@
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
-            <h1>Contact Support</h1>
+            <a href="/" class="logo" title="Home">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+            </a>
         </div>
         <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <div class="dropdown">
@@ -68,23 +70,39 @@
         </div>
     </div>
 
-    <div class="wrapping-tile centered-div" style="font-size: 13px; padding-left: 20px; padding-right: 20px; z-index: 1;">
-        <div id="error-message" style="display: none;">
-            <p style="color: var(--yellow)">{{ error }}</p>
-        </div>
-        <h2>We're happy to assist you :)</h2>
-        <form action="/support" method="POST" style="flex-direction: column;">
-            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Name" style="width: 300px; margin-right: 0px;">
-            <input type="text" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Email" style="width: 300px; margin-right: 0px;">
-            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="GrütteID" style="width: 300px; margin-right: 0px;">
-            <textarea id="message" name="message" class="login-input" autocomplete="off" placeholder="Message" style="width: 300px; margin-right: 0px; height: 200px; resize: vertical;" maxlength="2000" required></textarea>
-            <div style="margin-top: 20px">
-                <input type="submit" value="Send Message" name="send" style="margin-right: 10px; min-width: 200px;" class="send-button">
-            </div>
-        </form>
-        
-        <div class="spaced-tile"></div>
+    <div class="wrapping-tile centered-div" style="padding: 20px; border-radius: 30px;">
+        {% if not error %}
+            <h1>Contact Support</h1>
+            <form action="/support" method="POST" style="flex-direction: column;">
+                <div style="display: inline-flex; width: 300px; margin: 0; gap: 20px;">
+                    <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 100%; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                    <input type="mail" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Email" style="width: 100%; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                </div>
+                <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Username" style="width: 300px; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
+                <textarea maxlength="5000" id="message" name="message" class="login-input" autocomplete="off" placeholder="Message*" style="width: 300px; height: 100px; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); resize: none;" required></textarea>
+                <span style="display: flex; align-items: center; width: 300px; padding: 10px; margin-top: 20px;">
+                    <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                    <span style="font-size: 0.8em; text-align: left;">
+                        I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                        Fields with * are required.
+                    </span>
+                </span>
+                <div style="display: inline-flex; width: 300px; margin-top: 20px;">
+                    <input type="submit" value="Send" name="login" style="width: 100%; border-radius: 30px;" class="send-button">
+                </div>
+                <span style="display: flex; align-items: center; width: 300px; padding: 10px; margin-top: 20px;">
+                    <span style="font-size: 0.8em; text-align: left;">
+                        Alternatively, you can chat with us on <a href="/chat/gruettecloud" style="color: var(--text-color);">GrütteChat</a>
+                        or send an email to <a href="mailto:support@gruettecloud.com" style="color: var(--text-color);">support@gruettecloud.com</a>.
+                    </span>
+                </span>
+            </form>
+        {% else %}
+            <h2 style="color: var(--green); margin-bottom: 30px;">Your Message has been sent!</h2>
+            <a href="/" class="white-button-blue-on-hover" style="margin-top: 20px;">Go back to Home</a>
+        {% endif %}
     </div>
+
     <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
         <div style="display: flex;">
             <div style="width: 50%; margin-right: 20px; text-align: left;">
