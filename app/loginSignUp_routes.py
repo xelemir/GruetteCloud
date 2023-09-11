@@ -178,6 +178,31 @@ def username_available(username):
         return {"available": False}
     else:
         return {"available": True}
+    
+@loginSignUp_route.route('/search_username/<username>')
+def search_username(username):
+    """ Route to search for usernames that start with the input
+
+    Args:
+        username (str): The username to search for
+
+    Returns:
+        list: List of usernames that start with the input
+    """
+    
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+
+    if username.startswith("email: "):
+        email = username.replace("email: ", "")
+        print(email)
+        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE email = '{email}'")
+    else:
+        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{username}%'")
+    
+    return [{"username": user["username"], "profile_picture": user["profile_picture"], "is_verified": user["is_verified"]} for user in search_username][:5]    
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):

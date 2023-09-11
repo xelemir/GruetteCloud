@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .button-chat {
             padding: 10px 20px;
@@ -104,7 +105,11 @@
     <!-- center vertically -->
     <div class="animate__animated animate__zoomIn" id="searchFormDiv" style="display: none;">
         <form method="POST">
-            <input class="message-input" type="text" name="recipient" placeholder="Search username" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; width: 100%; background-color: var(--background-tile-color); border-style: solid; border-color: transparent; border-radius: 30px; border-width: 2px; margin-right: 0; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+            <input id="searchFormInput" class="message-input" type="text" name="recipient" placeholder="Search username" autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; height: 55px; background-color: var(--background-tile-color); border-style: solid; border-color: transparent; border-radius: 30px; border-width: 2px; margin-right: 0; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
+            <div id="email-tag" style="width: 45px; height: 25px; display: none; position: absolute; left: 20px; top: 15px; border-radius: 10px; color: var(--text-color); font-size: 0.8em; background-color: var(--secondary-color); justify-content: center; align-items: center;">
+            email
+            </div>
+            
             <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 53px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">search</span>
             </button>
@@ -114,6 +119,8 @@
             <!--<input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
             <input type="submit" name="new" value="Start Chat" class="send-button">-->
         </form>
+        <div id="matching-usernames" class="wrapping-tile" style="display: none; padding-bottom: 5px; border-radius: 30px; margin-top: 20px;">
+        </div>
     </div>
 
     {% if error %}
@@ -191,6 +198,7 @@
                 </div>
             {% endfor %}
         </div>
+
     </div>
     <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
@@ -316,5 +324,145 @@
         showSearch.style.display = 'none';
     {% endif %}
 </script>
+
+<script>
+    $(document).ready(function() {
+        // Define a variable to hold the timer ID
+        let debounceTimer;
+    
+        // Function to send AJAX request and update results
+        function updateSearchResults() {
+            var inputUsername = $('#searchFormInput').val();
+            var inputElement = $('#searchFormInput');
+            if (inputUsername.length < 1) {
+                $('#matching-usernames').css("display", "none");
+                return;
+            }
+    
+            // Clear any existing timer
+            clearTimeout(debounceTimer);
+    
+            /// Set a new timer to trigger the search after 1000ms (1 second)
+            debounceTimer = setTimeout(function() {
+                // Check if the input starts with "email:"
+                if (inputUsername.startsWith("email:")) {
+                    // Add a single space if it's not already there
+                    if (!inputUsername.startsWith("email: ")) {
+                        inputUsername = "email: " + inputUsername.substring("email:".length);
+                        inputElement.val(inputUsername);
+                    }
+                    // Show the email tag
+                    $('#email-tag').css("display", "flex");
+                } else {
+                    // Hide the email tag
+                    $('#email-tag').css("display", "none");
+                }
+
+                // Continue with the AJAX request and other code
+                $.ajax({
+                    url: '/search_username/' + inputUsername,
+                    type: 'GET',
+                        success: function(data) {
+                            $('#matching-usernames').empty();
+                            $('#matching-usernames').css("display", "block");
+                            const headingElement = document.createElement("p");
+                            headingElement.style.marginLeft = "25px";
+                            headingElement.style.marginBottom = "10px";
+                            headingElement.style.marginTop = "10px";
+                            headingElement.textContent = "Search results:";
+                            $('#matching-usernames').append(headingElement);
+        
+                            if (data.length == 0) {
+                                $('#matching-usernames').empty();
+                                const noResultsElement = document.createElement("p");
+                                noResultsElement.style.marginLeft = "25px";
+                                noResultsElement.style.marginBottom = "10px";
+                                noResultsElement.style.marginTop = "10px";
+                                noResultsElement.textContent = "No users found.";
+                                $('#matching-usernames').append(noResultsElement);
+                            }
+        
+                            for (let i = 0; i < data.length; i++) {
+                                const chat = data[i];
+                                const username = chat.username;
+                                const profile_picture = "https://www.gruettecloud.com/static/profile_pictures/" + chat.profile_picture + ".png";
+                    
+                                // Create the HTML elements
+                                const hrElement = document.createElement("hr");
+                                hrElement.style.border = "1px solid var(--box-shadow-color)";
+                                hrElement.style.borderRadius = "5px";
+                                hrElement.style.marginLeft = "25px";
+                                hrElement.style.marginRight = "25px";
+                    
+                                const divElement = document.createElement("div");
+                                divElement.style.display = "flex";
+                                divElement.style.alignItems = "center";
+                                divElement.style.marginBottom = "5px";
+                                divElement.style.marginTop = "5px";
+                    
+                                const aElement = document.createElement("a");
+                                aElement.href = "/chat/" + username;
+                                aElement.style.color = "var(--text-color)";
+                                aElement.style.textDecoration = "none";
+                                aElement.style.display = "flex";
+                                aElement.style.alignItems = "center";
+                                aElement.style.flex = "1";
+                    
+                                const buttonElement = document.createElement("button");
+                                buttonElement.className = "button-chat text-offcutter";
+                                buttonElement.style.width = "100%";
+                                buttonElement.style.display = "flex";
+                                buttonElement.style.alignItems = "center";
+                                buttonElement.style.color = "var(--text-color)";
+                                buttonElement.style.fontSize = "1.2em";
+                                buttonElement.style.borderRadius = "30px";
+                    
+                                const imgElement = document.createElement("img");
+                                imgElement.src = profile_picture;
+                                imgElement.style.height = "40px";
+                                imgElement.style.width = "40px";
+                                imgElement.style.borderRadius = "50%";
+                                imgElement.style.marginLeft = "10px";
+                                imgElement.style.marginRight = "10px";
+                    
+                                const spanElement = document.createElement("span");
+                                spanElement.className = "text-offcutter";
+                                spanElement.style.marginLeft = "5px";
+                                spanElement.textContent = username;
+                    
+                                // Append the elements
+                                aElement.appendChild(buttonElement);
+                                buttonElement.appendChild(imgElement);
+                                buttonElement.appendChild(spanElement);
+                    
+                                // Check for 'is_verified' and add the corresponding span
+                                if (chat.is_verified) {
+                                    const verifiedSpan = document.createElement("span");
+                                    verifiedSpan.className = "material-symbols-outlined";
+                                    verifiedSpan.style.marginLeft = "5px";
+                                    verifiedSpan.style.color = "var(--primary-color)";
+                                    verifiedSpan.style.alignSelf = "center";
+                                    verifiedSpan.textContent = "verified";
+                                    buttonElement.appendChild(verifiedSpan);
+                                }
+                
+                                aElement.appendChild(buttonElement);
+                                divElement.appendChild(aElement);
+                                $('#matching-usernames').append(hrElement);
+                                $('#matching-usernames').append(divElement);
+                            }
+                        }
+                });
+            }, 1000); // Delay the search by 1 second
+        }
+    
+        // Trigger the search when the input field changes
+        $('#searchFormInput').on('input', function() {
+            clearTimeout(debounceTimer); // Clear any existing timer
+            debounceTimer = setTimeout(updateSearchResults, 1000); // Set a new timer to trigger the search
+        });
+    });    
+</script>
+
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
