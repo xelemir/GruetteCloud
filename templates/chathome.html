@@ -346,9 +346,11 @@
             var inputElement = $('#searchFormInput');
             if (!inputUsername.startsWith("email:")) {
                 $('#email-tag').css("display", "none");
-            } else if (!inputUsername.startsWith("phone:")) {
+            }
+            if (!inputUsername.startsWith("phone:")) {
                 $('#phone-tag').css("display", "none");
-            } else if (!inputUsername.startsWith("name:")) {
+            }
+            if (!inputUsername.startsWith("name:")) {
                 $('#name-tag').css("display", "none");
             }
             if (inputUsername.length < 1) {
