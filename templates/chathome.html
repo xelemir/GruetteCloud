@@ -334,7 +334,9 @@
         function updateSearchResults() {
             var inputUsername = $('#searchFormInput').val();
             var inputElement = $('#searchFormInput');
-            $('#email-tag').css("display", "none");
+            if (!inputUsername.startsWith("email:")) {
+                $('#email-tag').css("display", "none");
+            }
             if (inputUsername.length < 1) {
                 $('#matching-usernames').css("display", "none");
                 return;
