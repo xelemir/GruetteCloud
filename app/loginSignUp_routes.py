@@ -239,6 +239,9 @@ def verify(username):
         email = user[0]["email"]
         verification_code = user[0]["verification_code"]
         already_verified = user[0]["is_email_verified"]
+        
+        if bool(already_verified):
+            return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified)
 
         # If post request, check if the verification code is correct
         if request.method == 'POST':
@@ -288,6 +291,9 @@ def verify_code(username, code):
         email = user[0]["email"]
         verification_code = user[0]["verification_code"]
         already_verified = user[0]["is_email_verified"]
+        
+        if bool(already_verified):
+            return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified)
         
         # Check if the code is correct, if so, verify the user and log them in
         if code == verification_code:

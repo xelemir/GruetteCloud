@@ -1,6 +1,7 @@
 import hashlib
 from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
+import logging
 
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
@@ -35,8 +36,11 @@ th = TemplateHelper.TemplateHelper()
 def index():
     if "username" in session:
         sql = SQLHelper.SQLHelper()
-        default_app = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]["default_app"]
-        
+        try:
+            default_app = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]["default_app"]
+        except IndexError:
+            logging.error(f"Index error for default app of user {session['username']}")
+            default_app = "chat"
         return redirect(f"/{default_app}")
     
     else:
