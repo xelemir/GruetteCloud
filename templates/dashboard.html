@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
-    <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
     <style>
         @media (min-width: 768px) {
             .desktop-only {
@@ -80,42 +79,7 @@
             </a>
             <p style="font-size: 1.3em; display: flex; align-items: center; justify-content: center;">&nbsp;&nbsp;Dashboard</p>
         </div>
-        <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <div class="dropdown">
-                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
-                    <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
-                </button>
-                <div class="dropdown-menu animate__animated animate__zoomIn" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
-                    {% if menu %}
-                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
-                    {% endif %}
-                    <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
-                        {% if menu %}
-                            Hi, {{ menu["username"] }}!
-                        {% else %}
-                            Hi, there!
-                        {% endif %}
-                    </h1>
-                    {% if menu %}
-                        <a href="/settings" title="Manage Account" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Manage Account</a>
-                    {% else %}
-                        <a href="/" title="Get Started" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Get Started</a>
-                    {% endif %}
-                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    <a href="/discover" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
-                    <a href="/chat" title="GrütteChat" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                    <a href="/drive" title="GrütteDrive" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteDrive</a>
-                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    {% if menu %}
-                        <a href="/logout" title="Logout" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
-                    {% else %}
-                        <a href="/about" title="About" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">info</span>&nbsp;&nbsp;About</a>
-                        <a href="/terms" title="Terms of Service" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">description</span>&nbsp;&nbsp;Terms of Service</a>
-                        <a href="/privacy" title="Privacy Policy" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">privacy_tip</span>&nbsp;&nbsp;Privacy Policy</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        {% include "components/nav-element.html" %}
     </div>
 
     <div id="status-message" class="wrapping-tile" style="display: none; padding: 20px; margin-bottom: 20px; text-align: center; color: var(--yellow); height: 100%; width: 100% margin: 20px;">
@@ -362,33 +326,6 @@
 
 
 <script>
-    // Dark mode toggle functionality
-    var darkModeToggle = document.getElementById('darkModeToggle');
-    var body = document.body;
-    var isDarkMode = localStorage.getItem('darkMode');
-
-    if (isDarkMode === 'true') {
-        body.classList.add('dark-mode');
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-    }
-
-    darkModeToggle.addEventListener('click', function() {
-        if (body.classList.contains('dark-mode')) {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'false');
-            document.documentElement.setAttribute('data-theme', 'light');
-            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-        } else {
-            body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'true');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-        }
-    });
-
-    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
-
     // JavaScript to prevent the email from being selectable
     const emailContainers = document.querySelectorAll('.email-container');
     emailContainers.forEach((container) => {
@@ -452,3 +389,4 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>

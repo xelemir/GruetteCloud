@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
-    <script src="https://www.gruettecloud.com/static/switchservice.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .button-chat {
@@ -40,58 +39,11 @@
                 <img src="https://www.gruettecloud.com/static/gruettechat.png" style="width: 40px; height: 40px;" title="GrütteChat">
             </a>
         </div>
-        <div style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <div class="dropdown">
-                <button class="white-button-blue-on-hover" onclick="toggleDropdown()" style="background-color: var(--background-color); border: none;">
-                    <span class="material-symbols-outlined" title="GrütteCloud">apps</span>
-                </button>
-                <div class="dropdown-menu animate__animated animate__zoomIn" style="z-index: 2; padding: 20px; text-align: center; border-radius: 20px;">
-                    {% if menu %}
-                        <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
-                    {% endif %}
-                    <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
-                        {% if menu %}
-                            Hi, {{ menu["username"] }}!
-                        {% else %}
-                            Hi, there!
-                        {% endif %}
-                    </h1>
-                    {% if menu %}
-                        <a href="/settings" title="Manage Account" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Manage Account</a>
-                    {% else %}
-                        <a href="/" title="Get Started" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Get Started</a>
-                    {% endif %}
-                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    <a href="/discover" title="Discover" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">explore</span>&nbsp;&nbsp;Home</a>
-                    <a href="/chat" title="GrütteChat" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">forum</span>&nbsp;&nbsp;GrütteChat</a>
-                    <a href="/drive" title="GrütteDrive" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">cloud_upload</span>&nbsp;&nbsp;GrütteDrive</a>
-                    <hr style="display: block; border: 1px solid var(--secondary-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-                    {% if menu %}
-                        <a href="/logout" title="Logout" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">logout</span>&nbsp;&nbsp;Logout</a>
-                    {% else %}
-                        <a href="/about" title="About" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">info</span>&nbsp;&nbsp;About</a>
-                        <a href="/terms" title="Terms of Service" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">description</span>&nbsp;&nbsp;Terms of Service</a>
-                        <a href="/privacy" title="Privacy Policy" style="text-align: left;"><span class="material-symbols-outlined align-icons-center">privacy_tip</span>&nbsp;&nbsp;Privacy Policy</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        {% include "components/nav-element.html" %}
     </div>
 
     {% if not has_premium %}
-        <div id="premium-banner" style="display: block;">
-            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 55px; right: 5px; height: 40px; width: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 30px;">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <a href="/premium" style="text-decoration: none; color: var(--white-color);">
-                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 30px;">
-                    <h1>Unlock GrütteCloud PLUS</h1>
-                    only 2.99 € once!
-                    <!-- It's free! -->
-                </div>
-            </a>
-            <div class="spaced-tile"></div>
-        </div>
+        {% include "components/premium-banner.html" %}
     {% endif %}
 
     {% if status_message %}
@@ -140,8 +92,6 @@
             <div id="close" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
                 <span class="material-symbols-outlined">close</span>
             </div>
-            <!--<input type="text" id="recipient" name="recipient" placeholder="Start a new chat" autocomplete="off" style="width: calc(100% - 140px);">
-            <input type="submit" name="new" value="Start Chat" class="send-button">-->
         </form>
         <div id="matching-usernames" class="wrapping-tile" style="display: none; padding-bottom: 5px; border-radius: 30px; margin-top: 20px;">
         </div>
@@ -166,7 +116,7 @@
             <div style="display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
                     <h1 style="margin: 10px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                        Welcome, {{ username }}{% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+                        {{ username }}'s Chats
                     </h1>
                 </div>
             </div>
@@ -231,89 +181,13 @@
                 </div>
             {% endfor %}
         </div>
-
     </div>
-    <div class="spaced-tile"></div>
     <div id="cookie-banner"></div>
-    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <div style="display: flex;">
-            <div style="width: 50%; margin-right: 20px; text-align: left;">
-                <b style="font-size: 0.9em;">GrütteCloud</b>
-                <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="/help">Help Center</a><br>
-                    <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
-                    <a class="footer-link" href="/support">Contact Support</a>
-                </div>
-            </div>
-            <div style="width: 50%; text-align: left;">
-                <b style="font-size: 0.9em;">Legal</b>
-                <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="about">Über Uns</a><br>
-                    <a class="footer-link" href="/terms">Terms of Service</a><br>
-                    <a class="footer-link" href="/privacy">Privacy Policy</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "components/footer.html" %}
 </body>
 </html>
 
-<script>
-    // Dark mode toggle functionality
-    var darkModeToggle = document.getElementById('darkModeToggle');
-    var body = document.body;
-    var isDarkMode = localStorage.getItem('darkMode');
 
-    if (isDarkMode === 'true') {
-        body.classList.add('dark-mode');
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-    }
-
-    darkModeToggle.addEventListener('click', function() {
-        if (body.classList.contains('dark-mode')) {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'false');
-            document.documentElement.setAttribute('data-theme', 'light');
-            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-        } else {
-            body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'true');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-        }
-    });
-
-    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
-
-    {% if not has_premium %}
-    // GrütteCloud PLUS banner functionality
-    document.addEventListener('DOMContentLoaded', function () {
-        const banner = document.getElementById('premium-banner');
-        const dismissButton = document.getElementById('dismiss-button');
-
-        // Check if the cookie 'premiumBannerDismissed' exists
-        const cookieExists = document.cookie.indexOf('premiumBannerDismissed=true') !== -1;
-
-        if (cookieExists) {
-            banner.style.display = 'none';
-        } else {
-            banner.style.display = 'block';
-        }
-
-        // Set the cookie and hide the banner when the 'Dismiss' button is clicked
-        dismissButton.addEventListener('click', function () {
-            // Set the cookie to expire in 7 days
-            const expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 7);
-            document.cookie = 'premiumBannerDismissed=true; expires=' + expirationDate.toUTCString();
-
-            // Hide the banner
-            banner.style.display = 'none';
-        });
-    });
-    {% endif %}
-</script>
 
 <script>
     // Show error message and fade out after 5 seconds
@@ -559,5 +433,5 @@
     });    
 </script>
 
-
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>

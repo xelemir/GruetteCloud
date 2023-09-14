@@ -1,0 +1,40 @@
+<div id="premium-banner" style="display: block;">
+    <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 55px; right: 5px; height: 40px; width: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 30px;">
+        <span class="material-symbols-outlined">close</span>
+    </button>
+    <a href="/premium" style="text-decoration: none; color: var(--white-color);">
+        <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 30px;">
+            <h1>Unlock GrütteCloud PLUS</h1>
+            only 2.99 € once!
+            <!-- It's free! -->
+        </div>
+    </a>
+    <div class="spaced-tile"></div>
+</div>
+<script>
+    // GrütteCloud PLUS banner functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const banner = document.getElementById('premium-banner');
+        const dismissButton = document.getElementById('dismiss-button');
+
+        // Check if the cookie 'premiumBannerDismissed' exists
+        const cookieExists = document.cookie.indexOf('premiumBannerDismissed=true') !== -1;
+
+        if (cookieExists) {
+            banner.style.display = 'none';
+        } else {
+            banner.style.display = 'block';
+        }
+
+        // Set the cookie and hide the banner when the 'Dismiss' button is clicked
+        dismissButton.addEventListener('click', function () {
+            // Set the cookie to expire in 7 days
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 7);
+            document.cookie = 'premiumBannerDismissed=true; expires=' + expirationDate.toUTCString();
+
+            // Hide the banner
+            banner.style.display = 'none';
+        });
+    });
+</script>

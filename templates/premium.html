@@ -67,59 +67,10 @@
 		</div>
 	</div>
 
-		
-    <div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
-        <div style="display: flex;">
-            <div style="width: 50%; margin-right: 20px; text-align: left;">
-                <b style="font-size: 0.9em;">GrütteCloud</b>
-                <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="/help">Help Center</a><br>
-                    <a class="footer-link" href="/discover">What is GrütteCloud?</a><br>
-                    <a class="footer-link" href="/support">Contact Support</a>
-                </div>
-            </div>
-            <div style="width: 50%; text-align: left;">
-                <b style="font-size: 0.9em;">Legal</b>
-                <div style="white-space: nowrap; line-height: 1em;">
-                    <a class="footer-link" href="/about">Über Uns</a><br>
-                    <a class="footer-link" href="/terms">Terms of Service</a><br>
-                    <a class="footer-link" href="/privacy">Privacy Policy</a>
-                </div>
-            </div>                
-        </div>
-    </div>
 	<div id="cookie-banner"></div>
+	{% include "components/footer.html" %}
 </body>
 </html>
-
-<script>
-	// Dark mode toggle functionality
-	var darkModeToggle = document.getElementById('darkModeToggle');
-	var body = document.body;
-	var isDarkMode = localStorage.getItem('darkMode');
-
-	if (isDarkMode === 'true') {
-		body.classList.add('dark-mode');
-		document.documentElement.setAttribute('data-theme', 'dark');
-		darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-	}
-
-	darkModeToggle.addEventListener('click', function() {
-		if (body.classList.contains('dark-mode')) {
-			body.classList.remove('dark-mode');
-			localStorage.setItem('darkMode', 'false');
-			document.documentElement.setAttribute('data-theme', 'light');
-			darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-		} else {
-			body.classList.add('dark-mode');
-			localStorage.setItem('darkMode', 'true');
-			document.documentElement.setAttribute('data-theme', 'dark');
-			darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-		}
-	});
-
-	darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
-</script>
 <script>
 	// Show error message and fade out after 5 seconds
 	var errorMessage = document.getElementById('error-message');
@@ -136,3 +87,4 @@
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>

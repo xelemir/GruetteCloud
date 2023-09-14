@@ -161,8 +161,6 @@
         input.focus();
     };
 
-    // Dark mode toggle functionality
-    var darkModeToggle = document.getElementById('darkModeToggle');
     var body = document.body;
     var isDarkMode = localStorage.getItem('darkMode');
 
@@ -171,22 +169,6 @@
         document.documentElement.setAttribute('data-theme', 'dark');
         darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
     }
-
-    darkModeToggle.addEventListener('click', function() {
-        if (body.classList.contains('dark-mode')) {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'false');
-            document.documentElement.setAttribute('data-theme', 'light');
-            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-        } else {
-            body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'true');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-        }
-    });
-
-    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
