@@ -173,6 +173,11 @@
             display: flex;
             align-items: center;
           }
+
+        .bill-width {
+            width: 600px;
+            max-width: 90%;
+        }
     </style>
 </head>
 <body>
@@ -331,25 +336,25 @@
                         <div class="box" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                             <h1>Help Matchi</h1>
                             
-                            <table style="width: 300px; text-align: left; margin-left: auto; margin-right: auto;">
+                            <table class="bill-width" style="text-align: left; margin-left: auto; margin-right: auto;">
                                 <tr style="color: var(--primary-color);">
                                     <td style="width: 50%;">Item</td>
                                     <td style="width: 50%;">Price</td>
                                 </tr>
                             </table>
                         
-                            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; width: 300px; margin: 10px auto;">
+                            <hr class="bill-width" style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 10px auto;">
                             
-                            <table id="items-selected" style="width: 300px; text-align: left; margin-left: auto; margin-right: auto; color: var(--text-color);">
+                            <table id="items-selected" class="bill-width" style="text-align: left; margin-left: auto; margin-right: auto; color: var(--text-color);">
                                 <tr>
                                     <td style="width: 50%;">Matchi is sad. You didn't select any items.</td>
                                     <td style="width: 50%;"></td>
                                 </tr>
                             </table>
                         
-                            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; width: 300px; margin: 10px auto;">
+                            <hr class="bill-width" style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 10px auto;">
 
-                            <table style="width: 300px; text-align: left; margin-left: auto; margin-right: auto; color: var(--text-color);">
+                            <table class="bill-width" style="text-align: left; margin-left: auto; margin-right: auto; color: var(--text-color);">
                                 <tr>
                                     <td style="width: 50%;">Total</td>
                                     <td id="total-price" style="width: 50%;">0.00€</td>
