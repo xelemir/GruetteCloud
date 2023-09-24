@@ -34,7 +34,7 @@
 
         .bill-width {
             width: 600px;
-            max-width: 90%;
+            max-width: 90vw;
         }
     </style>
 </head>
@@ -46,7 +46,8 @@
         {% include "components/nav-element.html" %}
     </div>
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center">
-        <h1 style="text-wrap: balanced;">Matchi and his friends thank you!</h1>
+        <h1 style="text-wrap: balance;">Matchi thanks you!</h1>
+        <p style="text-wrap: balance; margin-bottom: 80px;">You have approved the following items and their prices for Matchi and his friends.</p>
     
         <table class="bill-width" style="text-align: left; margin-left: auto; margin-right: auto;">
             <tr style="color: var(--primary-color);">
@@ -59,7 +60,7 @@
 
         <table class="bill-width" style="text-align: left; margin-left: auto; margin-right: auto;">
             {% for item in products%}
-            <tr>
+            <tr style="color: var(--text-color);">
                 <td style="width: 50%;">{{ item["name"] }}</td>
                 <td style="width: 50%;">{{ item["price"] }}€</td>
             </tr>
@@ -69,7 +70,7 @@
         <hr class="bill-width" style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 10px auto;">
 
         <table class="bill-width" style="text-align: left; margin-left: auto; margin-right: auto;">
-            <tr>
+            <tr style="color: var(--text-color);">
                 <td style="width: 50%;">Total</td>
                 <td id="total-price" style="width: 50%;">{{ total_price }}€</td>
             </tr>

@@ -176,7 +176,7 @@
 
         .bill-width {
             width: 600px;
-            max-width: 90%;
+            max-width: 90vw;
         }
     </style>
 </head>
@@ -210,7 +210,7 @@
                                     <div style="display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;">
                                         <div style="width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;">
                                             <h2 style="margin-bottom: 20px; color: var(--primary-color);">{{ item["name"] }}</h2>
-                                            <p style="margin-bottom: 10px; text-wrap: balanced;">{{ item["description"] }}</p>
+                                            <p style="margin-bottom: 10px; text-wrap: balance;">{{ item["description"] }}</p>
                                             <p class="price-bedroom">{{ item["price"] }}</p>
                                         </div>
                                         <div style="width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;">
@@ -247,7 +247,7 @@
                     <div class="box">
                         <h1>Matchi & Friends</h1>
                         <div style="width: 100%; display: flex; justify-content: center; text-align: left; padding: 30px;">
-                            <p style="width: 80%; text-wrap: balanced;">
+                            <p style="width: 80%; text-wrap: balance;">
                                 Matchi and his friends are very happy about the selection of furniture in the apartment.
                                 They are looking forward to the new apartment and are already planning how they will decorate it.
                                 However they need your help to fund the furniture.<br><br>Can you help them?
@@ -269,7 +269,7 @@
                     <h1 style="margin-bottom: -10px;">Matchi & Mates</h1>
                     <img class="apartment-image" src="https://www.gruettecloud.com/static/apartment/plushies.jpg" style="border-radius: 30px; margin-bottom: 0px;" alt="Matchi and his Friends">
                     <div style="width: 100%; display: flex; justify-content: center; text-align: left; padding-left: 20px; padding-right: 20px;">
-                        <p style="text-wrap: balanced;">
+                        <p style="text-wrap: balance;">
                             Matchi and his friends are very happy about the selection of furniture in the apartment.
                             They are looking forward to the new apartment and are already planning how they will decorate it.
                             However they need your help to fund the furniture.<br>Can you help them?
@@ -431,7 +431,7 @@
         other_selector.style.color = "var(--text-color)";
 
         for (var i = 0; i < {{ items["bedroom"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["bedroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["bedroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balanced;'>" + items["bedroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["bedroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["bedroom"][i]["img"] + "' alt='" + items["bedroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["bedroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["bedroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["bedroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["bedroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["bedroom"][i]["img"] + "' alt='" + items["bedroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
@@ -453,7 +453,7 @@
         other_selector.style.color = "var(--text-color)";
 
         for (var i = 0; i < {{ items["livingroom"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["livingroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["livingroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balanced;'>" + items["livingroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["livingroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["livingroom"][i]["img"] + "' alt='" + items["livingroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["livingroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["livingroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["livingroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["livingroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["livingroom"][i]["img"] + "' alt='" + items["livingroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
@@ -475,7 +475,7 @@
         other_selector.style.color = "var(--text-color)";
 
         for (var i = 0; i < {{ items["sanitary"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["sanitary"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["sanitary"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balanced;'>" + items["sanitary"][i]["description"] + "</p><p class='price-bedroom'>" + items["sanitary"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["sanitary"][i]["img"] + "' alt='" + items["sanitary"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["sanitary"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["sanitary"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["sanitary"][i]["description"] + "</p><p class='price-bedroom'>" + items["sanitary"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["sanitary"][i]["img"] + "' alt='" + items["sanitary"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
@@ -497,7 +497,7 @@
         other_selector.style.color = "var(--white-color)";
 
         for (var i = 0; i < {{ items["other"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["other"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["other"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balanced;'>" + items["other"][i]["description"] + "</p><p class='price-bedroom'>" + items["other"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["other"][i]["img"] + "' alt='" + items["other"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["other"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["other"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["other"][i]["description"] + "</p><p class='price-bedroom'>" + items["other"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["other"][i]["img"] + "' alt='" + items["other"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 

@@ -248,12 +248,53 @@ def apartment():
         items = ApartmentHelper.items
         return render_template("apartment.html", menu=th.user(session), items=items)
     
-    else:        
-        total_price = 0.00
+    else:
+        total_price = 0
         products = []
+        products_string = ""
         for product, price in request.form.items():
             price = int(price.replace("€", ""))
             total_price += price
             products.append({"name": product, "price": price})
+            products_string += f"""<tr style="width: 600px; max-width: 70vw; color: #000000;"><td style="width: 50%;">{product}</td><td style="width: 50%;">{price}€</td></tr>"""
+        
+        if len(products) >= 15 and "username" in session:
+            text = f"""
+                <div style="background-color: #FFFFFF; padding: 20px; border-radius: 30px; margin-bottom: 20px; margin-top: 20px;">
+                    <h2 style="color: #007AFF;">Budget Approved!</h2>
+                    <p style="text-wrap: balance">The budget has been approved for the following items:</p>
+                    <table style="width: 600px; max-width: 70vw; text-align: left; margin-left: auto; margin-right: auto;">
+                        <tr style="color: #007AFF;">
+                            <td style="width: 50%;">Item</td>
+                            <td style="width: 50%;">Price</td>
+                        </tr>
+                    </table>
+                    <hr style="width: 600px; max-width: 70vw; border: 1px solid #000000; border-radius: 5px; margin: 10px auto;">
+                    <table style="width: 600px; max-width: 70vw; text-align: left; margin-left: auto; margin-right: auto;">
+                        {products_string}
+                    </table>
+                    <hr style="width: 600px; max-width: 70vw; border: 1px solid #000000; border-radius: 5px; margin: 10px auto;">
+                    <table style="width: 600px; max-width: 70vw; text-align: left; margin-left: auto; margin-right: auto;">
+                        <tr style="width: 600px; max-width: 70vw; color: #000000;">
+                            <td style="width: 50%;">Total</td>
+                            <td id="total-price" style="width: 50%;">{total_price}€</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="background-color: #FFFFFF; padding: 20px; border-radius: 30px; margin-bottom: 20px;">
+                    <h2 style="color: #007AFF;">Happy Matchi</h2>
+                    <img src="https://www.gruettecloud.com/static/apartment/plushies.jpg" alt="GrütteChat UI" style="height: 300px; width: auto; margin-top: 10px; margin-bottom: 10px; border-radius: 30px;">
+                    <p style="text-wrap: balance">Matchi and his friends are happy you approved the budget! Now they can start their journey to their new home!</p>
+                </div>
+            """
+            mail = MailHelper.MailHelper()
+            sql = SQLHelper.SQLHelper()
+            user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+            mail.send_email(user[0]["email"], user[0]["username"], "Budget Approved", text, user[0]["verification_code"])
+            
+            if user[0]["username"] != "jan":
+                jan = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = 'jan'")
+                mail.send_email(jan[0]["email"], jan[0]["username"], "Budget Approved", text, jan[0]["verification_code"])
         
         return render_template("apartment_approved.html", menu=th.user(session), products=products, total_price=total_price)
