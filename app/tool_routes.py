@@ -242,8 +242,18 @@ def send_support():
     return render_template("support.html", menu=th.user(session), error="success")
 
 
-@tool_route.route("/apartment")
+@tool_route.route("/apartment", methods=["GET", "POST"])
 def apartment():
-    items = ApartmentHelper.items        
+    if request.method == "GET":
+        items = ApartmentHelper.items
+        return render_template("apartment.html", menu=th.user(session), items=items)
     
-    return render_template("apartment.html", menu=th.user(session), items=items)
+    else:        
+        total_price = 0.00
+        products = []
+        for product, price in request.form.items():
+            price = int(price.replace("€", ""))
+            total_price += price
+            products.append({"name": product, "price": price})
+        
+        return render_template("apartment_approved.html", menu=th.user(session), products=products, total_price=total_price)
