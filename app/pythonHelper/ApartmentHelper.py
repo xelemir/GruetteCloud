@@ -15,8 +15,8 @@ items = {
             "url": "https://www.ikea.com/de/de/p/akrehamn-schaummatratze-mittelfest-weiss-30481644/",
         },
         {
-            "name": "RUMSMALVA x2",
-            "price": "13€",
+            "name": "2x RUMSMALVA",
+            "price": "26€",
             "description": "Kissen, ergonomisch, 40cm x 80cm, weiß, 2 Stück",
             "img": "https://www.ikea.com/de/de/images/products/rumsmalva-kissen-erg-seiten-rueckenschlaefer__0778781_pe759130_s5.jpg",
             "url": "https://www.ikea.com/de/de/p/rumsmalva-kissen-erg-seiten-rueckenschlaefer-60446753/",
@@ -64,18 +64,11 @@ items = {
             "url": "https://www.ikea.com/de/de/p/lauters-standleuchte-esche-weiss-30405042/",
         },
         {
-            "name": "BRANÄS",
+            "name": "3x BRANÄS",
             "price": "54€",
             "description": "Korb, Rattan, passend für KALLAX, 3 Stück",
             "img": "https://www.ikea.com/de/de/images/products/branaes-korb-rattan__0418392_pe575458_s5.jpg",
             "url": "https://www.ikea.com/de/de/p/branaes-korb-rattan-00138432/",
-        },
-        {
-            "name": "SKÅDIS",
-            "price": "45€",
-            "description": "Lochplatte, Kombination, weiß, Schrauben nicht enthalten",
-            "img": "https://www.ikea.com/de/de/images/products/skadis-lochplatte-kombination__0964306_pe808972_s5.jpg",
-            "url": "https://www.ikea.com/de/de/p/skadis-lochplatte-kombination-s89406365/",
         },
     ],
     "livingroom": [
@@ -94,7 +87,7 @@ items = {
             "url": "https://www.ikea.com/de/de/p/daglysa-tisch-eichenfurnier-50402288/",
         },
         {
-            "name": "JOKKMOKK",
+            "name": "4x JOKKMOKK",
             "price": "120€",
             "description": "Stuhl, Antikbeize, 4 Stück",
             "img": "https://www.ikea.com/de/de/images/products/jokkmokk-stuhl-antikbeize__0870916_pe716638_s5.jpg",
@@ -115,11 +108,25 @@ items = {
             "url": "https://www.ikea.com/de/de/p/besta-tv-bank-mit-tueren-weiss-lappviken-weiss-s89330691/",
         },
         {
-            "name": "MALINDA",
+            "name": "4x MALINDA",
             "price": "28€",
             "description": "Stuhlkissen, dunkelgrün, 4 Stück",
             "img": "https://www.ikea.com/de/de/images/products/malinda-stuhlkissen-dunkelgruen__1138169_pe879870_s5.jpg",
             "url": "https://www.ikea.com/de/de/p/malinda-stuhlkissen-dunkelgruen-50551061/",
+        },
+        {
+            "name": "KALLAX 2x4",
+            "price": "70€",
+            "description": "Regal, weiß",
+            "img": "https://www.ikea.com/de/de/images/products/kallax-regal-weiss__1084790_pe859876_s5.jpg",
+            "url": "https://www.ikea.com/de/de/p/kallax-regal-weiss-80275887/",
+        },
+        {
+            "name": "4x GNABBAS",
+            "price": "40€",
+            "description": "Korb, passend für KALLAX, 4 Stück",
+            "img": "https://www.ikea.com/de/de/images/products/gnabbas-korb__0945515_pe797708_s5.jpg?f=xl",
+            "url": "https://www.ikea.com/de/de/p/gnabbas-korb-60400298/",
         },
     ],
     "sanitary": [
@@ -152,20 +159,6 @@ items = {
             "description": "Kommode mit 6 Schubladen, weiß",
             "img": "https://www.ikea.com/de/de/images/products/kullen-kommode-mit-6-schubladen-weiss__0778050_pe758820_s5.jpg",
             "url": "https://www.ikea.com/de/de/p/kullen-kommode-mit-6-schubladen-weiss-90309245/",
-        },
-        {
-            "name": "KALLAX 2x4",
-            "price": "70€",
-            "description": "Regal, weiß",
-            "img": "https://www.ikea.com/de/de/images/products/kallax-regal-weiss__1084790_pe859876_s5.jpg",
-            "url": "https://www.ikea.com/de/de/p/kallax-regal-weiss-80275887/",
-        },
-        {
-            "name": "GNABBAS",
-            "price": "40€",
-            "description": "Korb, passend für KALLAX, 4 Stück",
-            "img": "https://www.ikea.com/de/de/images/products/gnabbas-korb__0945515_pe797708_s5.jpg?f=xl",
-            "url": "https://www.ikea.com/de/de/p/gnabbas-korb-60400298/",
         },
         {
             "name": "SKRUVBY",

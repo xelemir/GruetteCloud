@@ -80,6 +80,11 @@
             display: none;
         }
 
+        td {
+            width: 50%;
+            text-align: left;
+        }
+
         .scrollable-section {
             overflow-y: auto;
             border-radius: 40px;
@@ -88,6 +93,10 @@
             border: 3px solid var(--background-tile-color);
             height: 90svh;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .small-scrollable {
+            height: 60svh;
         }
 
         /* For WebKit (Chrome and Safari) */
@@ -144,6 +153,31 @@
                 display: flex;
             }
         }
+
+        .product-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 30px;
+          }
+      
+          .product-item.selected {
+            background-color: var(--secondary-color);
+          }
+      
+          .product-image {
+            max-height: 50px;
+            border-radius: 50%;
+            max-width: 50px;
+            margin-right: 10px;
+          }
+      
+          .product-details {
+            display: flex;
+            align-items: center;
+          }
     </style>
 </head>
 <body>
@@ -207,43 +241,134 @@
 
         <div class="section" data-anchor="section3">
 
-            <!-- Desktop -->
-            <div class="container desktop-only-flex">
-                <div class="box">
-                    <h1>Matchi & Friends</h1>
-                    <div style="width: 100%; display: flex; justify-content: center; text-align: left; padding: 30px;">
-                        <p style="width: 80%; text-wrap: balanced;">
-                            Matchi and his friends are very happy about the selection of furniture in the apartment.
-                            They are looking forward to the new apartment and are already planning how they will decorate it.
-                            However they need your help to fund the furniture.<br><br>Can you help them?
-                        </p>
+            <div id="ask-for-funding" style="display: block;">
+                <!-- Desktop -->
+                <div class="container desktop-only-flex">
+                    <div class="box">
+                        <h1>Matchi & Friends</h1>
+                        <div style="width: 100%; display: flex; justify-content: center; text-align: left; padding: 30px;">
+                            <p style="width: 80%; text-wrap: balanced;">
+                                Matchi and his friends are very happy about the selection of furniture in the apartment.
+                                They are looking forward to the new apartment and are already planning how they will decorate it.
+                                However they need your help to fund the furniture.<br><br>Can you help them?
+                            </p>
+                        </div>
+                        <div style="width: 100%; display: flex; justify-content: center; text-align: center; padding: 30px;">
+                            <div class="selectFurnitureButton" onclick="selectFurniture()">
+                                Help Matchi and his friends!
+                            </div>
+                        </div>
                     </div>
-                    <div style="width: 100%; display: flex; justify-content: center; text-align: center; padding: 30px;">
-                    <div class="selectFurnitureButton" onclick="selectFurniture()">
-                        Help Matchi and his friends!
-                    </div>
+                    <div class="box">
+                        <img class="apartment-image" src="https://www.gruettecloud.com/static/apartment/plushies.jpg" style="border-radius: 30px; margin-bottom: 50px;" alt="Matchi and his Friends">
                     </div>
                 </div>
-                <div class="box">
-                    <img class="apartment-image" src="https://www.gruettecloud.com/static/apartment/plushies.jpg" style="border-radius: 30px; margin-bottom: 50px;" alt="Matchi and his Friends">
+
+                <!-- Mobile -->
+                <div class="container mobile-only-flex">
+                    <h1 style="margin-bottom: -10px;">Matchi & Mates</h1>
+                    <img class="apartment-image" src="https://www.gruettecloud.com/static/apartment/plushies.jpg" style="border-radius: 30px; margin-bottom: 0px;" alt="Matchi and his Friends">
+                    <div style="width: 100%; display: flex; justify-content: center; text-align: left; padding-left: 20px; padding-right: 20px;">
+                        <p style="text-wrap: balanced;">
+                            Matchi and his friends are very happy about the selection of furniture in the apartment.
+                            They are looking forward to the new apartment and are already planning how they will decorate it.
+                            However they need your help to fund the furniture.<br>Can you help them?
+                        </p>
+                    </div>
+                    <div style="width: 100%; display: flex; justify-content: center; text-align: center; ">
+                        <div class="selectFurnitureButton" onclick="selectFurniture()">
+                            Help Matchi and his friends!
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Mobile -->
-            <div class="container mobile-only-flex">
-                <h1 style="margin-bottom: -10px;">Matchi & Mates</h1>
-                <img class="apartment-image" src="https://www.gruettecloud.com/static/apartment/plushies.jpg" style="border-radius: 30px; margin-bottom: 0px;" alt="Matchi and his Friends">
-                <div style="width: 100%; display: flex; justify-content: center; text-align: left; padding-left: 20px; padding-right: 20px;">
-                    <p style="text-wrap: balanced;">
-                        Matchi and his friends are very happy about the selection of furniture in the apartment.
-                        They are looking forward to the new apartment and are already planning how they will decorate it.
-                        However they need your help to fund the furniture.<br>Can you help them?
-                    </p>
-                </div>
-                <div style="width: 100%; display: flex; justify-content: center; text-align: center; ">
-                    <div class="selectFurnitureButton" onclick="selectFurniture()">
-                        Help Matchi and his friends!
-                    </div>
+            <div id="select-items" style="display: none; justify-content: center; align-items: center; margin: 0; padding: 0;">
+                    <form class="container" action="/apartment" method="post">
+                        <div class="box" style="display: flex; justify-content: center; align-items: center; margin: 0; padding: 0;">
+
+                            <div class="scrollable-section small-scrollable">
+                                <h2 style="color: var(--primary-color); padding-left: 25px; padding-top: 10px; padding-bottom: 10px; text-align: left;">Bedroom</h2>
+                                {% for item in items["bedroom"] %}
+                                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
+                                    <div class="product-item" onclick="toggleCheckbox(this)">
+                                        <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
+                                        <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
+                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <h2 style="color: var(--primary-color); padding-left: 25px; padding-top: 10px; padding-bottom: 10px; text-align: left;">Living</h2>
+                                {% for item in items["livingroom"] %}
+                                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
+                                    <div class="product-item" onclick="toggleCheckbox(this)">
+                                        <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
+                                        <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
+                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <h2 style="color: var(--primary-color); padding-left: 25px; padding-top: 10px; padding-bottom: 10px; text-align: left;">Sanitary</h2>
+                                {% for item in items["sanitary"] %}
+                                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
+                                    <div class="product-item" onclick="toggleCheckbox(this)">
+                                        <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
+                                        <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
+                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <h2 style="color: var(--primary-color); padding-left: 25px; padding-top: 10px; padding-bottom: 10px; text-align: left;">Other</h2>
+                                {% for item in items["other"] %}
+                                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
+                                    <div class="product-item" onclick="toggleCheckbox(this)">
+                                        <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
+                                        <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
+                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="box" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <h1>Help Matchi</h1>
+                            <p style="text-wrap: balanced;">Please select the items you want to purchase for Matchi and his friends.</p><br>
+                            
+                            <table style="width: 45vw; text-align: left; margin-left: auto; margin-right: auto;">
+                                <tr style="color: var(--primary-color);">
+                                    <td style="width: 50%;">Item</td>
+                                    <td style="width: 50%;">Price</td>
+                                </tr>
+                            </table>
+                        
+                            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; width: 45vw;">
+                            
+                            <table id="items-selected" style="width: 45vw; text-align: left; margin-left: auto; margin-right: auto; color: var(--text-color);">
+                                <tr>
+                                    <td style="width: 50%;">Matchi is sad. You didn't select any items.</td>
+                                    <td style="width: 50%;"></td>
+                                </tr>
+                            </table>
+                        
+                            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; width: 45vw;">
+
+                            <table style="width: 45vw; text-align: left; margin-left: auto; margin-right: auto; color: var(--text-color);">
+                                <tr>
+                                    <td style="width: 50%;">Total</td>
+                                    <td id="total-price" style="width: 50%;">0.00€</td>
+                                </tr>
+                            </table>
+                        
+                            <div style="width: 100%; display: flex; justify-content: center; text-align: center; padding: 30px;">
+                                <button type="submit" class="selectFurnitureButton">xyz</button>
+                            </div>
+                        </div>
+                        
+                    </form>
                 </div>
             </div>
         </div>
@@ -375,6 +500,85 @@
             scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["other"][i]["url"] + "' style='text-decoration: none; color: var(--text-color);'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["other"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balanced;'>" + items["other"][i]["description"] + "</p><p class='price-bedroom'>" + items["other"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["other"][i]["img"] + "' alt='" + items["other"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
+
+    function selectFurniture() {
+        document.getElementById("ask-for-funding").style.display = "none";
+        document.getElementById("select-items").style.display = "flex";
+    }
+
+    function toggleCheckbox(item) {
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+  
+        if (checkbox.checked) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+
+        updateTotalPrice();
+    }
+
+
+    // Define a map to store selected items and their prices
+    var selectedItemsMap = new Map();
+
+    function updateTotalPrice() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let totalPrice = 0;
+
+        selectedItemsMap.clear(); // Clear the map
+
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+            const itemName = checkbox.name;
+            const itemPrice = parseFloat(checkbox.value);
+            totalPrice += itemPrice;
+            
+            // Store the item and its price in the map
+            selectedItemsMap.set(itemName, itemPrice);
+            }
+    });
+
+    document.getElementById('total-price').textContent = totalPrice.toFixed(2) + "€";
+        displaySelectedItems();
+    }
+
+    function displaySelectedItems() {
+        const itemsSelectedContainer = document.getElementById('items-selected');
+        itemsSelectedContainer.innerHTML = ""; // Clear previous content
+
+        selectedItemsMap.forEach((price, itemName) => {
+            const row = document.createElement('tr');
+            const itemNameCell = document.createElement('td');
+            const priceCell = document.createElement('td');
+
+            itemNameCell.textContent = itemName;
+            priceCell.textContent = price.toFixed(2) + "€";
+
+            row.appendChild(itemNameCell);
+            row.appendChild(priceCell);
+
+            itemsSelectedContainer.appendChild(row);
+        });
+
+        if (selectedItemsMap.size == 0) {
+            const row = document.createElement('tr');
+            const itemNameCell = document.createElement('td');
+            const priceCell = document.createElement('td');
+
+            itemNameCell.textContent = "Matchi is sad. You didn't select any items.";
+            priceCell.textContent = "";
+
+            row.appendChild(itemNameCell);
+            row.appendChild(priceCell);
+
+            itemsSelectedContainer.appendChild(row);
+        }
+    }
+
+
+    
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
