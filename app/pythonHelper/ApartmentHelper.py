@@ -8,13 +8,28 @@ class ApartmentHelper:
     def search_product(self, url):
         request = requests.get(url).text
         soup = BeautifulSoup(request, 'html.parser')
+        product = {"name": None, "price": None, "description": None, "images": None, "url": None}
         
         product_images = []
         images = soup.find_all('img', {'class': 'pip-image'})
         for image in images:
             product_images.append(image['src'])
+        product["images"] = product_images
         
-        return product_images
+        name = soup.find('span', {'class': 'pip-header-section__title--big notranslate'})
+        product["name"] = name.text
+        
+        price = soup.find('span', {'class': 'pip-temp-price__sr-text'})
+        price = price.text.replace("€", "")
+        price = price.replace("Preis", "")
+        product["price"] = price.strip()
+        
+        description = soup.find('span', {'class': 'pip-header-section__description-text'})
+        product["description"] = description.text
+        
+        product["url"] = url
+        
+        return product
 
     def get_items_(self):
         return  {"bedroom": [

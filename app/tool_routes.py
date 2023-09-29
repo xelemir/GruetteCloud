@@ -305,11 +305,8 @@ def apartment2():
 
 @tool_route.route("/search_product/<path:url>", methods=["GET"])
 def search_product(url):
-    images = ApartmentHelper.ApartmentHelper().search_product(url)
-    #print(images)
-    #return {"response": "success", "images": images}
-    #return {"response": "success"}
-    return jsonify({"images": images})
+    product = ApartmentHelper.ApartmentHelper().search_product(url)
+    return jsonify(product)
 
 
 #search_product("https://www.ikea.com/de/de/p/nordkisa-kleiderschrank-offen-schiebetuer-bambus-00439468/")

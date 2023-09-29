@@ -14,9 +14,9 @@
             overflow-y: auto;
             border-radius: 40px;
             overflow: auto;
-            width: 80%;
-            height: 90svh;
+            height: 40%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            background: var(--background-tile-color);
         }
 
         /* For WebKit (Chrome and Safari) */
@@ -40,11 +40,12 @@
             padding: 10px;
             cursor: pointer;
             border-radius: 30px;
+            border: 2px solid transparent;
           }
       
-          .product-item.selected {
-            background-color: var(--secondary-color);
-          }
+        .product-item.selected {
+            border: 2px solid var(--primary-color);
+        }
       
           .product-image {
             max-height: 50px;
@@ -57,6 +58,34 @@
             display: flex;
             align-items: center;
           }
+
+
+
+        .mobile-flex-direction-column {
+            flex-direction: column;
+        }
+
+        .dynamic-stacked-width {
+            width: 100%;
+        }
+
+        .dynamic-box-width {
+            width: 100%;
+        }
+
+        @media only screen and (min-width: 768px) {
+            .mobile-flex-direction-column {
+                flex-direction: row;
+            }
+
+            .dynamic-stacked-width {
+                width: 80%;
+            }
+
+            .dynamic-box-width {
+                width: 50%;
+            }
+        }
         </style>
 </head>
 <body>
@@ -73,31 +102,144 @@
         {% include "components/nav-element.html" %}
 	</div>
 
-
-	<div style="text-align: center; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-        <h1 style="font-size: 3em;">Add Product Link</h1>
-        <input type="text" id="urlInput" placeholder="Product Link" style="width: 50%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin: 10px 0px;">
-        
-        <div class="scrollable-section" style="padding: 5px;">
-            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
-            <!--<div class="product-item" onclick="toggleCheckbox(this)">
-                <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
-                <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
-                    <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
-                    <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
-                </label>
-            </div>-->
-            <div id="searchResults"></div>
-
-        </div>
-    </div>
     
+	<div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <form action="/add_product" method="POST" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <h1 style="font-size: 3em;">Add Product</h1>
+            <input type="text" id="urlInput" name="product-url" placeholder="Product Link" style="width: 100%; margin: 0; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" autocomplete="off" required>
+            <!--<div id="searchResults" class="scrollable-section" style="padding: 5px; margin-top: 20px; display: none; width: 50%;">
+                <h2 style="font-size: 2em; margin: 0; margin-bottom: 10px;">Select Product Image</h2>
+                <div style="padding: 5px; margin-top: 20px; width: 50%;">
+                    other stuff
+                </div>
+                <div id="searchResultsImages"></div>
+            </div>-->
+            <div id="searchResults" class="mobile-flex-direction-column" style="width: 100%; margin: 0; margin-top: 20px; border-radius: 30px; padding: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; align-items: center; justify-content: center;">
+                <div class="dynamic-box-width">
+                    <img id="product-img" src="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg" style="width: 100%; border-radius: 20px;">
+                    <input type="hidden" id="product-image-input" name="product-image" value="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg">
+                </div>
+                <div class="dynamic-box-width">
+                    <h2 id="product-name" style="font-size: 2em; margin: 0; margin-bottom: 10px; text-wrap: balance;">Landskrona</h2>
+                    <input type="hidden" id="product-name-input" name="product-name" value="Landskrona" oninput="updateProduct()" style="border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 20px;" autocomplete="off">
+                    <p id="product-description" style="font-size: 1.2em; margin: 0; margin-bottom: 10px; text-wrap: balance;">2er-Sofa, Gunnared hellgrün/Holz</p>
+                    <input type="hidden" id="product-description-input" name="product-description" value="2er-Sofa, Gunnared hellgrün/Holz" oninput="updateProduct()" style="border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 20px;" autocomplete="off">
+                    <p id="product-price" style="font-size: 1.2em; margin: 0; margin-bottom: 10px; text-wrap: balance;">599.00 €</p>
+                    <input type="hidden" id="product-price-input" name="product-price" value="599.00€" oninput="updateProduct()" style="border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" autocomplete="off">
+                    
+                    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin-top: 20px;">
+                        <p class="dynamic-stacked-width" style="font-size: 1.2em; margin: 0; margin-bottom: 10px; text-wrap: balance; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px; ">
+                            <select name="category" class="login-input" style="-webkit-appearance: none; height: 40px; margin: 0; padding-left: 10px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
+                                <option style="color: black;" value="">Select Category</option>
+                                <option style="color: black;" value="Bedroom">Bedroom</option>
+                                <option style="color: black;" value="Living Room">Living Room</option>
+                                <option style="color: black;" value="Sanitary">Sanitary</option>
+                                <option style="color: black;" value="Other">Other</option>
+                            </select>
+                            <span style="height: 40px; border: 2px solid var(--box-shadow-color); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 30px;">
+                                <span class="material-symbols-outlined" style="padding-left: 10px; padding-right: 10px;" onclick="increaseQuantity()">add</span>
+                                <span id="product-quantity" style="padding-top: 5px; padding-bottom: 5px;">1</span>
+                                <input type="hidden" id="product-quantity-input" name="product-quantity" value="1">
+                                <span class="material-symbols-outlined" style="padding-left: 10px; padding-right: 10px;" onclick="decreaseQuantity()">remove</span>
+                            </span>
+                            <span class="material-symbols-outlined" onclick="toggleEdit()" style="height: 40px; min-width: 40px; border: 2px solid var(--box-shadow-color); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%;">edit</span>
+                        </p>
+                    </div>
+                    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin-top: 20px;">
+                        <button class="dynamic-stacked-width" type="submit" style="cursor: pointer; padding: 10px; background-color: var(--primary-color); color: var(--white-color); display: flex; align-items: center; justify-content: center; font-size: 1.2em; border-radius: 30px; border: none;"><span class="material-symbols-outlined" style="margin-right: 10px;">favorite</span>Add Product</button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
 	<div id="cookie-banner"></div>
-    {% include "components/footer.html" %}
 </body>
 </html>
 
 <script>
+    $('#urlInput').on('input', function() {
+        var url = $(this).val();
+        if (url !== "") {
+            var encodedUrl = encodeURIComponent(url);
+
+            $.ajax({
+                url: '/search_product/' + encodedUrl,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Display the images dynamically
+                    displayResult(response.name, response.price, response.description, response.images, response.url);
+                },
+                error: function(xhr, status, error) {
+                    // Log or display the error message and status code
+                    console.error('Error:', error);
+                    console.error('Status Code:', xhr.status);
+                }
+            });
+        } else {
+            // Clear the search results if the input is empty
+        }
+    });
+
+    function displayResult(name, price, description, images, url) {
+        document.getElementById('searchResults').style.display = 'flex';
+        document.getElementById('product-name').innerHTML = name;
+        document.getElementById('product-description').innerHTML = description;
+        document.getElementById('product-price').innerHTML = price + ' €';
+        document.getElementById('product-img').src = images[0];
+        document.getElementById('product-image-input').value = images[0];
+        document.getElementById('product-name-input').value = name;
+        document.getElementById('product-description-input').value = description;
+        document.getElementById('product-price-input').value = price;
+        document.getElementById('urlInput').value = url;
+    }
+
+    function toggleEdit() {
+        if (document.getElementById('product-name-input').type == 'text') {
+            document.getElementById('product-name-input').type = 'hidden';
+            document.getElementById('product-description-input').type = 'hidden';
+            document.getElementById('product-price-input').type = 'hidden';
+            document.getElementById('product-name').style.display = 'block';
+            document.getElementById('product-description').style.display = 'block';
+            document.getElementById('product-price').style.display = 'block';
+        } else {
+            document.getElementById('product-name-input').type = 'text';
+            document.getElementById('product-description-input').type = 'text';
+            document.getElementById('product-price-input').type = 'text';
+            document.getElementById('product-name').style.display = 'none';
+            document.getElementById('product-description').style.display = 'none';
+            document.getElementById('product-price').style.display = 'none';
+        }
+    }
+
+    function updateProduct() {
+        document.getElementById('product-name').innerHTML = document.getElementById('product-name-input').value;
+        document.getElementById('product-description').innerHTML = document.getElementById('product-description-input').value;
+        document.getElementById('product-price').innerHTML = document.getElementById('product-price-input').value;
+    }
+
+    function increaseQuantity() {
+        var quantity = parseInt(document.getElementById('product-quantity').innerHTML);
+        if (quantity < 30) {
+            quantity++;
+        }
+        document.getElementById('product-quantity').innerHTML = quantity;
+        document.getElementById('product-quantity-input').value = quantity;
+    }
+
+    function decreaseQuantity() {
+        var quantity = parseInt(document.getElementById('product-quantity').innerHTML);
+        if (quantity > 1) {
+            quantity--;
+        }
+        document.getElementById('product-quantity').innerHTML = quantity;
+        document.getElementById('product-quantity-input').value = quantity;
+    }
+
+</script>
+
+<!--<script>
     // Function to perform AJAX request on input change
     $('#urlInput').on('input', function() {
         var url = $(this).val();
@@ -118,42 +260,55 @@
                     // Log or display the error message and status code
                     console.error('Error:', error);
                     console.error('Status Code:', xhr.status);
-                    $('#searchResults').text('An error occurred.');
+                    $('#searchResultsImages').text('An error occurred.');
                 }
             });
         } else {
             // Clear the search results if the input is empty
-            $('#searchResults').empty();
+            $('#searchResultsImages').empty();
         }
     });
 
     // Function to display the images dynamically
     function displayImages(images) {
-        var imagesDiv = $('#searchResults');
+        var imagesDiv = $('#searchResultsImages');
+        document.getElementById('searchResults').style.display = 'block';
         imagesDiv.empty(); // Clear previous results
-
-        // Create an image selector form
-        var imageForm = $('<form id="imageForm" action="/submit_image" method="post">');
 
         // Iterate through the images and create HTML elements for each
         for (var i = 0; i < images.length; i++) {
             var imageUrl = images[i];
-            var imageElement = $('<div class="product-item" onclick="toggleCheckbox(this)">' +
+            var imageElement = $('<hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">' +
+                '<div class="product-item" onclick="toggleCheckbox(this, \'' + imageUrl + '\')">' +
                 '<input type="checkbox" name="selectedImage" value="' + imageUrl + '" style="display: none;">' +
-                '<img src="' + imageUrl + '" alt="Product Image">' +
-                '<label for="' + imageUrl + '">' +
-                '<span class="product-details">' + imageUrl + '</span>' +
+                '<img src="' + imageUrl + '" alt="Product Image" style="border-radius: 20px; height: 100px;">' +
                 '</label>' +
                 '</div>');
+
+            // Append each image element to the imagesDiv
+            imagesDiv.append(imageElement);
         }
-
-        // Add a submit button
-        imageForm.append('<input type="submit" value="Submit">');
-
-        // Append the image form to the results div
-        imagesDiv.append(imageForm);
     }
-</script>
+
+    // Function to handle image selection
+    function toggleCheckbox(element) {
+        var checkbox = $(element).find('input[type="checkbox"]');
+        var allCheckboxes = $('input[type="checkbox"]'); // Get all checkboxes
+
+        checkbox.prop('checked', !checkbox.prop('checked')); // Toggle the checkbox
+        $(element).toggleClass('selected'); // Toggle the selected class
+
+
+        // Unselect all checkboxes except the current one
+        allCheckboxes.each(function() {
+            if (this !== checkbox[0]) {
+                $(this).prop('checked', false);
+                $(this).closest('.product-item').removeClass('selected');
+            }
+        });
+
+    }
+</script>-->
 
 
 
