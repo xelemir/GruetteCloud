@@ -1,7 +1,7 @@
 import datetime
 import os
 import secrets
-from flask import render_template, request, redirect, send_file, session, Blueprint, url_for
+from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from werkzeug.security import generate_password_hash
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper, ApartmentHelper
@@ -245,7 +245,7 @@ def send_support():
 @tool_route.route("/apartment", methods=["GET", "POST"])
 def apartment():
     if request.method == "GET":
-        items = ApartmentHelper.items
+        items = ApartmentHelper.ApartmentHelper().get_items_()
         return render_template("apartment.html", menu=th.user(session), items=items)
     
     else:
@@ -298,3 +298,18 @@ def apartment():
                 mail.send_email(jan[0]["email"], jan[0]["username"], "Budget Approved", text, jan[0]["verification_code"])
         
         return render_template("apartment_approved.html", menu=th.user(session), products=products, total_price=total_price)
+    
+@tool_route.route("/apartment2", methods=["GET"])
+def apartment2():
+    return render_template("apartment_add_items.html", menu=th.user(session))
+
+@tool_route.route("/search_product/<path:url>", methods=["GET"])
+def search_product(url):
+    images = ApartmentHelper.ApartmentHelper().search_product(url)
+    #print(images)
+    #return {"response": "success", "images": images}
+    #return {"response": "success"}
+    return jsonify({"images": images})
+
+
+#search_product("https://www.ikea.com/de/de/p/nordkisa-kleiderschrank-offen-schiebetuer-bambus-00439468/")
