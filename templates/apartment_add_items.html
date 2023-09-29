@@ -118,6 +118,7 @@
                 <div class="dynamic-box-width">
                     <img id="product-img" src="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg" style="width: 100%; border-radius: 20px;">
                     <input type="hidden" id="product-image-input" name="product-image" value="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg">
+                    <div id="imagesResults" class="scrollable-section"></div>
                 </div>
                 <div class="dynamic-box-width">
                     <h2 id="product-name" style="font-size: 2em; margin: 0; margin-bottom: 10px; text-wrap: balance;">Landskrona</h2>
@@ -193,9 +194,12 @@
         document.getElementById('product-description-input').value = description;
         document.getElementById('product-price-input').value = price;
         document.getElementById('urlInput').value = url;
+        this.images = images;
     }
 
     function toggleEdit() {
+        var imagesDiv = $('#imagesResults');
+
         if (document.getElementById('product-name-input').type == 'text') {
             document.getElementById('product-name-input').type = 'hidden';
             document.getElementById('product-description-input').type = 'hidden';
@@ -203,6 +207,8 @@
             document.getElementById('product-name').style.display = 'block';
             document.getElementById('product-description').style.display = 'block';
             document.getElementById('product-price').style.display = 'block';
+            imagesDiv.empty(); // Clear previous results
+
         } else {
             document.getElementById('product-name-input').type = 'text';
             document.getElementById('product-description-input').type = 'text';
@@ -210,7 +216,43 @@
             document.getElementById('product-name').style.display = 'none';
             document.getElementById('product-description').style.display = 'none';
             document.getElementById('product-price').style.display = 'none';
+
+            // Display all possible all selectable images as checkboxes
+
+            for (var i = 0; i < this.images.length; i++) {
+                var imageUrl = this.images[i];
+                var imageElement = $('<hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">' +
+                    '<div class="product-item' +
+                    (imageUrl === document.getElementById('product-image-input').value ? ' selected' : '') +
+                    '" onclick="toggleCheckbox(this, \'' + imageUrl + '\')">' +
+                    '<input type="checkbox" name="selectedImage" value="' + imageUrl + '" style="display: none;">' +
+                    '<img src="' + imageUrl + '" alt="Product Image" style="border-radius: 20px; height: 100px;">' +
+                    '</label>' +
+                    '</div>');
+
+                // Append each image element to the imagesDiv
+                imagesDiv.append(imageElement);
+            }
         }
+    }
+
+    function toggleCheckbox(element) {
+        var checkbox = $(element).find('input[type="checkbox"]');
+        var allCheckboxes = $('input[type="checkbox"]'); // Get all checkboxes
+
+        checkbox.prop('checked', !checkbox.prop('checked')); // Toggle the checkbox
+        $(element).toggleClass('selected'); // Toggle the selected class
+
+        // update main image
+        document.getElementById('product-img').src = checkbox.val();
+
+        // Unselect all other checkboxes
+        allCheckboxes.each(function() {
+            if (this !== checkbox[0]) {
+                $(this).prop('checked', false);
+                $(this).closest('.product-item').removeClass('selected');
+            }
+        });
     }
 
     function updateProduct() {
