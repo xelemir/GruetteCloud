@@ -244,9 +244,16 @@ def send_support():
 
 @tool_route.route("/apartment", methods=["GET", "POST"])
 def apartment():
+    sql = SQLHelper.SQLHelper()
+
     if request.method == "GET":
-        items = ApartmentHelper.ApartmentHelper().get_items_()
-        return render_template("apartment.html", menu=th.user(session), items=items)
+        items = sql.readSQL("SELECT * FROM gruttecloud_products")
+        items = ApartmentHelper.ApartmentHelper().format_items(items)
+        
+        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+        is_admin = bool(user[0]["is_admin"])
+        
+        return render_template("apartment.html", menu=th.user(session), items=items, is_admin=is_admin)
     
     else:
         total_price = 0
@@ -298,15 +305,33 @@ def apartment():
                 mail.send_email(jan[0]["email"], jan[0]["username"], "Budget Approved", text, jan[0]["verification_code"])
         
         return render_template("apartment_approved.html", menu=th.user(session), products=products, total_price=total_price)
-    
-@tool_route.route("/apartment2", methods=["GET"])
-def apartment2():
-    return render_template("apartment_add_items.html", menu=th.user(session))
 
 @tool_route.route("/search_product/<path:url>", methods=["GET"])
 def search_product(url):
     product = ApartmentHelper.ApartmentHelper().search_product(url)
     return jsonify(product)
 
-
-#search_product("https://www.ikea.com/de/de/p/nordkisa-kleiderschrank-offen-schiebetuer-bambus-00439468/")
+@tool_route.route("/add_product", methods=["GET", "POST"])
+def add_product():
+    if "username" not in session:
+            return redirect("/")
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+    if not bool(user[0]["is_admin"]):
+        return redirect("/")
+        
+    if request.method == "GET":
+        return render_template("apartment_add_items.html", menu=th.user(session))
+    
+    else:
+        name = request.form["product-name"]
+        price = request.form["product-price"]
+        url = request.form["product-url"]
+        image_src = request.form["product-image"]
+        description = request.form["product-description"]
+        quantity = request.form["product-quantity"]
+        category = request.form["category"]
+        
+        sql.writeSQL(f"INSERT INTO gruttecloud_products (name, price, url, image_src, description, quantity, category, approved) VALUES ('{name}', '{price}', '{url}', '{image_src}', '{description}', '{quantity}', '{category}', {False})")
+        
+        return redirect("/apartment#section2")

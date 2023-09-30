@@ -10,18 +10,9 @@
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .scrollable-section {
-            overflow-y: auto;
-            border-radius: 40px;
-            overflow: auto;
-            height: 40%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            background: var(--background-tile-color);
-        }
-
         /* For WebKit (Chrome and Safari) */
         .scrollable-section::-webkit-scrollbar {
-            width: 10px;
+            height: 10px;
         }
 
         .scrollable-section::-webkit-scrollbar-thumb {
@@ -30,14 +21,13 @@
         }
 
         .scrollable-section::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color); /* Change the thumb color on hover */
+            background: var(--box-shadow-color);
         }
 
         .product-item {
             display: flex;
             flex-direction: row;
             align-items: center;
-            padding: 10px;
             cursor: pointer;
             border-radius: 30px;
             border: 2px solid transparent;
@@ -47,12 +37,12 @@
             border: 2px solid var(--primary-color);
         }
       
-          .product-image {
+        .product-image {
             max-height: 50px;
             border-radius: 50%;
             max-width: 50px;
             margin-right: 10px;
-          }
+        }
       
           .product-details {
             display: flex;
@@ -91,7 +81,7 @@
 <body>
 	<div class="header">
         <div class="dark-mode-toggle">
-            <a href="/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/apartment#section2" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
 		<div class="centered-content">
@@ -103,22 +93,16 @@
 	</div>
 
     
-	<div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+	<div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100svh;">
         <form action="/add_product" method="POST" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <h1 style="font-size: 3em;">Add Product</h1>
             <input type="text" id="urlInput" name="product-url" placeholder="Product Link" style="width: 100%; margin: 0; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" autocomplete="off" required>
-            <!--<div id="searchResults" class="scrollable-section" style="padding: 5px; margin-top: 20px; display: none; width: 50%;">
-                <h2 style="font-size: 2em; margin: 0; margin-bottom: 10px;">Select Product Image</h2>
-                <div style="padding: 5px; margin-top: 20px; width: 50%;">
-                    other stuff
-                </div>
-                <div id="searchResultsImages"></div>
-            </div>-->
             <div id="searchResults" class="mobile-flex-direction-column" style="width: 100%; margin: 0; margin-top: 20px; border-radius: 30px; padding: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; align-items: center; justify-content: center;">
                 <div class="dynamic-box-width">
-                    <img id="product-img" src="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg" style="width: 100%; border-radius: 20px;">
+                    <img id="product-img" src="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg" style="width: 100%; border-radius: 20px; max-width: 80vw;">
                     <input type="hidden" id="product-image-input" name="product-image" value="https://www.ikea.com/de/de/images/products/landskrona-2er-sofa-gunnared-hellgruen-holz__0828967_pe680176_s5.jpg">
-                    <div id="imagesResults" class="scrollable-section"></div>
+                    <div id="imagesResults" class="scrollable-section" style="max-width: 80vw; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; padding-bottom: 15px; margin-top: 20px; gap: 10px; overflow-x: auto; white-space: nowrap;">
+                    </div>
                 </div>
                 <div class="dynamic-box-width">
                     <h2 id="product-name" style="font-size: 2em; margin: 0; margin-bottom: 10px; text-wrap: balance;">Landskrona</h2>
@@ -194,7 +178,21 @@
         document.getElementById('product-description-input').value = description;
         document.getElementById('product-price-input').value = price;
         document.getElementById('urlInput').value = url;
-        this.images = images;
+
+        this.price = price;
+        
+        for (var i = 0; i < images.length; i++) {
+            var imageUrl = images[i];
+            var imageElement = $('<div class="product-item' +
+                (imageUrl === document.getElementById('product-image-input').value ? ' selected' : '') +
+                '" onclick="toggleCheckbox(this, \'' + imageUrl + '\')">' +
+                '<input type="checkbox" name="selectedImage" value="' + imageUrl + '" style="display: none;">' +
+                '<img src="' + imageUrl + '" alt="Product Image" style="border-radius: 30px; height: 100px;">' +
+                '</div>');
+
+            // Append each image element to the imagesDiv
+            $('#imagesResults').append(imageElement);
+        }
     }
 
     function toggleEdit() {
@@ -207,8 +205,6 @@
             document.getElementById('product-name').style.display = 'block';
             document.getElementById('product-description').style.display = 'block';
             document.getElementById('product-price').style.display = 'block';
-            imagesDiv.empty(); // Clear previous results
-
         } else {
             document.getElementById('product-name-input').type = 'text';
             document.getElementById('product-description-input').type = 'text';
@@ -216,23 +212,6 @@
             document.getElementById('product-name').style.display = 'none';
             document.getElementById('product-description').style.display = 'none';
             document.getElementById('product-price').style.display = 'none';
-
-            // Display all possible all selectable images as checkboxes
-
-            for (var i = 0; i < this.images.length; i++) {
-                var imageUrl = this.images[i];
-                var imageElement = $('<hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">' +
-                    '<div class="product-item' +
-                    (imageUrl === document.getElementById('product-image-input').value ? ' selected' : '') +
-                    '" onclick="toggleCheckbox(this, \'' + imageUrl + '\')">' +
-                    '<input type="checkbox" name="selectedImage" value="' + imageUrl + '" style="display: none;">' +
-                    '<img src="' + imageUrl + '" alt="Product Image" style="border-radius: 20px; height: 100px;">' +
-                    '</label>' +
-                    '</div>');
-
-                // Append each image element to the imagesDiv
-                imagesDiv.append(imageElement);
-            }
         }
     }
 
@@ -243,8 +222,9 @@
         checkbox.prop('checked', !checkbox.prop('checked')); // Toggle the checkbox
         $(element).toggleClass('selected'); // Toggle the selected class
 
-        // update main image
+        // update main image and hidden input
         document.getElementById('product-img').src = checkbox.val();
+        document.getElementById('product-image-input').value = checkbox.val();
 
         // Unselect all other checkboxes
         allCheckboxes.each(function() {
@@ -259,6 +239,7 @@
         document.getElementById('product-name').innerHTML = document.getElementById('product-name-input').value;
         document.getElementById('product-description').innerHTML = document.getElementById('product-description-input').value;
         document.getElementById('product-price').innerHTML = document.getElementById('product-price-input').value;
+        this.price = document.getElementById('product-price-input').value;
     }
 
     function increaseQuantity() {
@@ -268,6 +249,7 @@
         }
         document.getElementById('product-quantity').innerHTML = quantity;
         document.getElementById('product-quantity-input').value = quantity;
+        document.getElementById('product-price').innerHTML = (this.price * quantity) + ' €';
     }
 
     function decreaseQuantity() {
@@ -277,6 +259,7 @@
         }
         document.getElementById('product-quantity').innerHTML = quantity;
         document.getElementById('product-quantity-input').value = quantity;
+        document.getElementById('product-price').innerHTML = (this.price * quantity) + ' €';
     }
 
 </script>

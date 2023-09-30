@@ -30,6 +30,31 @@ class ApartmentHelper:
         product["url"] = url
         
         return product
+    
+    def format_items(self, items):
+        bedroom = []
+        livingroom = []
+        sanitary = []
+        other = []
+        
+        for item in items:
+            if item["quantity"] != 1:
+                item["description"] = f"{item['description']}, {item['price']} per item"
+                item["price"] = item["price"] * item["quantity"]
+                item["name"] = f"{item['quantity']}x {item['name']}"
+                
+            item["price"] = f"{item['price']}€"
+            
+            if item["category"] == "Bedroom":
+                bedroom.append(item)
+            elif item["category"] == "Living Room":
+                livingroom.append(item)
+            elif item["category"] == "Sanitary":
+                sanitary.append(item)
+            else:
+                other.append(item)
+                
+        return {"bedroom": bedroom, "livingroom": livingroom, "sanitary": sanitary, "other": other}
 
     def get_items_(self):
         return  {"bedroom": [

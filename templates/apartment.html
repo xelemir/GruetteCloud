@@ -214,7 +214,7 @@
                                             <p class="price-bedroom">{{ item["price"] }}</p>
                                         </div>
                                         <div style="width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;">
-                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" style="max-height: 200px; border-radius: 30px; max-width: 100%;">
+                                            <img src="{{ item["image_src"] }}" alt="{{ item["name"] }}" style="max-height: 200px; border-radius: 30px; max-width: 100%;">
                                         </div>
                                     </div>
                                 </a>
@@ -226,7 +226,7 @@
                     <h1 style="margin-top: -30px;" id="room-title">Bedroom</h1>
                     <div id="room-total" style="margin-bottom: 20px;"></div>
                     <div style="width: 100%; justify-content: center; text-align: center; padding: 0;">
-                        <div style="width: 100%; display: flex; justify-content: center; text-align: center; padding: 0;">
+                        <div style="width: 100%; display: flex; justify-content: center; text-align: center; padding: 0; padding-bottom: 20px;">
                             <div class="select-room" style="text-align: center; display: flex; flex-direction: row; align-items: center;">
                                 <p id="bedroom" class="room" onclick="bedroom()" style="background-color: var(--primary-color); color: var(--white-color);">Bedroom</p>
                                 <p id="livingroom" class="room" onclick="livingroom()" style="background-color: transparent; color: var(--text-color);">Living</p>
@@ -234,6 +234,9 @@
                                 <p id="other" class="room" onclick="other()" style="background-color: transparent; color: var(--text-color);">Other</p>
                             </div>
                         </div>
+                        {% if is_admin %}
+                            <p><a href="/add_product" style="color: var(--text-color); cursor: pointer;">Add Item</a></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -255,7 +258,7 @@
                         </div>
                         <div style="width: 100%; display: flex; justify-content: center; text-align: center; padding: 30px;">
                             <div class="selectFurnitureButton" onclick="selectFurniture()">
-                                <p>Help Matchi and his friends!</p>
+                                <p style="color: var(--white-color);">Help Matchi and his friends!</p>
                             </div>
                         </div>
                     </div>
@@ -275,9 +278,9 @@
                             However they need your help to fund the furniture.<br>Can you help them?
                         </p>
                     </div>
-                    <div style="width: 100%; display: flex; justify-content: center; text-align: center; ">
+                    <div style="width: 100%; display: flex; justify-content: center; text-align: center;">
                         <div class="selectFurnitureButton" onclick="selectFurniture()">
-                            <p>Help Matchi and his friends!</p>
+                            <p style="color: var(--white-color);">Help Matchi and his friends!</p>
                         </div>
                     </div>
                 </div>
@@ -293,7 +296,7 @@
                                     <div class="product-item" onclick="toggleCheckbox(this)">
                                         <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
                                         <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
-                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <img src="{{ item["image_src"] }}" alt="{{ item["name"] }}" class="product-image">
                                             <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
                                         </label>
                                     </div>
@@ -304,7 +307,7 @@
                                     <div class="product-item" onclick="toggleCheckbox(this)">
                                         <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
                                         <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
-                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <img src="{{ item["image_src"] }}" alt="{{ item["name"] }}" class="product-image">
                                             <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
                                         </label>
                                     </div>
@@ -315,7 +318,7 @@
                                     <div class="product-item" onclick="toggleCheckbox(this)">
                                         <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
                                         <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
-                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <img src="{{ item["image_src"] }}" alt="{{ item["name"] }}" class="product-image">
                                             <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
                                         </label>
                                     </div>
@@ -326,7 +329,7 @@
                                     <div class="product-item" onclick="toggleCheckbox(this)">
                                         <input type="checkbox" id="{{ item["name"] }}" name="{{ item["name"] }}" value="{{ item["price"] }}" style="display: none;">
                                         <label for="{{ item["name"] }}" style="width: 100%; display: flex; align-items: center;">
-                                            <img src="{{ item["img"] }}" alt="{{ item["name"] }}" class="product-image">
+                                            <img src="{{ item["image_src"] }}" alt="{{ item["name"] }}" class="product-image">
                                             <span class="product-details">{{ item["name"] }} | {{ item["description"] }} | {{ item["price"] }}</span>
                                         </label>
                                     </div>
@@ -431,7 +434,7 @@
         other_selector.style.color = "var(--text-color)";
 
         for (var i = 0; i < {{ items["bedroom"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["bedroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["bedroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["bedroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["bedroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["bedroom"][i]["img"] + "' alt='" + items["bedroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["bedroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["bedroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["bedroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["bedroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["bedroom"][i]["image_src"] + "' alt='" + items["bedroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
@@ -453,7 +456,7 @@
         other_selector.style.color = "var(--text-color)";
 
         for (var i = 0; i < {{ items["livingroom"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["livingroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["livingroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["livingroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["livingroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["livingroom"][i]["img"] + "' alt='" + items["livingroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["livingroom"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["livingroom"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["livingroom"][i]["description"] + "</p><p class='price-bedroom'>" + items["livingroom"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["livingroom"][i]["image_src"] + "' alt='" + items["livingroom"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
@@ -475,7 +478,7 @@
         other_selector.style.color = "var(--text-color)";
 
         for (var i = 0; i < {{ items["sanitary"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["sanitary"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["sanitary"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["sanitary"][i]["description"] + "</p><p class='price-bedroom'>" + items["sanitary"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["sanitary"][i]["img"] + "' alt='" + items["sanitary"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["sanitary"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["sanitary"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["sanitary"][i]["description"] + "</p><p class='price-bedroom'>" + items["sanitary"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["sanitary"][i]["image_src"] + "' alt='" + items["sanitary"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
@@ -497,7 +500,7 @@
         other_selector.style.color = "var(--white-color)";
 
         for (var i = 0; i < {{ items["other"] | length }}; i++) {
-            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["other"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["other"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["other"][i]["description"] + "</p><p class='price-bedroom'>" + items["other"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["other"][i]["img"] + "' alt='" + items["other"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
+            scrollableSection.innerHTML += "<div style='padding: 10px;'><a href='" + items["other"][i]["url"] + "' style='text-decoration: none; color: var(--text-color); cursor: pointer;'><div style='display: flex; align-items: center; width: 100%; background-color: var(--background-tile-color); border-radius: 30px;'><div style='width: 50%; display: block; justify-content: center; text-align: center; padding: 30px;'><h2 style='margin-bottom: 20px; color: var(--primary-color);'>" + items["other"][i]["name"] + "</h2><p style='margin-bottom: 10px; text-wrap: balance;'>" + items["other"][i]["description"] + "</p><p class='price-bedroom'>" + items["other"][i]["price"] + "</p></div><div style='width: 50%; display: block; justify-content: center; text-align: right; padding: 15px;'><img src='" + items["other"][i]["image_src"] + "' alt='" + items["other"][i]["name"] + "' style='max-height: 200px; border-radius: 30px; max-width: 100%;'></div></div></a></div>";
         }
     }
 
