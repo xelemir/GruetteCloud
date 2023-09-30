@@ -6,3 +6,4 @@ mysqlclient==2.1.1
 pytube
 pyotp
 Pillow
+beautifulsoup4
