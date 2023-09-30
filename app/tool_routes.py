@@ -335,3 +335,8 @@ def add_product():
         sql.writeSQL(f"INSERT INTO gruttecloud_products (name, price, url, image_src, description, quantity, category, approved) VALUES ('{name}', '{price}', '{url}', '{image_src}', '{description}', '{quantity}', '{category}', {False})")
         
         return redirect("/apartment#section2")
+    
+    
+@tool_route.route("/apply", methods=["GET", "POST"])
+def apply():
+    return render_template("apartment_apply.html", menu=th.user(session))

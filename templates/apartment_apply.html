@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<title>Apply for Apartment</title>
+	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <style>
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 90svh;
+        }
+
+        .application-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select {
+            width: 100%;
+            margin: 0;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            padding-left: 20px;
+            background-color: transparent;
+            border: 2px solid var(--box-shadow-color);
+            color: var(--text-color);
+
+            padding: 10px;
+            resize: horizontal;
+        }
+
+        
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div id="language-selection" onclick="toggleLanguageSelection()" style="cursor: pointer;">
+            <img src="https://www.gruettecloud.com/static/icons/us.png" style="width: 30px; height: 30px;">
+            <!--<img src="https://www.gruettecloud.com/static/icons/de.png" style="width: 30px; height: 30px;">-->
+        </div>
+		<div class="centered-content">
+            <a href="/" class="logo" title="Home">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+            </a>
+        </div>
+        {% include "components/nav-element.html" %}
+	</div>
+
+
+	<main>
+        <section class="content">
+            <h2 style="margin-bottom: 30px;">Apply to Be My Flatmate</h2>
+            
+            <div class="application-form">
+                <form action="/signup" method="POST" style="flex-direction: column;">
+                    <div id="section1" style="display: flex; flex-direction: column;">
+                        <input type="text" id="firstname" name="name" class="login-input" autocomplete="off" placeholder="Your name*" en-language="Your name*" de-language="Dein Name*" required>
+                        <div style="display: inline-flex; width: 300px; margin: 0; gap: 10px;">
+                            <input type="text" id="age" name="age" class="login-input" autocomplete="off" placeholder="Age*" en-language="Age*" de-language="Alter*" required>
+                            <input type="text" id="pronouns" name="pronouns" class="login-input" autocomplete="off" placeholder="Pronouns" en-language="Pronouns" de-language="Pronomen">
+                        </div>
+                        <input type="text" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email*" en-language="Email*" de-language="Email*" required>
+                        <input type="text" id="move-in-date" name="move-in-date" class="login-input" autocomplete="off" placeholder="Preferred move-in date*" en-language="Preferred move-in date*" de-language="Bevorzugtes Einzugsdatum*" required>
+
+                        <div style="display: inline-flex; width: 300px; gap: 20px;">
+                            <div class="send-button" onclick="section2()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                <span class="language" en-language="Next" de-language="Weiter">Next</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="section2" style="display: none; flex-direction: column;">
+                        <input type="text" id="occupation" name="occupation" class="login-input" autocomplete="off" placeholder="Occupation or field of study*" en-language="Occupation or field of study*" de-language="Beruf oder Studienfach*" required>
+                        <div style="display: inline-flex; width: 300px; margin: 0; gap: 10px;">
+                            <input type="text" id="language" name="language" class="login-input" autocomplete="off" placeholder="Language*" en-language="Language*" de-language="Sprache*" required>
+                            <input type="text" id="shared-apartment-experience" name="shared-apartment-experience" class="login-input" autocomplete="off" placeholder="Shared apartment experience" en-language="Shared apartment experience" de-language="WG-Erfahrung">
+                        </div>
+                        <select id="shared-apartment-experience" name="shared-apartment-experience" required style="-webkit-appearance: none;">
+                            <option value="" en-language="Shared apartment experience*" de-language="WG-Erfahrung*">Shared apartment experience*</option>
+                            <option value="yes" en-language="Yes" de-language="Ja">Yes</option>
+                            <option value="no" en-language="No" de-language="Nein">No</option>
+                        </select>
+                        <input type="text" id="move-in-date" name="move-in-date" class="login-input" autocomplete="off" placeholder="Preferred move-in date*" en-language="Preferred move-in date*" de-language="Bevorzugtes Einzugsdatum*" required>
+
+                        <div style="display: inline-flex; width: 300px; gap: 20px;">
+                            <div class="send-button" onclick="section1()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
+                            </div>
+                            <div class="send-button" onclick="section3()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                <span class="language" en-language="Next" de-language="Weiter">Next</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <!--<div style="display: inline-flex; width: 300px; gap: 20px;">
+                        <input type="email" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email*" required>
+                        <input type="phone" id="phone" name="phone" class="login-input" autocomplete="off" placeholder="Phone">
+                    </div>
+                    
+                    <input type="password" id="passwordSignUp" name="password" class="login-input" autocomplete="off" placeholder="Password*" required>
+                    <input type="password" id="password2SignUp" name="password2" class="login-input" autocomplete="off" placeholder="Repeat password*" required>
+                    <span style="display: flex; align-items: center; width: 300px; padding: 10px; padding-top: 20px;">
+                        <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                        <span style="font-size: 0.8em; text-align: left;">
+                            I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                            Fields with * are required.
+                        </span>
+
+                    </span>
+                    <div style="display: inline-flex; width: 300px; margin-top: 30px; gap: 20px;">
+                        <input type="submit" value="Submit Application" name="login" style="width: 100%; border-radius: 30px;" class="send-button">
+                    </div>-->
+                </form>
+            </div>
+        </section>
+    </main>
+	<div id="cookie-banner"></div>
+</body>
+</html>
+
+<script>
+    var languageSelection = document.getElementById("language-selection");
+
+    // if useragent is german, change language selection to german
+    if (navigator.language.includes("de")) {
+        languageSelection.innerHTML = '<img src="https://www.gruettecloud.com/static/icons/de.png" style="width: 30px; height: 30px;">';
+    }
+
+    function toggleLanguageSelection() {
+        // change the language selection icon
+        if (languageSelection.innerHTML.includes("us.png")) {
+            languageSelection.innerHTML = '<img src="https://www.gruettecloud.com/static/icons/de.png" style="width: 30px; height: 30px;">';
+        } else {
+            languageSelection.innerHTML = '<img src="https://www.gruettecloud.com/static/icons/us.png" style="width: 30px; height: 30px;">';
+        }
+
+        // change the language of the input fields
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (languageSelection.innerHTML.includes("us.png")) {
+                inputs[i].placeholder = inputs[i].getAttribute("en-language");
+            } else {
+                inputs[i].placeholder = inputs[i].getAttribute("de-language");
+            }
+        }
+
+        // change the language of elements with the class "language"
+        var languageElements = document.getElementsByClassName("language");
+        for (var i = 0; i < languageElements.length; i++) {
+            if (languageSelection.innerHTML.includes("us.png")) {
+                languageElements[i].innerHTML = languageElements[i].getAttribute("en-language");
+            } else {
+                languageElements[i].innerHTML = languageElements[i].getAttribute("de-language");
+            }
+        }
+    }
+
+    function section1() {
+        document.getElementById("section1").style.display = "flex";
+        document.getElementById("section2").style.display = "none";
+    }
+
+    function section2() {
+        document.getElementById("section1").style.display = "none";
+        document.getElementById("section2").style.display = "flex";
+    }
+
+</script>
+
+<script src="https://www.gruettecloud.com/static/cookies.js"></script>
