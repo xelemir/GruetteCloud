@@ -22,7 +22,7 @@
             flex-direction: column;
         }
 
-        input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select {
+        input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select, textarea {
             width: 100%;
             margin: 0;
             margin-bottom: 15px;
@@ -31,11 +31,9 @@
             background-color: transparent;
             border: 2px solid var(--box-shadow-color);
             color: var(--text-color);
-
             padding: 10px;
-            resize: horizontal;
+            resize: none;
         }
-
         
     </style>
 </head>
@@ -55,58 +53,138 @@
 
 
 	<main>
+
         <section class="content">
-            <h2 style="margin-bottom: 30px;">Apply to Be My Flatmate</h2>
+            <h1 class="language" en-language="Apply for Apartment" de-language="Bewirb dich für ein Apartment">Apply for Apartment</h1>
+
+            <div id="form-progress" style="display: flex; width: 300px; margin-bottom: 40px; gap: 20px; align-items: center;">
+                <div id="progress1" style="color: var(--primary-color);">1</div>
+                <hr id="progress2line" style="width: 100%; margin: 0; height: 1px; vertical-align: middle;" color="black">
+                <div id="progress2">2</div>
+                <hr id="progress3line" style="width: 100%; margin: 0; height: 1px; vertical-align: middle;" color="black">
+                <div id="progress3">3</div>
+                <hr id="progress4line" style="width: 100%; margin: 0; height: 1px; vertical-align: middle;" color="black">
+                <div id="progress4">4</div>
+                <hr id="progress5line" style="width: 100%; margin: 0; height: 1px; vertical-align: middle;" color="black">
+                <div id="progress5">5</div>
+            </div>
+            
             
             <div class="application-form">
-                <form action="/signup" method="POST" style="flex-direction: column;">
+                <form action="/apply" method="POST" style="flex-direction: column;">
                     <div id="section1" style="display: flex; flex-direction: column;">
-                        <input type="text" id="firstname" name="name" class="login-input" autocomplete="off" placeholder="Your name*" en-language="Your name*" de-language="Dein Name*" required>
+                        <input type="text" id="firstname" name="name" autocomplete="off" placeholder="Your name*" en-language="Your name*" de-language="Dein Name*" required>
                         <div style="display: inline-flex; width: 300px; margin: 0; gap: 10px;">
-                            <input type="text" id="age" name="age" class="login-input" autocomplete="off" placeholder="Age*" en-language="Age*" de-language="Alter*" required>
-                            <input type="text" id="pronouns" name="pronouns" class="login-input" autocomplete="off" placeholder="Pronouns" en-language="Pronouns" de-language="Pronomen">
+                            <input type="text" id="age" name="age" autocomplete="off" placeholder="Age*" en-language="Age*" de-language="Alter*" required>
+                            <input type="text" id="pronouns" name="pronouns" autocomplete="off" placeholder="Pronouns" en-language="Pronouns" de-language="Pronomen">
                         </div>
-                        <input type="text" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email*" en-language="Email*" de-language="Email*" required>
-                        <input type="text" id="move-in-date" name="move-in-date" class="login-input" autocomplete="off" placeholder="Preferred move-in date*" en-language="Preferred move-in date*" de-language="Bevorzugtes Einzugsdatum*" required>
+                        <input type="text" id="email" name="email" autocomplete="off" placeholder="Email*" en-language="Email*" de-language="Email*" required>
+                        <input type="text" id="move-in-date" name="move-in-date" autocomplete="off" placeholder="Preferred move-in date*" en-language="Preferred move-in date*" de-language="Bevorzugtes Einzugsdatum*" required>
 
                         <div style="display: inline-flex; width: 300px; gap: 20px;">
-                            <div class="send-button" onclick="section2()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                            <div class="send-button" onclick="next()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
                                 <span class="language" en-language="Next" de-language="Weiter">Next</span>
                             </div>
                         </div>
                     </div>
 
                     <div id="section2" style="display: none; flex-direction: column;">
-                        <input type="text" id="occupation" name="occupation" class="login-input" autocomplete="off" placeholder="Occupation or field of study*" en-language="Occupation or field of study*" de-language="Beruf oder Studienfach*" required>
-                        <div style="display: inline-flex; width: 300px; margin: 0; gap: 10px;">
-                            <input type="text" id="language" name="language" class="login-input" autocomplete="off" placeholder="Language*" en-language="Language*" de-language="Sprache*" required>
-                            <input type="text" id="shared-apartment-experience" name="shared-apartment-experience" class="login-input" autocomplete="off" placeholder="Shared apartment experience" en-language="Shared apartment experience" de-language="WG-Erfahrung">
-                        </div>
-                        <select id="shared-apartment-experience" name="shared-apartment-experience" required style="-webkit-appearance: none;">
-                            <option value="" en-language="Shared apartment experience*" de-language="WG-Erfahrung*">Shared apartment experience*</option>
-                            <option value="yes" en-language="Yes" de-language="Ja">Yes</option>
-                            <option value="no" en-language="No" de-language="Nein">No</option>
+                        <input type="text" id="occupation" name="occupation" autocomplete="off" placeholder="Occupation or field of study*" en-language="Occupation or field of study*" de-language="Beruf oder Studienfach*" required>
+                        <input type="text" id="language" name="language" autocomplete="off" placeholder="Language(s)*" en-language="Language(s)*" de-language="Sprache(n)*" required>
+                        <select id="dietry-preferences" name="dietry-preferences" style="-webkit-appearance: none;">
+                            <option value="" class="language" en-language="Dietry preferences" de-language="Deine Ernährungspräferenzen">Dietry preferences</option>
+                            <option value="vegetarian" class="language" en-language="Vegetarian" de-language="Vegetarisch">Vegetarian</option>
+                            <option value="vegan" class="language" en-language="Vegan" de-language="Vegan">Vegan</option>
+                            <option value="pescetarian" class="language" en-language="Pescetarian" de-language="Pescetarisch">Pescetarian</option>
+                            <option value="omnivore" class="language" en-language="Omnivore" de-language="Omnivor">Omnivore</option>
                         </select>
-                        <input type="text" id="move-in-date" name="move-in-date" class="login-input" autocomplete="off" placeholder="Preferred move-in date*" en-language="Preferred move-in date*" de-language="Bevorzugtes Einzugsdatum*" required>
-
+                        <select id="coffe-or-tea" name="coffe-or-tea" style="-webkit-appearance: none;" required>
+                            <option value="" class="language" en-language="Coffee or tea?*" de-language="Kaffee oder Tee?*">Coffee or tea?*</option>
+                            <option value="coffee" class="language" en-language="Coffee" de-language="Kaffee">Coffee</option>
+                            <option value="tea" class="language" en-language="Tea" de-language="Tee">Tea</option>
+                            <option value="both" class="language" en-language="Both" de-language="Beides">Both</option>
+                            <option value="none" class="language" en-language="None" de-language="Keins">None</option>
+                        </select>
                         <div style="display: inline-flex; width: 300px; gap: 20px;">
-                            <div class="send-button" onclick="section1()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
                                 <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
                             </div>
-                            <div class="send-button" onclick="section3()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                            <div class="send-button" onclick="next()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
                                 <span class="language" en-language="Next" de-language="Weiter">Next</span>
                             </div>
                         </div>
                     </div>
 
+                    <div id="section3" style="display: none; flex-direction: column;">
+                        <textarea type="text" id="about" name="about" autocomplete="off" placeholder="Tell me a little bit about yourself. What are your hobbies and interests, why do you want to move in?*" en-language="Tell me a little bit about yourself. What are your hobbies and interests, why do you want to move in?*" de-language="Erzähl mir ein bisschen über dich. Was sind deine Hobbys und Interessen, warum möchtest du einziehen?*" style="height: 113px; border-radius: 20px;" required></textarea>
+                        <textarea type="text" id="expectations" name="expectations" autocomplete="off" placeholder="What do you expect from your roommates?*" en-language="What do you expect from your roommates?*" de-language="Was erwartest du von deinen Mitbewohnern?*" style="height: 75px; border-radius: 20px;" required></textarea>
+                        <div style="display: inline-flex; width: 300px; gap: 20px;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
+                            </div>
+                            <div class="send-button" onclick="next()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                <span class="language" en-language="Next" de-language="Weiter">Next</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="section4" style="display: none; flex-direction: column;">
+                        <textarea type="text" id="parties" name="parties" autocomplete="off" placeholder="What's your stand on apartment parties?" en-language="What's your stand on apartment parties?" de-language="Wie stehst du zu WG-Partys?" style="height: 95px; border-radius: 20px;"></textarea>
+                        <div style="display: inline-flex; width: 300px; margin: 0; gap: 10px;">
+                            <select id="alcohol" name="alcohol" style="-webkit-appearance: none;">
+                                <option value="" class="language" en-language="Alcohol?" de-language="Trinkst Du?">Alcohol?</option>
+                                <option value="yes" class="language" en-language="Yes" de-language="Ja">Yes</option>
+                                <option value="no" class="language" en-language="No" de-language="Nein">No</option>
+                            </select>
+                            <select id="smoker" name="smoker" style="-webkit-appearance: none;">
+                                <option value="" class="language" en-language="Smoker?" de-language="Rauchst Du?">Smoker?</option>
+                                <option value="no" class="language" en-language="No" de-language="Nein">No</option>
+                                <option value="yes" class="language" en-language="Yes" de-language="Ja">Yes</option>
+                            </select>
+                        </div>
+                        <select id="shared-apartment-experience" name="shared-apartment-experience" style="-webkit-appearance: none;">
+                            <option value="" class="language" en-language="Shared apartment experience?" de-language="Bereits WG-Erfahrung?">Shared apartment experience?</option>
+                            <option value="yes" class="language" en-language="Yes" de-language="Ja">Yes</option>
+                            <option value="no" class="language" en-language="No" de-language="Nein">No</option>
+                        </select>
+                        <div style="display: inline-flex; width: 300px; gap: 20px;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
+                            </div>
+                            <div class="send-button" onclick="next()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                <span class="language" en-language="Next" de-language="Weiter">Next</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="section5" style="display: none; flex-direction: column;">
+                        <input type="file" name="photo" id="photo" style="display: none;">
+                        <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+                            <span class="material-symbols-outlined">add</span>
+                        </div>
+                        <div id="removeDiv" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+                            <span class="material-symbols-outlined">close</span>
+                        </div>
+                        <div style="display: inline-flex; width: 300px; gap: 20px;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
+                            </div>
+                            <button type="submit" name="submit" class="send-button" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                <span class="language" en-language="Apply" de-language="Bewerben" style="font-size: 1.2em;">Apply</span>
+                            </button>
+                        </div>
+                    </div>
+
+
+
                     
                     <!--<div style="display: inline-flex; width: 300px; gap: 20px;">
-                        <input type="email" id="email" name="email" class="login-input" autocomplete="off" placeholder="Email*" required>
-                        <input type="phone" id="phone" name="phone" class="login-input" autocomplete="off" placeholder="Phone">
+                        <input type="email" id="email" name="email" autocomplete="off" placeholder="Email*" required>
+                        <input type="phone" id="phone" name="phone" autocomplete="off" placeholder="Phone">
                     </div>
                     
-                    <input type="password" id="passwordSignUp" name="password" class="login-input" autocomplete="off" placeholder="Password*" required>
-                    <input type="password" id="password2SignUp" name="password2" class="login-input" autocomplete="off" placeholder="Repeat password*" required>
+                    <input type="password" id="passwordSignUp" name="password" autocomplete="off" placeholder="Password*" required>
+                    <input type="password" id="password2SignUp" name="password2" autocomplete="off" placeholder="Repeat password*" required>
                     <span style="display: flex; align-items: center; width: 300px; padding: 10px; padding-top: 20px;">
                         <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
                         <span style="font-size: 0.8em; text-align: left;">
@@ -161,18 +239,134 @@
                 languageElements[i].innerHTML = languageElements[i].getAttribute("de-language");
             }
         }
+
+        // change the language of the textarea
+        var textareas = document.getElementsByTagName("textarea");
+        for (var i = 0; i < textareas.length; i++) {
+            if (languageSelection.innerHTML.includes("us.png")) {
+                textareas[i].placeholder = textareas[i].getAttribute("en-language");
+            } else {
+                textareas[i].placeholder = textareas[i].getAttribute("de-language");
+            }
+        }
     }
 
-    function section1() {
-        document.getElementById("section1").style.display = "flex";
-        document.getElementById("section2").style.display = "none";
+    function next() {
+        var section1 = document.getElementById("section1");
+        var section2 = document.getElementById("section2");
+        var section3 = document.getElementById("section3");
+        var section4 = document.getElementById("section4");
+        var section5 = document.getElementById("section5");
+
+        var progress1 = document.getElementById("progress1");
+        var progress2 = document.getElementById("progress2");
+        var progress3 = document.getElementById("progress3");
+        var progress4 = document.getElementById("progress4");
+        var progress5 = document.getElementById("progress5");
+
+        var progress2line = document.getElementById("progress2line");
+        var progress3line = document.getElementById("progress3line");
+        var progress4line = document.getElementById("progress4line");
+        var progress5line = document.getElementById("progress5line");
+
+        if (section1.style.display == "flex") {
+            section1.style.display = "none";
+            section2.style.display = "flex";
+            progress2.style.color = "var(--primary-color)";
+            progress2line.color = "#007AFF";
+        } else if (section2.style.display == "flex") {
+            section2.style.display = "none";
+            section3.style.display = "flex";
+            progress3.style.color = "var(--primary-color)";
+            progress3line.color = "#007AFF";
+        } else if (section3.style.display == "flex") {
+            section3.style.display = "none";
+            section4.style.display = "flex";
+            progress4.style.color = "var(--primary-color)";
+            progress4line.color = "#007AFF";
+        } else if (section4.style.display == "flex") {
+            section4.style.display = "none";
+            section5.style.display = "flex";
+            progress5.style.color = "var(--primary-color)";
+            progress5line.color = "#007AFF";
+        }
     }
 
-    function section2() {
-        document.getElementById("section1").style.display = "none";
-        document.getElementById("section2").style.display = "flex";
+    function previous() {
+        var section1 = document.getElementById("section1");
+        var section2 = document.getElementById("section2");
+        var section3 = document.getElementById("section3");
+        var section4 = document.getElementById("section4");
+        var section5 = document.getElementById("section5");
+
+        var progress1 = document.getElementById("progress1");
+        var progress2 = document.getElementById("progress2");
+        var progress3 = document.getElementById("progress3");
+        var progress4 = document.getElementById("progress4");
+        var progress5 = document.getElementById("progress5");
+
+        var progress2line = document.getElementById("progress2line");
+        var progress3line = document.getElementById("progress3line");
+        var progress4line = document.getElementById("progress4line");
+        var progress5line = document.getElementById("progress5line");
+
+        if (section2.style.display == "flex") {
+            section2.style.display = "none";
+            section1.style.display = "flex";
+            progress1.style.color = "var(--primary-color)";
+            progress2.style.color = "var(--text-color)";
+            progress2line.color = "black";
+        } else if (section3.style.display == "flex") {
+            section3.style.display = "none";
+            section2.style.display = "flex";
+            progress2.style.color = "var(--primary-color)";
+            progress3.style.color = "var(--text-color)";
+            progress3line.color = "black";
+        } else if (section4.style.display == "flex") {
+            section4.style.display = "none";
+            section3.style.display = "flex";
+            progress3.style.color = "var(--primary-color)";
+            progress4.style.color = "var(--text-color)";
+            progress4line.color = "black";
+        } else if (section5.style.display == "flex") {
+            section5.style.display = "none";
+            section4.style.display = "flex";
+            progress4.style.color = "var(--primary-color)";
+            progress5.style.color = "var(--text-color)";
+            progress5line.color = "black";
+        }
     }
 
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fileInput = document.getElementById("photo");
+        const fileLabel = document.getElementById("fileLabel");
+        const removeDiv = document.getElementById("removeDiv");
+
+        fileLabel.addEventListener("click", function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function() {
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                fileLabel.style.display = "none";
+                removeDiv.style.display = "flex";
+            } else {
+                messageInput.value = '';
+                fileLabel.style.display = "flex";
+                removeDiv.style.display = "none";
+            }
+        });
+
+        removeDiv.addEventListener("click", function() {
+            fileInput.value = ''; // Clear the selected file
+            fileLabel.style.display = "flex";
+            removeDiv.style.display = "none";
+        });
+    });
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
