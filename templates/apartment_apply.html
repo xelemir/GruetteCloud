@@ -117,7 +117,7 @@
 
                     <div id="section3" style="display: none; flex-direction: column;">
                         <textarea type="text" id="about" name="about" autocomplete="off" placeholder="Tell me a little bit about yourself. What are your hobbies and interests, why do you want to move in?*" en-language="Tell me a little bit about yourself. What are your hobbies and interests, why do you want to move in?*" de-language="Erzähl mir ein bisschen über dich. Was sind deine Hobbys und Interessen, warum möchtest du einziehen?*" style="height: 113px; border-radius: 20px;" required></textarea>
-                        <textarea type="text" id="expectations" name="expectations" autocomplete="off" placeholder="What do you expect from your roommates?*" en-language="What do you expect from your roommates?*" de-language="Was erwartest du von deinen Mitbewohnern?*" style="height: 75px; border-radius: 20px;" required></textarea>
+                        <textarea type="text" id="expectations" name="expectations" autocomplete="off" placeholder="What do you expect from your flat mate?*" en-language="What do you expect from your flat mate?*" de-language="Was erwartest du von deinem Mitbewohner?*" style="height: 75px; border-radius: 20px;" required></textarea>
                         <div style="display: inline-flex; width: 300px; gap: 20px;">
                             <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
                                 <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
@@ -158,13 +158,21 @@
                     </div>
 
                     <div id="section5" style="display: none; flex-direction: column;">
-                        <input type="file" name="photo" id="photo" style="display: none;">
-                        <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
-                            <span class="material-symbols-outlined">add</span>
+                        <div style="display: flex; width: 300px; margin: 0; gap: 10px; padding-bottom: 15px; align-items: center; background-color: var(--box-shadow-color); border-radius: 20px; padding: 10px;">
+                            <div>
+                                <p>Upload a photo of yourself</p>
+                                <div><small id="photo-filename"></small></div>
+                                <div id="slected-preview">
+                                    <img src="" id="photo-preview" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover;">
+                                </div>
+                            </div>
+                            <input type="file" name="photo" id="photo" style="display: none;">
+                            <label for="photo" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--box-shadow-color); border-radius: 50%; cursor: pointer;">
+                                <span id="photo-label" class="material-symbols-outlined" style="font-size: 24px; display: flex;">add</span>
+                                <span id="photo-label-close" class="material-symbols-outlined" style="font-size: 24px; display: none;">close</span>
+                            </label>
                         </div>
-                        <div id="removeDiv" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
-                            <span class="material-symbols-outlined">close</span>
-                        </div>
+
                         <div style="display: inline-flex; width: 300px; gap: 20px;">
                             <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
                                 <span class="language" en-language="Previous" de-language="Zurück">Previous</span>
@@ -175,27 +183,6 @@
                         </div>
                     </div>
 
-
-
-                    
-                    <!--<div style="display: inline-flex; width: 300px; gap: 20px;">
-                        <input type="email" id="email" name="email" autocomplete="off" placeholder="Email*" required>
-                        <input type="phone" id="phone" name="phone" autocomplete="off" placeholder="Phone">
-                    </div>
-                    
-                    <input type="password" id="passwordSignUp" name="password" autocomplete="off" placeholder="Password*" required>
-                    <input type="password" id="password2SignUp" name="password2" autocomplete="off" placeholder="Repeat password*" required>
-                    <span style="display: flex; align-items: center; width: 300px; padding: 10px; padding-top: 20px;">
-                        <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
-                        <span style="font-size: 0.8em; text-align: left;">
-                            I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
-                            Fields with * are required.
-                        </span>
-
-                    </span>
-                    <div style="display: inline-flex; width: 300px; margin-top: 30px; gap: 20px;">
-                        <input type="submit" value="Submit Application" name="login" style="width: 100%; border-radius: 30px;" class="send-button">
-                    </div>-->
                 </form>
             </div>
         </section>
@@ -203,6 +190,47 @@
 	<div id="cookie-banner"></div>
 </body>
 </html>
+
+<script>
+    // Known bug: when the user clicks on close, the filemanager is reopened
+    document.addEventListener("DOMContentLoaded", function() {
+        const photoInput = document.getElementById("photo");
+        const photoLabel = document.getElementById("photo-label");
+        const photoLabelClose = document.getElementById("photo-label-close");
+        const photoFilename = document.getElementById("photo-filename");
+        const photoPreview = document.getElementById("photo-preview");
+
+        photoLabel.addEventListener("click", function() {
+                photoInput.click();
+
+        });
+
+        photoLabelClose.addEventListener("click", function() {
+                photoInput.value = "";
+                photoLabelClose.style.display = "none";
+                photoLabel.style.display = "flex";
+                photoPreview.src = "";
+                photoFilename.innerHTML = "";
+        });
+
+        photoInput.addEventListener("change", function() {
+            if (photoInput.files.length != 0) {
+                const selectedFile = photoInput.files[0];
+                const reader = new FileReader();
+                photoFilename.innerHTML = selectedFile.name;
+                photoLabelClose.style.display = "flex";
+                photoLabel.style.display = "none";
+                reader.readAsDataURL(selectedFile);
+                reader.onload = function() {
+                    const dataURL = reader.result;
+                    const photoPreview = document.getElementById("photo-preview");
+                    photoPreview.src = dataURL;
+                };
+            }
+        });
+    });
+</script>
+
 
 <script>
     var languageSelection = document.getElementById("language-selection");
@@ -339,34 +367,6 @@
 
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const fileInput = document.getElementById("photo");
-        const fileLabel = document.getElementById("fileLabel");
-        const removeDiv = document.getElementById("removeDiv");
 
-        fileLabel.addEventListener("click", function() {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener("change", function() {
-            if (fileInput.files.length > 0) {
-                const selectedFile = fileInput.files[0];
-                fileLabel.style.display = "none";
-                removeDiv.style.display = "flex";
-            } else {
-                messageInput.value = '';
-                fileLabel.style.display = "flex";
-                removeDiv.style.display = "none";
-            }
-        });
-
-        removeDiv.addEventListener("click", function() {
-            fileInput.value = ''; // Clear the selected file
-            fileLabel.style.display = "flex";
-            removeDiv.style.display = "none";
-        });
-    });
-</script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
