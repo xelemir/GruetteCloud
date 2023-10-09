@@ -10,11 +10,29 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .read-reciept {
+            font-size: 1em;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .message-content {
+            font-size: 1em;
+        }
+
+        .message {
+            display: flex;
+            justify-content: space-between; /* Aligns the read receipt to the right */
+            gap: 10px;
+
+        }
+    </style>
     <script>
         $(document).ready(function() {
             var username = "{{ username }}";
             var recipient = "{{ recipient }}";
-            var totalMessageCount = 0; // To track the total number of messages
+            var messageIDs = "-1:0"; // The message ID:0 or 1 if message has been read yet
     
             function loadMessages() {
                 $.ajax({
@@ -23,23 +41,27 @@
                     data: {
                         username: username,
                         recipient: recipient,
-                        totalMessageCount: totalMessageCount // Send the total message count with each request
+                        messageIDs: messageIDs // Send the message IDs with each request
                     },
                     success: function(response) {
                         if (response.messages.length > 0) {
-                            totalMessageCount = response.totalMessageCount; // Update the total message count
+                            messageIDs = String(response.messageIDs); // Update the message IDs
                             
                             // Clear existing messages before appending new ones
                             $('.chat-messages').empty();
                             
                             response.messages.forEach(function(message) {
                                 var messageContainer;
-                                if (message.sender === 'You') {
+                                var messageSender = message.sender;
+                                if (messageSender === 'You') {
                                     messageContainer = $('<div>').addClass('message right-bubble');
                                 } else {
                                     messageContainer = $('<div>').addClass('message left-bubble');
                                 }
-                                
+
+                                var read_reciept_sent = $('<span>').addClass('material-symbols-outlined read-reciept').text('done');
+                                var read_reciept_read = $('<span>').addClass('material-symbols-outlined read-reciept').text('done_all');
+                                        
                                 if (message.content.startsWith('https://www.gruettecloud.com/open/GruetteCloud') && (message.content.endsWith('/chat'))) {
                                     var imageElement = $('<img>').attr('src', message.content).addClass('message-image');
                                     imageElement.css({
@@ -49,9 +71,25 @@
                                         'padding': '0px',
                                     });
                                     messageContainer.append(imageElement);
+
+                                    if (messageSender == 'You') {
+                                        if (message.is_read) {
+                                            messageContainer.append(read_reciept_read);
+                                        } else {
+                                            messageContainer.append(read_reciept_sent);
+                                        }
+                                    }
                                 } else {
                                     var messageContent = $('<div>').addClass('message-content').text(message.content);
                                     messageContainer.append(messageContent);
+
+                                    if (messageSender == 'You') {
+                                        if (message.is_read) {
+                                            messageContainer.append(read_reciept_read);
+                                        } else {
+                                            messageContainer.append(read_reciept_sent);
+                                        }
+                                    }
                                 }
                                 
                                 $('.chat-messages').append(messageContainer);
@@ -102,7 +140,6 @@
                     {% if message[1] == "#!#DecryptionError#!#" %}
                         <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
                     {% else %}
-                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
                         <div class="message-content">{{ message[1] }}</div>
                     {% endif %}
                 </div>
@@ -111,8 +148,7 @@
                     {% if "#!#DecryptionError#!#" in message[1] %}
                         <div class="message-content" style="color: var(--yellow)">Error decrypting message</div>
                     {% else %}
-                        <!--<small class="message-meta">{{ message[0] }} • {{ message[2] }}</small>-->
-                        <div class="message-content">{{ message[1] }}</div>
+                    <div class="message-content">{{ message[1] }}</div>
                     {% endif %}
                 </div>
             {% endif %}

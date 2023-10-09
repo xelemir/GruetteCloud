@@ -27,8 +27,13 @@ def get_messages():
     sql = SQLHelper.SQLHelper()
     username = str(request.args.get("username")).lower()
     recipient = str(request.args.get("recipient")).lower()
-    total_message_count = int(request.args.get("totalMessageCount"))  # Get the total message count
+    
+    messageIDs_old_string = request.args.get("messageIDs")    
+    messageIDs_old = messageIDs_old_string.split(',')
+    messageIDs_old = [number for number in messageIDs_old]
+    
     messages_list = []
+    messageIDs_new = []
     
     if username != session["username"]:
         return redirect("/")
@@ -36,7 +41,12 @@ def get_messages():
     # Fetch all messages from the database
     get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE ((username_send = '{username}' AND username_receive = '{recipient}') OR (username_send = '{recipient}' AND username_receive = '{username}')) ORDER BY created_at DESC")
     
+    # If unread messages are found, mark them as read
+    sql.writeSQL(f"UPDATE gruttechat_messages SET is_read = {True} WHERE username_send = '{recipient}' AND username_receive = '{username}' AND is_read = {False}")
+    
     for message in get_messages:
+        messageIDs_new.append(f"{message['id']}:{int(message['is_read'])}")
+        
         # Decrypt the message
         try:
             decrypted_message = str(eh.decrypt_message(message["message_content"]))
@@ -44,14 +54,14 @@ def get_messages():
             decrypted_message = "Decryption Error!"
 
         if message["username_send"] == username:
-            messages_list.append({"sender": "You", "content": decrypted_message})
+            messages_list.append({"sender": "You", "content": decrypted_message, "is_read": message["is_read"]})
         else:
-            messages_list.append({"sender": recipient, "content": decrypted_message})
-
-    if len(messages_list) > total_message_count:
-        return jsonify(messages=messages_list, totalMessageCount=len(messages_list))
+            messages_list.append({"sender": recipient, "content": decrypted_message, "is_read": message["is_read"]})
+            
+    if set(messageIDs_old) != set(messageIDs_new):
+        return jsonify(messages=messages_list, messageIDs=messageIDs_new)
     else:
-        return jsonify(messages=[], totalMessageCount=len(messages_list))  # No new messages
+        return jsonify(messages=[], messageIDs=messageIDs_new)
 
 @chat_route.route('/chat/<recipient>', methods=['GET', 'POST'])
 def chat_with(recipient):
@@ -107,7 +117,7 @@ def chat_with(recipient):
             file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
             
             encypted_message = str(eh.encrypt_message(f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"))
-            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
+            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{username}', '{str(recipient)}', '{encypted_message}' , {False})")
             return redirect(f'/chat/{recipient}')
             
         # Check if the message is empty or too long
@@ -119,7 +129,7 @@ def chat_with(recipient):
         # If the message is valid, encrypt it and send it to the database 
         else:
             encypted_message = str(eh.encrypt_message(request.form['message']))
-            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('{username}', '{str(recipient)}', '{encypted_message}')")
+            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{username}', '{str(recipient)}', '{encypted_message}', {False})")
             return redirect(f'/chat/{recipient}')
 
     # Get is used to load the chat
