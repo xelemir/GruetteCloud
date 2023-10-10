@@ -23,19 +23,13 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    <!--<div class="header">
         <div class="dark-mode-toggle">
             <a href="/create_render" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">devices</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
-        <div class="centered-content" style="display: flex;">
-            <a href="/dashboard" class="logo align-icons-center" title="Home">
-                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
-            </a>
-            <p style="font-size: 1.3em; display: flex; align-items: center; justify-content: center;">&nbsp;&nbsp;Dashboard</p>
-        </div>
         {% include "components/nav-element.html" %}
-    </div>
+    </div>-->
 
     <div style="height: 100%;">
         <div id="status-message" class="wrapping-tile" style="display: none; padding: 20px; margin-bottom: 20px; text-align: center; color: var(--yellow); height: 100%; width: 100% margin: 20px;">
@@ -43,15 +37,36 @@
         </div>
 
 
-        <div class="dynamic-container">
-            <div class="box left">
-                <div style="text-align: left;">
-                    <div onclick="toggleCreateDropdown()" style="border: 2px solid var(--box-shadow-color); border-radius: 30px; cursor: pointer; align-items: center; justify-content: center; display: inline-flex; width: auto; padding: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); padding-left: 40px; padding-right: 40px;">
-                        <span class="material-symbols-outlined" style="font-size: 1.8em; margin-right: 5px;">add</span>
-                        <p style="margin: 0;">Create</p>
+        <div style="display: flex; flex-direction: row; width: 100%; height: 100%; gap: 20px;">
+            <div style="width: 10%; background-color: var(--secondary-color);">
+                <div style="display: flex; flex-direction: row; align-items: center; padding-top: 10px; padding-bottom: 10px;">
+                    <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px; margin-left: 25px;" title="GrütteCloud">
+                    <p style="font-size: 1.5em; padding-left: 15px;">Dashboard</p>
+                </div>
+
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 10px; margin-right: 10px;">
+
+                <div style="text-align: left; margin-left: 25px; margin-right: 25px; padding-top: 10px;">
+                    <div style="display: flex; align-items: center; margin-top: 10px;">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">notification_add</span>
+                        <p style="padding-left: 5px;">Platform Notification</p>
+                    </div>
+                    <div style="display: flex; align-items: center; padding-top: 10px;">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">mail</span>
+                        <p style="padding-left: 5px;">Create Email</p>
                     </div>
                 </div>
+                
+                
+
+
             </div>
+            <div style="width: 40%;">
+                2
+            </div>
+            <div style="width: 50%;">
+                3
+            </div>            
         </div>
     </div>
 
