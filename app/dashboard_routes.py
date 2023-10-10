@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw, ImageOps
 import os
 import re
 import pyotp
+import requests
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, IconHelper, TemplateHelper
 from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip, render_path
@@ -102,6 +103,24 @@ def dashboard():
         pass
     
     return render_template('dashboard.html', menu=th.user(session), username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status)
+
+@dashboard_route.route('/dashboard/iplookup', methods=['POST'])
+def iplookup():
+    if "username" not in session:
+        return redirect('/')
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    if not bool(user["is_admin"]):
+        return redirect('/')
+    
+    ip_address = request.json['ip_address']
+
+    response = requests.get(f'http://ip-api.com/json/{ip_address}')
+    data = response.json()
+        
+    return data
+
+
 
 @dashboard_route.route('/dashboard/createstatusmessage', methods=['POST'])
 def create_status_message():

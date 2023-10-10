@@ -8,7 +8,13 @@
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
         .blurred-email {
             filter: blur(5px); /* Initial blur value, adjust as needed */
         }
@@ -33,6 +39,10 @@
         .navigation-button:hover {
             background-color: var(--secondary-color);
         }
+
+        .hover-color {
+            background-color: var(--secondary-color);
+        }
     </style>
 </head>
 <body>
@@ -52,33 +62,79 @@
 
         <div style="display: flex; flex-direction: row; width: 100%; height: 100%; gap: 20px;">
             <div style="width: 10%; background-color: transparent;">
-                <div style="display: flex; flex-direction: row; align-items: center; padding-top: 10px; padding-bottom: 10px;">
+                <div style="display: flex; flex-direction: row; align-items: center; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px; margin-left: 25px;" title="GrütteCloud">
                     <p style="font-size: 1.5em; padding-left: 15px;">Dashboard</p>
                 </div>
 
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
 
-                <div style="text-align: left; padding-top: 10px;">
-                    <div class="navigation-button">
-                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">notification_add</span>
-                        <p style="padding-left: 5px;">Platform Notification</p>
+                <div style="display: flex; flex-direction: column; align-items: center; padding-top: 20px; padding-bottom: 20px;">
+                    <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
+                    <p style="font-size: 1.2em;">Hey, {{ menu["username"] }}!</p>
+                </div>
+
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
+                <div style="text-align: left; padding-bottom: 10px; padding-top: 10px;">
+                    <div class="navigation-button hover-color" id="toggleNotificationView" onclick="toggleNotificationView()">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Platform Notification">notification_add</span>
+                        <p style="padding-left: 15px;">Platform Notification</p>
                     </div>
-                    <div class="navigation-button">
+                    <div class="navigation-button" id="togglePromoEmailView" onclick="togglePromoEmailView()">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">mail</span>
-                        <p style="padding-left: 5px;">Create Email</p>
+                        <p style="padding-left: 15px;">Create Email</p>
+                    </div>
+                    <div class="navigation-button" id="toggleAccountsView" onclick="toggleAccountsView()">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Accounts">manage_accounts</span>
+                        <p style="padding-left: 15px;">Manage Accounts</p>
+                    </div>
+                    <div class="navigation-button" id="toggleSupportView" onclick="toggleSupportView()">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Support Tickets">support</span>
+                        <p style="padding-left: 15px;">Support Tickets</p>
                     </div>
                 </div>
-                
-                
-
-
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
+                <div style="text-align: left; padding-bottom: 10px; padding-top: 10px;">
+                    <a href="/chat" class="navigation-button">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="GrütteChat">forum</span>
+                        <p style="padding-left: 15px;">GrütteChat</p>
+                    </a>
+                    <a href="/drive" class="navigation-button">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="GrütteDrive">cloud_upload</span>
+                        <p style="padding-left: 15px;">GrütteDrive</p>
+                    </a>
+                </div>
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
+                <div style="text-align: left; padding-top: 10px;">
+                    <a href="/settings" class="navigation-button">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Account">settings</span>
+                        <p style="padding-left: 15px;">Account Settings</p>
+                    </a>
+                    <a href="/logout" class="navigation-button">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Logout">logout</span>
+                        <p style="padding-left: 15px;">Logout</p>
+                    </a>
+                </div>
             </div>
+
             <div style="width: 40%;">
-                2
+                <div id="notificationView" style="display: block;">
+                    <h2 align="center" style="margin-bottom: 20px;">Platform Notification</h2>
+                </div>
+                <div id="promoEmailView" style="display: none;">
+                    <h2 align="center" style="margin-bottom: 20px;">Create Email</h2>
+                </div>
+                <div id="accountsView" style="display: none;">
+                    <h2 align="center" style="margin-bottom: 20px;">Manage Accounts</h2>
+                </div>
+                <div id="supportView" style="display: none;">
+                    <h2 align="center" style="margin-bottom: 20px;">Support Tickets</h2>
+                </div>
             </div>
+
             <div style="width: 50%; padding-bottom: 40px;">
-                <div class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%;">
+                <h2 align="center" style="margin-bottom: 20px;">Access Logs</h2>
+                <div id="events" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%; display: flex;">
                     {% for event in events %}
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                         <!--
@@ -87,7 +143,7 @@
                             {{ event["entry"] }}
                         -->
 
-                        <div class="navigation-button" style="gap: 20px;">
+                        <div class="navigation-button" style="gap: 20px;" onclick="iplookup('{{ event["ip"] }}')">
                             <div style="min-width: 100px; max-width: 100px; overflow: hidden;">
                                 {{ event["ip"] }}
                             </div>
@@ -97,11 +153,22 @@
                             <div>
                                 {{ event["entry"] }}
                             </div>
-                        </div>
-                        
-                        
-                        
+                        </div>               
                     {% endfor %}
+                </div>
+                <div id="iplookup-result" style="font-size: 1.3em; max-height: 100%; height: auto; display: none; justify-content: center; background-color: var(--background-tile-color); border-radius: 30px; padding: 20px; flex-direction: column; align-items: center;">
+                    <h2 id="ip"></h2>
+                    <p id="country"></p>
+                    <p id="regionName"></p>
+                    <p id="city"></p>
+                    <p id="zip"></p>
+                    <p id="isp"></p>
+                    <p id="org"></p>
+
+                    <div onclick="closeIPlookupResult()" style="display: flex; align-items: center; justify-content: center; margin-top: 20px; cursor: pointer; background-color: var(--red); border-radius: 30px; padding: 10px; width: 100%;">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Close">close</span>
+                        <p style="padding-left: 5px;">Close</p>
+                    </div>
                 </div>
             </div>            
         </div>
@@ -229,6 +296,89 @@
 </body>
 </html>
 
+
+<script>
+    function iplookup(ip_address) {
+        fetch("/dashboard/iplookup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ip_address: ip_address })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("events").style.display = "none";
+            document.getElementById("iplookup-result").style.display = "flex";
+
+            document.getElementById("ip").innerHTML = data["query"];
+            document.getElementById("country").innerHTML = data["country"];
+            document.getElementById("regionName").innerHTML = data["regionName"];
+            document.getElementById("city").innerHTML = data["city"];
+            document.getElementById("zip").innerHTML = data["zip"];
+            document.getElementById("isp").innerHTML = data["isp"];
+            document.getElementById("org").innerHTML = data["org"];
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    function closeIPlookupResult() {
+        document.getElementById("events").style.display = "flex";
+        document.getElementById("iplookup-result").style.display = "none";
+    }
+
+    function toggleNotificationView() {
+        document.getElementById("notificationView").style.display = "block";
+        document.getElementById("promoEmailView").style.display = "none";
+        document.getElementById("accountsView").style.display = "none";
+        document.getElementById("supportView").style.display = "none";
+
+        document.getElementById("toggleNotificationView").classList.add("hover-color");
+        document.getElementById("togglePromoEmailView").classList.remove("hover-color");
+        document.getElementById("toggleAccountsView").classList.remove("hover-color");
+        document.getElementById("toggleSupportView").classList.remove("hover-color");
+    }
+
+    function togglePromoEmailView() {
+        document.getElementById("notificationView").style.display = "none";
+        document.getElementById("promoEmailView").style.display = "block";
+        document.getElementById("accountsView").style.display = "none";
+        document.getElementById("supportView").style.display = "none";
+
+        document.getElementById("toggleNotificationView").classList.remove("hover-color");
+        document.getElementById("togglePromoEmailView").classList.add("hover-color");
+        document.getElementById("toggleAccountsView").classList.remove("hover-color");
+        document.getElementById("toggleSupportView").classList.remove("hover-color");
+    }
+
+    function toggleAccountsView() {
+        document.getElementById("notificationView").style.display = "none";
+        document.getElementById("promoEmailView").style.display = "none";
+        document.getElementById("accountsView").style.display = "block";
+        document.getElementById("supportView").style.display = "none";
+
+        document.getElementById("toggleNotificationView").classList.remove("hover-color");
+        document.getElementById("togglePromoEmailView").classList.remove("hover-color");
+        document.getElementById("toggleAccountsView").classList.add("hover-color");
+        document.getElementById("toggleSupportView").classList.remove("hover-color");
+    }
+
+    function toggleSupportView() {
+        document.getElementById("notificationView").style.display = "none";
+        document.getElementById("promoEmailView").style.display = "none";
+        document.getElementById("accountsView").style.display = "none";
+        document.getElementById("supportView").style.display = "block";
+
+        document.getElementById("toggleNotificationView").classList.remove("hover-color");
+        document.getElementById("togglePromoEmailView").classList.remove("hover-color");
+        document.getElementById("toggleAccountsView").classList.remove("hover-color");
+        document.getElementById("toggleSupportView").classList.add("hover-color");
+    }
+
+
+</script>
 
 <script>
     // JavaScript to prevent the email from being selectable

@@ -7,13 +7,13 @@
             {% if menu %}
                 <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
             {% endif %}
-            <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
-                {% if menu %}
-                    Hi, {{ menu["username"] }}!
-                {% else %}
-                    Hi, there!
-                {% endif %}
-            </h1>
+                <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                    {% if menu %}
+                        Hi, {{ menu["username"] }}!
+                    {% else %}
+                        Hi, there!
+                    {% endif %}
+                </h1>
             {% if menu %}
                 <a href="/settings" title="Manage Account" style="background-color: var(--primary-color); border-radius: 20px; color: var(--white-color);">Manage Account</a>
             {% else %}
