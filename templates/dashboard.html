@@ -20,6 +20,19 @@
         .hover-red:hover {
             background-color: var(--red);
         }
+
+        .navigation-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            padding-left: 20px;
+            border-radius: 30px;
+        }
+
+        .navigation-button:hover {
+            background-color: var(--secondary-color);
+        }
     </style>
 </head>
 <body>
@@ -38,20 +51,20 @@
 
 
         <div style="display: flex; flex-direction: row; width: 100%; height: 100%; gap: 20px;">
-            <div style="width: 10%; background-color: var(--secondary-color);">
+            <div style="width: 10%; background-color: transparent;">
                 <div style="display: flex; flex-direction: row; align-items: center; padding-top: 10px; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px; margin-left: 25px;" title="GrütteCloud">
                     <p style="font-size: 1.5em; padding-left: 15px;">Dashboard</p>
                 </div>
 
-                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 10px; margin-right: 10px;">
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
 
-                <div style="text-align: left; margin-left: 25px; margin-right: 25px; padding-top: 10px;">
-                    <div style="display: flex; align-items: center; margin-top: 10px;">
+                <div style="text-align: left; padding-top: 10px;">
+                    <div class="navigation-button">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">notification_add</span>
                         <p style="padding-left: 5px;">Platform Notification</p>
                     </div>
-                    <div style="display: flex; align-items: center; padding-top: 10px;">
+                    <div class="navigation-button">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">mail</span>
                         <p style="padding-left: 5px;">Create Email</p>
                     </div>
@@ -64,8 +77,32 @@
             <div style="width: 40%;">
                 2
             </div>
-            <div style="width: 50%;">
-                3
+            <div style="width: 50%; padding-bottom: 40px;">
+                <div class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%;">
+                    {% for event in events %}
+                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
+                        <!--
+                            {{ event["date"] }}
+                            {{ event["ip"] }}
+                            {{ event["entry"] }}
+                        -->
+
+                        <div class="navigation-button" style="gap: 20px;">
+                            <div style="min-width: 100px; max-width: 100px; overflow: hidden;">
+                                {{ event["ip"] }}
+                            </div>
+                            <div style="min-width: 170px; max-width: 170px; overflow: hidden;">
+                                {{ event["date"] }}
+                            </div>
+                            <div>
+                                {{ event["entry"] }}
+                            </div>
+                        </div>
+                        
+                        
+                        
+                    {% endfor %}
+                </div>
             </div>            
         </div>
     </div>
