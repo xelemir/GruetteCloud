@@ -236,8 +236,8 @@ def send_mail():
     sql = SQLHelper.SQLHelper()
     
     recipient_username = str(request.form["username"])
-    subject = str(request.form["subject"])
-    content = str(request.form["content"])
+    subject = str(request.form["mail_subject"])
+    content = str(request.form["mail_content"])
     otp = str(request.form["otp"])
     send_to_all = False
     if "sendtoall" in request.form:

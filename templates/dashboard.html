@@ -43,6 +43,12 @@
         .hover-color {
             background-color: var(--secondary-color);
         }
+
+        .outputContainer {
+            width: 393px; /* Set the width to 393 pixels */
+            max-height: 852px; /* Set the height to 852 pixels */
+            overflow: auto; /* Add overflow for scrolling if needed */
+        }
     </style>
 </head>
 <body>
@@ -76,19 +82,15 @@
 
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                 <div style="text-align: left; padding-bottom: 10px; padding-top: 10px;">
-                    <div class="navigation-button hover-color" id="toggleNotificationView" onclick="toggleNotificationView()">
-                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Platform Notification">notification_add</span>
-                        <p style="padding-left: 15px;">Platform Notification</p>
-                    </div>
                     <div class="navigation-button" id="togglePromoEmailView" onclick="togglePromoEmailView()">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Create Email">mail</span>
                         <p style="padding-left: 15px;">Create Email</p>
                     </div>
                     <div class="navigation-button" id="toggleAccountsView" onclick="toggleAccountsView()">
-                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Accounts">manage_accounts</span>
-                        <p style="padding-left: 15px;">Manage Accounts</p>
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Users">manage_accounts</span>
+                        <p style="padding-left: 15px;">Manage Users</p>
                     </div>
-                    <div class="navigation-button" id="toggleSupportView" onclick="toggleSupportView()">
+                    <div class="navigation-button hover-color" id="toggleSupportView" onclick="toggleSupportView()">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Support Tickets">support</span>
                         <p style="padding-left: 15px;">Support Tickets</p>
                     </div>
@@ -106,6 +108,10 @@
                 </div>
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                 <div style="text-align: left; padding-top: 10px;">
+                    <div class="navigation-button" >
+                        <span id="darkModeToggle" class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Darkmode">light_mode</span>
+                        <p style="padding-left: 15px;">Toggle Theme</p>
+                    </div>
                     <a href="/settings" class="navigation-button">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Account">settings</span>
                         <p style="padding-left: 15px;">Account Settings</p>
@@ -117,182 +123,190 @@
                 </div>
             </div>
 
-            <div style="width: 40%;">
-                <div id="notificationView" style="display: block;">
-                    <h2 align="center" style="margin-bottom: 20px;">Platform Notification</h2>
+            <div style="background-color: var(--background-tile-color); display: flex; flex-direction: row; width: 100%; height: 100%; padding: 20px; border-radius: 30px;">
+                <div style="width: 40%;">
+                    <div id="promoEmailView" style="display: none;">
+                        <h2 align="center" style="margin-bottom: 20px;">Create Email Campaign</h2>
+                        <form action="/dashboard/sendemail" method="POST">
+                            <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
+                                <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <input type="text" id="mail_subject" name="subject" class="login-input" autocomplete="off" placeholder="Subject" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" required>
+                                        <div class="spaced-tile"></div>
+                                        <input type="text" id="mail_content" name="content" class="login-input" autocomplete="off" placeholder="Message" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" maxlength="4000" required>
+                                    </div>
+                                </div>
+                                <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <div style="display: inline-flex; width: 100%;">
+                                            <input type="text" id="username" name="username" autocomplete="off" placeholder="GrütteID" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
+                                            <input type="text" id="otp" name="otp" autocomplete="off" placeholder="Google Auth OTP" style="width: 100%; margin: 0px; margin-left: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" required>
+                                        </div>
+                                        <div class="spaced-tile"></div>
+                                        <div style="display: inline-flex; width: 100%;">
+                                            <span style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px; display: inline-flex; align-items: center; margin: 0; width: 50%;" class="login-input">
+                                                <input type="checkbox" id="sendtoall" name="sendtoall" style="margin-right: 10px;">
+                                                <span style="text-align: left;">Send to everyone</span>
+                                            </span>
+                                            <input type="submit" value="Send Email" name="send" class="send-button" style="width: 50%; margin-left: 20px; margin-right: 0; border-radius: 30px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; flex-direction: column; align-items: center;">
+                            <p style="margin-bottom: 10px; font-size: 1.2em;">Live Preview:</p>
+                            <img src="https://www.gruettecloud.com/static/renders/iPhone14ProSilver.png" style="width: 450px; border-radius: 20px; margin-bottom: 20px; position: absolute; margin-top: 500px;">
+                            <div class="outputContainer">
+                                <div style="color: #F2F2F2; min-height: 100%;">
+                                    <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: auto; min-height: 100%; border-radius: 20px; padding: 20px;">
+                                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: -20px;">
+                                        <h1 style="color: #007AFF; margin-top: -20px;">Hey {{ menu["username"] }},</h1>
+                                        <b style="color: #000000;"> 
+                                        <div id="livePreview"></div>
+                                        </b><br>
+                                        <b style="color: #000000;">Kind regards,<br>Jan from GrütteCloud</b>
+                                        <br><br><br>
+                                        <span style="font-size: 0.7em;">
+                                            You are receiving this email because you are subscribed to GrütteCloud communication emails.<br>
+                                            If you do not want to receive any more emails, you can <a href="https://www.gruettecloud.com/unsubscribe" style="color: #000000;">unsubscribe here</a>.<br>
+                                            <span style="display: inline-flex;">
+                                                <a href="https://www.gruettecloud.com/about" style="color: #000000;">About Us</a>
+                                                &nbsp;|&nbsp;
+                                                <a href="https://www.gruettecloud.com/terms" style="color: #000000;">Terms of Service</a>
+                                                &nbsp;|&nbsp;
+                                                <a href="https://www.gruettecloud.com/privacy" style="color: #000000;">Privacy Policy</a>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            const htmlInput = document.getElementById('mail_content');
+                            const livePreview = document.getElementById('livePreview');
+                    
+                            htmlInput.addEventListener('input', function () {
+                                const userInput = htmlInput.value;
+                                livePreview.innerHTML = userInput;
+                            });
+                        </script>
+                    </div>
+
+                    <div id="accountsView" style="display: none; height: 100%;">
+                        <h2 align="center" style="margin-bottom: 20px;">Manage Users ({{ all_users|length }})</h2>
+                        <input type="text" id="search-input" placeholder="Search for GrütteID" class="login-input" style="width: 100%; margin: 0px; height: 40px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
+                        <div class="file-list" style="font-size: 0.7em; max-height: calc(100% - 120px); height: calc(100% - 120px); display: flex; flex-direction: column; overflow: auto;">
+                            {% for user in all_users %}
+                                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                                <div class="navigation-button" style="gap: 20px;">
+                                    {% if not user["has_premium"] %}
+                                        <a href="/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
+                                    {% else %}
+                                        <a href="/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--purple); display: flex; align-items: center; justify-content: center;" title="Revoke GrütteCloud PLUS">
+                                    {% endif %}
+                                        <span class="material-symbols-outlined">workspace_premium</span>
+                                    </a>
+                                    <a href="/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="GrütteChat">
+                                        <span class="material-symbols-outlined">forum</span>
+                                    </a>
+                                    <a href="/dashboard/deleteuser/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Delete User">
+                                        <span class="material-symbols-outlined">person_remove</span>
+                                    </a>
+                                    <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
+                                    <div class="email-container">
+                                        <p class="email blurred-email" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["email"] }}</p>
+                                    </div>
+                                </div>               
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="supportView" style="display: block;">
+                        <h2 align="center" style="margin-bottom: 20px;">Platform Notification</h2>
+                        <form action="/dashboard/createstatusmessage" method="POST">
+                            <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
+                                <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Subject" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" required>
+                                        <div class="spaced-tile"></div>
+                                        <input type="text" id="content" name="content" class="login-input" autocomplete="off" placeholder="Content" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" maxlength="2000" required>
+                                    </div>
+                                </div>
+                                <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <select id="color" name="color" class="login-input" style="-webkit-appearance: none; width: 100%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); height: 40px;">
+                                            <option value="yellow" style="color: var(--yellow);">Yellow</option>
+                                            <option value="red" style="color: var(--red);">Red</option>
+                                            <option value="green" style="color: var(--green);">Green</option>
+                                            <option value="purple" style="color: var(--purple);">Purple</option>
+                                        </select>
+                                        <div class="spaced-tile"></div>
+                                        <button type="submit" value="Create Notification" name="send" style="margin: 0px; min-width: 100%; display: flex; text-align: center; align-items: center; justify-content: center; border-radius: 30px; background-color: var(--primary-color); border: none; height: 40px; cursor: pointer; color: var(--white-color);">
+                                            <span class="material-symbols-outlined">notification_add</span>
+                                            <p style="padding-left: 15px;">Create Notification</p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        {% if platform_message %}
+                        <div>
+                            <p style="margin-top: 20px; margin-bottom: 20px;">Current Notification:</p>
+                            <div style="width: 100%; text-align: center; background-color: var(--secondary-color); height: 60px; border-radius: 30px; display: flex; align-items: center; justify-content: center; padding-left: 20px;">
+                                <h2 style="width: 100%; color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
+                                <div style="display: flex; padding-right: 10px;">
+                                    <a href="/dashboard/deletestatusmessage" style="color: var(--white-color); text-decoration: none; background-color: var(--red); border-radius: 50%; padding: 10px;">
+                                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Delete Notification">close</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <h2 align="center" style="margin-bottom: 20px;">Support Tickets</h2>
+                    </div>
                 </div>
-                <div id="promoEmailView" style="display: none;">
-                    <h2 align="center" style="margin-bottom: 20px;">Create Email</h2>
-                </div>
-                <div id="accountsView" style="display: none;">
-                    <h2 align="center" style="margin-bottom: 20px;">Manage Accounts</h2>
-                </div>
-                <div id="supportView" style="display: none;">
-                    <h2 align="center" style="margin-bottom: 20px;">Support Tickets</h2>
+
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+
+                <div style="width: 60%; padding-bottom: 40px;">
+                    <h2 align="center" style="margin-bottom: 20px;">Access Logs</h2>
+                    <div id="events" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%; display: flex;">
+                        {% for event in events %}
+                            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                            <div class="navigation-button" style="gap: 20px;" onclick="iplookup('{{ event["ip"] }}')">
+                                <div style="min-width: 100px; max-width: 100px; overflow: hidden;">
+                                    {{ event["ip"] }}
+                                </div>
+                                <div style="min-width: 170px; max-width: 170px; overflow: hidden;">
+                                    {{ event["date"] }}
+                                </div>
+                                <div>
+                                    {{ event["entry"] }}
+                                </div>
+                            </div>               
+                        {% endfor %}
+                    </div>
+                    <div id="iplookup-result" style="font-size: 1.3em; max-height: 100%; height: auto; display: none; justify-content: center; background-color: var(--background-tile-color); border-radius: 30px; padding: 20px; flex-direction: column; align-items: center;">
+                        <h2 id="ip"></h2>
+                        <p id="country"></p>
+                        <p id="regionName"></p>
+                        <p id="city"></p>
+                        <p id="zip"></p>
+                        <p id="isp"></p>
+                        <p id="org"></p>
+
+                        <div onclick="closeIPlookupResult()" style="display: flex; align-items: center; justify-content: center; margin-top: 20px; cursor: pointer; background-color: var(--red); border-radius: 30px; padding: 10px; width: 100%;">
+                            <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Close">close</span>
+                            <p style="padding-left: 5px;">Close</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div style="width: 50%; padding-bottom: 40px;">
-                <h2 align="center" style="margin-bottom: 20px;">Access Logs</h2>
-                <div id="events" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%; display: flex;">
-                    {% for event in events %}
-                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
-                        <!--
-                            {{ event["date"] }}
-                            {{ event["ip"] }}
-                            {{ event["entry"] }}
-                        -->
-
-                        <div class="navigation-button" style="gap: 20px;" onclick="iplookup('{{ event["ip"] }}')">
-                            <div style="min-width: 100px; max-width: 100px; overflow: hidden;">
-                                {{ event["ip"] }}
-                            </div>
-                            <div style="min-width: 170px; max-width: 170px; overflow: hidden;">
-                                {{ event["date"] }}
-                            </div>
-                            <div>
-                                {{ event["entry"] }}
-                            </div>
-                        </div>               
-                    {% endfor %}
-                </div>
-                <div id="iplookup-result" style="font-size: 1.3em; max-height: 100%; height: auto; display: none; justify-content: center; background-color: var(--background-tile-color); border-radius: 30px; padding: 20px; flex-direction: column; align-items: center;">
-                    <h2 id="ip"></h2>
-                    <p id="country"></p>
-                    <p id="regionName"></p>
-                    <p id="city"></p>
-                    <p id="zip"></p>
-                    <p id="isp"></p>
-                    <p id="org"></p>
-
-                    <div onclick="closeIPlookupResult()" style="display: flex; align-items: center; justify-content: center; margin-top: 20px; cursor: pointer; background-color: var(--red); border-radius: 30px; padding: 10px; width: 100%;">
-                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Close">close</span>
-                        <p style="padding-left: 5px;">Close</p>
-                    </div>
-                </div>
-            </div>            
         </div>
     </div>
-
-
-                <!--<h2 align="center" style="margin-bottom: 20px;">Platform Notification</h2>
-                <form action="/dashboard/createstatusmessage" method="POST">
-                    <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
-                        <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Subject" required>
-                                <div class="spaced-tile"></div>
-                                <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Content" maxlength="2000" required>
-                            </div>
-                        </div>
-                        <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <select id="color" name="color" class="settings-input" style="width: 100%; height: 38px;">
-                                    <option value="yellow" style="color: var(--yellow);">Yellow</option>
-                                    <option value="red" style="color: var(--red);">Red</option>
-                                    <option value="green" style="color: var(--green);">Green</option>
-                                    <option value="purple" style="color: var(--purple);">Purple</option>
-                                </select>
-                                <div class="spaced-tile"></div>
-                                <input type="submit" value="Create Notification" name="send" style="margin-top: 0px; min-width: 100%;" class="send-button">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                {% if platform_message %}
-                    <div class="spaced-tile"></div>
-                    <h2 style="font-size: 1.2em; margin-bottom: 10px;">Current Platform Notification</h2>
-                    <div class="wrapping-tile" style="display: flex; align-items: center; background-color: var(--secondary-color);">
-                        <div style="flex-grow: 1;">
-                            <h2 style="color: var(--{{ platform_message["color"] }})">{{ platform_message["subject"] }}</h2>
-                        </div>
-                        <a href="/dashboard/deletestatusmessage" style="color: var(--text-color); text-decoration: none;">
-                            <button class="button-gray hover-red" style="height: 45px; width: 60px; display: flex; align-items: center; justify-content: center;">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </a>
-                    </div>
-                {% endif %}
-
-
-                <h2 align="center" style="margin-bottom: 20px;">GrütteIDs ({{ all_users|length }})</h2>
-                <input type="text" id="search-input" placeholder="Search for GrütteID" class="settings-input" style="margin-bottom: 20px; margin-left: 0;"/>
-                <div class="file-list" style="height:{% if platform_message %}50vh{% else %}60vh{% endif %}; overflow-y: scroll; overflow-x: hidden; padding-right: 10px;">
-                    {% for user in all_users %}
-                        <div class="search-item" style="display: flex; align-items: center; margin-bottom: 5px; background-color: var(--secondary-color); border: none; border-radius: 5px; cursor: text;">
-                            {% if not user["has_premium"] %}
-                            <a href="/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
-                            {% else %}
-                            <a href="/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Remove GrütteCloud PLUS">
-                            {% endif %}
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;{% if user["has_premium"] %} background-color: var(--purple);{% endif %}">
-                                    <span class="material-symbols-outlined text-offcutter">workspace_premium</span>
-                                </button>
-                            </a>
-                            <a href="/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Text on GrütteChat">
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                    <span class="material-symbols-outlined text-offcutter">forum</span>
-                                </button>
-                            </a>
-                            <a href="/dashboard/deleteuser/{{ user["username"] }}" title="Terminate GrütteID">
-                                <button class="button-gray" style="height: 45px; width: 60px; margin-right: 5px;">
-                                    <span class="material-symbols-outlined">person_remove</span>
-                                </button>
-                            </a>
-                            <div class="mock-button-gray text-offcutter" style="height: 45px; min-width: 100px; margin-right: 5px;">
-                                <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
-                            </div>
-                            <div class="mock-button-gray email-container text-offcutter" style="flex-grow: 1; text-align: left; margin-right: 10px;">
-                                <p class="email blurred-email text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["email"] }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <h2 align="center" style="margin-bottom: 10px;">Access Logs</h2>
-                <div class="file-list" style="font-size: 0.7em; height: 60vh;">
-                    {% for event in events %}
-                        <div style="display: block; background-color: var(--secondary-color); border: none; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
-                            <p style="font-weight: bold; margin: 0;">
-                                <span style="color: var(--primary-color);">{{ event["date"] }}</span> - - <span style="color: var(--indigo);">{{ event["ip"] }}</span>
-                            </p>
-                            <p style="margin-top: 5px;">{{ event["entry"] }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-
-
-
-                <h2 align="center" style="margin-bottom: 20px;">Promo Email</h2>
-                <form action="/dashboard/sendemail" method="POST">
-                    <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
-                        <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <input type="text" id="subject" name="subject" class="settings-input" autocomplete="off" placeholder="Subject" required>
-                                <div class="spaced-tile"></div>
-                                <input type="text" id="content" name="content" class="settings-input" autocomplete="off" placeholder="Message" maxlength="4000" required>
-                            </div>
-                        </div>
-                        <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <div style="display: inline-flex; width: 100%;">
-                                    <input type="text" id="username" name="username"  autocomplete="off" placeholder="GrütteID" style="margin-right: 0;">
-                                    <input type="text" id="otp" name="otp"  autocomplete="off" placeholder="Google Auth OTP" style="margin-left: 20px; margin-right: 0;" required>
-                                </div>
-                                <div class="spaced-tile"></div>
-                                <div style="display: inline-flex; width: 100%;">
-                                    <span style="display: inline-flex; align-items: center; margin: 0; height: 38px; width: 50%;" class="login-input">
-                                        <input type="checkbox" id="sendtoall" name="sendtoall" style="margin-right: 10px;">
-                                        <span style="text-align: left;">Send to everyone</span>
-                                    </span>
-                                    <input type="submit" value="Send Email" name="send" class="send-button" style="width: 50%; margin-left: 20px; margin-right: 0;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>-->
-
-        <div id="cookie-banner"></div>
+    <div id="cookie-banner"></div>
 </body>
 </html>
 
@@ -329,49 +343,31 @@
         document.getElementById("iplookup-result").style.display = "none";
     }
 
-    function toggleNotificationView() {
-        document.getElementById("notificationView").style.display = "block";
-        document.getElementById("promoEmailView").style.display = "none";
-        document.getElementById("accountsView").style.display = "none";
-        document.getElementById("supportView").style.display = "none";
-
-        document.getElementById("toggleNotificationView").classList.add("hover-color");
-        document.getElementById("togglePromoEmailView").classList.remove("hover-color");
-        document.getElementById("toggleAccountsView").classList.remove("hover-color");
-        document.getElementById("toggleSupportView").classList.remove("hover-color");
-    }
-
     function togglePromoEmailView() {
-        document.getElementById("notificationView").style.display = "none";
         document.getElementById("promoEmailView").style.display = "block";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "none";
 
-        document.getElementById("toggleNotificationView").classList.remove("hover-color");
         document.getElementById("togglePromoEmailView").classList.add("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
     }
 
     function toggleAccountsView() {
-        document.getElementById("notificationView").style.display = "none";
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "block";
         document.getElementById("supportView").style.display = "none";
 
-        document.getElementById("toggleNotificationView").classList.remove("hover-color");
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.add("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
     }
 
     function toggleSupportView() {
-        document.getElementById("notificationView").style.display = "none";
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "block";
 
-        document.getElementById("toggleNotificationView").classList.remove("hover-color");
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.add("hover-color");
