@@ -1,9 +1,6 @@
-import requests
+list1 = [1, 2, 3, 4, 5]
+list2 = [6, 7, 8, 9]
+list3 = [10, 11, 12, 13, 14, 15]
 
-ip = '83.135.160.86'
-response = requests.get(f'http://ip-api.com/json/{ip}')
-data = response.json()
-
-print(f'City: {data["city"]}')
-print(f'Region: {data["regionName"]}')
-print(f'Country: {data["country"]}')
+list4 = list1 + list2 + list3
+print(list4)

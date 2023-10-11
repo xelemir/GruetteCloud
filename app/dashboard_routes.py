@@ -102,7 +102,24 @@ def dashboard():
     except:
         pass
     
-    support_tickets = sql.readSQL(f"SELECT * FROM gruttecloud_tickets")
+    support_tickets = sql.readSQL(f"SELECT * FROM gruttecloud_tickets ORDER BY created_at ASC")
+    my_tickets = []
+    opened_tickets = []
+    in_progress_tickets = []
+    closed_tickets = []
+    
+    
+    for ticket in support_tickets:
+        if ticket["assigned_to"] == session["username"]:
+            my_tickets.append(ticket)
+        elif ticket["status"] == "opened":
+            opened_tickets.append(ticket)
+        elif ticket["status"] == "in_progress":
+            in_progress_tickets.append(ticket)
+        elif ticket["status"] == "closed":
+            closed_tickets.append(ticket)
+            
+    support_tickets = my_tickets + opened_tickets + in_progress_tickets + closed_tickets
     
     return render_template('dashboard.html', menu=th.user(session), username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, tickets=support_tickets)
 
@@ -362,3 +379,56 @@ def createRender():
 
         
         return render_template("createRender.html", menu=th.user(session), render_created=True, renders_in_use_light=renders_in_use_light, renders_in_use_dark=renders_in_use_dark)
+    
+@dashboard_route.route("/dashboard/assignticket", methods=["POST"])
+def assign_ticket():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    if not bool(user["is_admin"]):
+        return redirect("/")
+    
+    ticket_id = request.json["ticket_id"]
+    sql.writeSQL(f"UPDATE gruttecloud_tickets SET assigned_to = '{session['username']}', status = 'in_progress' WHERE id = '{ticket_id}'")
+    
+    return {"success": True}
+
+@dashboard_route.route("/dashboard/reopenticket", methods=["POST"])
+def reopen_ticket():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    if not bool(user["is_admin"]):
+        return redirect("/")
+    
+    ticket_id = request.json["ticket_id"]
+    sql.writeSQL(f"UPDATE gruttecloud_tickets SET status = 'opened', assigned_to = NULL WHERE id = '{ticket_id}'")
+    
+    return {"success": True}
+
+@dashboard_route.route("/dashboard/closeticket", methods=["POST"])
+def close_ticket():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    if not bool(user["is_admin"]):
+        return redirect("/")
+    
+    ticket_id = request.json["ticket_id"]
+    sql.writeSQL(f"UPDATE gruttecloud_tickets SET status = 'closed', assigned_to = NULL WHERE id = '{ticket_id}'")
+    
+    return {"success": True}
+
+
+#assignticket(ticket_id)
+#reopenTicket(ticket_id)
+#closeTicket(ticket_id)

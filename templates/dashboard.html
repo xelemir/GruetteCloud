@@ -43,6 +43,29 @@
         .hover-color {
             background-color: var(--secondary-color);
         }
+
+        .ticket-action-button {
+            border-radius: 30px;
+            border: none;
+            height: 40px;
+            width: 100%;
+            cursor: pointer;
+            color: var(--white-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            gap: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .ticket-action-button p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +176,7 @@
                             <p style="margin-bottom: 10px; font-size: 1.2em;">Live Preview:</p>
                             <div id="preview-toggle" style="text-decoration: underline; cursor: pointer;">Hide Preview</div>
                             <img id="preview-iphone" src="https://www.gruettecloud.com/static/renders/iPhone.png" style="width: 450px; border-radius: 20px; margin-bottom: 20px; position: absolute; margin-top: 130px; display: flex;">
-                            <div id="preview-content" style="background-color: #F2F2F2; height: 825px; width: 400px; max-height: 852px; overflow: auto; margin-top: 80px; display: flex;">
+                            <div id="preview-content" style="background-color: #F2F2F2; height: 800px; width: 400px; max-height: 800px; overflow: auto; margin-top: 80px; display: flex;">
                                 <div style="color: #F2F2F2; min-height: 100%;">
                                     <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: auto; min-height: 100%; border-radius: 20px; padding: 20px;">
                                         <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: 80px;">
@@ -261,32 +284,75 @@
                         </div>
                         {% endif %}
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px; margin-top: 30px;">
-
                         <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Support Tickets</h2>
-                        {% for ticket in tickets %}
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-                                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 20px; padding: 20px;">
-                                    <div style="width: 50%;">
-                                        <b>Message:</b><br>
-                                        {{ ticket["message"] }}
-                                    </div>
-                                    <div style="width: 25%; overflow: auto; white-space: wrap; text-overflow: ellipsis;">
-                                        <b>{{ ticket["created_at"] }}</b><br>
-                                        <b>Name: </b>{{ ticket["name"] }}<br>
-                                        <b>GrütteID: </b>{{ ticket["username"] }}<br>
-                                        <b>Email: </b>{{ ticket["email"] }}
-                                    </div>
-                                    <div style="width: 25%; overflow: auto; white-space: wrap; text-overflow: ellipsis;">
-                                        {% if ticket["status"] == "opened" %}
-                                            <b>Status: </b>opened<br>
-                                            <span style="color: var(--red);">Open</span>
-                                        {% else %}
-                                            closed
-                                        {% endif %}
+                        <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; max-height: calc(100svh - 350px);">
+                            {% for ticket in tickets %}
+                                <div {% if ticket["status"] == "closed" %}class="closed-ticket" {% endif %}style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 30px; padding: 10px;">
+                                        <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; padding-bottom: 0px; text-align: center; align-items: center; justify-content: center;">
+                                            <b>{{ ticket["created_at"] }}</b>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; width: 100%; padding: 10px;">
+                                            <div style="width: 30%; overflow: auto; white-space: wrap; text-overflow: ellipsis;">
+                                                <b>Status: </b>
+                                                {% if ticket["status"] == "opened" %}
+                                                    <span style="color: var(--green);">Opened</span><br>
+                                                {% elif ticket["status"] == "closed" %}
+                                                    <span style="color: var(--red);">Closed</span><br>
+                                                    <b>Completed by: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
+                                                {% else %}
+                                                    <span style="color: var(--yellow);">In Progress</span><br>
+                                                    <b>Assigned to: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
+                                                {% endif %}
+                                                <b>Name: </b>{{ ticket["name"] }}<br>
+                                                <b>GrütteID: </b>{{ ticket["username"] }}<br>
+                                                <span class="email-container">
+                                                <b>Email: </b><span class="email blurred-email">{{ ticket["email"] }}</span>
+                                                </span>
+                                            </div>
+                                            <div style="width: 70%;">
+                                                <b>Message:</b><br>
+                                                {{ ticket["message"] }}
+                                            </div>
+                                        </div>
+                                        <div style="width: 100%; overflow: auto; white-space: wrap; text-overflow: ellipsis; display: flex; flex-direction: row; justify-content: center; gap: 20px; padding: 10px; padding-bottom: 0px;">
+                                            {% if ticket["status"] == "opened" %}
+                                                <div class="ticket-action-button" style="background-color: var(--primary-color);" onclick="assignTicket('{{ ticket["id"] }}')">
+                                                    <span class="material-symbols-outlined">done</span><p>Start Ticket</p>
+                                                </div>
+                                            {% elif ticket["status"] == "closed" %}
+                                                <div class="ticket-action-button" style="background-color: var(--red);" onclick="reopenTicket('{{ ticket["id"] }}')">
+                                                    <span class="material-symbols-outlined">history</span><p>Reopen</p>
+                                                </div>
+                                            {% elif ticket["status"] == "in_progress" and ticket["assigned_to"] == menu["username"] %}
+                                                {% if ticket["username"] %}
+                                                    <a href="/dashboard/giftplus/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
+                                                        <span class="material-symbols-outlined">workspace_premium</span><p>Gift G+</p>
+                                                    </a>
+                                                    <a href="/chat/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
+                                                        <span class="material-symbols-outlined">forum</span><p>Open Chat</p>
+                                                    </a>
+                                                {% endif %}
+                                                {% if ticket["email"] %}
+                                                    <a href="mailto:{{ ticket["email"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
+                                                        <span class="material-symbols-outlined">mail</span><p>Send Email</p>
+                                                    </a>
+                                                {% endif %}
+                                                <div class="ticket-action-button" style="background-color: var(--red);" onclick="reopenTicket('{{ ticket["id"] }}')">
+                                                    <span class="material-symbols-outlined">history</span><p>Reopen</p>
+                                                </div>
+                                                <div class="ticket-action-button" style="background-color: var(--green);" onclick="closeTicket('{{ ticket["id"] }}')">
+                                                    <span class="material-symbols-outlined">done_all</span><p>Close Ticket</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
+                            {% endfor %}
+                            <div id="toggleClosedTicketsButton" style="display: flex; flex-direction: row; justify-content: center; padding: 10px; padding-bottom: 0px; cursor: pointer;" onclick="toggleClosedTickets()">
+                                Show Closed Tickets
                             </div>
-                        {% endfor %}
+                        </div>
                     </div>
                 </div>
 
@@ -411,6 +477,76 @@
     });
 
 
+    function assignTicket(ticket_id) {
+        fetch("/dashboard/assignticket", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ticket_id: ticket_id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "/dashboard";
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    function reopenTicket(ticket_id) {
+        fetch("/dashboard/reopenticket", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ticket_id: ticket_id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "/dashboard";
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    function closeTicket(ticket_id) {
+        fetch("/dashboard/closeticket", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ticket_id: ticket_id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "/dashboard";
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    var closedTickets = document.getElementsByClassName("closed-ticket");
+    for (let ticket of closedTickets) {
+        ticket.style.display = "none";
+    }
+
+    
+
+    function toggleClosedTickets() {
+        console.log("{{ menu["username"] }}");
+        for (let ticket of closedTickets) {
+            if (ticket.style.display === "none") {
+                ticket.style.display = "flex";
+                document.getElementById("toggleClosedTicketsButton").innerHTML = "Hide Closed Tickets";
+            } else {
+                ticket.style.display = "none";
+                document.getElementById("toggleClosedTicketsButton").innerHTML = "Show Closed Tickets";
+            }
+        }
+    }
 </script>
 
 <script>
