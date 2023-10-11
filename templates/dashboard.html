@@ -260,7 +260,33 @@
                             </div>
                         </div>
                         {% endif %}
-                        <h2 align="center" style="margin-bottom: 20px;">Support Tickets</h2>
+                        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px; margin-top: 30px;">
+
+                        <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Support Tickets</h2>
+                        {% for ticket in tickets %}
+                            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 20px; padding: 20px;">
+                                    <div style="width: 50%;">
+                                        <b>Message:</b><br>
+                                        {{ ticket["message"] }}
+                                    </div>
+                                    <div style="width: 25%; overflow: auto; white-space: wrap; text-overflow: ellipsis;">
+                                        <b>{{ ticket["created_at"] }}</b><br>
+                                        <b>Name: </b>{{ ticket["name"] }}<br>
+                                        <b>GrütteID: </b>{{ ticket["username"] }}<br>
+                                        <b>Email: </b>{{ ticket["email"] }}
+                                    </div>
+                                    <div style="width: 25%; overflow: auto; white-space: wrap; text-overflow: ellipsis;">
+                                        {% if ticket["status"] == "opened" %}
+                                            <b>Status: </b>opened<br>
+                                            <span style="color: var(--red);">Open</span>
+                                        {% else %}
+                                            closed
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 

@@ -102,7 +102,9 @@ def dashboard():
     except:
         pass
     
-    return render_template('dashboard.html', menu=th.user(session), username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status)
+    support_tickets = sql.readSQL(f"SELECT * FROM gruttecloud_tickets")
+    
+    return render_template('dashboard.html', menu=th.user(session), username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, tickets=support_tickets)
 
 @dashboard_route.route('/dashboard/iplookup', methods=['POST'])
 def iplookup():
