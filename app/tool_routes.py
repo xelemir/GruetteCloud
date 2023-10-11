@@ -3,6 +3,7 @@ import os
 import secrets
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from werkzeug.security import generate_password_hash
+from threading import Thread
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper, ApartmentHelper
 from config import templates_path
@@ -212,15 +213,11 @@ def discover():
 def privacy():
     return render_template("privacy.html", menu=th.user(session))
 
-@tool_route.route("/support", methods=["GET"])
-def support():
-    return render_template("support.html", menu=th.user(session))
-
 @tool_route.route("/terms", methods=["GET"])
 def terms():
     return render_template("terms.html", menu=th.user(session))
 
-@tool_route.route("/support", methods=["POST"])
+@tool_route.route("/support", methods=["GET", "POST"])
 def send_support():
     """ Post route to send a support message to the GrütteCloud team
 
@@ -228,19 +225,22 @@ def send_support():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
-        return redirect(f"/")
+    if request.method == "GET":
+        return render_template("support.html", menu=th.user(session))
+    
+    sql = SQLHelper.SQLHelper()
     
     name = str(request.form["name"])
     username = str(request.form["username"])
     email = str(request.form["mail"])
     message = str(request.form["message"])
     
-    mail = MailHelper.MailHelper()
-    mail.send_support_mail(name, username, email, message)
+    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
+    
+    async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
+    async_mail.start()
     
     return render_template("support.html", menu=th.user(session), error="success")
-
 
 @tool_route.route("/apartment", methods=["GET", "POST"])
 def apartment():

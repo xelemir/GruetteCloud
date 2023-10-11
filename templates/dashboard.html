@@ -286,8 +286,13 @@
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px; margin-top: 30px;">
                         <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Support Tickets</h2>
                         <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; max-height: calc(100svh - 350px);">
+                            <div id="no-tickets" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; border-radius: 30px; padding: 10px; margin-bottom: 20px; height: calc(100svh - 350px);">
+                                <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center; font-size: 3em; margin-bottom: 20px; color: var(--primary-color);">mark_email_read</span>
+                                <p style="text-align: center;">Hoorayy! There are no open tickets at the moment.</p>
+                            </div>
+                            
                             {% for ticket in tickets %}
-                                <div {% if ticket["status"] == "closed" %}class="closed-ticket" {% endif %}style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                <div class="ticket{% if ticket["status"] == "closed" %} closed-ticket{% endif %}" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
                                     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 30px; padding: 10px;">
                                         <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; padding-bottom: 0px; text-align: center; align-items: center; justify-content: center;">
                                             <b>{{ ticket["created_at"] }}</b>
@@ -529,11 +534,17 @@
     }
 
     var closedTickets = document.getElementsByClassName("closed-ticket");
+    var allTickets = document.getElementsByClassName("ticket");
     for (let ticket of closedTickets) {
         ticket.style.display = "none";
     }
 
-    
+    if (closedTickets.length == allTickets.length) {
+        document.getElementById("no-tickets").style.display = "flex";
+    }
+    if (closedTickets.length == 0) {
+        document.getElementById("toggleClosedTicketsButton").style.display = "none";
+    }
 
     function toggleClosedTickets() {
         console.log("{{ menu["username"] }}");
