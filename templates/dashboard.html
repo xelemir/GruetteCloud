@@ -65,6 +65,7 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             font-size: 15px;
+            color: var(--white-color);
         }
     </style>
 </head>
@@ -85,10 +86,10 @@
 
         <div style="display: flex; flex-direction: row; width: 100%; height: 100%; gap: 20px;">
             <div style="width: 10%; background-color: transparent;">
-                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding-bottom: 10px;">
+                <a href="/" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
                     <h1 style="font-size: 1.5em; padding-left: 15px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0px;">GrütteCloud</h1>
-                </div>
+                </a>
 
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
 
@@ -332,15 +333,15 @@
                                             {% elif ticket["status"] == "in_progress" and ticket["assigned_to"] == menu["username"] %}
                                                 {% if ticket["username"] %}
                                                     <a href="/dashboard/giftplus/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
-                                                        <span class="material-symbols-outlined">workspace_premium</span><p>Gift G+</p>
+                                                        <span class="material-symbols-outlined" style="color: var(--white-color);">workspace_premium</span><p>Gift G+</p>
                                                     </a>
                                                     <a href="/chat/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
-                                                        <span class="material-symbols-outlined">forum</span><p>Open Chat</p>
+                                                        <span class="material-symbols-outlined" style="color: var(--white-color);">forum</span><p>Open Chat</p>
                                                     </a>
                                                 {% endif %}
                                                 {% if ticket["email"] %}
                                                     <a href="mailto:{{ ticket["email"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
-                                                        <span class="material-symbols-outlined">mail</span><p>Send Email</p>
+                                                        <span class="material-symbols-outlined" style="color: var(--white-color);">mail</span><p>Send Email</p>
                                                     </a>
                                                 {% endif %}
                                                 <div class="ticket-action-button" style="background-color: var(--red);" onclick="reopenTicket('{{ ticket["id"] }}')">
