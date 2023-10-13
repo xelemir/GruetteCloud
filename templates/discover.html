@@ -489,64 +489,6 @@
 </script>
 
 <script>
-
-    // Dark mode toggle functionality
-    var darkModeToggle = document.getElementById('darkModeToggle');
-    var body = document.body;
-    var isDarkMode = localStorage.getItem('darkMode');
-    updateLogoColors();
-
-    if (isDarkMode === 'true') {
-        body.classList.add('dark-mode');
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-        var product_renders = document.getElementsByClassName("product-renders");
-        for (var i = 0; i < product_renders.length; i++) {
-            product_renders[i].src = product_renders[i].src.replace("light", "dark");
-        };
-        updateLogoColors();
-    }
-
-    darkModeToggle.addEventListener('click', function() {
-        if (body.classList.contains('dark-mode')) {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'false');
-            document.documentElement.setAttribute('data-theme', 'light');
-            darkModeToggle.innerHTML = 'light_mode'; // Change the inner HTML to the light mode icon
-            var product_renders = document.getElementsByClassName("product-renders");
-            for (var i = 0; i < product_renders.length; i++) {
-                product_renders[i].src = product_renders[i].src.replace("dark", "light");
-            };
-            updateLogoColors();
-
-        } else {
-            body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'true');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-            var product_renders = document.getElementsByClassName("product-renders");
-            for (var i = 0; i < product_renders.length; i++) {
-                product_renders[i].src = product_renders[i].src.replace("light", "dark");
-            };
-            updateLogoColors();
-        }
-    });
-    darkModeToggle.style.cursor = 'pointer'; // Add this line to change the cursor to a pointer on hover
-
-    function updateLogoColors() {
-        var logos = document.getElementsByClassName('brand-logo');
-        for (var i = 0; i < logos.length; i++) {
-            var logo = logos[i];
-            if (localStorage.getItem('darkMode') === 'true') {
-                logo.src = logo.src.replace('black', 'white');
-            } else {
-                logo.src = logo.src.replace('white', 'black');
-            }
-        }
-    }
-</script>
-
-<script>
     var defaultView = document.getElementById('default');
     var defaultViewMobile = document.getElementById('defaultMobile');
     var loginSignupView = document.getElementById('loginSignup');
@@ -631,5 +573,5 @@
 </script>
 
 
-
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
