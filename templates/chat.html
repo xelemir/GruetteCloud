@@ -11,7 +11,7 @@
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .read-reciept {
+        .read-receipt {
             font-size: 1em;
             text-align: right;
             margin-top: 5px;
@@ -26,6 +26,10 @@
             justify-content: space-between; /* Aligns the read receipt to the right */
             gap: 10px;
 
+        }
+
+        .right-bubble.image-read-receipt {
+            flex-direction: column;
         }
     </style>
     <script>
@@ -50,17 +54,23 @@
                             // Clear existing messages before appending new ones
                             $('.chat-messages').empty();
                             
+
                             response.messages.forEach(function(message) {
+
                                 var messageContainer;
                                 var messageSender = message.sender;
                                 if (messageSender === 'You') {
-                                    messageContainer = $('<div>').addClass('message right-bubble');
+                                    if (message.content.startsWith('https://www.gruettecloud.com/open/GruetteCloud') && (message.content.endsWith('/chat'))) {
+                                        messageContainer = $('<div>').addClass('message right-bubble image-read-receipt');
+                                    } else {
+                                        messageContainer = $('<div>').addClass('message right-bubble');
+                                    }
                                 } else {
                                     messageContainer = $('<div>').addClass('message left-bubble');
                                 }
 
-                                var read_reciept_sent = $('<span>').addClass('material-symbols-outlined read-reciept').text('done');
-                                var read_reciept_read = $('<span>').addClass('material-symbols-outlined read-reciept').text('done_all');
+                                var read_receipt_sent = $('<span>').addClass('material-symbols-outlined read-receipt').text('done');
+                                var read_receipt_read = $('<span>').addClass('material-symbols-outlined read-receipt').text('done_all');
                                         
                                 if (message.content.startsWith('https://www.gruettecloud.com/open/GruetteCloud') && (message.content.endsWith('/chat'))) {
                                     var imageElement = $('<img>').attr('src', message.content).addClass('message-image');
@@ -74,9 +84,9 @@
 
                                     if (messageSender == 'You') {
                                         if (message.is_read) {
-                                            messageContainer.append(read_reciept_read);
+                                            messageContainer.append(read_receipt_read);
                                         } else {
-                                            messageContainer.append(read_reciept_sent);
+                                            messageContainer.append(read_receipt_sent);
                                         }
                                     }
                                 } else {
@@ -85,9 +95,9 @@
 
                                     if (messageSender == 'You') {
                                         if (message.is_read) {
-                                            messageContainer.append(read_reciept_read);
+                                            messageContainer.append(read_receipt_read);
                                         } else {
-                                            messageContainer.append(read_reciept_sent);
+                                            messageContainer.append(read_receipt_sent);
                                         }
                                     }
                                 }
