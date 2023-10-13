@@ -113,9 +113,7 @@
             loadMessages();
         });
     </script>
-    
-    
-    
+
 </head>
 <body style="padding: 10px;">
     <div class="header">
@@ -176,7 +174,7 @@
             {% endif %}
         </div>
     {% else %}
-        <div id="input-bar" style="position: sticky; bottom: 0px; margin: 0; width: 100% ">
+        <div style="position: sticky; bottom: 0px; margin: 0; width: 100% ">
             <form action="/chat/{{ recipient }}" method="POST" id="sendMessage" style="display: flex; gap: 10px;" enctype="multipart/form-data">
                 <input type="file" name="file" accept="image/*" id="file" style="display: none;">
                 <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
@@ -249,15 +247,5 @@
             fileLabel.style.display = "flex";
             removeDiv.style.display = "none";
         });
-
-        const inputBar = document.getElementById("input-bar");
-        const cookieExists = document.cookie.indexOf('developerview=true') !== -1;
-        if (cookieExists) {
-            inputBar.style.marginBottom = '-100px';
-        } else {
-            inputBar.style.marginBottom = '0px';
-        }
     });
-
-        
 </script>
