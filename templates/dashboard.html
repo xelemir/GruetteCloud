@@ -131,6 +131,10 @@
                         <span id="darkModeToggle" class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Darkmode">light_mode</span>
                         <p style="padding-left: 15px;">Toggle Theme</p>
                     </div>
+                    <div class="navigation-button" >
+                        <span id="dev-view-icon" onclick="toggleDevView()" class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Darkmode">code</span>
+                        <p style="padding-left: 15px;">Developer View</p>
+                    </div>
                     <a href="/settings" class="navigation-button">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Account">settings</span>
                         <p style="padding-left: 15px;">Account Settings</p>
@@ -558,6 +562,22 @@
                 document.getElementById("toggleClosedTicketsButton").innerHTML = "Show Closed Tickets";
             }
         }
+    }
+
+    function toggleDevView() {
+        if (document.cookie.includes("developerview=true")) {
+            document.cookie = "developerview=false";
+            document.getElementById("dev-view-icon").innerHTML = "code";
+        } else {
+            document.cookie = "developerview=true";
+            document.getElementById("dev-view-icon").innerHTML = "code_off";
+        }
+    }
+
+    if (document.cookie.includes("developerview=true")) {
+        document.getElementById("dev-view-icon").innerHTML = "code_off";
+    } else {
+        document.getElementById("dev-view-icon").innerHTML = "code";
     }
 </script>
 

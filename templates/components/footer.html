@@ -1,4 +1,4 @@
-<div style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
+<div id="footer" style="display: flex; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: auto;">
     <div style="display: flex;">
         <div style="width: 50%; margin-right: 20px; text-align: left;">
             <b style="font-size: 0.9em;">GrütteCloud</b>
@@ -18,3 +18,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const banner = document.getElementById('footer');
+
+        const cookieExists = document.cookie.indexOf('developerview=true') !== -1;
+
+        if (cookieExists) {
+            banner.style.display = "none"
+        } else {
+            banner.style.display = "flex"
+        }
+    });
+</script>
