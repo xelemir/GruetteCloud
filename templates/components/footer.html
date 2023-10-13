@@ -21,14 +21,14 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const banner = document.getElementById('footer');
+        const footer = document.getElementById('footer');
 
         const cookieExists = document.cookie.indexOf('developerview=true') !== -1;
 
         if (cookieExists) {
-            banner.style.display = "none"
+            footer.style.display = "none"
         } else {
-            banner.style.display = "flex"
+            footer.style.display = "flex"
         }
     });
 </script>
