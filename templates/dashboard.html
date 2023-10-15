@@ -229,11 +229,11 @@
                         <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; flex-direction: column; align-items: center;">
                             <p style="margin-bottom: 10px; font-size: 1.2em;">Live Preview:</p>
                             <div id="preview-toggle" style="text-decoration: underline; cursor: pointer;">Hide Preview</div>
-                            <img id="preview-iphone" src="https://www.gruettecloud.com/static/renders/iPhone.png" style="width: 450px; border-radius: 20px; margin-bottom: 20px; position: absolute; margin-top: 130px; display: flex;">
-                            <div id="preview-content" style="background-color: #F2F2F2; height: 800px; width: 400px; max-height: 800px; overflow: auto; margin-top: 80px; display: flex;">
+                            <!--<img id="preview-iphone" src="https://www.gruettecloud.com/static/renders/iPhone.png" style="width: 450px; border-radius: 20px; margin-bottom: 20px; position: absolute; margin-top: 130px; display: flex;">-->
+                            <div id="preview-content" style="background-color: #F2F2F2; height: 800px; width: 400px; max-height: 800px; overflow: auto; margin-top: 20px; display: flex; border-radius: 40px;">
                                 <div style="color: #F2F2F2; min-height: 100%;">
                                     <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: auto; min-height: 100%; border-radius: 20px; padding: 20px;">
-                                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: 80px;">
+                                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 150px; margin-top: 20px;">
                                         <h1 style="color: #007AFF; margin-top: -20px;">Hey {{ menu["username"] }},</h1>
                                         <b style="color: #000000;"> 
                                         <div id="livePreview"></div>
@@ -522,15 +522,12 @@
 
     const previewToggle = document.getElementById('preview-toggle');
     const previewContent = document.getElementById('preview-content');
-    const previewIphone = document.getElementById('preview-iphone');
     previewToggle.addEventListener('click', function () {
         if (previewContent.style.display === 'none') {
             previewContent.style.display = 'flex';
-            previewIphone.style.display = 'flex';
             previewToggle.innerHTML = 'Hide Preview';
         } else {
             previewContent.style.display = 'none';
-            previewIphone.style.display = 'none';
             previewToggle.innerHTML = 'Show Preview';
         }
     });
@@ -538,7 +535,6 @@
     // if screen width is less than 2001px, hide preview
     if (window.innerWidth <= 2000) {
         previewContent.style.display = 'none';
-        previewIphone.style.display = 'none';
         previewToggle.innerHTML = 'Show Preview';
     }
 

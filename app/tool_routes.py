@@ -23,6 +23,10 @@ def logout():
     session.clear()
     return redirect(f'/')
 
+def create_ticket(username, message, email):
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (name, username, email, message, status) VALUES ('{username}', '{username}', '{email}', '{message}', 'opened')")
+        
 @tool_route.route("/unsubscribe", methods=["GET", "POST"])
 def unsubscribe():
     """ Route to unsubscribe from communication emails	
@@ -39,9 +43,9 @@ def unsubscribe():
                 return redirect("/unsubscribe")
             email = str(request.form["email"])
             sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE email = '{email}'")
+            t1 = Thread(target=create_ticket, args=("unknown", f"Someone unsubscribed from communication emails. Email: {email}", email)).start()
             return render_template("unsubscribe.html", menu=th.user(session), mode="unsubscribe_confirmed")
 
-    
     username = request.args.get("username")
     email = request.args.get("email")
     token = request.args.get("token")
@@ -62,9 +66,10 @@ def unsubscribe():
         if user[0]["receive_emails"] == False:
             return redirect("/")
 
-        mail = MailHelper.MailHelper()
         sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{username}'")
-        mail.send_support_mail("Unsubscribed", username, email, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}")
+        t2 = Thread(target=MailHelper.MailHelper().send_support_mail, args=("Unsubscribed", username, email, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}")).start()
+        t3 = Thread(target=create_ticket, args=(username, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}", email)).start()
+        
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe_confirmed")
     
 @tool_route.route("/resubscribe")
@@ -87,9 +92,8 @@ def resubscribe():
     elif user[0]["email"] != email or user[0]["verification_code"] != token:
         return redirect("/")
     else:
-        mail = MailHelper.MailHelper()
         sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {True} WHERE username = '{username}'")
-        mail.send_support_mail("Resubscribed", username, email, f"{username} changed their mind and resubscribed to communication emails. Please manually gift them GrütteCloud PLUS")
+        t1 = Thread(target=create_ticket, args=(username, f"{username} changed their mind and resubscribed to communication emails. Please manually gift them GrütteCloud PLUS", email)).start()
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="resubscribe")
     
 @tool_route.route("/reset_password", methods=["GET", "POST"])
