@@ -72,13 +72,50 @@
             display: auto;
         }
 
+        .sidebar-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            display: flex;
+        }
+
         @media only screen and (max-width: 2000px) {
             .ticket-action-button p {
                 display: none;
             }
-
-
         }
+
+        @media only screen and (max-width: 1200px) {
+            .navigation-button p {
+                display: none;
+            }
+
+            .navigation-button {
+                padding-left: 10px;
+                justify-content: center;
+
+            }
+
+            .sidebar-icon {
+                max-width: 50px;
+                max-height: 50px;
+                margin-bottom: 0px;
+            }
+
+            .sidebar-text {
+                display: none;
+            }
+
+            .title {
+                display: none;
+            }
+        }
+
+
     </style>
 </head>
 <body>
@@ -100,14 +137,14 @@
             <div style="width: 10%; background-color: transparent;">
                 <a href="/" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
-                    <h1 style="font-size: 1.5em; padding-left: 15px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0px;">GrütteCloud</h1>
+                    <h1 class="title" style="font-size: 1.5em; padding-left: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0px;">GrütteCloud</h1>
                 </a>
 
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
 
                 <div style="display: flex; flex-direction: column; align-items: center; padding-top: 20px; padding-bottom: 20px;">
-                    <img src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%;">
-                    <p style="font-size: 1.2em;">Hey, {{ menu["username"] }}!</p>
+                    <img class="sidebar-icon" src="https://www.gruettecloud.com/static/profile_pictures/{{ menu["pfp"] }}">
+                    <p class="sidebar-text" style="font-size: 1.2em;">Hey, {{ menu["username"] }}!</p>
                 </div>
 
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
