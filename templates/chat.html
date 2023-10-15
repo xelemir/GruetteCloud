@@ -8,6 +8,7 @@
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -133,30 +134,39 @@
                     messageID: messageID
                 },
                 success: function(response) {
-                    var author = response.author;
-                    var content = response.content;
-                    var timestamp = response.timestamp;
-                    var is_read = response.is_read;
-                    var id = response.id;
+                    $('#chat-messages').css('display', 'none');
+                    $('#message-details').css('display', 'flex');
+                    $('#message-timestamp').text(response.timestamp);
+                    if (response.is_read) {
+                        $('#message-read').text('True');
+                    } else {
+                        $('#message-read').text('False');
+                    }
+                    $('#message-author').text(response.author);
+                    $('#message-id').text(response.id);
+                    $('#message-content').text(response.content);
 
-                    $('#chat-messages').empty();
-                    document.getElementById('user-input').style.display = 'none';
-
-                    var messageContainer = $('<div>').addClass('message left-bubble');
-                    var messageContent = $('<div>').addClass('message-content').text(content);
-                    var messageTimestamp = $('<div>').addClass('message-timestamp').text(timestamp);
-                    var messageAuthor = $('<div>').addClass('message-author').text(author);
-                    var messageID = $('<div>').addClass('message-id').text(id);
-
-                    messageContainer.append(messageContent);
-                    messageContainer.append(messageTimestamp);
-                    messageContainer.append(messageAuthor);
-                    messageContainer.append(messageID);
-
-                    
+                    if (response.author == '{{ username }}') {
+                        $('#message-details-bubble').removeClass('left-bubble');
+                        $('#message-details-bubble').addClass('right-bubble');
+                        $('.message-delete').css('display', 'flex');
+                    } else {
+                        $('#message-details-bubble').removeClass('right-bubble');
+                        $('#message-details-bubble').addClass('left-bubble');
+                        $('.message-delete').css('display', 'none');
+                    }
                 },
             });
         }
+
+        // Close the dropdown when clicking outside of it
+        window.addEventListener('click', function(event) {
+            var messageDetails = document.querySelector('.message-details');
+            if (!messageDetails.contains(event.target)) {
+                $('#chat-messages').css('display', 'flex');
+                $('#message-details').css('display', 'none');
+            }
+          });
     </script>
 
 </head>
@@ -184,39 +194,56 @@
             <a href="/support" title="Report chat" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">flag</span></a>
         </div>
     </div>
-    <div id="message-details" class="chat-messages" style="display: flex; width: 100%; align-items: center; justify-content: center; text-align: center; flex-direction: column;">
-        
-        <div class="message right-bubble" style="align-self: center; justify-self: center; text-align: center; font-size: 1.5em; padding: 20px; border-radius: 30px; max-width: 70%;">
-            <div class="message-content">Hi there</div>
+    <div id="message-details" class="chat-messages animate__animated animate__zoomIn" style="display: none; width: 100%; align-items: center; justify-content: center; text-align: center; flex-direction: column;">
+        <div class="message-details" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div id="message-details-bubble" class="message right-bubble" style="align-self: center; justify-self: center; text-align: center; font-size: 1.5em; padding: 20px; border-radius: 30px; max-width: 70%;">
+                <div id="message-content" class="message-content" style="overflow: hidden; white-space: wrap; text-overflow: ellipsis; text-align: left;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; background-color: var(--secondary-color); border-radius: 30px; justify-content: center; align-items: center; padding: 20px; margin-top: 20px; max-width: 70;">
+                <div style="display: flex; width: 100%; gap: 30px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">done</span>
+                        <p>Sent on</p>
+                    </div>
+                    <p id="message-timestamp" style="margin-left: auto;"></p>
+                </div>
+                <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
+                <div style="display: flex; width: 100%; gap: 30px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">done_all</span>
+                        <p>Read</p>
+                    </div>
+                    <p id="message-read" style="margin-left: auto;"></p>
+                </div>
+                <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
+                <div style="display: flex; width: 100%; gap: 30px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">record_voice_over</span>
+                        <p>Author</p>
+                    </div>
+                    <p id="message-author" style="margin-left: auto;"></p>
+                </div>
+                {% if menu["admin"] %}
+                    <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
+                    <div style="display: flex; width: 100%; gap: 30px;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">tag</span>
+                            <p>Message ID</p>
+                        </div>
+                        <p id="message-id" style="margin-left: auto;"></p>
+                    </div>
+                {% endif %}
+                <hr class="message-delete" style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color); display: flex;">
+                <div class="message-delete" style="display: flex; width: 100%; gap: 30px; cursor: pointer;" onclick="if (confirm('Are you sure you want to delete this message?')) {window.location.href='/delete_message/' + document.getElementById('message-id').innerHTML;}">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">delete</span>
+                        <p>Delete Message</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="message-details-buttons" style="display: flex; flex-direction: column; background-color: var(--secondary-color); border-radius: 30px; justify-content: center; align-items: center; padding: 20px;">
-            <div style="display: flex; width: 100%; gap: 30px;">
-                <div style="display: flex; gap: 5px; align-items: center;">
-                    <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">done</span>
-                    <p>Sent on</p>
-                </div>
-                <p style="margin-left: auto;">July 23 2023</p>
-            </div>
-            <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
-            <div style="display: flex; width: 100%; gap: 30px;">
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <p>Read</p>
-                </div>
-                <p style="margin-left: auto;">Yes</p>
-                
-            </div>
-            <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
-            <div style="display: flex; width: 100%; gap: 30px;">
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <p>Author</p>
-                </div>
-                <p style="margin-left: auto;">Jan</p>
-            </div>
-            
-        </div>
-        
     </div>
-    <div id="chat-messages" class="chat-messages" style="display: none;">
+    <div id="chat-messages" class="chat-messages" style="display: flex;">
         {% for message in messages %}
             {% if message[0] == "You" %}
                 <div class="message right-bubble">

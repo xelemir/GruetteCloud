@@ -75,15 +75,15 @@ def get_message_detailed():
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    username = str(request.args.get("username")).lower()
-    recipient = str(request.args.get("recipient")).lower()
-    message_id = str(request.args.get("message_id"))
+    message_id = str(request.args.get("messageID"))
     
-    if username != session["username"]:
+    get_message = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE id = '{message_id}'")
+    
+    if get_message == []:
         return redirect("/")
     
-    # Fetch the message from the database
-    get_message = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE id = '{message_id}'")
+    if get_message[0]["username_send"] != session["username"] and get_message[0]["username_receive"] != session["username"]:
+        return redirect("/")
     
     # Decrypt the message
     try:
@@ -91,13 +91,38 @@ def get_message_detailed():
     except:
         decrypted_message = "Decryption Error!"
     
-    if get_message[0]["username_send"] == username:
-        message = {"author": "You", "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
-    else:
-        message = {"author": recipient, "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
+    message = {"author": get_message[0]["username_send"], "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
     
-    return jsonify(message=message)
+    return jsonify(message)
 
+@chat_route.route("/delete_message/<message_id>", methods=["GET"])
+def delete_message(message_id):
+    """ Route to delete a message
+
+    Args:
+        message_id (str): The ID of the message to delete
+
+    Returns:
+        str: Redirect to home page
+    """
+    
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    message_id = str(message_id)
+    
+    get_message = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE id = '{message_id}'")
+    
+    if get_message == []:
+        return redirect("/")
+    
+    if get_message[0]["username_send"] != session["username"]:
+        return redirect("/")
+    
+    sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE id = '{message_id}'")
+    
+    return redirect(f"/chat/{get_message[0]['username_receive']}")
 
 @chat_route.route('/chat/<recipient>', methods=['GET', 'POST'])
 def chat_with(recipient):
@@ -185,7 +210,7 @@ def chat_with(recipient):
             messages_list.append([recipient, decrypted_message])
             
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked)
+    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session))
 
 @chat_route.route("/ai/<action>", methods=["POST", "GET"])
 def ai_chat(action):
