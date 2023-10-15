@@ -62,21 +62,20 @@
                             messageIDs = String(response.messageIDs); // Update the message IDs
                             
                             // Clear existing messages before appending new ones
-                            $('.chat-messages').empty();
+                            $('#chat-messages').empty();
                             
-
                             response.messages.forEach(function(message) {
 
                                 var messageContainer;
                                 var messageSender = message.sender;
                                 if (messageSender === 'You') {
                                     if (message.content.startsWith('https://www.gruettecloud.com/open/GruetteCloud') && (message.content.endsWith('/chat'))) {
-                                        messageContainer = $('<div>').addClass('message right-bubble image-read-receipt');
+                                        messageContainer = $('<div>').addClass('message right-bubble image-read-receipt').click(function() {expandMessage(message.id);});
                                     } else {
-                                        messageContainer = $('<div>').addClass('message right-bubble');
+                                        messageContainer = $('<div>').addClass('message right-bubble').click(function() {expandMessage(message.id);});
                                     }
                                 } else {
-                                    messageContainer = $('<div>').addClass('message left-bubble');
+                                    messageContainer = $('<div>').addClass('message left-bubble').click(function() {expandMessage(message.id);});
                                 }
 
                                 var read_receipt_sent = $('<span>').addClass('material-symbols-outlined read-receipt').text('done');
@@ -112,7 +111,7 @@
                                     }
                                 }
                                 
-                                $('.chat-messages').append(messageContainer);
+                                $('#chat-messages').append(messageContainer);
                             });
                         }
                     },
@@ -122,7 +121,42 @@
                 });
             }
             loadMessages();
+
+            
         });
+
+        function expandMessage(messageID) {
+            $.ajax({
+                url: '/get_message_detailed',
+                type: 'GET',
+                data: {
+                    messageID: messageID
+                },
+                success: function(response) {
+                    var author = response.author;
+                    var content = response.content;
+                    var timestamp = response.timestamp;
+                    var is_read = response.is_read;
+                    var id = response.id;
+
+                    $('#chat-messages').empty();
+                    document.getElementById('user-input').style.display = 'none';
+
+                    var messageContainer = $('<div>').addClass('message left-bubble');
+                    var messageContent = $('<div>').addClass('message-content').text(content);
+                    var messageTimestamp = $('<div>').addClass('message-timestamp').text(timestamp);
+                    var messageAuthor = $('<div>').addClass('message-author').text(author);
+                    var messageID = $('<div>').addClass('message-id').text(id);
+
+                    messageContainer.append(messageContent);
+                    messageContainer.append(messageTimestamp);
+                    messageContainer.append(messageAuthor);
+                    messageContainer.append(messageID);
+
+                    
+                },
+            });
+        }
     </script>
 
 </head>
@@ -150,8 +184,39 @@
             <a href="/support" title="Report chat" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">flag</span></a>
         </div>
     </div>
-
-    <div class="chat-messages">
+    <div id="message-details" class="chat-messages" style="display: flex; width: 100%; align-items: center; justify-content: center; text-align: center; flex-direction: column;">
+        
+        <div class="message right-bubble" style="align-self: center; justify-self: center; text-align: center; font-size: 1.5em; padding: 20px; border-radius: 30px; max-width: 70%;">
+            <div class="message-content">Hi there</div>
+        </div>
+        <div id="message-details-buttons" style="display: flex; flex-direction: column; background-color: var(--secondary-color); border-radius: 30px; justify-content: center; align-items: center; padding: 20px;">
+            <div style="display: flex; width: 100%; gap: 30px;">
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <span class="material-symbols-outlined" style="display: flex; justify-content: center; font-size: 1.3em;">done</span>
+                    <p>Sent on</p>
+                </div>
+                <p style="margin-left: auto;">July 23 2023</p>
+            </div>
+            <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
+            <div style="display: flex; width: 100%; gap: 30px;">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <p>Read</p>
+                </div>
+                <p style="margin-left: auto;">Yes</p>
+                
+            </div>
+            <hr style="width: 100%; margin: 10px 0px; border: 1px solid var(--box-shadow-color);">
+            <div style="display: flex; width: 100%; gap: 30px;">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <p>Author</p>
+                </div>
+                <p style="margin-left: auto;">Jan</p>
+            </div>
+            
+        </div>
+        
+    </div>
+    <div id="chat-messages" class="chat-messages" style="display: none;">
         {% for message in messages %}
             {% if message[0] == "You" %}
                 <div class="message right-bubble">
@@ -174,7 +239,7 @@
     </div>
     
     {% if blocked != "none" %}
-        <div style="display: block; justify-content: center; align-items: center; color: var(--text-color); text-align: center; margin-bottom: 20px; background-color: var(--background-tile-color); border-radius: 30px; padding: 10px; border-style: solid; border-color: var(--box-shadow-color); border-width: 2px;">
+        <div id="user-input" style="display: block; justify-content: center; align-items: center; color: var(--text-color); text-align: center; margin-bottom: 20px; background-color: var(--background-tile-color); border-radius: 30px; padding: 10px; border-style: solid; border-color: var(--box-shadow-color); border-width: 2px;">
             {% if blocked == "other" %}
                 <p>You have blocked {{ recipient }}.</p>
                 <p>You will not receive any messages from them.</p>
@@ -185,7 +250,7 @@
             {% endif %}
         </div>
     {% else %}
-        <div style="position: sticky; bottom: 0px; margin: 0; width: 100%;">
+        <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%;">
             <form action="/chat/{{ recipient }}" method="POST" id="sendMessage" style="display: flex; gap: 10px;" enctype="multipart/form-data">
                 <input type="file" name="file" accept="image/*" id="file" style="display: none;">
                 <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
@@ -209,7 +274,6 @@
 
 <script>
     window.onload = function() {
-        var chatMessages = document.querySelector('.chat-messages');
         var input = document.querySelector('input[name="message"]');
         const userAgent = navigator.userAgent;
         input.focus();

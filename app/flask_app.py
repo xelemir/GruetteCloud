@@ -68,6 +68,10 @@ def errorToTicket(error, username=None):
     else:
         sql.writeSQL(f"INSERT INTO gruttecloud_tickets (message, status) VALUES ('{error}', 'opened')")
 
+@app.route("/404")
+def error404page():
+    return render_template("404.html", menu=th.user(session))
+
 @app.errorhandler(500)
 def error500(error):
     # Return 500 page to user instantly and create a ticket in the background
@@ -77,6 +81,10 @@ def error500(error):
         username = None
 
     Thread(target=errorToTicket, args=(f"{str(error)} Route: {str(request.path)}", username)).start()
+    return render_template("500.html", menu=th.user(session))
+
+@app.route("/500")
+def error500page():
     return render_template("500.html", menu=th.user(session))
 
 @app.route("/chat", methods=["GET", "POST"])
@@ -234,4 +242,4 @@ def generate_hashed_room_name(username1, username2):
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

@@ -54,14 +54,50 @@ def get_messages():
             decrypted_message = "Decryption Error!"
 
         if message["username_send"] == username:
-            messages_list.append({"sender": "You", "content": decrypted_message, "is_read": message["is_read"]})
+            messages_list.append({"sender": "You", "content": decrypted_message, "is_read": message["is_read"], "id": message["id"]})
         else:
-            messages_list.append({"sender": recipient, "content": decrypted_message, "is_read": message["is_read"]})
+            messages_list.append({"sender": recipient, "content": decrypted_message, "is_read": message["is_read"], "id": message["id"]})
             
     if set(messageIDs_old) != set(messageIDs_new):
         return jsonify(messages=messages_list, messageIDs=messageIDs_new)
     else:
         return jsonify(messages=[], messageIDs=messageIDs_new)
+
+@chat_route.route("/get_message_detailed", methods=["GET"])
+def get_message_detailed():
+    """ Route to get a message in detail
+
+    Returns:
+        str: The message as JSON
+    """
+    
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    username = str(request.args.get("username")).lower()
+    recipient = str(request.args.get("recipient")).lower()
+    message_id = str(request.args.get("message_id"))
+    
+    if username != session["username"]:
+        return redirect("/")
+    
+    # Fetch the message from the database
+    get_message = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE id = '{message_id}'")
+    
+    # Decrypt the message
+    try:
+        decrypted_message = str(eh.decrypt_message(get_message[0]["message_content"]))
+    except:
+        decrypted_message = "Decryption Error!"
+    
+    if get_message[0]["username_send"] == username:
+        message = {"author": "You", "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
+    else:
+        message = {"author": recipient, "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
+    
+    return jsonify(message=message)
+
 
 @chat_route.route('/chat/<recipient>', methods=['GET', 'POST'])
 def chat_with(recipient):
