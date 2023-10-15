@@ -424,7 +424,7 @@ def close_ticket():
         return redirect("/")
     
     ticket_id = request.json["ticket_id"]
-    sql.writeSQL(f"UPDATE gruttecloud_tickets SET status = 'closed', assigned_to = NULL WHERE id = '{ticket_id}'")
+    sql.writeSQL(f"UPDATE gruttecloud_tickets SET status = 'closed', assigned_to = '{session['username']}' WHERE id = '{ticket_id}'")
     
     return {"success": True}
 

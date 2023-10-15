@@ -58,6 +58,9 @@
             gap: 10px;
             padding-left: 10px;
             padding-right: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .ticket-action-button p {
@@ -66,6 +69,15 @@
             text-overflow: ellipsis;
             font-size: 15px;
             color: var(--white-color);
+            display: auto;
+        }
+
+        @media only screen and (max-width: 2000px) {
+            .ticket-action-button p {
+                display: none;
+            }
+
+
         }
     </style>
 </head>
@@ -146,7 +158,7 @@
                 </div>
             </div>
 
-            <div style="background-color: var(--background-tile-color); display: flex; flex-direction: row; width: 100%; height: 100%; padding: 20px; border-radius: 30px;">
+            <div style="background-color: var(--background-tile-color); display: flex; flex-direction: row; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
                 <div style="width: 40%;">
                     <div id="promoEmailView" style="display: none;">
                         <h2 align="center" style="margin-bottom: 20px;">Create Email Campaign</h2>
@@ -169,7 +181,7 @@
                                         <div style="display: inline-flex; width: 100%;">
                                             <span style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px; display: inline-flex; align-items: center; margin: 0; width: 50%;" class="login-input">
                                                 <input type="checkbox" id="sendtoall" name="sendtoall" style="margin-right: 10px;">
-                                                <span style="text-align: left;">Send to everyone</span>
+                                                <span style="text-align: left;">To All</span>
                                             </span>
                                             <input type="submit" value="Send Email" name="send" class="send-button" style="width: 50%; margin-left: 20px; margin-right: 0; border-radius: 30px;">
                                         </div>
@@ -303,7 +315,7 @@
                                             <b>{{ ticket["created_at"] }}</b>
                                         </div>
                                         <div style="display: flex; flex-direction: row; width: 100%; padding: 10px;">
-                                            <div style="width: 30%; overflow: auto; white-space: wrap; text-overflow: ellipsis;">
+                                            <div style="flex: 1; overflow: none; white-space: wrap; text-overflow: ellipsis;">
                                                 <b>Status: </b>
                                                 {% if ticket["status"] == "opened" %}
                                                     <span style="color: var(--green);">Opened</span><br>
@@ -325,7 +337,7 @@
                                                 {{ ticket["message"] }}
                                             </div>
                                         </div>
-                                        <div style="width: 100%; overflow: auto; white-space: wrap; text-overflow: ellipsis; display: flex; flex-direction: row; justify-content: center; gap: 20px; padding: 10px; padding-bottom: 0px;">
+                                        <div style="width: 100%; overflow: auto; white-space: wrap; text-overflow: ellipsis; display: flex; flex-direction: row; justify-content: center; gap: 10px; padding: 0px; padding-bottom: 0px;">
                                             {% if ticket["status"] == "opened" %}
                                                 <div class="ticket-action-button" style="background-color: var(--primary-color);" onclick="assignTicket('{{ ticket["id"] }}')">
                                                     <span class="material-symbols-outlined">done</span><p>Start Ticket</p>
@@ -373,17 +385,17 @@
                     <div id="events" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%; display: flex;">
                         {% for event in events %}
                             <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
-                            <div class="navigation-button" style="gap: 20px;" onclick="iplookup('{{ event["ip"] }}')">
-                                <div style="min-width: 100px; max-width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <div class="navigation-button" style="gap: 10px; width: 100%;">
+                                <div style="max-width: 10%; min-width: 90px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                     {{ event["ip"] }}
                                 </div>
-                                <div style="min-width: 170px; max-width: 170px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <div style="max-width: 20%; min-width: 170px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                     {{ event["date"] }}
                                 </div>
-                                <div>
+                                <div style="width: 70%; white-space: wrap; text-overflow: ellipsis; overflow: hidden;">
                                     {{ event["entry"] }}
                                 </div>
-                            </div>               
+                            </div>
                         {% endfor %}
                     </div>
                     <div id="iplookup-result" style="font-size: 1.3em; max-height: 100%; height: auto; display: none; justify-content: center; background-color: var(--background-tile-color); border-radius: 30px; padding: 20px; flex-direction: column; align-items: center;">
@@ -485,6 +497,13 @@
             previewToggle.innerHTML = 'Show Preview';
         }
     });
+
+    // if screen width is less than 2001px, hide preview
+    if (window.innerWidth <= 2000) {
+        previewContent.style.display = 'none';
+        previewIphone.style.display = 'none';
+        previewToggle.innerHTML = 'Show Preview';
+    }
 
 
     function assignTicket(ticket_id) {
