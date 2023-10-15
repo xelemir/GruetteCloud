@@ -2,7 +2,7 @@ import hashlib
 from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import logging
-
+from threading import Thread
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
@@ -61,8 +61,22 @@ def index():
 def error404(error):
     return render_template("404.html", menu=th.user(session))
 
+def errorToTicket(error, username=None):
+    sql = SQLHelper.SQLHelper()
+    if username:
+        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('{username}', '{error}', 'opened')")
+    else:
+        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (message, status) VALUES ('{error}', 'opened')")
+
 @app.errorhandler(500)
 def error500(error):
+    # Return 500 page to user instantly and create a ticket in the background
+    if "username" in session:
+        username = session["username"]
+    else:
+        username = None
+
+    Thread(target=errorToTicket, args=(f"{str(error)} Route: {str(request.path)}", username)).start()
     return render_template("500.html", menu=th.user(session))
 
 @app.route("/chat", methods=["GET", "POST"])
@@ -220,4 +234,4 @@ def generate_hashed_room_name(username1, username2):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
