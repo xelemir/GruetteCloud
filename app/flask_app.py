@@ -130,16 +130,18 @@ def chat(error=None):
     for chat in active_chats_database:
         if chat["username_send"].lower() == username:
             if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
+                unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_receive']}' AND username_receive = '{username}' AND is_read = '{False}'"))
                 user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_receive']}'")
                 blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_receive']}' AND username_blocked = '{username}' OR username = '{username}' AND username_blocked = '{chat['username_receive']}'"))
                 if user_db != []:
-                    active_chats.append({"username": chat["username_receive"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked})
+                    active_chats.append({"username": chat["username_receive"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
         else:
             if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
+                unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_send']}' AND username_receive = '{username}' AND is_read = '{False}'"))
                 user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_send']}'")
                 blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_send']}' AND username_blocked = '{username}' OR username = '{username}' AND username_blocked = '{chat['username_send']}'"))
                 if user_db != []:
-                    active_chats.append({"username": chat["username_send"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked})
+                    active_chats.append({"username": chat["username_send"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
     
     # Get user's premium status
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
