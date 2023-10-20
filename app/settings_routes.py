@@ -264,7 +264,7 @@ def change_username():
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    new_username = str(request.form["new_username"])
+    new_username = str(request.form["new_username"]).lower()
     password_form = str(request.form["password"])
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
     all_users = sql.readSQL(f"SELECT username FROM gruttechat_users")
