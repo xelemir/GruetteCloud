@@ -2,6 +2,7 @@ import datetime
 import os
 import secrets
 from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
+import requests
 from werkzeug.security import generate_password_hash
 from threading import Thread
 
@@ -344,3 +345,117 @@ def add_product():
 @tool_route.route("/apply", methods=["GET", "POST"])
 def apply():
     return render_template("apartment_apply.html", menu=th.user(session))
+
+
+# API Endpoints for GrütteMaps
+@tool_route.route("/search_place", methods=["GET"])
+def search_place():
+    query = request.args.get('query')
+    if query is None or query == "":
+        return jsonify({"error": "no query"})
+    
+    query = query.split(", ")
+    for i in range(len(query)):
+        query[i] = query[i].capitalize()
+        # if starts with digit and ends with letter, capitalize last letter
+        if query[i][0].isdigit() and query[i][-1].isalpha():
+            query[i] = query[i][:-1] + query[i][-1].upper()        
+
+    if len(query) == 1:
+        overpass_query = f"""
+            [out:json];
+            rel["name"="{query[0]}"];
+            out center;
+        """
+    
+    if len(query) == 2:
+        overpass_query = f"""
+            [out:json];
+            (
+            way["addr:street"="{query[0]}"]["addr:housenumber"="{query[1]}"];
+            way["addr:street"="{query[1]}"]["addr:housenumber"="{query[0]}"];
+            way["addr:street"="{query[0]}"]["addr:city"="{query[1]}"];
+            way["addr:street"="{query[1]}"]["addr:city"="{query[0]}"];
+            way["addr:street"="{query[0]}"]["addr:postcode"="{query[1]}"];
+            way["addr:street"="{query[1]}"]["addr:postcode"="{query[0]}"];
+            );
+            out center;
+        """
+    elif len(query) == 3:
+        overpass_query = f"""
+            [out:json];
+            (
+            way["addr:street"="{query[0]}"]["addr:housenumber"="{query[1]}"]["addr:postcode"="{query[2]}"];
+            way["addr:street"="{query[0]}"]["addr:housenumber"="{query[2]}"]["addr:postcode"="{query[1]}"];
+            way["addr:street"="{query[1]}"]["addr:housenumber"="{query[0]}"]["addr:postcode"="{query[2]}"];
+            way["addr:street"="{query[1]}"]["addr:housenumber"="{query[2]}"]["addr:postcode"="{query[0]}"];
+            way["addr:street"="{query[2]}"]["addr:housenumber"="{query[0]}"]["addr:postcode"="{query[1]}"];
+            way["addr:street"="{query[2]}"]["addr:housenumber"="{query[1]}"]["addr:postcode"="{query[0]}"];
+            
+            way["addr:street"="{query[0]}"]["addr:city"="{query[1]}"]["addr:postcode"="{query[2]}"];
+            way["addr:street"="{query[0]}"]["addr:city"="{query[2]}"]["addr:postcode"="{query[1]}"];
+            way["addr:street"="{query[1]}"]["addr:city"="{query[0]}"]["addr:postcode"="{query[2]}"];
+            way["addr:street"="{query[1]}"]["addr:city"="{query[2]}"]["addr:postcode"="{query[0]}"];
+            way["addr:street"="{query[2]}"]["addr:city"="{query[0]}"]["addr:postcode"="{query[1]}"];
+            way["addr:street"="{query[2]}"]["addr:city"="{query[1]}"]["addr:postcode"="{query[0]}"];
+            
+            way["addr:street"="{query[0]}"]["addr:city"="{query[1]}"]["addr:housenumber"="{query[2]}"];
+            way["addr:street"="{query[0]}"]["addr:city"="{query[2]}"]["addr:housenumber"="{query[1]}"];
+            way["addr:street"="{query[1]}"]["addr:city"="{query[0]}"]["addr:housenumber"="{query[2]}"];
+            way["addr:street"="{query[1]}"]["addr:city"="{query[2]}"]["addr:housenumber"="{query[0]}"];
+            way["addr:street"="{query[2]}"]["addr:city"="{query[0]}"]["addr:housenumber"="{query[1]}"];
+            way["addr:street"="{query[2]}"]["addr:city"="{query[1]}"]["addr:housenumber"="{query[0]}"];
+            );
+            out center;
+        """
+    
+    response = requests.get("http://overpass-api.de/api/interpreter", params={"data": overpass_query})
+    
+    if response.status_code == 200:
+        ranked = []
+        results = []
+        # rank by amount of tags
+        for element in response.json()["elements"]:
+            ranked.append((element, len(element["tags"])))
+            
+        ranked.sort(key=lambda x: x[1], reverse=True)
+        ranked = ranked[:10]
+        
+        for place in ranked:
+            if "center" in place[0]:
+                lat = place[0]["center"]["lat"]
+                lon = place[0]["center"]["lon"]
+            else:
+                try:
+                    lat = place[0]["lat"]
+                    lon = place[0]["lon"]
+                except:
+                    # Couln't find coordinates, skip
+                    continue
+            
+            if "tags" in place[0]:
+                if "name" in place[0]["tags"]:
+                    name = place[0]["tags"]["name"]
+                else:
+                    name = None
+                
+                if "building" in place[0]["tags"]:
+                    building = "building"
+                else:
+                    building = None
+                    
+                if "place" in place[0]["tags"]:
+                    place_type = place[0]["tags"]["place"]
+                else:
+                    place_type = None
+            results.append({"id": place[0]["id"], "lat": lat, "lon": lon, "name": name, "building": building, "place_type": place_type})
+        print(results)
+        return jsonify(results)
+
+    else:
+        return jsonify({"error": "overpass error"})
+
+@tool_route.route("/maps", methods=["GET", "POST"])
+def maps():
+    return render_template("maps.html", menu=th.user(session))
+
