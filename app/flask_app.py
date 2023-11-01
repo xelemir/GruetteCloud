@@ -1,6 +1,7 @@
 import hashlib
 from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_cors import CORS
 import logging
 from threading import Thread
 
@@ -26,6 +27,7 @@ app.register_blueprint(premium_route)
 app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
+CORS(app)
 socketio = SocketIO(app)
 
 eh = EncryptionHelper.EncryptionHelper()
