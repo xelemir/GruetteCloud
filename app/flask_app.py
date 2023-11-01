@@ -27,7 +27,7 @@ app.register_blueprint(premium_route)
 app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
-CORS(app)
+CORS(app, origins=["http://localhost:7070"])
 socketio = SocketIO(app)
 
 eh = EncryptionHelper.EncryptionHelper()
