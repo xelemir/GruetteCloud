@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<title>KJX Maps</title>
+	<title>FMI Maps</title>
     <link href="https://www.gruettecloud.com/static/gruettecloud_logo.png" rel="icon" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap">
@@ -43,12 +43,6 @@
             margin: 10px;
         }
 
-        .toggleView {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-
         @media only screen and (max-width: 600px) {
             .nav-view {
                 width: calc(100vw - 20px);
@@ -66,11 +60,14 @@
 
 <div class="nav-view" style="position: absolute; z-index: 2; ">
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <div style="font-size: 1em; width: 62px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>
+        <div onclick="toggleView()" style="cursor: pointer; font-size: 1em; width: 62px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
+            <span class="material-symbols-outlined align-icons-center">menu</span>
         </div>
         <input id="searchBar" type="text" class="login-input" autocomplete="off" placeholder="Search FMI Maps" style="width: 100%; font-size: 1em; height: 50px; margin: 0; border-radius: 30px; padding-left: 20px; padding-right: 50px; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
-        <div id="close-search" style="position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
+        <div style="z-index: 1; position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--primary-color); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer;">
+            <span class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">search</span>
+        </div>
+        <div id="close-search" style="z-index: 2; position: absolute; margin-top: 5px; right: 5px; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
             <span onclick="restart()" class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">close</span>
         </div>
     </div>
@@ -78,17 +75,17 @@
     <div id="searchResults" style="margin-bottom: 10px; background-color: var(--background-color); border-radius: 30px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between;"></div>
 
     
-    <div style="background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; justify-content: space-between;">
+    <div id="toggleView" style="display: none; background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between;">
         <!--<span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>-->
         <h1 style="margin-bottom: 10px;">FMI Maps</h1>
-        <button onclick="toggleView()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">menu</span>
-        </button>
+        <div style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>
+        </div>
         <button id="restartButton" onclick="restart()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; right: 20px; display: none; color: var(--text-color);">
             <span class="material-symbols-outlined align-icons-center">close</span>
         </button>
-        <hr class="toggleView" style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px;">
-        <div class="toggleView" style="width: 100%; flex-direction: column; gap: 5px;">
+        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; margin-top: 10px;">
+        <div style="width: 100%; flex-direction: column; gap: 5px;">
             <div id="start" style="width: 100%; display: none; flex-direction: row; gap: 10px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
                     <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">directions_car</span>
@@ -210,6 +207,11 @@
     }
 
     function setCoordinates(lat, lon, node) {
+        document.getElementById("searchBar").value = "";
+        document.getElementById("close-search").style.display = "none";
+        document.getElementById("searchResults").style.display = "none";
+        document.getElementById("toggleView").style.display = "flex";
+
         if (destination[0] == null) {
             destination = [lat, lon, node];
             document.getElementById("start").style.display = "flex";
@@ -236,7 +238,6 @@
                 method: 'GET',
                 success: function(response) {
                     jsonData = JSON.parse(response);
-                    console.log(jsonData);
                     lat = jsonData[1];
                     lon = jsonData[2];
                     node = jsonData[0];
@@ -288,16 +289,11 @@
     }
 
     function toggleView() {
-        elements = document.getElementsByClassName("toggleView");
-        appname = document.getElementsByTagName("h1")[0];
-        for (var i = 0; i < elements.length; i++) {
-            if (elements[i].style.display == "none") {
-                elements[i].style.display = "flex";
-                appname.style.marginBottom = "10px";
-            } else {
-                elements[i].style.display = "none";
-                appname.style.marginBottom = "0px";
-            }
+        var toggleView = document.getElementById("toggleView");
+        if (toggleView.style.display == "none") {
+            toggleView.style.display = "flex";
+        } else {
+            toggleView.style.display = "none";
         }
 
     }
@@ -329,12 +325,13 @@
                     url: "/search_place?query=" + encodeURIComponent(inputSearchBar),
                     type: 'GET',
                     success: function(response) {
+                        response = JSON.parse(response);
                         searchResults.empty();
 
                         if (response.length == 0) {
-                            searchResults.append("No results found");
+                            searchResults.append("No results found.");
                         }
-
+                    
                         for (var i = 0; i < response.length; i++) {
                             var place = response[i];
                             var id = place["id"];
@@ -370,6 +367,9 @@
     
         // Trigger the search when the input field changes
         $('#searchBar').on('input', function() {
+            if (this.value == "") {
+                return;
+            }
             clearTimeout(debounceTimer); // Clear any existing timer
             debounceTimer = setTimeout(updateSearchResults, 1000); // Set a new timer to trigger the search
         });
