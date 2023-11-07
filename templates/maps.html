@@ -100,13 +100,9 @@
 
     <div id="searchResults" style="margin-bottom: 10px; background-color: var(--background-color); border-radius: 30px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between;"></div>
 
-    
-    <div style="background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; justify-content: space-between;">
-        <!--<span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>-->
+    <div id="toggleView" style="background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; justify-content: space-between;">
+        <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>
         <h1 style="margin-bottom: 10px;">FMI Maps</h1>
-        <button onclick="toggleView()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">menu</span>
-        </button>
         <button id="restartButton" onclick="restart()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; right: 20px; display: none; color: var(--text-color);">
             <span class="material-symbols-outlined align-icons-center">close</span>
         </button>
