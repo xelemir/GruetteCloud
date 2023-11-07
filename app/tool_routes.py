@@ -1,7 +1,7 @@
 import datetime
 import os
 import secrets
-from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
+from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 import requests
 from werkzeug.security import generate_password_hash
 from threading import Thread
@@ -453,7 +453,24 @@ def search_place():
         return jsonify(results)
 
     else:
+        print("error")
         return jsonify({"error": "overpass error"})
+    
+@tool_route.route("/nearestNode", methods=["GET"])
+def nearestNode():
+    lat = request.args.get("lat")
+    lon = request.args.get("lon")
+    
+    if lat is None or lon is None:
+        abort(400)
+
+    return jsonify([1.0000, lat, lon])
+
+@tool_route.route("/route", methods=["GET"])
+def mapsRoute():
+    abort(400)
+    
+   
 
 @tool_route.route("/maps", methods=["GET", "POST"])
 def maps():

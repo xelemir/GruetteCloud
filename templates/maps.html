@@ -2,10 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
 	
-	<title>KJX Maps</title>
+	<title>FMI Maps</title>
     <link href="https://www.gruettecloud.com/static/gruettecloud_logo.png" rel="icon" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap">
@@ -28,6 +27,7 @@
         h1 {
             font-family: 'Montserrat', sans-serif;
             color: var(--primary-color);
+            margin-bottom: 10px;
         }
 
         * {
@@ -43,15 +43,38 @@
             margin: 10px;
         }
 
-        .toggleView {
+        .dev-view {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
+            width: 350px;
+            margin: 10px;
         }
 
-        @media only screen and (max-width: 600px) {
+        .error-message {
+            position: absolute;
+            z-index: 3;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--red);
+            color: var(--white-color);
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            flex-direction: column;
+            justify-content: space-between;
+            width: 600px;
+            max-width: 80vw;
+            max-height: 60svh;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 800px) {
             .nav-view {
                 width: calc(100vw - 20px);
+            }
+
+            .dev-view {
+                display: none;
             }
         }
 
@@ -61,16 +84,16 @@
 </head>
 <body>
 
-
-
-
-<div class="nav-view" style="position: absolute; z-index: 2; ">
+<div class="nav-view" style="position: absolute; z-index: 2;">
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <div style="font-size: 1em; width: 62px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>
+        <div onclick="toggleView()" style="cursor: pointer; font-size: 1em; width: 62px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
+            <span class="material-symbols-outlined align-icons-center">menu</span>
         </div>
         <input id="searchBar" type="text" class="login-input" autocomplete="off" placeholder="Search FMI Maps" style="width: 100%; font-size: 1em; height: 50px; margin: 0; border-radius: 30px; padding-left: 20px; padding-right: 50px; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
-        <div id="close-search" style="position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
+        <div style="z-index: 1; position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--primary-color); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer;">
+            <span class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">search</span>
+        </div>
+        <div id="close-search" style="z-index: 2; position: absolute; margin-top: 5px; right: 5px; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
             <span onclick="restart()" class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">close</span>
         </div>
     </div>
@@ -78,17 +101,17 @@
     <div id="searchResults" style="margin-bottom: 10px; background-color: var(--background-color); border-radius: 30px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between;"></div>
 
     
-    <div style="background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; justify-content: space-between;">
+    <div class="animate__animated animate__jackInTheBox"  id="toggleView" style="display: none; background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between;">
         <!--<span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">light_mode</span>-->
-        <h1 style="margin-bottom: 10px;">FMI Maps</h1>
-        <button onclick="toggleView()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">menu</span>
-        </button>
+        <h1>FMI Maps</h1>
+        <div style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
+        </div>
         <button id="restartButton" onclick="restart()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; right: 20px; display: none; color: var(--text-color);">
             <span class="material-symbols-outlined align-icons-center">close</span>
         </button>
-        <hr class="toggleView" style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px;">
-        <div class="toggleView" style="width: 100%; flex-direction: column; gap: 5px;">
+        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; margin-top: 10px;">
+        <div style="width: 100%; flex-direction: column; gap: 5px;">
             <div id="start" style="width: 100%; display: none; flex-direction: row; gap: 10px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
                     <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">directions_car</span>
@@ -104,7 +127,7 @@
                 </div>
             </div>
             <div id="routeDecorator" style="display: none; justify-content: left; align-items: center;">
-                <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">more_vert</span>
+                <span style="margin: 10px 0; margin-right: 5px;" class="material-symbols-outlined align-icons-center">more_vert</span>
             </div>
             <div id="destination" style="width: 100%; display: flex; flex-direction: row; gap: 10px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
@@ -121,6 +144,10 @@
                 <button id="calculate-button" onclick="calculateRoute()" style="background-color: var(--primary-color); color: var(--white-color); border-radius: 30px; padding: 2px 10px; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; flex: 1; height: 40px;">
                     <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">directions</span> Get Directions
                 </button>
+                <div id="noRouteFound" style="display: none; justify-content: center; align-items: center; flex: 1; height: 40px;">
+                    <span style="margin-right: 15px; color: var(--red);" class="material-symbols-outlined align-icons-center">warning</span>
+                    <p style="color: var(--red);">No Route Found.<br>This is a Demo.</p>
+                </div>
                 <button id="reset-button" onclick="restart()" style="background-color: var(--primary-color); color: var(--white-color); border-radius: 30px; padding: 2px 10px; border: none; cursor: pointer; display: none; justify-content: center; align-items: center; flex: 1; height: 40px;">
                     <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">done</span> Done
                 </button>
@@ -132,247 +159,54 @@
         </div>
     </div>
 </div>
+<div class="dev-view" style="position: absolute; z-index: 2; right: 0px; align-items: flex-end; flex-direction: column;">
+    <div style="display: flex; gap: 10px; margin-bottom: 10px; position: absolute;">
+        <div id="toggleDevView" onclick="toggleDevViewContent()" style="cursor: pointer; font-size: 1em; width: 50px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
+            <span class="material-symbols-outlined align-icons-center">query_stats</span>
+        </div>
+    </div>
+    <div id="devViewContent" style="display: none; width: 350px; gap: 15px; background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between;">
+        <h1>DevView</h1>
+        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-top: -10px;">
+        <div style="width: 100%; display: flex; flex-direction: row; gap: 10px;">
+            <div style="display: flex; justify-content: left; align-items: center;">
+                <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">start</span>
+                <p>Start Node</p>
+            </div>
+            <div id="startNode" style="display: flex; justify-content: right; align-items: center; flex: 1;">-</div>
+        </div>
+        <div style="width: 100%; display: flex; flex-direction: row; gap: 10px;">
+            <div style="display: flex; justify-content: left; align-items: center;">
+                <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">flag</span>
+                <p>End Node</p>
+            </div>
+            <div id="endNode" style="display: flex; justify-content: right; align-items: center; flex: 1;">-</div>
+        </div>
+        <div style="width: 100%; display: flex; flex-direction: row; gap: 10px;">
+            <div style="display: flex; justify-content: left; align-items: center;">
+                <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">width</span>
+                <p>Distance</p>
+            </div>
+            <div id="distance" style="display: flex; justify-content: right; align-items: center; flex: 1;">-</div>
+        </div>
+        <div style="width: 100%; display: flex; flex-direction: row; gap: 10px;">
+            <div style="display: flex; justify-content: left; align-items: center;">
+                <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">speed</span>
+                <p>Calculation Speed</p>
+            </div>
+            <div id="timer" style="display: flex; justify-content: right; align-items: center; flex: 1;">-</div>
+        </div>
+    </div>
+</div>
+<div id="error" class="error-message animate__animated animate__fadeIn" style="display: none;">
+    <h2 style="margin-bottom: 30px;">Error</h2>
+    <p id="errorMessage"></p>
+</div>
 
 <div id="map" style="width: 100vw; height: 100svh; z-index: 1;"></div>
 
 </body>
 </html>
 
-<script>
-    var start = [null, null, null];
-    var destination = [null, null, null];
-
-
-    var map = new L.map('map', {
-        center: [48.783, 9.183],
-        zoom: 13,
-        zoomControl: false,
-    });
-
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(map);
-
-	/*const marker = L.marker([51.5, -0.09]).addTo(map)
-		.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();*/
-
-    function setMarker(lat, lng, role) {
-        var marker = L.marker([lat, lng]).addTo(map).bindPopup('<b>' + role + '</b><br />' + lat.toFixed(6) + ", " + lng.toFixed(6)).openPopup();
-    }
-
-
-	function onMapClick(e) {
-        if (destination[0] == null || start[0] == null) {
-            getNearestNode(e.latlng.lat, e.latlng.lng);
-        } else {
-            restart();
-        }
-	}
-
-	map.on('click', onMapClick);
-
-    function restart() {
-        start = [null, null, null];
-        destination = [null, null, null];
-        
-        document.getElementById("start").style.display = "none";
-        document.getElementById("startHint").style.display = "flex";
-        document.getElementById("startCoordinates").style.display = "none";
-        document.getElementById("destinationHint").style.display = "flex";
-        document.getElementById("destinationCoordinates").style.display = "none";
-        document.getElementById("routeDecorator").style.display = "none";
-        document.getElementById("calculate-button").style.display = "flex";
-        document.getElementById("reset-button").style.display = "none";
-        document.getElementById("calculating-wheel").style.display = "none";
-        document.getElementById("buttons").style.display = "none";
-        document.getElementById("restartButton").style.display = "none";
-
-        map.eachLayer(function (layer) {
-            if (layer instanceof L.Marker) {
-                map.removeLayer(layer);
-            }
-        });
-
-        map.eachLayer(function (layer) {
-            if (layer instanceof L.GeoJSON) {
-                map.removeLayer(layer);
-            }
-        });
-
-        document.getElementById("searchBar").value = "";
-        document.getElementById("searchResults").style.display = "none";
-        document.getElementById("close-search").style.display = "none";
-    }
-
-    function calculateRoute() {
-        route();
-    }
-
-    function setCoordinates(lat, lon, node) {
-        if (destination[0] == null) {
-            destination = [lat, lon, node];
-            document.getElementById("start").style.display = "flex";
-            document.getElementById("destinationHint").style.display = "none";
-            document.getElementById("destinationCoordinates").style.display = "flex";
-            document.getElementById("destinationCoordinates").innerHTML = destination[0].toFixed(6) + ", " + destination[1].toFixed(6);
-            document.getElementById("routeDecorator").style.display = "flex";
-            document.getElementById("restartButton").style.display = "flex";
-            setMarker(destination[0], destination[1], "Destination");
-        } else {
-            start = [lat, lon, node];
-            document.getElementById("startHint").style.display = "none";
-            document.getElementById("startCoordinates").style.display = "flex";
-            document.getElementById("startCoordinates").innerHTML = start[0].toFixed(6) + ", " + start[1].toFixed(6);
-            document.getElementById("buttons").style.display = "flex";
-            setMarker(start[0], start[1], "Start"); 
-        }
-    }
-
-    function getNearestNode(lat, lon) {
-        if (lat != null && lon != null) {
-            $.ajax({
-                url: "/nearestNode?lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lon),
-                method: 'GET',
-                success: function(response) {
-                    jsonData = JSON.parse(response);
-                    console.log(jsonData);
-                    lat = jsonData[1];
-                    lon = jsonData[2];
-                    node = jsonData[0];
-                    setCoordinates(lat, lon, node);
-                },
-                error: function(xhr, status, error) {
-                    // Log or display the error message and status code
-                    console.error('Error:', error);
-                    console.error('Status Code:', xhr.status);
-                }
-            });
-        }
-    }
-
-    function route() {
-        if (start[0] != null && destination[0] != null) {
-            document.getElementById("calculate-button").style.display = "none";
-            document.getElementById("calculating-wheel").style.display = "flex";
-            $.ajax({
-                url: "/route?start=" + encodeURIComponent(start[2]) + "&end=" + encodeURIComponent(destination[2]),
-                method: 'GET',
-                success: function(response) {
-                    // add geojson to map
-                    var geojson = JSON.parse(response);
-                    L.geoJSON(geojson).addTo(map);
-
-                    document.getElementById("calculating-wheel").style.display = "none";
-                    document.getElementById("reset-button").style.display = "flex";
-                },
-                error: function(xhr, status, error) {
-                    // Log or display the error message and status code
-                    console.error('Error:', error);
-                    console.error('Status Code:', xhr.status);
-                }
-            });
-        }
-    }
-
-    function requestLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(useUserLocation);
-        } else { 
-            document.getElementById("startHint").innerHTML = "Not supported!<br>Please click on the map.";
-        }
-    }
-
-    function useUserLocation(position) {
-        getNearestNode(position.coords.latitude, position.coords.longitude);
-    }
-
-    function toggleView() {
-        elements = document.getElementsByClassName("toggleView");
-        appname = document.getElementsByTagName("h1")[0];
-        for (var i = 0; i < elements.length; i++) {
-            if (elements[i].style.display == "none") {
-                elements[i].style.display = "flex";
-                appname.style.marginBottom = "10px";
-            } else {
-                elements[i].style.display = "none";
-                appname.style.marginBottom = "0px";
-            }
-        }
-
-    }
-
-
-    $(document).ready(function() {
-        // Define a variable to hold the timer ID
-        let debounceTimer;
-    
-        // Function to send AJAX request and update results
-        function updateSearchResults() {
-            var inputSearchBar = $('#searchBar').val();
-            var inputElement = $('#searchBar');
-            var searchResults = $('#searchResults');
-            var closeSearch = $('#close-search');
-            if (inputSearchBar == "") {
-                return;
-            }
-            searchResults.css("display", "flex");
-            searchResults.html("Searching...");
-            closeSearch.css("display", "flex");
-    
-            // Clear any existing timer
-            clearTimeout(debounceTimer);
-            /// Set a new timer to trigger the search after 1000ms (1 second)
-            debounceTimer = setTimeout(function() {
-                // Continue with the AJAX request and other code
-                $.ajax({
-                    url: "/search_place?query=" + encodeURIComponent(inputSearchBar),
-                    type: 'GET',
-                    success: function(response) {
-                        searchResults.empty();
-
-                        if (response.length == 0) {
-                            searchResults.append("No results found");
-                        }
-
-                        for (var i = 0; i < response.length; i++) {
-                            var place = response[i];
-                            var id = place["id"];
-                            var lat = place["lat"];
-                            var lon = place["lon"];
-                            var name = place["name"];
-                            var building = place["building"];
-                            var type = place["place_type"];
-
-                            if (type == "city" || type == "town" || type == "village" || type == "hamlet" || type == "suburb" || type == "neighbourhood") {
-                                symbol = "location_city";
-                            } else if (building == "building") {
-                                symbol = "house";
-                            } else {
-                                symbol = "place"
-                            }
-
-                            if (name == null) {
-                                name = "Address";
-                            }
-                                
-                            
-
-                            var placeElement = document.createElement("div");
-                            placeElement.innerHTML =  '<div onclick="getNearestNode(' + lat + ' ,' + lon + ')" style="cursor: pointer; width: 100%; display: flex; flex-direction: row; gap: 10px; margin: 10px 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">' + symbol + '</span><p>' + name + '</p></div><div style="display: flex; justify-content: right; align-items: center; flex: 1;">' + lat + ', ' + lon + '</div><div style="display: none; justify-content: right; align-items: center; flex: 1;"></div>'
-                            searchResults.append(placeElement);
-
-                        }
-                    },
-                });
-            }, 1000); // Delay the search by 1 second
-        } 
-    
-        // Trigger the search when the input field changes
-        $('#searchBar').on('input', function() {
-            clearTimeout(debounceTimer); // Clear any existing timer
-            debounceTimer = setTimeout(updateSearchResults, 1000); // Set a new timer to trigger the search
-        });
-    }); 
-</script>
+<script src="https://www.gruettecloud.com/static/MapsJavascript.js"></script>
 <script src="https://www.gruettecloud.com/static/darkmodeMaps.js"></script>
