@@ -7,3 +7,4 @@ pytube
 pyotp
 Pillow
 beautifulsoup4
+geopy
