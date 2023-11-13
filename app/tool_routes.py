@@ -430,7 +430,7 @@ def mapsRoute():
         
 @tool_route.route("/maps", methods=["GET", "POST"])
 def maps():
-    return render_template("maps.html", menu=th.user(session))
+    return render_template("mapsMobile.html", menu=th.user(session))
 
 if __name__ == "__main__":
     search_place()
