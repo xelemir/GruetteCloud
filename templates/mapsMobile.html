@@ -99,11 +99,11 @@
 
 <div class="nav-view" style="position: absolute; z-index: 2;">
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <div onclick="toggleView()" style="cursor: pointer; font-size: 1em; width: 62px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
-            <span class="material-symbols-outlined align-icons-center">menu</span>
+        <div id="restartButton" onclick="restart()" style="cursor: pointer; font-size: 1em; width: 50px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; justify-content: center; align-items: center;">
+            <span class="material-symbols-outlined align-icons-center">arrow_back_ios_new</span>
         </div>
         <input id="searchBar" type="text" class="login-input" autocomplete="off" placeholder="Search GrütteMaps" style="width: 100%; font-size: 1em; height: 50px; margin: 0; border-radius: 30px; padding-left: 20px; padding-right: 50px; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
-        <div style="z-index: 1; position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--primary-color); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer;">
+        <div id="search-search" style="z-index: 1; position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--primary-color); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer;">
             <span class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">search</span>
         </div>
         <div id="close-search" style="z-index: 2; position: absolute; margin-top: 5px; right: 5px; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
@@ -113,8 +113,8 @@
 
     <div id="searchResults" style="margin-bottom: 10px; background-color: var(--background-color); border-radius: 30px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between;"></div>
 
-    <div id="info-display" class="animate__animated animate__slideInUp"  style="display: flex; position: fixed; bottom: 0; left: 0; background-color: var(--background-color); max-height: 80vh; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 100%; border-radius: 30px 30px 0 0;">
-        <hr style="border: 5px solid var(--box-shadow-color); border-radius: 5px; margin-bottom: 20px; width: 200px; align-self: center; max-width: 30vw;" onclick="toggleView()">
+    <div id="navigation-view" onclick="toggleView()" class="animate__animated animate__slideInUp"  style="display: flex; position: fixed; bottom: 0; left: 0; background-color: var(--background-color); max-height: 80svh; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 100%; border-radius: 30px 30px 0 0;">
+        <hr style="border: 5px solid var(--box-shadow-color); border-radius: 5px; margin-bottom: 20px; width: 200px; align-self: center; max-width: 30vw;">
         <h1>GrütteMaps</h1>
         <div style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
@@ -123,10 +123,7 @@
         <div id="toggleView" style="width: 100%; flex-direction: column; gap: 5px; display: none;">
             <div style="display: flex; flex-direction: row; gap: 10px; margin-bottom: 20px;">
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; flex: 1;">
-                <button id="restartButton" onclick="restart()" style="background-color: var(--red); color: var(--white-color); border-radius: 30px; border: none; cursor: pointer; display: none; justify-content: center; align-items: center; padding: 2px 15px;">
-                    <span class="material-symbols-outlined align-icons-center">close</span>
-                    <p style="margin-left: 5px;">Cancel</p>
-                </button>
+                
             </div>
             <div id="start" style="width: 100%; display: none; flex-direction: row; gap: 10px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
@@ -185,7 +182,7 @@
                     <p style="color: var(--primary-color);">Calculating Route</p>
                 </div>
             </div>
-            <div id="route-details-scrollable" style="width: 100%; display: none; flex-direction: column; gap: 15px; margin: 10px 0; margin-top: 20px; overflow-y: scroll; padding-right: 15px; max-height: 30svh; -ms-overflow-style: none; scrollbar-width: none;"></div>
+            <div id="route-details-scrollable" style="width: 100%; display: none; flex-direction: column; gap: 15px; margin: 10px 0; margin-top: 20px; overflow-y: scroll; padding-right: 15px; max-height: 40svh; -ms-overflow-style: none; scrollbar-width: none;"></div>
             </div>
         </div>
     </div>
@@ -196,64 +193,26 @@
     <p id="errorMessage"></p>
 </div>
 
-<div id="map" style="width: 100vw; height: calc(100svh - 100px); z-index: 1;"></div>
+<div id="map" style="width: 100vw; height: 100svh; z-index: 1;"></div>
 
 </body>
 </html>
 
 <script src="https://www.gruettecloud.com/static/darkmodeMaps.js"></script>
 
-<script>
-    let startY;
-    let endY;
-    const touchThreshold = 50; // Adjust this threshold as needed
-    
-    const infoDisplay = document.getElementById('info-display');
-    const toggleView2 = document.getElementById('toggleView');
-    
-    infoDisplay.addEventListener('touchstart', (e) => {
-      startY = e.touches[0].clientY;
-    });
-    
-    infoDisplay.addEventListener('touchmove', (e) => {
-      endY = e.touches[0].clientY;
-    });
-    
-    infoDisplay.addEventListener('touchend', () => {
-      if (startY - endY > touchThreshold) {
-        toggleView2.style.display = 'none';
-        // Swipe up, hide the div with slideOutDown animation
-        toggleView2.classList.remove('animate__slideInUp');
-        toggleView2.classList.add('animate__slideOutDown');
-      } else if (endY - startY > touchThreshold) {
-        toggleView2.style.display = 'flex';
-        // Swipe down, show the div with slideInUp animation
-        toggleView2.classList.remove('animate__slideOutDown');
-        toggleView2.classList.add('animate__slideInUp');
-      }
-    });
-    
-</script>
 
 <script>
 function toggleView() {
     var toggleView = document.getElementById("toggleView");
     if (toggleView.style.display == "none") {
-        toggleView.classList.remove('animate__slideOutDown');
-        toggleView.classList.add('animate__slideInUp');
         toggleView.style.display = 'flex';
     } else {
-        toggleView.classList.remove('animate__slideInUp');
-        toggleView.classList.add('animate__slideOutDown');
         toggleView.style.display = 'none';
     }
-
 }
-
 
 var start = [null, null];
 var destination = [null, null];
-
 
 var map = new L.map('map', {
     center: [48.783, 9.183],
@@ -270,7 +229,6 @@ function setMarker(lat, lng, role) {
     var marker = L.marker([lat, lng]).addTo(map).bindPopup('<b>' + role + '</b><br />' + lat.toFixed(6) + ", " + lng.toFixed(6)).openPopup();
 }
 
-
 function onMapClick(e) {
     if (destination[0] == null || start[0] == null) {
         getNearestNode(e.latlng.lat, e.latlng.lng);
@@ -280,6 +238,7 @@ function onMapClick(e) {
 map.on('click', onMapClick);
 
 function restart() {
+    event.stopPropagation();
     start = [null, null, null];
     destination = [null, null, null];
     
@@ -294,6 +253,8 @@ function restart() {
     document.getElementById("noRouteFound").style.display = "none";
     document.getElementById("buttons").style.display = "none";
     document.getElementById("restartButton").style.display = "none";
+    document.getElementById("search-search").style.display = "flex";
+    document.getElementById("searchBar").style.display = "flex";
     document.getElementById("route-details").style.display = "none";
     document.getElementById("time").style.display = "none";
     document.getElementById("distance").style.display = "none";
@@ -345,6 +306,8 @@ function setCoordinates(lat, lon) {
         document.getElementById("startCoordinates").style.display = "flex";
         document.getElementById("startCoordinates").innerHTML = start[0].toFixed(6) + ", " + start[1].toFixed(6);
         document.getElementById("buttons").style.display = "flex";
+        document.getElementById("search-search").style.display = "none";
+        document.getElementById("searchBar").style.display = "none";
         setMarker(start[0], start[1], "Start"); 
     }
 }
@@ -376,6 +339,7 @@ function getNearestNode(lat, lon) {
 }
 
 function calculateRoute() {
+    event.stopPropagation();
     if (start[0] != null && destination[0] != null) {
         document.getElementById("calculate-button").style.display = "none";
         document.getElementById("calculating-wheel").style.display = "flex";
@@ -463,6 +427,7 @@ function calculateRoute() {
 }
 
 function requestLocation() {
+    event.stopPropagation();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(useUserLocation);
     } else { 
@@ -475,6 +440,7 @@ function useUserLocation(position) {
 }
 
 function toggleExpandRoute() {
+    event.stopPropagation();
     var routeDetails = document.getElementById("route-details-scrollable");
     if (routeDetails.style.display == "none") {
         routeDetails.style.display = "flex";
@@ -500,10 +466,8 @@ function displayError(xhr, error, message) {
 
 
 $(document).ready(function() {
-    // Define a variable to hold the timer ID
     let debounceTimer;
 
-    // Function to send AJAX request and update results
     function updateSearchResults() {
         var inputSearchBar = $('#searchBar').val();
         var inputElement = $('#searchBar');
@@ -516,11 +480,8 @@ $(document).ready(function() {
         searchResults.html("Searching...");
         closeSearch.css("display", "flex");
 
-        // Clear any existing timer
         clearTimeout(debounceTimer);
-        /// Set a new timer to trigger the search after 1000ms (1 second)
         debounceTimer = setTimeout(function() {
-            // Continue with the AJAX request and other code
             $.ajax({
                 url: "/search_place?query=" + encodeURIComponent(inputSearchBar),
                 type: 'GET',
@@ -586,10 +547,9 @@ $(document).ready(function() {
                     displayError(xhr, error, xhr.responseText);
                 }
             });
-        }, 1000); // Delay the search by 1 second
+        }, 1000);
     } 
 
-    // Trigger the search when the input field changes
     $('#searchBar').on('input', function() {
         if (this.value == "") {
             return;
@@ -599,8 +559,8 @@ $(document).ready(function() {
             getNearestNode(lat, lon);
             return;
         }
-        clearTimeout(debounceTimer); // Clear any existing timer
-        debounceTimer = setTimeout(updateSearchResults, 1000); // Set a new timer to trigger the search
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(updateSearchResults, 1000);
     });
 });
 </script>

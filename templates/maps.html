@@ -198,3 +198,11 @@
 
 <script src="https://www.gruettecloud.com/static/darkmodeMaps.js"></script>
 <script src="https://www.gruettecloud.com/static/MapsJavascript.js"></script>
+
+<script>
+// if mobile device redirect to mobile page
+if (window.innerWidth <= 800) {
+    console.log("Mobile device detected. Redirecting to mobile page.");
+    window.location.href = "https://www.gruettecloud.com/maps?mobile=true";
+}
+</script>
