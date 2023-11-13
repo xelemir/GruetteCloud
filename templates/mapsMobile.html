@@ -113,16 +113,22 @@
 
     <div id="searchResults" style="margin-bottom: 10px; background-color: var(--background-color); border-radius: 30px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between;"></div>
 
-    <div class="animate__animated animate__slideInUp" id="toggleView" style="display: none; position: fixed; bottom: 0; left: 0; background-color: var(--background-color); max-height: 80vh; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 100%; border-radius: 30px 30px 0 0;">
+    <div class="animate__animated animate__slideInUp"  style="display: flex; position: fixed; bottom: 0; left: 0; background-color: var(--background-color); max-height: 80vh; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 100%; border-radius: 30px 30px 0 0;">
+        <hr style="border: 5px solid var(--box-shadow-color); border-radius: 5px; margin-bottom: 20px; width: 200px; align-self: center; max-width: 30vw;" onclick="toggleView()">
         <h1>GrütteMaps</h1>
         <div style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
         </div>
-        <button id="restartButton" onclick="restart()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; right: 20px; display: none; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">close</span>
-        </button>
-        <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; margin-top: 10px;">
-        <div style="width: 100%; flex-direction: column; gap: 5px;">
+        
+        
+        <div id="toggleView" style="width: 100%; flex-direction: column; gap: 5px; display: none;">
+            <div style="display: flex; flex-direction: row; gap: 10px; margin-bottom: 20px;">
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; flex: 1;">
+                <button id="restartButton" onclick="restart()" style="background-color: var(--red); color: var(--white-color); border-radius: 30px; border: none; cursor: pointer; display: none; justify-content: center; align-items: center; padding: 2px 15px;">
+                    <span class="material-symbols-outlined align-icons-center">close</span>
+                    <p style="margin-left: 5px;">Cancel</p>
+                </button>
+            </div>
             <div id="start" style="width: 100%; display: none; flex-direction: row; gap: 10px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
                     <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">directions_car</span>
@@ -191,7 +197,7 @@
     <p id="errorMessage"></p>
 </div>
 
-<div id="map" style="width: 100vw; height: 100svh; z-index: 1;"></div>
+<div id="map" style="width: 100vw; height: calc(100svh - 100px); z-index: 1;"></div>
 
 </body>
 </html>
@@ -202,30 +208,50 @@
     let startY;
     let endY;
     const touchThreshold = 50; // Adjust this threshold as needed
-  
+    
     const toggleView2 = document.getElementById('toggleView');
-  
+    
     toggleView2.addEventListener('touchstart', (e) => {
       startY = e.touches[0].clientY;
     });
-  
+    
     toggleView2.addEventListener('touchmove', (e) => {
       endY = e.touches[0].clientY;
     });
-  
+    
     toggleView2.addEventListener('touchend', () => {
       if (startY - endY > touchThreshold) {
-        // Swipe up, hide the div
+        // Swipe up, hide the div with slideOutDown animation
+        toggleView2.classList.remove('animate__slideInUp');
+        toggleView2.classList.add('animate__slideOutDown');
         toggleView2.style.display = 'none';
       } else if (endY - startY > touchThreshold) {
-        // Swipe down, show the div
-        toggleView2.style.display = 'block';
+        // Swipe down, show the div with slideInUp animation
+        toggleView2.classList.remove('animate__slideOutDown');
+        toggleView2.classList.add('animate__slideInUp');
+        toggleView2.style.display = 'flex';
       }
     });
+    
 </script>
 
 <script>
-    var start = [null, null];
+function toggleView() {
+    var toggleView = document.getElementById("toggleView");
+    if (toggleView.style.display == "none") {
+        toggleView.classList.remove('animate__slideOutDown');
+        toggleView.classList.add('animate__slideInUp');
+        toggleView.style.display = 'flex';
+    } else {
+        toggleView.classList.remove('animate__slideInUp');
+        toggleView.classList.add('animate__slideOutDown');
+        toggleView.style.display = 'none';
+    }
+
+}
+
+
+var start = [null, null];
 var destination = [null, null];
 
 
@@ -446,16 +472,6 @@ function requestLocation() {
 
 function useUserLocation(position) {
     getNearestNode(position.coords.latitude, position.coords.longitude);
-}
-
-function toggleView() {
-    var toggleView = document.getElementById("toggleView");
-    if (toggleView.style.display == "none") {
-        toggleView.style.display = "flex";
-    } else {
-        toggleView.style.display = "none";
-    }
-
 }
 
 function toggleExpandRoute() {
