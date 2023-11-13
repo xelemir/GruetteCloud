@@ -113,14 +113,13 @@
 
     <div id="searchResults" style="margin-bottom: 10px; background-color: var(--background-color); border-radius: 30px; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between;"></div>
 
-    <div class="animate__animated animate__slideInUp"  style="display: flex; position: fixed; bottom: 0; left: 0; background-color: var(--background-color); max-height: 80vh; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 100%; border-radius: 30px 30px 0 0;">
+    <div id="info-display" class="animate__animated animate__slideInUp"  style="display: flex; position: fixed; bottom: 0; left: 0; background-color: var(--background-color); max-height: 80vh; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 100%; border-radius: 30px 30px 0 0;">
         <hr style="border: 5px solid var(--box-shadow-color); border-radius: 5px; margin-bottom: 20px; width: 200px; align-self: center; max-width: 30vw;" onclick="toggleView()">
         <h1>GrütteMaps</h1>
         <div style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
         </div>
-        
-        
+
         <div id="toggleView" style="width: 100%; flex-direction: column; gap: 5px; display: none;">
             <div style="display: flex; flex-direction: row; gap: 10px; margin-bottom: 20px;">
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; flex: 1;">
@@ -209,17 +208,18 @@
     let endY;
     const touchThreshold = 50; // Adjust this threshold as needed
     
+    const infoDisplay = document.getElementById('info-display');
     const toggleView2 = document.getElementById('toggleView');
     
-    toggleView2.addEventListener('touchstart', (e) => {
+    infoDisplay.addEventListener('touchstart', (e) => {
       startY = e.touches[0].clientY;
     });
     
-    toggleView2.addEventListener('touchmove', (e) => {
+    infoDisplay.addEventListener('touchmove', (e) => {
       endY = e.touches[0].clientY;
     });
     
-    toggleView2.addEventListener('touchend', () => {
+    infoDisplay.addEventListener('touchend', () => {
       if (startY - endY > touchThreshold) {
         toggleView2.style.display = 'none';
         // Swipe up, hide the div with slideOutDown animation
