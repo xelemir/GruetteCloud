@@ -221,15 +221,15 @@
     
     toggleView2.addEventListener('touchend', () => {
       if (startY - endY > touchThreshold) {
+        toggleView2.style.display = 'none';
         // Swipe up, hide the div with slideOutDown animation
         toggleView2.classList.remove('animate__slideInUp');
         toggleView2.classList.add('animate__slideOutDown');
-        toggleView2.style.display = 'none';
       } else if (endY - startY > touchThreshold) {
+        toggleView2.style.display = 'flex';
         // Swipe down, show the div with slideInUp animation
         toggleView2.classList.remove('animate__slideOutDown');
         toggleView2.classList.add('animate__slideInUp');
-        toggleView2.style.display = 'flex';
       }
     });
     
