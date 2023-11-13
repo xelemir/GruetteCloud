@@ -432,5 +432,9 @@ def mapsRoute():
 def maps():
     return render_template("mapsMobile.html", menu=th.user(session))
 
+@tool_route.route("/test", methods=["GET", "POST"])
+def testSwipe():
+    return render_template("test.html")
+
 if __name__ == "__main__":
     search_place()
