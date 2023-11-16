@@ -157,9 +157,11 @@ def create_status_message():
     subject = str(request.form["subject"])
     content = str(request.form["content"])
     color = str(request.form["color"])
-
+    link = str(request.form["link"])
+    decorator = str(request.form["decorator"])
+    
     sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
-    sql.writeSQL(f"INSERT INTO gruttechat_platform_messages (subject, content, color) VALUES ('{subject}', '{content}', '{color}')")
+    sql.writeSQL(f"INSERT INTO gruttechat_platform_messages (subject, content, color, link, decorator) VALUES ('{subject}', '{content}', '{color}', '{link}', '{decorator}')")
 
     return redirect(f'/dashboard')
 

@@ -149,12 +149,12 @@ def chat(error=None):
         # Safety check
         return redirect(f'/logout')
     
-    platform_message = sql.readSQL(f"SELECT created_at, content, subject, color FROM gruttechat_platform_messages")
+    platform_message = sql.readSQL(f"SELECT * FROM gruttechat_platform_messages")
     
     if platform_message == []:
         platform_message = None
     else:
-        platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
+        platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"], "link": platform_message[0]["link"], "decorator": platform_message[0]["decorator"]}
     
     if active_chats == []:
         suggest_jan = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = 'jan'")

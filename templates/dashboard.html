@@ -303,30 +303,36 @@
                     <div id="supportView" style="display: block;">
                         <h2 align="center" style="margin-bottom: 20px;">Platform Notification</h2>
                         <form action="/dashboard/createstatusmessage" method="POST">
-                            <div style="flex-direction: row; display: flex; width: 100%; margin-top: 0px;">
-                                <div style="width: 50%; text-align: center; margin-right: 10px; align-content: center;">
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div style="flex-direction: column; display: flex; width: 100%; margin-top: 0px; gap: 10px;">
+                                <div style="width: 100%; text-align: center; margin-right: 10px; align-content: center;">
+                                    <div style="display: flex; flex-direction: row; align-items: center; gap: 10px;">
                                         <input type="text" id="subject" name="subject" class="login-input" autocomplete="off" placeholder="Subject" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" required>
-                                        <div class="spaced-tile"></div>
-                                        <input type="text" id="content" name="content" class="login-input" autocomplete="off" placeholder="Content" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" maxlength="2000" required>
+                                        <select id="decorator" name="decorator" class="login-input" style="-webkit-appearance: none; -moz-appearance: none; appearance: none; width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
+                                            <option value="none" style="color: black;">Decorator (none)</option>
+                                            <option value="new" style="color: black;">NEW</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
-                                        <select id="color" name="color" class="login-input" style="-webkit-appearance: none; width: 100%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); height: 40px;">
+                                <div style="width: 100%; text-align: center; margin-right: 10px; align-content: center;">
+                                    <div style="display: flex; flex-direction: row; align-items: center; gap: 10px;">
+                                        <input type="text" id="link" name="link" class="login-input" autocomplete="off" placeholder="Link" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" maxlength="1000">
+                                        <select id="color" name="color" class="login-input" style="-webkit-appearance: none; -moz-appearance: none; appearance: none; width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" required>
+                                            <option value="primary-color" style="color: var(--primary-color);">Blue</option>
                                             <option value="yellow" style="color: var(--yellow);">Yellow</option>
                                             <option value="red" style="color: var(--red);">Red</option>
                                             <option value="green" style="color: var(--green);">Green</option>
                                             <option value="purple" style="color: var(--purple);">Purple</option>
                                         </select>
-                                        <div class="spaced-tile"></div>
-                                        <button type="submit" value="Create Notification" name="send" style="margin: 0px; min-width: 100%; display: flex; text-align: center; align-items: center; justify-content: center; border-radius: 30px; background-color: var(--primary-color); border: none; height: 40px; cursor: pointer; color: var(--white-color);">
-                                            <span class="material-symbols-outlined">notification_add</span>
-                                            <p style="padding-left: 15px;">Create Notification</p>
-                                        </button>
                                     </div>
                                 </div>
+                                <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Message" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 100px; resize: none;" maxlength="10000" required></textarea>
+                                <button type="submit" class="send-button" style="width: 100%; margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <span class="material-symbols-outlined">notification_add</span>
+                                    <p>Send Notification</p>
+                                </button>
+                            
                             </div>
+                            
                         </form>
                         {% if platform_message %}
                         <div>
