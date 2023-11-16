@@ -8,3 +8,5 @@ pyotp
 Pillow
 beautifulsoup4
 geopy
+flask_socketio
+eventlet
