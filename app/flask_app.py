@@ -26,7 +26,6 @@ app.register_blueprint(premium_route)
 app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
-socketio = SocketIO(app)
 
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
@@ -168,90 +167,6 @@ def chat(error=None):
     
     # Render the home page
     return render_template('chathome.html', menu=th.user(session), username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png")
-
-# NEW SOCKETIO CHAT, NOT YET WORKING ON SERVER
-@app.route('/openchat', methods=['POST'])
-def openchat():
-    if 'username' not in session:
-        return redirect('/')
-    
-    recipient = request.form['recipient']
-    if recipient and recipient != session['username']:
-        room = generate_hashed_room_name(session['username'], recipient)
-        return redirect(url_for('private_chat', room=room, recipient=recipient))
-    return redirect('/chat')
-
-def get_messages_from_database(room):
-    sql = SQLHelper.SQLHelper()
-    sql_query = f"SELECT * FROM gruttechat_chats WHERE chat_id = '{room}'"
-    messages = sql.readSQL(sql_query)
-    return messages
-
-@app.route('/private_chat/<room>')
-def private_chat(room):
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    
-    username = session['username']
-    
-    # TODO check if user is allowed to access this room
-
-    recipient = request.args.get('recipient')
-    if not recipient:
-        recipient = "Couldn't get username"
-    
-    # Retrieve messages from the database for the given room
-    messages = get_messages_from_database(room)
-    for message in messages:
-        if message['author'] == session['username']:
-            message['author'] = 'You'
-
-    messages = messages[::-1]
-    return render_template('socketio_chat.html', username=username, room=room, messages=messages, recipient=recipient)
-
-@socketio.on('join')
-def on_join(data):
-    username = session.get('username')
-    if username:
-        room = data['room']
-        join_room(room)
-        emit('user_join', {'username': username}, room=room)
-
-@socketio.on('send_private_message')
-def handle_private_message(data):
-    sql = SQLHelper.SQLHelper()
-
-    username = session.get('username')
-    if username:
-        message = data['message']
-        room = data['room']
-        emit('receive_private_message', {'username': username, 'message': message}, room=room)
-
-        # Store the message in the database
-        sql_query = f"INSERT INTO gruttechat_chats (chat_id, author, content) VALUES ('{room}', '{username}', '{message}')"
-        sql.writeSQL(sql_query)
-
-def generate_hashed_room_name(username1, username2):
-    # Sort the usernames and concatenate them
-    sorted_usernames = sorted([username1, username2])
-    concatenated = ''.join(sorted_usernames)
-
-    # Hash the concatenated string
-    hashed = hashlib.sha256(concatenated.encode()).hexdigest()
-    return hashed
-
-    # END OF NEW SOCKETIO CHAT
-    
-@app.route("/sockettest")
-def sockettest():
-    return render_template("sockettest.html", menu=th.user(session))
-    
-@socketio.on('message')
-def handle_message(message):
-    print('Received message: ' + message)
-    socketio.emit('echo', message)  # Echo the message back to the client
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
