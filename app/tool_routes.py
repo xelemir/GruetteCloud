@@ -2,6 +2,7 @@ import datetime
 import os
 import secrets
 from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
+from flask_socketio import SocketIO
 import requests
 from werkzeug.security import generate_password_hash
 from geopy.geocoders import Nominatim
@@ -435,6 +436,8 @@ def maps():
         return render_template("mapsMobile.html", menu=th.user(session))
     else:
         return render_template("maps.html", menu=th.user(session))
+
+
 
 if __name__ == "__main__":
     search_place()

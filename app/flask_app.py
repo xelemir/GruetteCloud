@@ -241,6 +241,16 @@ def generate_hashed_room_name(username1, username2):
     return hashed
 
     # END OF NEW SOCKETIO CHAT
+    
+@app.route("/sockettest")
+def sockettest():
+    return render_template("sockettest.html", menu=th.user(session))
+    
+@socketio.on('message')
+def handle_message(message):
+    print('Received message: ' + message)
+    socketio.emit('echo', message)  # Echo the message back to the client
+
 
 
 if __name__ == '__main__':

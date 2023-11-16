@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+  <title>Socket.IO Test</title>
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+  <script>
+    var socket = io();
+
+    socket.on('connect', function() {
+      console.log('Connected to server');
+      socket.send('Hello, server!');
+    });
+
+    socket.on('echo', function(message) {
+      console.log('Received echo: ' + message);
+    });
+  </script>
+</head>
+<body>
+  <h1>Socket.IO Test</h1>
+</body>
+</html>
