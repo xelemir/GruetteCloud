@@ -40,7 +40,7 @@
         }
 
         .nav-view {
-            width: 350px;
+            width: 400px;
             margin: 10px;
         }
 
@@ -98,16 +98,18 @@
 </div>
 
 <div class="nav-view" style="position: absolute; z-index: 2;">
-    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <div onclick="toggleView()" style="cursor: pointer; font-size: 1em; width: 62px; height: 50px; margin: 0; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
+    <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+        <div onclick="toggleView()" style="cursor: pointer; font-size: 1em; height: 50px; width: 50px; border-radius: 50%; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; justify-content: center; align-items: center;">
             <span class="material-symbols-outlined align-icons-center">menu</span>
         </div>
-        <input id="searchBar" type="text" class="login-input" autocomplete="off" placeholder="Search GrütteMaps" style="width: 100%; font-size: 1em; height: 50px; margin: 0; border-radius: 30px; padding-left: 20px; padding-right: 50px; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
-        <div style="z-index: 1; position: absolute; margin-top: 5px; right: 5px; display: flex; background-color: var(--primary-color); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer;">
-            <span class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">search</span>
-        </div>
-        <div id="close-search" style="z-index: 2; position: absolute; margin-top: 5px; right: 5px; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
-            <span onclick="restart()" class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">close</span>
+        <input id="search-bar" type="text" class="login-input" autocomplete="off" placeholder="Search GrütteMaps" style="flex: 1; font-size: 1em; height: 50px; margin: 0; border-radius: 30px; padding-left: 20px; padding-right: 50px; background-color: var(--background-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
+        <div style="position: relative;">
+            <div style="z-index: 1; position: absolute; top: -20px; right: 15px; display: flex; background-color: var(--primary-color); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer;">
+                <span class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">search</span>
+            </div>
+            <div id="close-search" style="z-index: 2; position: absolute; top: -20px; right: 15px; background-color: var(--red); height: 40px; width: 40px; border-radius: 50%; justify-content: center; align-items: center; cursor: pointer; display: none;">
+                <span onclick="restart()" class="material-symbols-outlined align-icons-center" style="color: var(--white-color);">close</span>
+            </div>
         </div>
     </div>
 

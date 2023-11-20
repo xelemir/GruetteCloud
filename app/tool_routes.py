@@ -361,7 +361,6 @@ def search_place():
     results = geolocator.geocode(request.args.get("query"), exactly_one=False, limit=5)
     for result in results:
         locations.append(result.raw)
-    print(locations)
     return jsonify(locations)
     
 @tool_route.route("/nearestNode", methods=["GET"])
@@ -387,7 +386,11 @@ def mapsRoute():
         'Authorization': openrouteservice_api_key,
         'Content-Type': 'application/json; charset=utf-8'
     }
+    # foot-walking
+    # driving-car
+    # cycling-regular
     response = requests.post('https://api.openrouteservice.org/v2/directions/driving-car/geojson', json=body, headers=headers)
+    print(response)
     
     if response.status_code == 200:
         response = response.json()
