@@ -362,22 +362,17 @@ def search_place():
     for result in results:
         locations.append(result.raw)
     return jsonify(locations)
-    
-@tool_route.route("/nearestNode", methods=["GET"])
-def nearestNode():
-    lat = request.args.get("lat")
-    lon = request.args.get("lon")
-    
-    if lat is None or lon is None:
-        abort(400)
-
-    return jsonify([1, lat, lon])
 
 @tool_route.route("/route", methods=["GET"])
 def mapsRoute():
-    
     start = request.args.get("start")
     end = request.args.get("end")
+    transportation_mode = request.args.get("mode")
+    if transportation_mode == None: transportation_mode = "driving-car"
+    elif transportation_mode == "driving": transportation_mode = "driving-car"
+    elif transportation_mode == "walking": transportation_mode = "foot-walking"
+    elif transportation_mode == "cycling": transportation_mode = "cycling-regular"
+    elif transportation_mode == "wheelchair": transportation_mode = "wheelchair"
         
     body = {"coordinates":[[float(start.split(",")[1]), float(start.split(",")[0])], [float(end.split(",")[1]), float(end.split(",")[0])]]}
 
@@ -386,11 +381,8 @@ def mapsRoute():
         'Authorization': openrouteservice_api_key,
         'Content-Type': 'application/json; charset=utf-8'
     }
-    # foot-walking
-    # driving-car
-    # cycling-regular
-    response = requests.post('https://api.openrouteservice.org/v2/directions/driving-car/geojson', json=body, headers=headers)
-    print(response)
+
+    response = requests.post(f"https://api.openrouteservice.org/v2/directions/{transportation_mode}/geojson", json=body, headers=headers)
     
     if response.status_code == 200:
         response = response.json()

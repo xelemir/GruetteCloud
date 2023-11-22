@@ -88,6 +88,25 @@
             box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);
         }
 
+        .transportation-mode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            width: 25%;
+            background-color: transparent;
+            color: var(--text-color);
+            border-radius: 30px;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .transportation-mode-selected {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
 	</style>
 
 	
@@ -117,17 +136,20 @@
 
     <div class="animate__animated animate__jackInTheBox"  id="toggleView" style="display: none; background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between;">
         <h1>GrütteMaps</h1>
-        <div style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
+        <div id="darkModeToggleContainer" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: flex; color: var(--text-color);">
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
         </div>
-        <button id="restartButton" onclick="restart()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; right: 20px; display: none; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">close</span>
+        <button id="restartButton" onclick="restart()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; left: 20px; display: none; color: var(--text-color);">
+            <span class="material-symbols-outlined align-icons-center">arrow_back_ios_new</span>
+        </button>
+        <button id="toggleChangeTransportationModeButton" onclick="toggleChangeTransportationMode()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; margin-top: 5px; right: 20px; display: none; color: var(--text-color);">
+            <span class="material-symbols-outlined align-icons-center">tune</span>
         </button>
         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; margin-top: 10px;">
         <div style="width: 100%; flex-direction: column; gap: 5px;">
             <div id="start" style="width: 100%; display: none; flex-direction: row; gap: 10px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
-                    <span style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">directions_car</span>
+                    <span id="transport-mode-icon" style="margin-right: 5px;" class="material-symbols-outlined align-icons-center">directions_car</span>
                     <p>Start</p>
                 </div>
                 <div style="display: flex; justify-content: flex-end; align-items: center; flex: 1; overflow: hidden; max-width: 100%;">
@@ -166,6 +188,26 @@
                     <p id="time"></p>
                 </div>
             </div>
+            
+            
+            <div id="changeTransportationMode" style="display: none; justify-content: center; align-items: center; gap: 20px; flex: 1; height: 40px; margin-top: 10px;">
+                <div id="driving" class="transportation-mode transportation-mode-selected" onclick="changeTransportationMode('driving')">
+                    <span class="material-symbols-outlined align-icons-center">directions_car</span>
+                </div>
+                <div id="walking" class="transportation-mode" onclick="changeTransportationMode('walking')">
+                    <span class="material-symbols-outlined align-icons-center">directions_walk</span>
+                </div>
+                <div id="cycling" class="transportation-mode" onclick="changeTransportationMode('cycling')">
+                    <span class="material-symbols-outlined align-icons-center">directions_bike</span>
+                </div>
+                <div id="wheelchair" class="transportation-mode" onclick="changeTransportationMode('wheelchair')">
+                    <span class="material-symbols-outlined align-icons-center">accessible</span>
+                </div>
+                <div id="public-transport" class="transportation-mode" onclick="changeTransportationMode('publicTransport')">
+                    <span class="material-symbols-outlined align-icons-center">directions_subway</span>
+                </div>
+            </div>
+            
             <div id="buttons" style="display: none; justify-content: left; align-items: center; margin-top: 20px;">
                 <button id="calculate-button" onclick="calculateRoute()" style="background-color: var(--primary-color); color: var(--white-color); border-radius: 30px; padding: 2px 10px; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; flex: 1; height: 40px;">
                     <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">directions</span> Get Directions
@@ -182,6 +224,8 @@
                     <p style="color: var(--primary-color);">Calculating Route</p>
                 </div>
             </div>
+            
+            
             <div id="route-details-scrollable" style="width: 100%; display: none; flex-direction: column; gap: 15px; margin: 10px 0; margin-top: 20px; overflow-y: scroll; padding-right: 15px; max-height: 30svh; -ms-overflow-style: none; scrollbar-width: none;"></div>
             </div>
         </div>
@@ -197,6 +241,10 @@
 
 </body>
 </html>
+
+<script>
+    
+</script>
 
 <script src="https://www.gruettecloud.com/static/darkmodeMaps.js"></script>
 <script src="https://www.gruettecloud.com/static/MapsJavascript.js"></script>
