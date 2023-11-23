@@ -158,20 +158,20 @@
                     </div>
 
                     <div id="section5" style="display: none; flex-direction: column;">
-                        <div style="display: flex; width: 300px; margin: 0; gap: 10px; padding-bottom: 15px; align-items: center; background-color: var(--box-shadow-color); border-radius: 20px; padding: 10px;">
-                            <div>
-                                <p>Upload a photo of yourself</p>
-                                <div><small id="photo-filename"></small></div>
-                                <div id="slected-preview">
-                                    <img src="" id="photo-preview" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover;">
-                                </div>
-                            </div>
-                            <input type="file" name="photo" id="photo" style="display: none;">
-                            <label for="photo" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--box-shadow-color); border-radius: 50%; cursor: pointer;">
-                                <span id="photo-label" class="material-symbols-outlined" style="font-size: 24px; display: flex;">add</span>
-                                <span id="photo-label-close" class="material-symbols-outlined" style="font-size: 24px; display: none;">close</span>
+                        <div style="display: flex; width: 300px; margin: 0; gap: 10px; padding-bottom: 15px; align-items: center; background-color: var(--box-shadow-color); border-radius: 20px; padding: 10px; position: relative;">
+                            <input type="file" id="file1-input" name="file1" style="display: none;">
+                            <label id="file1-label" for="file1-input" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--box-shadow-color); border-radius: 50%; cursor: pointer;">
+                                <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">add_photo_alternate</span>
                             </label>
+                            <div id="file1-remove" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border: 2px solid var(--box-shadow-color); border-radius: 50%; cursor: pointer;">
+                                <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">close</span>
+                            </div>
+                            <div>
+                                <p id="file1-hint" style="display: flex;">Upload file1</p>
+                                <p id="file1-title" style="display: none;"></p>
+                            </div>
                         </div>
+                        
 
                         <div style="display: inline-flex; width: 300px; gap: 20px;">
                             <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
@@ -192,47 +192,55 @@
 </html>
 
 <script>
-    // Known bug: when the user clicks on close, the filemanager is reopened
     document.addEventListener("DOMContentLoaded", function() {
-        const photoInput = document.getElementById("photo");
-        const photoLabel = document.getElementById("photo-label");
-        const photoLabelClose = document.getElementById("photo-label-close");
-        const photoFilename = document.getElementById("photo-filename");
-        const photoPreview = document.getElementById("photo-preview");
-
-        photoLabel.addEventListener("click", function() {
-                photoInput.click();
-
+        const file1Input = document.getElementById("file1-input");
+        const file1Label = document.getElementById("file1-label");
+        const file1Remove = document.getElementById("file1-remove");
+        const file1Hint = document.getElementById("file1-hint");
+        const file1Title = document.getElementById("file1-title");
+    
+        file1Label.addEventListener("click", function(event) {
+            event.preventDefault();
+            if (document.activeElement !== file1Input) {
+                file1Input.click();
+            }
         });
 
-        photoLabelClose.addEventListener("click", function() {
-                photoInput.value = "";
-                photoLabelClose.style.display = "none";
-                photoLabel.style.display = "flex";
-                photoPreview.src = "";
-                photoFilename.innerHTML = "";
+        file1Remove.addEventListener("click", function(event) {
+            event.preventDefault();
+            file1Input.value = "";
+            file1Title.style.display = "none";
+            file1Hint.style.display = "flex";
+            file1Remove.style.display = "none";
+            file1Label.style.display = "flex";
         });
-
-        photoInput.addEventListener("change", function() {
-            if (photoInput.files.length != 0) {
-                const selectedFile = photoInput.files[0];
+        
+        file1Input.addEventListener("change", function() {
+            if (file1Input.files.length != 0) {
+                const selectedFile = file1Input.files[0];
                 const reader = new FileReader();
-                photoFilename.innerHTML = selectedFile.name;
-                photoLabelClose.style.display = "flex";
-                photoLabel.style.display = "none";
+                file1Title.style.display = "flex";
+                file1Title.innerHTML = selectedFile.name;
+                file1Remove.style.display = "flex";
+                file1Label.style.display = "none";
                 reader.readAsDataURL(selectedFile);
                 reader.onload = function() {
                     const dataURL = reader.result;
-                    const photoPreview = document.getElementById("photo-preview");
-                    photoPreview.src = dataURL;
                 };
             }
         });
+        
     });
+    
+    
 </script>
 
 
 <script>
+            /*photoLabelClose.addEventListener("click", function(event) {
+            event.stopPropagation();
+            photoInput.value = ""; // Clear the input value
+        });*/
     var languageSelection = document.getElementById("language-selection");
 
     // if useragent is german, change language selection to german
