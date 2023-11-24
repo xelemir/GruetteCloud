@@ -353,7 +353,7 @@ def apply():
     
     else:
         
-        application_id = secrets.token_hex(5)
+        application_id = secrets.token_hex(8)
         
         name = request.form["name"]
         age = request.form["age"]
@@ -371,29 +371,25 @@ def apply():
         smoker = request.form["smoker"]
         shared_apartment_experience = request.form["shared-apartment-experience"]
         
-        try:
-            file1 = request.files["file1"]
-            file2 = request.files["file2"]
-            file3 = request.files["file3"]
-        except:
-            file1 = None
-            file2 = None
-            file3 = None
+        
+        file1 = request.files["file1"]
+        file2 = request.files["file2"]
+        file3 = request.files["file3"]
         
         if file1:
-            file1Filename = secure_filename(file1.filename + secrets.token_hex(5))
+            file1Filename = secure_filename(application_id + file1.filename)
             file1.save(os.path.join(gruettedrive_path, "GruetteCloud", file1Filename))
         else:
             file1Filename = None
         
         if file2:
-            file2Filename = secure_filename(file2.filename + secrets.token_hex(5))
+            file2Filename = secure_filename(application_id + file2.filename)
             file2.save(os.path.join(gruettedrive_path, "GruetteCloud", file2Filename))
         else:
             file2Filename = None
         
         if file3:
-            file3Filename = secure_filename(file3.filename + secrets.token_hex(8))
+            file3Filename = secure_filename(application_id + file3.filename)
             file3.save(os.path.join(gruettedrive_path, "GruetteCloud", file3Filename))
         else:
             file3Filename = None
