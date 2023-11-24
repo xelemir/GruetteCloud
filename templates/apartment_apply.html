@@ -55,22 +55,34 @@
 	<main>
         <section class="content">
 
+            
+
             {% if application_id and error %}
                 {% if error == "success" %}
                     <h1 style="color: var(--green);"><span class="material-symbols-outlined align-icons-center" style="font-size: 4em; margin-bottom: 40px;">check_circle</span></h1>
                     <h1 class="language" style="color: var(--primary-color);" en-language="Application submitted" de-language="Bewerbung abgeschickt">Application submitted</h1>
                     <p style=" margin-bottom: 5px;" class="language" en-language="Your application was successfully submitted." de-language="Deine Bewerbung wurde erfolgreich abgeschickt.">Your application was successfully submitted.</p>
                     <p style="margin-bottom: 20px;" class="language" en-language="We will get back to you as soon as possible." de-language="Wir werden uns so schnell wie möglich bei dir melden.">We will get back to you as soon as possible.</p>
+                {% elif error == "changes_saved" %}
+                    <h1 style="color: var(--green);"><span class="material-symbols-outlined align-icons-center" style="font-size: 4em; margin-bottom: 40px;">check_circle</span></h1>
+                    <h1 class="language" style="color: var(--primary-color);" en-language="Changes saved" de-language="Änderungen gespeichert">Changes saved</h1>
+                    <p style=" margin-bottom: 5px;" class="language" en-language="Your changes were successfully saved." de-language="Deine Änderungen wurden erfolgreich gespeichert.">Your changes were successfully saved.</p>
+                    <p style="margin-bottom: 20px;" class="language" en-language="If you'd like to change something else, please do so below." de-language="Wenn du noch etwas ändern möchtest, kannst du das unten tun.">If you'd like to change something else, please do so below.</p>
                 {% else %}
                     <p style="margin-bottom: 20px;" class="language" en-language="An error occured. Please try again later." de-language="Ein Fehler ist aufgetreten. Bitte versuche es später erneut.">An error occured. Please try again later.</p>
                 {% endif %}
 
                 <p style="margin-bottom: 20px;" class="language" en-language="Your application ID is" de-language="Deine Bewerbungs-ID ist">Your application ID is:</p>
                 <p style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.2em;">{{ application_id }}</p>
+                <a href="/application/{{ application_id }}" style="border-radius: 30px; cursor: pointer; text-align: center; background-color: var(--primary-color); padding: 5px 15px; color: var(--white-color); text-decoration: none; margin-top: 40px;">
+                    <span class="language" en-language="Edit application" de-language="Bewerbung bearbeiten">Edit application</span>
+                </a>
             {% else %}
 
             <h1 class="language" en-language="Apply for Apartment" de-language="Bewirb dich für ein Apartment">Apply for Apartment</h1>
-
+            {% if application %}
+                <p style="margin-bottom: 20px;">{{ application['application_id'] }}</p>
+            {% endif %}
 
             <div id="form-progress" style="display: flex; width: 300px; margin-bottom: 40px; gap: 20px; align-items: center;">
                 <div id="progress1" style="color: var(--primary-color);">1</div>
@@ -87,14 +99,17 @@
 
             <div class="application-form">
                 <form action="/apply" method="POST" style="flex-direction: column;" enctype="multipart/form-data">
+                    {% if application %}
+                        <input type="hidden" name="application_id" value="{{ application['application_id'] }}">
+                    {% endif %}
                     <div id="section1" style="display: flex; flex-direction: column;">
-                        <input type="text" id="firstname" name="name" autocomplete="off" placeholder="Your name" en-language="Your name" de-language="Dein Name">
+                        <input type="text" id="name" name="name" autocomplete="off" placeholder="Your name" en-language="Your name" de-language="Dein Name">
                         <div style="display: inline-flex; width: 300px; margin: 0; gap: 10px;">
                             <input type="text" id="age" name="age" autocomplete="off" placeholder="Age" en-language="Age" de-language="Alter">
                             <input type="text" id="pronouns" name="pronouns" autocomplete="off" placeholder="Pronouns" en-language="Pronouns" de-language="Pronomen">
                         </div>
                         <input type="text" id="email" name="email" autocomplete="off" placeholder="Email" en-language="Email" de-language="Email">
-                        <input type="text" id="move-in-date" name="move-in-date" autocomplete="off" placeholder="Preferred move-in date" en-language="Preferred move-in date" de-language="Bevorzugtes Einzugsdatum">
+                        <input type="text" id="move_in_date" name="move_in_date" autocomplete="off" placeholder="Preferred move-in date" en-language="Preferred move-in date" de-language="Bevorzugtes Einzugsdatum">
 
                         <div style="display: inline-flex; width: 300px; gap: 20px;">
                             <div class="send-button" onclick="next()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
@@ -106,14 +121,14 @@
                     <div id="section2" style="display: none; flex-direction: column;">
                         <input type="text" id="occupation" name="occupation" autocomplete="off" placeholder="Occupation or field of study" en-language="Occupation or field of study" de-language="Beruf oder Studienfach">
                         <input type="text" id="language" name="language" autocomplete="off" placeholder="Language(s)" en-language="Language(s)" de-language="Sprache(n)">
-                        <select id="dietry-preferences" name="dietry-preferences" style="-webkit-appearance: none;">
+                        <select id="dietry_preferences" name="dietry_preferences" style="-webkit-appearance: none;">
                             <option value="" class="language" en-language="Dietry preferences" de-language="Deine Ernährungspräferenzen">Dietry preferences</option>
                             <option value="vegetarian" class="language" en-language="Vegetarian" de-language="Vegetarisch">Vegetarian</option>
                             <option value="vegan" class="language" en-language="Vegan" de-language="Vegan">Vegan</option>
                             <option value="pescetarian" class="language" en-language="Pescetarian" de-language="Pescetarisch">Pescetarian</option>
                             <option value="omnivore" class="language" en-language="Omnivore" de-language="Omnivor">Omnivore</option>
                         </select>
-                        <select id="coffee-or-tea" name="coffee-or-tea" style="-webkit-appearance: none;">
+                        <select id="coffee_or_tea" name="coffee_or_tea" style="-webkit-appearance: none;">
                             <option value="" class="language" en-language="Coffee or tea?" de-language="Kaffee oder Tee?">Coffee or tea?</option>
                             <option value="coffee" class="language" en-language="Coffee" de-language="Kaffee">Coffee</option>
                             <option value="tea" class="language" en-language="Tea" de-language="Tee">Tea</option>
@@ -157,7 +172,7 @@
                                 <option value="yes" class="language" en-language="Yes" de-language="Ja">Yes</option>
                             </select>
                         </div>
-                        <select id="shared-apartment-experience" name="shared-apartment-experience" style="-webkit-appearance: none;">
+                        <select id="shared_apartment_experience" name="shared_apartment_experience" style="-webkit-appearance: none;">
                             <option value="" class="language" en-language="Shared apartment experience?" de-language="Bereits WG-Erfahrung?">Shared apartment experience?</option>
                             <option value="yes" class="language" en-language="Yes" de-language="Ja">Yes</option>
                             <option value="no" class="language" en-language="No" de-language="Nein">No</option>
@@ -177,13 +192,16 @@
                             <p id="file1-hint-secondary" class="language" style="display: none; justify-content: center; text-align: center; margin-bottom: 5px;" de-language="Mieterselbstauskunft" en-language="Tenant self-disclosure">Tenant self-disclosure</p>
                             <div style="display: flex; width: 300px; margin: 0; gap: 10px; align-items: center; background-color: var(--box-shadow-color); border-radius: 30px; position: relative; padding: 0px;">
                                 <input type="file" id="file1-input" name="file1" style="display: none;">
+                                {% if application %}
+                                    <input type="hidden" name="file1Filename" value="{{ application['file1'] }}">
+                                {% endif %}
                                 <label id="file1-label" for="file1-input" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--primary-color); color: var(--white-color);">
                                     <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">upload</span>
                                 </label>
-                                <div id="file1-remove" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--red); color: var(--white-color);">
+                                <div id="file1-remove" style="min-width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--red); color: var(--white-color);">
                                     <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">close</span>
                                 </div>
-                                <div style="display: flex; justify-content: center; text-align: center; flex: 1; margin-right: 40px; text-wrap: wrap; align-items: center; flex-direction: column;">
+                                <div style="display: flex; justify-content: center; text-align: center; flex: 1; margin-right: 40px; align-items: center; flex-direction: column; overflow: hidden; text-overflow: ellipsis;">
                                     <p id="file1-hint" class="language" style="display: flex;" de-language="Mieterselbstauskunft" en-language="Tenant self-disclosure">Tenant self-disclosure</p>
                                     <p id="file1-title" style="display: none;"></p>
                                 </div>
@@ -194,13 +212,16 @@
                             <p id="file2-hint-secondary" class="language" style="display: none; justify-content: center; text-align: center; margin-bottom: 5px;" de-language="Schufa-Auskunft" en-language="Schufa information">Schufa information</p>
                             <div style="display: flex; width: 300px; margin: 0; gap: 10px; align-items: center; background-color: var(--box-shadow-color); border-radius: 30px; position: relative; padding: 0px;">
                                 <input type="file" id="file2-input" name="file2" style="display: none;">
+                                {% if application %}
+                                    <input type="hidden" name="file2Filename" value="{{ application['file2'] }}">
+                                {% endif %}
                                 <label id="file2-label" for="file2-input" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--primary-color); color: var(--white-color);">
                                     <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">upload</span>
                                 </label>
-                                <div id="file2-remove" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--red); color: var(--white-color);">
+                                <div id="file2-remove" style="min-width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--red); color: var(--white-color);">
                                     <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">close</span>
                                 </div>
-                                <div style="display: flex; justify-content: center; text-align: center; flex: 1; margin-right: 40px; text-wrap: wrap; align-items: center; flex-direction: column;">
+                                <div style="display: flex; justify-content: center; text-align: center; flex: 1; margin-right: 40px; align-items: center; flex-direction: column; overflow: hidden; text-overflow: ellipsis;">
                                     <p id="file2-hint" class="language" style="display: flex;" de-language="Schufa-Auskunft" en-language="Schufa information">Schufa information</p>
                                     <p id="file2-title" style="display: none;"></p>
                                 </div>
@@ -211,13 +232,16 @@
                             <p id="file3-hint-secondary" class="language" style="display: none; justify-content: center; text-align: center; margin-bottom: 5px;" de-language="Bürgschaft der Eltern (falls vorhanden)" en-language="Guarantee of the parents (if available)">Guarantee of the parents (if available)</p>
                             <div style="display: flex; width: 300px; margin: 0; gap: 10px; align-items: center; background-color: var(--box-shadow-color); border-radius: 30px; position: relative; padding: 0px;">
                                 <input type="file" id="file3-input" name="file3" style="display: none;">
+                                {% if application %}
+                                    <input type="hidden" name="file3Filename" value="{{ application['file3'] }}">
+                                {% endif %}
                                 <label id="file3-label" for="file3-input" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--primary-color); color: var(--white-color);">
                                     <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">upload</span>
                                 </label>
-                                <div id="file3-remove" style="width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--red); color: var(--white-color);">
+                                <div id="file3-remove" style="min-width: 55px; height: 55px; margin: 0; padding: 5px; display: none; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; background-color: var(--red); color: var(--white-color);">
                                     <span class="material-symbols-outlined" style="font-size: 24px; display: flex;">close</span>
                                 </div>
-                                <div style="display: flex; justify-content: center; text-align: center; flex: 1; margin-right: 40px; text-wrap: wrap; align-items: center; flex-direction: column;">
+                                <div style="display: flex; justify-content: center; text-align: center; flex: 1; margin-right: 40px; align-items: center; flex-direction: column; overflow: hidden; text-overflow: ellipsis;">
                                     <p id="file3-hint" class="language" style="display: flex;" de-language="Bürgschaft der Eltern (falls vorhanden)" en-language="Guarantee of the parents (if available)">Guarantee of the parents (if available)</p>
                                     <p id="file3-title" style="display: none;"></p>
                                 </div>
@@ -367,6 +391,49 @@
     {% endif %}
 </script>
 
+{% if application %}
+    <script>
+    {% for entry in application %}
+        if ("{{ entry }}" == "file1" || "{{ entry }}" == "file2" || "{{ entry }}" == "file3") {
+            const file1Title = document.getElementById("file1-title");
+            const file2Title = document.getElementById("file2-title");
+            const file3Title = document.getElementById("file3-title");
+
+            if ("{{ entry }}" == "file1" && "{{ application[entry] }}" != "None") {
+                file1Title.style.display = "flex";
+                document.getElementById("file1-hint-secondary").style.display = "flex";
+                document.getElementById("file1-hint").style.display = "none";
+                file1Title.innerHTML = "{{ application[entry] }}";
+                document.getElementById("file1-remove").style.display = "flex";
+                document.getElementById("file1-label").style.display = "none";
+            } else if ("{{ entry }}" == "file2" && "{{ application[entry] }}" != "None") {
+                file2Title.style.display = "flex";
+                document.getElementById("file2-hint-secondary").style.display = "flex";
+                document.getElementById("file2-hint").style.display = "none";
+                file2Title.innerHTML = "{{ application[entry] }}";
+                document.getElementById("file2-remove").style.display = "flex";
+                document.getElementById("file2-label").style.display = "none";
+            } else if ("{{ entry }}" == "file3" && "{{ application[entry] }}" != "None") {
+                file3Title.style.display = "flex";
+                document.getElementById("file3-hint-secondary").style.display = "flex";
+                document.getElementById("file3-hint").style.display = "none";
+                file3Title.innerHTML = "{{ application[entry] }}";
+                document.getElementById("file3-remove").style.display = "flex";
+                document.getElementById("file3-label").style.display = "none";
+            }
+        }
+
+        try {
+            document.getElementById("{{ entry }}").value = "{{ application[entry] }}";
+        } catch (error) {
+            try {
+                document.getElementById("{{ entry }}").innerHTML = "{{ application[entry] }}";
+            } catch (error) {}
+        }
+
+    {% endfor %}
+    </script>
+{% endif %}
 
 <script>
     var languageSelection = document.getElementById("language-selection");

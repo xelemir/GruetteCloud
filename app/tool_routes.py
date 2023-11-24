@@ -352,24 +352,28 @@ def apply():
         return render_template("apartment_apply.html", menu=th.user(session))
     
     else:
-        
-        application_id = secrets.token_hex(8)
+        try:
+            application_id = request.form["application_id"]
+            new_application = False
+        except:
+            application_id = secrets.token_hex(8)
+            new_application = True
         
         name = request.form["name"]
         age = request.form["age"]
         pronouns = request.form["pronouns"]
         email = request.form["email"]
-        move_in_date = request.form["move-in-date"]
+        move_in_date = request.form["move_in_date"]
         occupation = request.form["occupation"]
         languages = request.form["language"]
-        dietry_preferences = request.form["dietry-preferences"]
-        coffee_or_tea = request.form["coffee-or-tea"]
+        dietry_preferences = request.form["dietry_preferences"]
+        coffee_or_tea = request.form["coffee_or_tea"]
         about = request.form["about"]
         expectations = request.form["expectations"]
         parties = request.form["parties"]
         alcohol = request.form["alcohol"]
         smoker = request.form["smoker"]
-        shared_apartment_experience = request.form["shared-apartment-experience"]
+        shared_apartment_experience = request.form["shared_apartment_experience"]
         
         
         file1 = request.files["file1"]
@@ -380,19 +384,28 @@ def apply():
             file1Filename = secure_filename(application_id + file1.filename)
             file1.save(os.path.join(gruettedrive_path, "GruetteCloud", file1Filename))
         else:
-            file1Filename = None
+            if new_application: file1Filename = None
+            else:
+                file1Filename = request.form["file1Filename"]
+                if file1Filename == "None": file1Filename = None
         
         if file2:
             file2Filename = secure_filename(application_id + file2.filename)
             file2.save(os.path.join(gruettedrive_path, "GruetteCloud", file2Filename))
         else:
-            file2Filename = None
+            if new_application: file2Filename = None
+            else:
+                file2Filename = request.form["file2Filename"]
+                if file2Filename == "None": file2Filename = None
         
         if file3:
             file3Filename = secure_filename(application_id + file3.filename)
             file3.save(os.path.join(gruettedrive_path, "GruetteCloud", file3Filename))
         else:
-            file3Filename = None
+            if new_application: file3Filename = None
+            else:
+                file3Filename = request.form["file3Filename"]
+                if file3Filename == "None": file3Filename = None
             
             
         application = {
@@ -422,7 +435,21 @@ def apply():
         with open(os.path.join(gruettedrive_path, "GruetteCloud", f"Application_{application_id}.json"), "w") as outfile:
             outfile.write(json_object)
 
-        return render_template("apartment_apply.html", menu=th.user(session), application_id=application_id, error="success", application=application)
+        if new_application:
+            return render_template("apartment_apply.html", menu=th.user(session), application_id=application_id, error="success", application=application)
+        else:
+            return render_template("apartment_apply.html", menu=th.user(session), application_id=application_id, error="changes_saved", application=application)
+    
+@tool_route.route("/application/<application_id>", methods=["GET"])
+def application(application_id):
+    if os.path.exists(os.path.join(gruettedrive_path, "GruetteCloud", f"Application_{application_id}.json")):
+        with open(os.path.join(gruettedrive_path, "GruetteCloud", f"Application_{application_id}.json"), "r") as infile:
+            application = json.load(infile)
+        return render_template("apartment_apply.html", menu=th.user(session), application=application)
+
+    else:
+        return redirect("/apply")
+            
 
 
 # API Endpoints for GrütteMaps
