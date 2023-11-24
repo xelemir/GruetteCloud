@@ -1,15 +1,17 @@
 import datetime
+import json
 import os
 import secrets
 from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from flask_socketio import SocketIO
 import requests
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from geopy.geocoders import Nominatim
 from threading import Thread
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper, ApartmentHelper
-from config import templates_path, openrouteservice_api_key
+from config import templates_path, openrouteservice_api_key, gruettedrive_path
 
     
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
@@ -346,7 +348,85 @@ def add_product():
     
 @tool_route.route("/apply", methods=["GET", "POST"])
 def apply():
-    return render_template("apartment_apply.html", menu=th.user(session))
+    if request.method == "GET":
+        return render_template("apartment_apply.html", menu=th.user(session))
+    
+    else:
+        
+        application_id = secrets.token_hex(5)
+        
+        name = request.form["name"]
+        age = request.form["age"]
+        pronouns = request.form["pronouns"]
+        email = request.form["email"]
+        move_in_date = request.form["move-in-date"]
+        occupation = request.form["occupation"]
+        languages = request.form["language"]
+        dietry_preferences = request.form["dietry-preferences"]
+        coffee_or_tea = request.form["coffee-or-tea"]
+        about = request.form["about"]
+        expectations = request.form["expectations"]
+        parties = request.form["parties"]
+        alcohol = request.form["alcohol"]
+        smoker = request.form["smoker"]
+        shared_apartment_experience = request.form["shared-apartment-experience"]
+        
+        try:
+            file1 = request.files["file1"]
+            file2 = request.files["file2"]
+            file3 = request.files["file3"]
+        except:
+            file1 = None
+            file2 = None
+            file3 = None
+        
+        if file1:
+            file1Filename = secure_filename(file1.filename + secrets.token_hex(5))
+            file1.save(os.path.join(gruettedrive_path, "GruetteCloud", file1Filename))
+        else:
+            file1Filename = None
+        
+        if file2:
+            file2Filename = secure_filename(file2.filename + secrets.token_hex(5))
+            file2.save(os.path.join(gruettedrive_path, "GruetteCloud", file2Filename))
+        else:
+            file2Filename = None
+        
+        if file3:
+            file3Filename = secure_filename(file3.filename + secrets.token_hex(8))
+            file3.save(os.path.join(gruettedrive_path, "GruetteCloud", file3Filename))
+        else:
+            file3Filename = None
+            
+            
+        application = {
+            "application_id": application_id,
+            "name": name,
+            "age": age,
+            "pronouns": pronouns,
+            "email": email,
+            "move_in_date": move_in_date,
+            "occupation": occupation,
+            "languages": languages,
+            "dietry_preferences": dietry_preferences,
+            "coffee_or_tea": coffee_or_tea,
+            "about": about,
+            "expectations": expectations,
+            "parties": parties,
+            "alcohol": alcohol,
+            "smoker": smoker,
+            "shared_apartment_experience": shared_apartment_experience,
+            "file1": file1Filename,
+            "file2": file2Filename,
+            "file3": file3Filename
+        }
+        
+        json_object = json.dumps(application, indent=4)
+        
+        with open(os.path.join(gruettedrive_path, "GruetteCloud", f"Application_{application_id}.json"), "w") as outfile:
+            outfile.write(json_object)
+
+        return render_template("apartment_apply.html", menu=th.user(session), application_id=application_id, error="success", application=application)
 
 
 # API Endpoints for GrütteMaps
