@@ -471,6 +471,10 @@ def mapsRoute():
     start = request.args.get("start")
     end = request.args.get("end")
     transportation_mode = request.args.get("mode")
+    
+    if start == None or end == None:
+        abort(400)
+    
     if transportation_mode == None: transportation_mode = "driving-car"
     elif transportation_mode == "driving": transportation_mode = "driving-car"
     elif transportation_mode == "walking": transportation_mode = "foot-walking"
