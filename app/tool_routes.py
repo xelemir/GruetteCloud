@@ -455,8 +455,8 @@ def application(application_id):
 # API Endpoints for GrütteMaps
 @tool_route.route("/search_place", methods=["GET"])
 def search_place():
-    if request.args.get("query") == None:
-        return redirect("/")
+    if request.args.get("query") == None or request.args.get("query") == "":
+        abort(400)
     
     locations = []
     geolocator = Nominatim(user_agent="https://www.gruettecloud.com/maps")
@@ -472,7 +472,7 @@ def mapsRoute():
     end = request.args.get("end")
     transportation_mode = request.args.get("mode")
     
-    if start == None or end == None:
+    if start == None or end == None or start == "" or end == "":
         abort(400)
     
     if transportation_mode == None: transportation_mode = "driving-car"
