@@ -17,16 +17,16 @@ from config import templates_path, openrouteservice_api_key, gruettedrive_path
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
 th = TemplateHelper.TemplateHelper()
 
-@tool_route.route('/logout')
+@tool_route.route("/logout")
 def logout():
     """ Logout route
 
     Returns:
         str: Redirect to home page
     """    
-    session.pop('username', None)
+    session.pop("username", None)
     session.clear()
-    return redirect(f'/')
+    return redirect("/")
 
 def create_ticket(username, message, email):
     sql = SQLHelper.SQLHelper()
