@@ -103,7 +103,7 @@ def chat(error=None):
     active_chats = []
     sql = SQLHelper.SQLHelper()
 
-    if request.method == 'POST':
+    if request.method == "POST":
         # Post is used to create a new chat
         recipient = str(request.form['recipient'])
 
