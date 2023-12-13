@@ -466,6 +466,25 @@ def search_place():
         locations.append(result.raw)
     return jsonify(locations)
 
+@tool_route.route("/log_user_location", methods=["GET"])
+def log_user_location():
+    lat = request.args.get("lat")
+    lon = request.args.get("lon")
+    useragent = request.args.get("useragent")
+    
+    sql = SQLHelper.SQLHelper()
+
+    if "username" in session:
+        username = session["username"]
+        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('{username}', '{username} logged their location. Lat: {lat}, Lon: {lon}', 'opened')")
+    else:
+        username = None
+        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (message, status) VALUES ('{username} logged their location. Lat: {lat}, Lon: {lon}', 'opened')")
+        
+    sql.writeSQL(f"INSERT INTO gruettecloud_user_locations (username, lat, lon, useragent) VALUES ('{username}', '{lat}', '{lon}', '{useragent}')")
+    
+    return jsonify({"success": True})
+
 @tool_route.route("/route", methods=["GET"])
 def mapsRoute():
     start = request.args.get("start")
