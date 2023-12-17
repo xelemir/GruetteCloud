@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash
 from geopy.geocoders import Nominatim
 from threading import Thread
 
-from pythonHelper import SQLHelper, MailHelper, TemplateHelper, ApartmentHelper
+from pythonHelper import SQLHelper, MailHelper, TemplateHelper
 from config import templates_path, openrouteservice_api_key, gruettedrive_path
 
     
@@ -250,100 +250,6 @@ def send_support():
     async_mail.start()
     
     return render_template("support.html", menu=th.user(session), error="success")
-
-@tool_route.route("/apartment", methods=["GET", "POST"])
-def apartment():
-    sql = SQLHelper.SQLHelper()
-
-    if request.method == "GET":
-        items = sql.readSQL("SELECT * FROM gruttecloud_products")
-        items = ApartmentHelper.ApartmentHelper().format_items(items)
-        
-        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
-        is_admin = bool(user[0]["is_admin"])
-        
-        return render_template("apartment.html", menu=th.user(session), items=items, is_admin=is_admin)
-    
-    else:
-        total_price = 0
-        products = []
-        products_string = ""
-        for product, price in request.form.items():
-            price = int(price.replace("€", ""))
-            total_price += price
-            products.append({"name": product, "price": price})
-            products_string += f"""<tr style="width: 600px; max-width: 70vw; color: #000000;"><td style="width: 50%;">{product}</td><td style="width: 50%;">{price}€</td></tr>"""
-        
-        if len(products) >= 15 and "username" in session:
-            text = f"""
-                <div style="background-color: #FFFFFF; padding: 20px; border-radius: 30px; margin-bottom: 20px; margin-top: 20px;">
-                    <h2 style="color: #007AFF;">Budget Approved!</h2>
-                    <p style="text-wrap: balance">The budget has been approved for the following items:</p>
-                    <table style="width: 600px; max-width: 70vw; text-align: left; margin-left: auto; margin-right: auto;">
-                        <tr style="color: #007AFF;">
-                            <td style="width: 50%;">Item</td>
-                            <td style="width: 50%;">Price</td>
-                        </tr>
-                    </table>
-                    <hr style="width: 600px; max-width: 70vw; border: 1px solid #000000; border-radius: 5px; margin: 10px auto;">
-                    <table style="width: 600px; max-width: 70vw; text-align: left; margin-left: auto; margin-right: auto;">
-                        {products_string}
-                    </table>
-                    <hr style="width: 600px; max-width: 70vw; border: 1px solid #000000; border-radius: 5px; margin: 10px auto;">
-                    <table style="width: 600px; max-width: 70vw; text-align: left; margin-left: auto; margin-right: auto;">
-                        <tr style="width: 600px; max-width: 70vw; color: #000000;">
-                            <td style="width: 50%;">Total</td>
-                            <td id="total-price" style="width: 50%;">{total_price}€</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div style="background-color: #FFFFFF; padding: 20px; border-radius: 30px; margin-bottom: 20px;">
-                    <h2 style="color: #007AFF;">Happy Matchi</h2>
-                    <img src="https://www.gruettecloud.com/static/apartment/plushies.jpg" alt="GrütteChat UI" style="height: 300px; width: auto; margin-top: 10px; margin-bottom: 10px; border-radius: 30px;">
-                    <p style="text-wrap: balance">Matchi and his friends are happy you approved the budget! Now they can start their journey to their new home!</p>
-                </div>
-            """
-            mail = MailHelper.MailHelper()
-            sql = SQLHelper.SQLHelper()
-            user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
-            mail.send_email(user[0]["email"], user[0]["username"], "Budget Approved", text, user[0]["verification_code"])
-            
-            if user[0]["username"] != "jan":
-                jan = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = 'jan'")
-                mail.send_email(jan[0]["email"], jan[0]["username"], "Budget Approved", text, jan[0]["verification_code"])
-        
-        return render_template("apartment_approved.html", menu=th.user(session), products=products, total_price=total_price)
-
-@tool_route.route("/search_product/<path:url>", methods=["GET"])
-def search_product(url):
-    product = ApartmentHelper.ApartmentHelper().search_product(url)
-    return jsonify(product)
-
-@tool_route.route("/add_product", methods=["GET", "POST"])
-def add_product():
-    if "username" not in session:
-            return redirect("/")
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
-    if not bool(user[0]["is_admin"]):
-        return redirect("/")
-        
-    if request.method == "GET":
-        return render_template("apartment_add_items.html", menu=th.user(session))
-    
-    else:
-        name = request.form["product-name"]
-        price = request.form["product-price"]
-        url = request.form["product-url"]
-        image_src = request.form["product-image"]
-        description = request.form["product-description"]
-        quantity = request.form["product-quantity"]
-        category = request.form["category"]
-        
-        sql.writeSQL(f"INSERT INTO gruttecloud_products (name, price, url, image_src, description, quantity, category, approved) VALUES ('{name}', '{price}', '{url}', '{image_src}', '{description}', '{quantity}', '{category}', {False})")
-        
-        return redirect("/apartment#section2")
     
     
 @tool_route.route("/apply", methods=["GET", "POST"])
