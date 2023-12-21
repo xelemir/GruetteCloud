@@ -55,13 +55,14 @@
         <div id="result" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; gap: 20px; background-color: var(--background-tile-color); padding: 20px; width: 300px; border-radius: 30px;">
             <div>
                 <div id="toggleMultiMode" onclick="toggleMultiMode();" style="position: absolute; margin-left: -100px; margin-top: 0px; cursor: pointer; display: flex;">
-                    <span class="material-symbols-outlined">view_module</span>
+                    <span class="material-symbols-outlined">person_raised_hand</span>
                 </div>
                 <div id="toggleResults" onclick="toggleResultNew();" style="position: absolute; margin-left: 140px; margin-top: 0px; cursor: pointer; display: flex;">
                     <span class="material-symbols-outlined">refresh</span>
                 </div>
-                <h1 id="headline" style="color: var(--primary-color);">Votes</h1>
+                <h1 style="color: var(--primary-color);">Votes</h1>
             </div>
+            <div id="mode" style="display: none; margin-top: -30px;">Single</div>
             
             <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
                 <div style="font-weight: bold;">
@@ -128,8 +129,6 @@
         </div>
         {% endif %}
     </div>
-
-    <div id="mode" style="display: none;">single</div>
     
 	<div id="cookie-banner"></div>
     {% include "components/footer.html" %}
@@ -154,9 +153,9 @@
 
     function toggleMultiMode() {
         var mode = document.getElementById("mode").innerHTML;
-        if (mode == "single") {
-            document.getElementById("mode").innerHTML = "multi";
-            document.getElementById("headline").innerHTML = "Votes (Multi)";
+        if (mode == "Single") {
+            document.getElementById("mode").innerHTML = "(Multiple allowed)";
+            document.getElementById("mode").style.display = "flex";
             document.getElementById("a").innerHTML = {{ result["aMultiple"] }};
             document.getElementById("b").innerHTML = {{ result["bMultiple"] }};
             document.getElementById("c").innerHTML = {{ result["cMultiple"] }};
@@ -164,8 +163,8 @@
             document.getElementById("e").innerHTML = {{ result["eMultiple"] }};
             
         } else {
-            document.getElementById("mode").innerHTML = "single";
-            document.getElementById("headline").innerHTML = "Votes";
+            document.getElementById("mode").innerHTML = "Single";
+            document.getElementById("mode").style.display = "none";
             document.getElementById("a").innerHTML = {{ result["A"] }};
             document.getElementById("b").innerHTML = {{ result["B"] }};
             document.getElementById("c").innerHTML = {{ result["C"] }};
