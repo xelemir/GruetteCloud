@@ -54,11 +54,11 @@
         
         <div id="result" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; gap: 20px; background-color: var(--background-tile-color); padding: 20px; width: 300px; border-radius: 30px;">
             <div>
+                <div id="toggleMultiMode" onclick="toggleMultiMode();" style="position: absolute; margin-left: -100px; margin-top: 0px; cursor: pointer; display: flex;">
+                    <span class="material-symbols-outlined">view_module</span>
+                </div>
                 <div id="toggleResults" onclick="toggleResultNew();" style="position: absolute; margin-left: 140px; margin-top: 0px; cursor: pointer; display: flex;">
                     <span class="material-symbols-outlined">refresh</span>
-                </div>
-                <div id="toggleMultiMode" onclick="toggleMultiMode();" style="position: absolute; margin-right: 140px; margin-top: 0px; cursor: pointer; display: flex;">
-                    <span class="material-symbols-outlined">view_module</span>
                 </div>
                 <h1 id="headline" style="color: var(--primary-color);">Votes</h1>
             </div>
@@ -95,11 +95,11 @@
                     {{ result["D"] }}
                 </div>
             </div>
-            <div id="e" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
+            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
                 <div style="font-weight: bold;">
                     E
                 </div>
-                <div style="display: flex; flex-direction: column; width: 100%; justify-content: center; align-items: flex-end;">
+                <div id="e" style="display: flex; flex-direction: column; width: 100%; justify-content: center; align-items: flex-end;">
                     {{ result["E"] }}
                 </div>
             </div>
