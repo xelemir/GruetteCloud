@@ -481,6 +481,12 @@ def sbahn():
     counterE = 0
     counterOther = 0
     users_recorded = []
+    
+    counterMultipleA = 0
+    counterMultipleB = 0
+    counterMultipleC = 0
+    counterMultipleD = 0
+    counterMultipleE = 0
 
     # open the file
     with open(drive_dir, encoding="utf8") as html_file:
@@ -502,22 +508,27 @@ def sbahn():
         for i in range(len(usernames)):
             
             if comments[i].text.lower() == "a":
+                counterMultipleA += 1
                 if usernames[i].text not in users_recorded:
                     users_recorded.append(usernames[i].text)
                     counterA += 1
             elif comments[i].text.lower() == "b":
+                counterMultipleB += 1
                 if usernames[i].text not in users_recorded:
                     users_recorded.append(usernames[i].text)
                     counterB += 1
             elif comments[i].text.lower() == "c":
+                counterMultipleC += 1
                 if usernames[i].text not in users_recorded:
                     users_recorded.append(usernames[i].text)
                     counterC += 1
             elif comments[i].text.lower() == "d":
+                counterMultipleD += 1
                 if usernames[i].text not in users_recorded:
                     users_recorded.append(usernames[i].text)
                     counterD += 1
             elif comments[i].text.lower() == "e":
+                counterMultipleE += 1
                 if usernames[i].text not in users_recorded:
                     users_recorded.append(usernames[i].text)
                     counterE += 1
@@ -531,6 +542,11 @@ def sbahn():
             "C": counterC,
             "D": counterD,
             "E": counterE,
+            "aMultiple": counterMultipleA,
+            "bMultiple": counterMultipleB,
+            "cMultiple": counterMultipleC,
+            "dMultiple": counterMultipleD,
+            "eMultiple": counterMultipleE,
             "Other": counterOther,
             "Total": counterA + counterB + counterC + counterD + counterE + counterOther,
             "Created_at": datetime.datetime.fromtimestamp(os.path.getctime(drive_dir)).strftime("%d.%m. at %H:%M")

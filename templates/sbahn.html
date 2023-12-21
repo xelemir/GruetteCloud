@@ -57,11 +57,14 @@
                 <div id="toggleResults" onclick="toggleResultNew();" style="position: absolute; margin-left: 140px; margin-top: 0px; cursor: pointer; display: flex;">
                     <span class="material-symbols-outlined">refresh</span>
                 </div>
-                <h1 style="color: var(--primary-color);">Votes</h1>
+                <div id="toggleMultiMode" onclick="toggleMultiMode();" style="position: absolute; margin-right: 140px; margin-top: 0px; cursor: pointer; display: flex;">
+                    <span class="material-symbols-outlined">view_module</span>
+                </div>
+                <h1 id="headline" style="color: var(--primary-color);">Votes</h1>
             </div>
             
             <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="font-weight: bold;">
+                <div id="a" style="font-weight: bold;">
                     A
                 </div>
                 <div style="display: flex; flex-direction: column; width: 100%; justify-content: center; align-items: flex-end;">
@@ -69,7 +72,7 @@
                 </div>
             </div>
             <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="font-weight: bold;">
+                <div id="b" style="font-weight: bold;">
                     B
                 </div>
                 <div style="display: flex; flex-direction: column; width: 100%; justify-content: center; align-items: flex-end;">
@@ -77,14 +80,14 @@
                 </div>
             </div>
             <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="font-weight: bold;">
+                <div id="c" style="font-weight: bold;">
                     C
                 </div>
                 <div style="display: flex; flex-direction: column; width: 100%; justify-content: center; align-items: flex-end;">
                     {{ result["C"] }}
                 </div>
             </div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
+            <div id="d" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
                 <div style="font-weight: bold;">
                     D
                 </div>
@@ -92,7 +95,7 @@
                     {{ result["D"] }}
                 </div>
             </div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
+            <div id="e" style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
                 <div style="font-weight: bold;">
                     E
                 </div>
@@ -125,6 +128,8 @@
         </div>
         {% endif %}
     </div>
+
+    <div id="mode" style="display: none;">single</div>
     
 	<div id="cookie-banner"></div>
     {% include "components/footer.html" %}
@@ -144,6 +149,31 @@
             document.getElementById("toggleResults").style.display = "none";
             document.getElementById("toggleNew").style.display = "flex";
         }
+    }
+
+
+    function toggleMultiMode() {
+        var mode = document.getElementById("mode").innerHTML;
+        if (mode == "single") {
+            document.getElementById("mode").innerHTML = "multi";
+            document.getElementById("headline").innerHTML = "Votes (Multi)";
+            document.getElementById("a").innerHTML = {{ result["aMulti"] }};
+            document.getElementById("b").innerHTML = {{ result["bMulti"] }};
+            document.getElementById("c").innerHTML = {{ result["cMulti"] }};
+            document.getElementById("d").innerHTML = {{ result["dMulti"] }};
+            document.getElementById("e").innerHTML = {{ result["eMulti"] }};
+            
+        } else {
+            document.getElementById("mode").innerHTML = "single";
+            document.getElementById("headline").innerHTML = "Votes";
+            document.getElementById("a").innerHTML = {{ result["A"] }};
+            document.getElementById("b").innerHTML = {{ result["B"] }};
+            document.getElementById("c").innerHTML = {{ result["C"] }};
+            document.getElementById("d").innerHTML = {{ result["D"] }};
+            document.getElementById("e").innerHTML = {{ result["E"] }};
+            
+        }
+
     }
 </script>
 
