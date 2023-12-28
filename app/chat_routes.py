@@ -124,7 +124,7 @@ def delete_message(message_id):
     
     return redirect(f"/chat/{get_message[0]['username_receive']}")
 
-@chat_route.route('/chat/<recipient>', methods=['GET', 'POST'])
+@chat_route.route("/chat/<recipient>", methods=['GET', 'POST'])
 def chat_with(recipient):
     """ Route to chat with a user
 
