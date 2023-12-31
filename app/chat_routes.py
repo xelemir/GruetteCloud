@@ -136,12 +136,12 @@ def chat_with(recipient):
     """
 
     if "username" not in session:
-        return redirect(f"/")
+        return redirect("/")
     
     recipient = str(recipient).lower()
 
     sql = SQLHelper.SQLHelper()
-    username = str(session['username'])
+    username = str(session["username"])
     messages_list = []
 
     # Check if the recipient exists
