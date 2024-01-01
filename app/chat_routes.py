@@ -147,7 +147,7 @@ def chat_with(recipient):
     # Check if the recipient exists
     search_recipient = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
     if search_recipient == []:
-        return redirect(f'/chat')
+        return redirect("/chat")
     
     # Get the user from the database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
