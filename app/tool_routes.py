@@ -9,7 +9,6 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from geopy.geocoders import Nominatim
 from threading import Thread
-from bs4 import BeautifulSoup
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
 from config import templates_path, openrouteservice_api_key, gruettedrive_path

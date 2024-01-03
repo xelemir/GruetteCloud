@@ -152,7 +152,7 @@ def chat_with(recipient):
     # Get the user from the database
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
     if user == []:
-        return redirect(f'/chat')
+        return redirect("/chat")
     
     blocked = sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{recipient}' OR username = '{recipient}' AND username_blocked = '{session['username']}'")
     if blocked != []:
