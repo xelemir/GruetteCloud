@@ -47,7 +47,16 @@
         {% if status_message["link"] %} <a href="{{ status_message["link"] }}" style="text-decoration: none; color: var(--{{ status_message["color"] }});">{% endif %}
         <div class="wrapping-tile" style="text-align: center; padding: 20px; border-radius: 30px; margin: 0;">
             <h2 style="color: var(--{{ status_message["color"] }}); margin-bottom: 20px;">
+                {% if status_message["decorator"] == "warning" %}
+                    <span class="material-symbols-outlined align-icons-center" style="color: var(--{{ status_message["color"] }}); font-size: 1.2em; margin-right: 10px;">warning</span>
+                {% endif %}
+
                 {{ status_message["subject"] }}
+
+                {% if status_message["decorator"] == "warning" %}
+                    <span class="material-symbols-outlined align-icons-center" style="color: var(--{{ status_message["color"] }}); font-size: 1.2em; margin-left: 10px;">warning</span>
+                {% endif %}
+                
                 {% if status_message["decorator"] == "new" %}
                     <span style="background-color: var(--red); color: var(--white-color); padding: 3px 11px; border-radius: 30px; font-size: 0.6em; margin-left: 10px;">
                         NEW
