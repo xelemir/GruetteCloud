@@ -116,7 +116,7 @@ def chat(error=None):
 
         if user_exists == []:
             # User does not exist
-            return redirect(f'/chat')
+            return redirect("/chat")
 
         else:
             # User exists
