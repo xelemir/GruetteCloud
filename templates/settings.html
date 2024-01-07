@@ -284,12 +284,12 @@
                                 </div>
                             </div>
                         {% else %}
-                            <p>Two-Factor Authentication (2FA) is a feature that adds an extra layer of security to your GrütteID.</p>
+                            <p style="text-wrap: balance;">Two-Factor Authentication (2FA) is a feature that adds an extra layer of security to your GrütteID.</p>
                         {% endif %}
                     </div>
                     <div class="box right">
                         {% if is_two_fa_enabled %}
-                            <p>You have enabled 2FA.</p><br><p>Please scan this code with your authenticator app.</p>If you want to disable it, click the button below. You can also generate a new code.</p>
+                            <p style="text-wrap: balance;">You have enabled 2FA.</p><br><p style="text-wrap: balance;">Please scan this code with your authenticator app. If you want to disable it, click the button below. You can also generate a new code.</p>
                             <div style="display: flex; flex-direction: inline-flex; align-items: center; justify-content: center; margin-top: 20px;">
                                 <a href="/2fa/refresh" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">refresh</span>Refresh</a>
                                 <a href="/2fa/disable" class="settings-button" style="background-color: var(--red); margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">remove_moderator</span>Disable</a>
@@ -328,6 +328,8 @@
 
     <div id="cookie-banner"></div>
     {% include "components/footer.html" %}
+    App Version: {{ menu["version"] }}
+
 </body>
 </html>
 
