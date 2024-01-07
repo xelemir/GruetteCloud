@@ -391,6 +391,7 @@ def delete_account():
         return redirect(url_for("Settings.settings", error="not_matching_email"))
     else:
         sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
+        sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{str(username_session)}' OR username_receive = '{str(username_session)}'")
         session.pop('username', None)
         return redirect(f'/')
 

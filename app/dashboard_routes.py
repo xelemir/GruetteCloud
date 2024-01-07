@@ -199,6 +199,7 @@ def delete_user(username):
     sql = SQLHelper.SQLHelper()
 
     sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{username}'")
+    sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")
 
     return redirect(f'/dashboard')
 
