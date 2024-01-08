@@ -180,7 +180,7 @@ def delete_status_message():
 
     sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
 
-    return redirect(f'/dashboard')
+    return redirect("/dashboard")
 
 @dashboard_route.route('/dashboard/deleteuser/<username>')
 def delete_user(username):
