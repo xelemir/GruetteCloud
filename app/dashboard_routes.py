@@ -163,7 +163,7 @@ def create_status_message():
     sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
     sql.writeSQL(f"INSERT INTO gruttechat_platform_messages (subject, content, color, link, decorator) VALUES ('{subject}', '{content}', '{color}', '{link}', '{decorator}')")
 
-    return redirect(f'/dashboard')
+    return redirect("/dashboard")
 
 @dashboard_route.route('/dashboard/deletestatusmessage')
 def delete_status_message():
