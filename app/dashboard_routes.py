@@ -149,7 +149,7 @@ def create_status_message():
         HTML: Redirect to the dashboard page
     """
 
-    if 'username' not in session or session['username'] not in admin_users:
+    if "username" not in session or session['username'] not in admin_users:
         return redirect(f'/')
     
     sql = SQLHelper.SQLHelper()
