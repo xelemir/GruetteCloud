@@ -1,0 +1,18 @@
+<div id="error-fs" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--red); color: var(--white-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
+    <h2 id="error-fs-header" style="margin-bottom: 30px;">Error</h2>
+    <p id="error-fs-content"></p>
+</div>
+
+<script>
+    function errorFs(errorHeader, errorContent) {
+        var errorFs = document.getElementById("error-fs");
+    
+        errorFs.style.display = "flex";
+        document.getElementById("error-fs-header").innerHTML = errorHeader;
+        document.getElementById("error-fs-content").innerHTML = errorContent;
+
+        setTimeout(function() {
+            errorFs.style.display = "none";
+        }, 3000);
+    }
+</script>

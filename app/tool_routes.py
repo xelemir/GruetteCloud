@@ -11,7 +11,7 @@ from geopy.geocoders import Nominatim
 from threading import Thread
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
-from config import templates_path, openrouteservice_api_key, gruettedrive_path
+from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail
 
     
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
@@ -463,3 +463,97 @@ def maps():
         return render_template("mapsMobile.html", menu=th.user(session))
     else:
         return render_template("maps.html", menu=th.user(session))
+    
+    
+@tool_route.route("/zuffenhausen", methods=["GET", "POST"])
+def zuffenhausen():
+    if request.method == "GET":
+        if request.args.get("id") == None:
+            return render_template("zuffenhausen.html", menu=th.user(session), mode="form")
+        else:
+            application = SQLHelper.SQLHelper().readSQL(f"SELECT * FROM zuffenhausen_visits WHERE application_id = '{request.args.get('id')}'")
+            if application == []: abort(500)
+                        
+            visitorsToString = ""
+            for visitor in [application[0]["visitor1"], application[0]["visitor2"], application[0]["visitor3"], application[0]["visitor4"], application[0]["visitor5"], application[0]["visitor6"], application[0]["visitor7"], application[0]["visitor8"]]:
+                if visitor != "None":
+                    visitorsToString += f"{visitor}, "
+                    
+            visitorsToString = visitorsToString[:-2]
+            
+            date = datetime.datetime.strptime(str(application[0]["date"]), "%Y-%m-%d %H:%M:%S")
+            date = date.strftime("%d.%m.%Y %H:%M")
+            
+            return render_template("zuffenhausen.html", menu=th.user(session), mode="success", application_id=application[0]["application_id"], date=date, visitors=visitorsToString, reasons=application[0]["reasons"], status=application[0]["status"], note=application[0]["note"])
+            
+    else:
+        date = request.form["date"]
+        visitor1 = request.form["visitor1"]
+        visitor2 = request.form["visitor2"] if "visitor2" in request.form else None
+        visitor3 = request.form["visitor3"] if "visitor3" in request.form else None
+        visitor4 = request.form["visitor4"] if "visitor4" in request.form else None
+        visitor5 = request.form["visitor5"] if "visitor5" in request.form else None
+        visitor6 = request.form["visitor6"] if "visitor6" in request.form else None
+        visitor7 = request.form["visitor7"] if "visitor7" in request.form else None
+        visitor8 = request.form["visitor8"] if "visitor8" in request.form else None
+        reasons = request.form["reasons"]
+        email = request.form["email"]
+        
+        date = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M")
+        
+        visitorsToString = ""
+        for visitor in [visitor2, visitor3, visitor4, visitor5, visitor6, visitor7, visitor8]:
+            if visitor != None:
+                visitorsToString += f"{visitor}, "
+                
+        if visitorsToString != "": visitorsToString = visitorsToString[:-2]
+        
+        accompaniedBy = f"{visitor1} will be accompanied by {visitorsToString}." if visitorsToString != "" else f"{visitor1} will come alone."
+        application_id = secrets.token_hex(4)
+
+        Thread(target=MailHelper.MailHelper().send_email, args=("gruttefien@gmail.com", "jan", f"{visitor1} wants to visit you on {date}", f"{visitor1} wants to visit you on {date.strftime('%d.%m.%Y %H:%M')}. They are coming for the following reasons: {reasons}. {accompaniedBy}")).start()
+        Thread(target=MailHelper.MailHelper().send_email, args=(email, visitor1, f"Your visit to Zuffenhausen on {date}", f"Your visit to Zuffenhausen on {date.strftime('%d.%m.%Y %H:%M')} has been requested. You will receive an email once your visit has been approved. You can check the status of your request using the link below.<p><a href='https://www.gruettecloud.com/zuffenhausen?id={application_id}' style='text-decoration: none; color: #0A84FF;'>https://www.gruettecloud.com/zuffenhausen?id={application_id}</a></p>", "None", "https://www.gruettecloud.com/static/gruettecloud_logo.png", True)).start()
+        
+        SQLHelper.SQLHelper().writeSQL(f"INSERT INTO zuffenhausen_visits (date, visitor1, visitor2, visitor3, visitor4, visitor5, visitor6, visitor7, visitor8, reasons, status, application_id, email) VALUES ('{date}', '{visitor1}', '{visitor2}', '{visitor3}', '{visitor4}', '{visitor5}', '{visitor6}', '{visitor7}', '{visitor8}', '{reasons}', 'pending', '{application_id}', '{email}')")
+        SQLHelper.SQLHelper().writeSQL(f"INSERT INTO gruttecloud_tickets (message, status, assigned_to) VALUES ('#Z#{ application_id }# {visitor1} wants to visit you on {date.strftime('%d.%m.%Y %H:%M')}. They are coming for the following reasons: {reasons}. {accompaniedBy}', 'in_progress', 'jan')")
+
+        return redirect(f"/zuffenhausen?id={application_id}")
+    
+@tool_route.route("/zuffenhausen/modify", methods=["GET"])
+def zuffenhausen_modify():
+    if "type" not in request.args or "id" not in request.args: abort(400)
+        
+    if request.args.get("type") == "delete":
+        SQLHelper.SQLHelper().writeSQL(f"DELETE FROM zuffenhausen_visits WHERE application_id = '{request.args.get('id')}'")
+        return render_template("zuffenhausen.html", menu=th.user(session), mode="deleted")
+    
+    if request.args.get("type") == "approve":
+        user = SQLHelper.SQLHelper().readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+        if user[0]["is_admin"] == False: abort(403)
+        ticket_message =SQLHelper.SQLHelper().readSQL(f"SELECT message FROM gruttecloud_tickets WHERE id = '{request.args.get('id')}'")
+        application_id = ticket_message[0]["message"].split("#")[2]
+        SQLHelper.SQLHelper().writeSQL(f"UPDATE zuffenhausen_visits SET status = 'approved' WHERE application_id = '{application_id}'")
+        SQLHelper.SQLHelper().writeSQL(f"UPDATE gruttecloud_tickets SET message = '#Z#{application_id}# Visit approved.' WHERE id = '{request.args.get('id')}'")
+        visit = SQLHelper.SQLHelper().readSQL(f"SELECT * FROM zuffenhausen_visits WHERE application_id = '{application_id}'")[0]
+        Thread(target=MailHelper.MailHelper().send_email, args=(visit["email"], visit["visitor1"], f"Your visit to Zuffenhausen on {visit['date']}", f"Your visit to Zuffenhausen on {visit['date']} has been approved. You can check the status of your request using the link below.<p><a href='https://www.gruettecloud.com/zuffenhausen?id={application_id}' style='text-decoration: none; color: #0A84FF;'>https://www.gruettecloud.com/zuffenhausen?id={application_id}</a></p>", "None", "https://www.gruettecloud.com/static/gruettecloud_logo.png", True)).start()
+        return redirect("/dashboard")
+    
+    if request.args.get("type") == "deny":
+        user = SQLHelper.SQLHelper().readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+        if user[0]["is_admin"] == False: abort(403)
+        ticket_message =SQLHelper.SQLHelper().readSQL(f"SELECT message FROM gruttecloud_tickets WHERE id = '{request.args.get('id')}'")
+        application_id = ticket_message[0]["message"].split("#")[2]
+        SQLHelper.SQLHelper().writeSQL(f"UPDATE zuffenhausen_visits SET status = 'denied' WHERE application_id = '{application_id}'")
+        SQLHelper.SQLHelper().writeSQL(f"UPDATE gruttecloud_tickets SET message = '#Z#{application_id}# Visit denied.' WHERE id = '{request.args.get('id')}'")
+        visit = SQLHelper.SQLHelper().readSQL(f"SELECT * FROM zuffenhausen_visits WHERE application_id = '{application_id}'")[0]
+        Thread(target=MailHelper.MailHelper().send_email, args=(visit["email"], visit["visitor1"], f"Your visit to Zuffenhausen on {visit['date']}", f"Your visit to Zuffenhausen on {visit['date']} has been denied. You can check the status of your request using the link below.<p><a href='https://www.gruettecloud.com/zuffenhausen?id={application_id}' style='text-decoration: none; color: #0A84FF;'>https://www.gruettecloud.com/zuffenhausen?id={application_id}</a></p>", "None", "https://www.gruettecloud.com/static/gruettecloud_logo.png", True)).start()
+        return redirect("/dashboard")
+        
+    if request.args.get("type") == "note":
+        if "note" not in request.args: abort(400)
+        user = SQLHelper.SQLHelper().readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+        if user[0]["is_admin"] == False: abort(403)
+        ticket_message =SQLHelper.SQLHelper().readSQL(f"SELECT message FROM gruttecloud_tickets WHERE id = '{request.args.get('id')}'")
+        application_id = ticket_message[0]["message"].split("#")[2]
+        SQLHelper.SQLHelper().writeSQL(f"UPDATE zuffenhausen_visits SET note = '{request.args.get('note')}' WHERE application_id = '{application_id}'")
+        return redirect("/dashboard")
