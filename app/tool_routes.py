@@ -520,9 +520,12 @@ def zuffenhausen():
         Thread(target=MailHelper.MailHelper().send_email, args=(email_jan, "jan", f"{visitor1} wants to visit on {date.strftime('%d.%m.%Y %H:%M')}", f"{visitor1} wants to visit you on {date.strftime('%d.%m.%Y %H:%M')}. They are coming for the following reasons: {reasons}. {accompaniedBy}.<br><br><a href='https://www.gruettecloud.com/zuffenhausen/modify?type=approve&id={ticket_id_with_application}' style='text-decoration: none; color: #0A84FF;'>Approve</a> | <a href='https://www.gruettecloud.com/zuffenhausen/modify?type=deny&id={ticket_id_with_application}' style='text-decoration: none; color: #0A84FF;'>Deny</a><br><br>", "None", "https://www.gruettecloud.com/static/gruettecloud_logo.png", True)).start()
         Thread(target=MailHelper.MailHelper().send_email, args=(email, visitor1, f"Your visit to Jan on {date.strftime('%d.%m.%Y %H:%M')}", f"Your visit to Zuffenhausen on {date.strftime('%d.%m.%Y %H:%M')} has been requested. You will receive an email once your visit request has been approved or declined. You can always check the status of your request using the link below.<p><a href='https://www.gruettecloud.com/zuffenhausen?id={application_id}' style='text-decoration: none; color: #0A84FF;'>https://www.gruettecloud.com/zuffenhausen?id={application_id}</a></p>", "None", "https://www.gruettecloud.com/static/gruettecloud_logo.png", True)).start()
         
-
         return redirect(f"/zuffenhausen?id={application_id}")
-    
+
+@tool_route.route("/visit", methods=["GET"])
+def visit():
+    return redirect("/zuffenhausen")
+
 @tool_route.route("/zuffenhausen/modify", methods=["GET"])
 def zuffenhausen_modify():
     if "type" not in request.args or "id" not in request.args: abort(400)
