@@ -528,7 +528,8 @@ def visit():
 
 @tool_route.route("/zuffenhausen/modify", methods=["GET"])
 def zuffenhausen_modify():
-    if "type" not in request.args or "id" not in request.args: abort(400)
+    if "type" not in request.args or "id" not in request.args:
+        abort(404)
         
     if request.args.get("type") == "delete":
         SQLHelper.SQLHelper().writeSQL(f"DELETE FROM zuffenhausen_visits WHERE application_id = '{request.args.get('id')}'")
