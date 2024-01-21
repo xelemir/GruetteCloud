@@ -150,7 +150,7 @@ def create_status_message():
     """
 
     if "username" not in session or session["username"] not in admin_users:
-        return redirect(f'/')
+        return redirect("/")
     
     sql = SQLHelper.SQLHelper()
 
