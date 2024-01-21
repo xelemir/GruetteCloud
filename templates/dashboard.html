@@ -414,8 +414,29 @@
                                                 <div class="ticket-action-button" style="background-color: var(--green);" onclick="closeTicket('{{ ticket["id"] }}')">
                                                     <span class="material-symbols-outlined">done_all</span><p>Close Ticket</p>
                                                 </div>
+                                                {% if "#Z#" in ticket["message"] %}
+                                                    <a href="/zuffenhausen/modify?type=approve&id={{ ticket["id"] }}" class="ticket-action-button" style="background-color: var(--green);">
+                                                        <span class="material-symbols-outlined" style="color: var(--white-color);">event_available</span><p>Approve</p>
+                                                    </a>
+                                                    <a href="/zuffenhausen/modify?type=deny&id={{ ticket["id"] }}" class="ticket-action-button" style="background-color: var(--red);">
+                                                        <span class="material-symbols-outlined" style="color: var(--white-color);">event_busy</span><p>Deny</p>
+                                                    </a>
+                                                {% endif %}
                                             {% endif %}
                                         </div>
+                                        {% if "#Z#" in ticket["message"] %}
+                                        <div style="width: 100%; overflow: auto; white-space: wrap; text-overflow: ellipsis; display: flex; flex-direction: row; justify-content: center; gap: 10px; padding: 0px; padding-bottom: 0px;">
+                                            <input type="text" id="zuffenhausenNote" name="zuffenhausenNote" class="login-input" autocomplete="off" placeholder="Add note" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-top: 10px; height: 40px;">
+                                            <span class="material-symbols-outlined" style="color: var(--white-color); background-color: var(--primary-color); border-radius: 50%; padding: 10px; margin-top: 10px; cursor: pointer;" onclick="addZuffenhausenNote('{{ ticket["id"] }}')">send</span>
+                                        </div>
+                                        <script>
+                                            function addZuffenhausenNote(ticket_id) {
+                                                // Send get request to /zuffenhausen/modify?type=note&id={{ ticket["id"] }}&note={{ note }}
+                                                var note = document.getElementById("zuffenhausenNote").value;
+                                                window.location.href = "/zuffenhausen/modify?type=note&id=" + ticket_id + "&note=" + note;
+                                            }
+                                        </script>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
