@@ -17,8 +17,8 @@
 ---
 
 <p align="center">
-    GrütteCloud is web app that offers multiple services, such as a chat and a cloud storage. It is built using Python, Flask, HTML, CSS and JavaScript.<br>
-    You can check it out at <a href="https://www.gruettecloud.com/">www.gruettecloud.com</a>
+GrütteCloud is a mulitfunctional       web app. Built using Python's Flask, JavaScript, HTML and CSS, this app provides a chat service, a cloud storage service and a route planner.<br>
+Learn more at <a href="https://www.gruettecloud.com/">www.gruettecloud.com</a>
 </p>
 
 ## 📝 Table of Contents
@@ -30,8 +30,8 @@
 
 ## 🧐 About <a name = "about"></a>
 
-GrütteCloud is web app that offers multiple services: GrütteChat is an encrypted chat that allows you to chat with your friends. You can even chat with an AI chat bot with customizable personalities, based on OpenAI's GPT-3.5 API. GrütteCloud also offers a cloud storage, GrütteDrive, where you can upload files and share them via links with non GrütteCloud users. All of these services can be used after creating your personal GrütteID. Your GrütteID even supports Two-Factor-Authenticationfor extra security. GrütteCloud is built using Python, Flask, HTML, CSS and JavaScript.
-You can learn more about GrütteCloud's services at [www.gruettecloud.com/discover](https://www.gruettecloud.com/discover)
+GrütteCloud is a versatile web application featuring an array of services. Explore GrütteChat, an encrypted messaging platform that allows dynamic conversations, including interactions with an AI chat bot powered by OpenAI’s GPT-3.5 API. Leverage GrütteDrive for secure cloud storage, enabling file uploads and effortless sharing through links with non-GrütteCloud users. Need directions? GrütteMaps, a robust route planner, offers turn-by-turn guidance for various transport modes, from driving to walking and even wheelchair accessibility. Developed using Python, Flask, HTML, CSS, and JavaScript, GrütteCloud ensures a seamless user experience. Discover more at
+[www.gruettecloud.com/discover](https://www.gruettecloud.com/discover).
 
 ## 🚀 ToDo <a name = "todo"></a>
 
