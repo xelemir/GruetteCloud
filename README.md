@@ -37,7 +37,9 @@ GrütteCloud is a versatile web application featuring an array of services. Expl
 
 - Use Flasks' socketio to update the chat in real time, instead of manually polling the server every 5 seconds.
 - Remove difficult to maintain CSS from html tags and update stylesheet with better classes.
-- Host Google material icons locally.
+- Enhance privacy for images in GrütteChat.
+- Improve UI for GrütteMaps on mobile devices
+- Add support for public transport on GrütteMaps
 
 ## ✍️ Authors <a name = "authors"></a>
 
