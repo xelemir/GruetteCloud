@@ -28,7 +28,7 @@ def settings(error=None):
         str: The template to render
     """    
     if "username" not in session:
-        return redirect(f"/")
+        return redirect("/")
 
     error = request.args.get("error")
     if error == "error":
