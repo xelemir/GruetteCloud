@@ -15,13 +15,31 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-bottom: 40px;
+            padding-bottom: 60px;
             padding-top: 40px;
         }
 
         .application-form {
             display: flex;
             flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .desktop-only-flex {
+                display: flex;
+            }
+            .mobile-only-flex {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-only-flex {
+                display: none;
+            }
+            .mobile-only-flex {
+                display: flex;
+            }
         }
 
         input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select, textarea {
@@ -110,7 +128,7 @@
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: row; align-items: center; margin-top: 30px; justify-content: center; width: 100%; max-width: 300px; background-color: var(--secondary-color); border-radius: 50px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
+        <div class="desktop-only-flex" style="flex-direction: row; align-items: center; margin-top: 30px; justify-content: center; width: 100%; max-width: 300px; background-color: var(--secondary-color); border-radius: 50px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
             <label for="upload-receipt" id="upload-receipt-label" style="width: 50%; cursor: pointer; color: var(--text-color); padding: 13px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
                 <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: var(--primary-color);">document_scanner</span>
                 <p style="font-size: 15px;">Scan Receipt</p>
@@ -121,10 +139,32 @@
                 <p style="font-size: 15px;">Other Expense</p>
             </div>
         </div>
+
+        <div class="mobile-only-flex" style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px;">
+            <div id="mobile-buttons" class="animate__animated animate__slideInRight" style="display: none;">
+                <label for="upload-receipt" id="upload-receipt-label" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--primary-color);">
+                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">document_scanner</span>
+                    <p style="font-size: 16px; margin: 0; color: #fff;">Scan Receipt</p>
+                </label>
+                <input id="upload-receipt" type="file" onchange="uploadReceipt(this.files)" style="display: none;">
+                <div onclick="openMenu()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; background-color: var(--primary-color); margin-top: 10px;">
+                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">request_quote</span>
+                    <p style="font-size: 16px; margin: 0; color: #fff;">Other Expense</p>
+                </div>
+            </div>
+            <div style="width: 100%; display: flex; align-items: right; justify-content: right; flex-direction: row;">
+                <div onclick="toggleMobileButton()" style="cursor: pointer; color: var(--text-color); border-radius: 50px; display: flex; padding: 10px; align-items: center; justify-content: center; flex-direction: row; background-color: var(--primary-color); margin-top: 10px;">
+                    <span id="toggle-mobile-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">add</span>
+                </div>
+            </div>
+        </div>
+        
+        
+
         
         {% if receipts_current_month %}
             <div style="width: 300px; max-width: 80vw;">
-                <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">Recent Transactions</p>
+                <p style="margin-top: 35px; margin-bottom: 15px; text-align: center; font-weight: bold;">Transaction Overview</p>
             </div>
             <div style="width: 300px; max-width: 80vw;">
                 {% for receipt in receipts_current_month %}
@@ -150,7 +190,7 @@
 	<div id="cookie-banner"></div>
 
     <div id="manualExpenseMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
-        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeErrorFS()">
+        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeMenu()">
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 style="margin-bottom: 30px;">Add Expense</h2>
@@ -172,10 +212,12 @@
     </div>
     
     <script>
-        function closeErrorFS() {
+        function closeMenu() {
             document.getElementById('manualExpenseMenu').style.display = 'none';
+            document.getElementById('overview').style.display = 'flex';
         }
         function openMenu() {
+            document.getElementById('overview').style.display = 'none';
             document.getElementById('manualExpenseMenu').style.display = 'flex';
         }
         function addExpense() {
@@ -201,6 +243,17 @@
                 }
             };
             xhr.send(JSON.stringify({"title": title, "price": price, "payment_method": payment_method}));
+        }
+
+        function toggleMobileButton() {
+            var mobileButtons = document.getElementById('mobile-buttons');
+            if (mobileButtons.style.display === 'none') {
+                mobileButtons.style.display = 'block';
+                document.getElementById('toggle-mobile-button').innerHTML = 'close';
+            } else {
+                mobileButtons.style.display = 'none';
+                document.getElementById('toggle-mobile-button').innerHTML = 'add';
+            }
         }
     </script>
     
