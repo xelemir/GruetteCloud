@@ -11,7 +11,7 @@ th = TemplateHelper.TemplateHelper()
     
 expense_tracker_route = Blueprint("Expense Tracker", "Expense Tracker", template_folder=templates_path)
 
-@expense_tracker_route.route("/spending")
+@expense_tracker_route.route("/finance")
 def expense_tracker():
     if "username" not in session:
         return redirect("/")
