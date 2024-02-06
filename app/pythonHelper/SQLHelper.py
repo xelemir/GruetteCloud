@@ -13,11 +13,12 @@ class SQLHelper:
             host_local = socket.gethostname()
             if host_local in ["gruttechat-webserver", "dauntless-1"]:
                 connection = MySQLdb.Connection(**gcpConfig)
-            elif "mac" in host_local.lower() or "mbp" in host_local.lower():
+            elif "mac" in host_local.lower() or "mbp" in host_local.lower() or "uni-stuttgart" in host_local.lower():
                 connection = MySQLdb.Connection(**macBookProConfig)
             else:
                 connection = MySQLdb.Connection(**jamailliaConfig)
-            self.connection = connection            
+            self.connection = connection    
+            
             
         except Exception as e:
             logging.error(f"The error '{e}' occurred")

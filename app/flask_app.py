@@ -14,6 +14,7 @@ from premium_routes import premium_route
 from drive_routes import drive_route
 from dashboard_routes import dashboard_route
 from tool_routes import tool_route
+from expense_tracker_routes import expense_tracker_route
 
 
 app = Flask("GrütteCloud")
@@ -26,6 +27,7 @@ app.register_blueprint(premium_route)
 app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
+app.register_blueprint(expense_tracker_route)
 
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()

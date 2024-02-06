@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<title>Expense Tracker</title>
+	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <style>
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 40px;
+        }
+
+        .application-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select, textarea {
+            width: 100%;
+            margin: 0;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            padding-left: 20px;
+            background-color: transparent;
+            border: 2px solid var(--box-shadow-color);
+            color: var(--text-color);
+            padding: 10px;
+            resize: none;
+        }
+
+        .pie-chart {
+            background:
+                radial-gradient(
+                    circle closest-side,
+                    var(--background-color) 70%,
+                    transparent 60%,
+                    transparent 100%,
+                    var(--background-color) 0
+                ),
+                conic-gradient(
+                    {% if percentage_spent <= 25 %}
+                    var(--green) 0,
+                    var(--green) {{ percentage_spent }}%,
+                    var(--secondary-color) 0,
+                    var(--secondary-color) 100%
+                    {% elif percentage_spent <= 50 %}
+                    var(--green) 0,
+                    var(--green) 25%,
+                    var(--yellow) {{ percentage_spent }}%,
+                    var(--secondary-color) 0,
+                    var(--secondary-color) 100%
+                    {% elif percentage_spent <= 75 %}
+                    var(--green) 0,
+                    var(--green) 25%,
+                    var(--yellow) 50%,
+                    var(--yellow) {{ percentage_spent }}%,
+                    var(--secondary-color) 0,
+                    var(--secondary-color) 100%
+                    {% else %}
+                    var(--green) 0,
+                    var(--green) 25%,
+                    var(--yellow) 50%,
+                    var(--red) 75%,
+                    var(--red) {{ percentage_spent }}%,
+                    var(--secondary-color) 0,
+                    var(--secondary-color) 100%
+                    {% endif %}
+                );
+            position: relative;
+            width: 250px;
+            min-height: 250px;
+            margin: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="dark-mode-toggle">
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        
+
+		<div class="centered-content">
+            <a href="/" class="logo" title="Home">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GruetteCloud" style="height: 40px; width: 40px; margin-right: 10px;">
+            </a>
+        </div>
+        {% include "components/nav-element.html" %}
+	</div>
+
+    <div class="content">
+        <h1 style="margin-bottom: 20px; margin-top: 30px; color: var(--primary-color);"></h1>
+
+        <div class="pie-chart">
+            <div style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
+                <div style="font-size: 12px;">I have spent</div>
+                <div style="font-size: 30px; color: var(--text-color); font-weight: bold;">{{ amount_spent }} €</div>
+                <div style="font-size: 12px;">this month.</div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: row; align-items: center; margin-top: 30px; justify-content: center; width: 100%; max-width: 300px; background-color: var(--secondary-color); border-radius: 50px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
+            <label for="upload-receipt" id="upload-receipt-label" style="width: 50%; cursor: pointer; color: var(--text-color); padding: 13px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+                <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: var(--primary-color);">document_scanner</span>
+                <p style="font-size: 15px;">Scan Receipt</p>
+            </label>
+            <input id="upload-receipt" type="file" onchange="uploadReceipt(this.files)" style="display: none;">
+            <div onclick="openMenu()" style="width: 50%; cursor: pointer; color: var(--text-color); padding: 13px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row;">
+                <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: var(--primary-color);">request_quote</span>
+                <p style="font-size: 15px;">Other Expense</p>
+            </div>
+        </div>
+        
+        <div style="width: 300px; max-width: 80vw;">
+            <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">Recent Transactions</p>
+        </div>
+        <div style="width: 300px; max-width: 80vw;">
+            {% for receipt in receipts_current_month %}
+                <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid var(--box-shadow-color); cursor: pointer; color: var(--text-color); text-decoration: none;">
+                    <p style="flex: 1; margin: 0; text-align: left; display: flex;">{{ receipt["merchant_name"] }}</p>
+                    <p style="margin: 0; display: flex;">{{ receipt["total"] }} €</p>
+                </a>
+            {% endfor %}
+        </div>
+        
+    </div>
+	<div id="cookie-banner"></div>
+
+    <div id="manualExpenseMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
+
+        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeErrorFS()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    
+        <h2 style="margin-bottom: 30px;">Add Expense</h2>
+        <input type="text" id="title" style="margin: 0; display: flex;" placeholder="Product name">
+        <input type="text" id="price" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Price">
+        <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addExpense()">Add Expense</button>
+    </div>
+    
+    <script>
+        function closeErrorFS() {
+            document.getElementById('manualExpenseMenu').style.display = 'none';
+        }
+        function openMenu() {
+            document.getElementById('manualExpenseMenu').style.display = 'flex';
+        }
+        function addExpense() {
+            var title = document.getElementById("title").value;
+            var price = document.getElementById("price").value;
+
+            if (title == "" || price == "") {
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/create_expense", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        window.location.href = "/spending";
+                    } else {
+                        console.error("Request failed with status: " + xhr.status);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({"title": title, "price": price}));
+        }
+    </script>
+    
+</body>
+</html>
+
+<script>
+    function uploadReceipt(files) {
+        const file = files[0];
+        const formData = new FormData();
+        formData.append("receipt", file);
+        fetch("/upload-receipt", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                window.location.href = "/receipt/" + data.receipt_id;
+            } else {
+                showError(data.message);
+            }
+        })
+        .catch(error => {
+            showError("An error occurred while uploading the receipt");
+        });
+    }
+</script>
+
+<script src="https://www.gruettecloud.com/static/cookies.js"></script>
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>
