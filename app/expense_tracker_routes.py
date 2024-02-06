@@ -72,7 +72,7 @@ def upload_receipt():
         receipt_id = secrets.token_hex(8)
         
         sql = SQLHelper.SQLHelper()
-        sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id) VALUES ('{str(session['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}')")
+        sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method) VALUES ('{str(session['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}', 'other')")
         for item in items_list:
             sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{item['name']}', '{item['price']}')")
         
@@ -112,11 +112,12 @@ def edit_receipt(receipt_id):
         if item["id"] == "merchant_name":
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET merchant_name = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND merchant_name = '{item['old']}'")
         elif item["id"] == "total":
-            print(item)
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{float(item['new'])}' WHERE receipt_id = '{receipt_id}'")
+        elif item["id"] == "payment_method":
+            sql.writeSQL(f"UPDATE gruettecloud_receipts SET payment_method = '{item['new']}' WHERE receipt_id = '{receipt_id}'")
         else:
             sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET item = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND item = '{item['old']}'")
-            sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET price = '{float(item['new'])}' WHERE receipt_id = '{receipt_id}' AND id = '{float(item['id'])}' AND price = '{float(item['old'])}'")
+            sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET price = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND price = '{item['old']}'")
 
     return jsonify({"status": "success"})
 
@@ -147,7 +148,7 @@ def create_expense():
     sql = SQLHelper.SQLHelper()
     receipt_id = secrets.token_hex(8)
 
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}')")
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}', '{request_data['payment_method']}')")
 
     return jsonify({"status": "success"})
     

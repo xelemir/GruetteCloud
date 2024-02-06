@@ -22,6 +22,18 @@
             display: flex;
             flex-direction: column;
         }
+
+        input,
+        select {
+            margin: 0;
+            display: none;
+            margin-top: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
         
     </style>
 </head>
@@ -66,7 +78,6 @@
                     <p class="item_id" style="display: none;">{{ item["id"] }}</p>
                     <p class="item_id" style="display: none;">{{ item["id"] }}</p>
 
-
                     <input type="text" class="item_edit" style="width: 90%; margin: 0; text-align: left; display: flex; display: none;" value="{{ item["item"] }}">
                     <input type="text" class="item_edit" style="width: 20%; margin: 0; display: flex; display: none;" value="{{ item["price"] }}">
                     <button class="button-blue edit-only" style="margin: 0; display: none; background-color: var(--red);" onclick="deleteItem({{ item["id"] }})">
@@ -87,7 +98,27 @@
                 
             <p style="margin-bottom: 20px; margin-top: 20px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 Paid with:
-                <img src="https://www.gruettecloud.com/static/icons/applePayLogo.svg" class="align-icons-center" style="height: 30px; margin-left: 10px;">
+                {% if receipt["payment_method"] == "cash" or receipt["payment_method"] == "other" %}
+                    <span class="material-symbols-outlined" style="font-size: 30px; margin-left: 10px;">payments</span>
+                {% elif receipt["payment_method"] == "banktransfer" %}
+                    <span class="material-symbols-outlined" style="font-size: 30px; margin-left: 10px;">account_balance</span>
+                {% else %}
+                    <img src="https://cdn.simpleicons.org/{{ receipt["payment_method"] }}/black" class="align-icons-center" style="height: 30px; margin-left: 10px;">
+                {% endif %}
+                <span class="item_original" style="display: none;">{{ receipt["payment_method"] }}</span>
+                <select class="item_edit" style="">
+                    <option value="{{ receipt["payment_method"] }}" selected>{{ receipt["payment_method"] }}</option>
+                    <option value="cash">Cash</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="applepay">Apple Pay</option>
+                    <option value="googlepay">Google Pay</option>
+                    <option value="visa">Visa</option>
+                    <option value="mastercard">Mastercard</option>
+                    <option value="americanexpress">American Express</option>
+                    <option value="banktransfer">Bank Transfer</option>
+                    <option value="other">Other</option>
+                </select>
+                <span class="item_id" style="display: none;">payment_method</span>
             </p>
 
             <button class="button-blue edit-only" style="margin-top: 20px; width: 100%; display: none;" onclick="saveReceipt()">Save</button>
@@ -107,7 +138,9 @@
 
         if (items[0].style.display == "none") {
             for (let i = 0; i < items.length; i++) {
-                items[i].style.display = "flex";
+                if (i != items.length - 1) {
+                    items[i].style.display = "flex";
+                }
                 items_edit[i].style.display = "none";
             }
             for (let i = 0; i < document.getElementsByClassName("edit-only").length; i++) {
@@ -149,6 +182,7 @@
         console.log(items_changed);
 
         if (items_changed.length == 0) {
+            editReceipt();
             return;
         }
 

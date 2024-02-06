@@ -6,6 +6,7 @@
 	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
 	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <style>
@@ -15,6 +16,7 @@
             align-items: center;
             justify-content: center;
             padding-bottom: 40px;
+            padding-top: 40px;
         }
 
         .application-form {
@@ -91,7 +93,6 @@
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         
-
 		<div class="centered-content">
             <a href="/" class="logo" title="Home">
                 <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GruetteCloud" style="height: 40px; width: 40px; margin-right: 10px;">
@@ -100,9 +101,7 @@
         {% include "components/nav-element.html" %}
 	</div>
 
-    <div class="content">
-        <h1 style="margin-bottom: 20px; margin-top: 30px; color: var(--primary-color);"></h1>
-
+    <div id="overview" class="content" style="display: flex;">
         <div class="pie-chart">
             <div style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
                 <div style="font-size: 12px;">I have spent</div>
@@ -123,30 +122,52 @@
             </div>
         </div>
         
-        <div style="width: 300px; max-width: 80vw;">
-            <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">Recent Transactions</p>
-        </div>
-        <div style="width: 300px; max-width: 80vw;">
-            {% for receipt in receipts_current_month %}
-                <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid var(--box-shadow-color); cursor: pointer; color: var(--text-color); text-decoration: none;">
-                    <p style="flex: 1; margin: 0; text-align: left; display: flex;">{{ receipt["merchant_name"] }}</p>
-                    <p style="margin: 0; display: flex;">{{ receipt["total"] }} €</p>
-                </a>
-            {% endfor %}
-        </div>
-        
+        {% if receipts_current_month %}
+            <div style="width: 300px; max-width: 80vw;">
+                <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">Recent Transactions</p>
+            </div>
+            <div style="width: 300px; max-width: 80vw;">
+                {% for receipt in receipts_current_month %}
+                    <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid var(--box-shadow-color); cursor: pointer; color: var(--text-color); text-decoration: none;">
+                        <p style="flex: 1; margin: 0; text-align: left; display: flex;">{{ receipt["merchant_name"] }}</p>
+                        <p style="margin: 0; display: flex;">{{ receipt["total"] }} €</p>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">No transactions this month.</p>
+        {% endif %}
     </div>
+
+    <div id="loading" style="position: fixed; top: 60px; left: 0; width: 100%; height: calc(100% - 60px); display: none;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+            <i class="fa fa-spinner fa-spin" style="font-size: 100px; color: var(--primary-color);"></i>
+            <h1 style="margin-top: 30px;">Processing receipt...</h1>
+            <b style="font-size: 15px;">This may take a few seconds.</b>
+        </div>
+    </div>
+
 	<div id="cookie-banner"></div>
 
     <div id="manualExpenseMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
-
         <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeErrorFS()">
             <span class="material-symbols-outlined">close</span>
         </button>
-    
         <h2 style="margin-bottom: 30px;">Add Expense</h2>
         <input type="text" id="title" style="margin: 0; display: flex;" placeholder="Product name">
         <input type="text" id="price" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Price">
+        <select id="payment_method" style="margin: 0; display: flex; margin-top: 10px; -webkit-appearance: none;" placeholder="Payment Method">
+            <option value="other" disabled selected>Payment Method</option>
+            <option value="cash">Cash</option>
+            <option value="paypal">PayPal</option>
+            <option value="applepay">Apple Pay</option>
+            <option value="googlepay">Google Pay</option>
+            <option value="visa">Visa</option>
+            <option value="mastercard">Mastercard</option>
+            <option value="americanexpress">American Express</option>
+            <option value="banktransfer">Bank Transfer</option>
+            <option value="other">Other</option>
+        </select>
         <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addExpense()">Add Expense</button>
     </div>
     
@@ -160,6 +181,7 @@
         function addExpense() {
             var title = document.getElementById("title").value;
             var price = document.getElementById("price").value;
+            var payment_method = document.getElementById("payment_method").value;
 
             if (title == "" || price == "") {
                 return;
@@ -178,7 +200,7 @@
                     }
                 }
             };
-            xhr.send(JSON.stringify({"title": title, "price": price}));
+            xhr.send(JSON.stringify({"title": title, "price": price, "payment_method": payment_method}));
         }
     </script>
     
@@ -187,6 +209,8 @@
 
 <script>
     function uploadReceipt(files) {
+        document.getElementById("overview").style.display = "none";
+        document.getElementById("loading").style.display = "flex";
         const file = files[0];
         const formData = new FormData();
         formData.append("receipt", file);
@@ -201,9 +225,13 @@
             } else {
                 showError(data.message);
             }
+            document.getElementById("overview").style.display = "flex";
+            document.getElementById("loading").style.display = "none";
         })
         .catch(error => {
             showError("An error occurred while uploading the receipt");
+            document.getElementById("overview").style.display = "flex";
+            document.getElementById("loading").style.display = "none";
         });
     }
 </script>
