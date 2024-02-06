@@ -322,6 +322,25 @@
                     {% endif %}
                 </select>
             </div>
+            <div class="wrapping-tile" style="padding: 20px; border-radius: 30px; margin-top: 20px;">
+                <h1>Advanced Darkmode</h1>
+                <div class="dynamic-container">
+                    <div class="box left">
+                        <p style="text-wrap: balance;">Advanced Darkmode goes beyond the normal darkmode. If enabled, darkmode will be pitch black and the colors will be more vibrant. If disabled, the normal darkmode will be used. This can be useful to save battery on OLED displays.</p>
+                    </div>
+                    <div class="box right">
+                        <select onchange="location = this.value;" name="reason" class="login-input" style="-webkit-appearance: none; width: 100%; margin: 0px; border-radius: 30px; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color);" required>
+                            {% if menu["advanced_darkmode"] %}
+                                <option value="/advanced_darkmode/enable">On</option>
+                                <option value="/advanced_darkmode/disable">Off</option>
+                            {% else %}
+                                <option value="/advanced_darkmode/disable">Off</option>
+                                <option value="/advanced_darkmode/enable">On</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

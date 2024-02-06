@@ -470,4 +470,25 @@ def refresh_2fa():
         sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
         return redirect(f"/settings")
     
+@settings_route.route("/advanced_darkmode/<state>", methods=["GET", "POST"])
+def advanced_darkmode(state):
+    """ Route to enable or disable advanced darkmode
+        Advanced darkmode is a feature that allows the user to use the ultra darkmode, recommended for OLED screens
 
+    Args:
+        state (str): The state to set the advanced darkmode to (enable or disable)
+
+    Returns:
+        HTML: Rendered HTML page
+    """    
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    if state == "enable":
+        sql.writeSQL(f"UPDATE gruttechat_users SET advanced_darkmode = {True} WHERE username = '{str(session['username'])}'")
+    else:
+        sql.writeSQL(f"UPDATE gruttechat_users SET advanced_darkmode = {False} WHERE username = '{str(session['username'])}'")
+    
+    return redirect("/settings")
