@@ -36,10 +36,26 @@ def expense_tracker():
     percentage_spent = (amount_spent / monthly_budget) * 100
     amount_spent = f"{float(amount_spent):.2f}".replace(".", ",")
     
+    receipts_date = []
+    
+    
     for receipt in receipts_current_month:
         receipt["total"] = f"{float(receipt['total']):.2f}".replace(".", ",")
+        receipt["date"] = receipt["date"].strftime("%d.%m.%Y")
+
+        if not receipts_date:  # Check if receipts_date is empty
+            receipts_date.append([receipt])
+        else:
+            last_date = receipts_date[-1][0]["date"] if receipts_date[-1] else None
+
+            if receipt["date"] != last_date:
+                receipts_date.append([receipt])
+            else:
+                receipts_date[-1].append(receipt)
+                
+    print(len(receipts_date))
     
-    return render_template("expense_tracker.html", menu=th.user(session), amount_spent=amount_spent, monthly_budget=monthly_budget, percentage_spent=percentage_spent, receipts_current_month=receipts_current_month, amount_remaining=amount_remaining)
+    return render_template("expense_tracker.html", menu=th.user(session), amount_spent=amount_spent, monthly_budget=monthly_budget, percentage_spent=percentage_spent, receipts_date=receipts_date, amount_remaining=amount_remaining)
 
 @expense_tracker_route.route("/upload-receipt", methods=["GET", "POST"])
 def upload_receipt():
