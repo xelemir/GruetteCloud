@@ -47,7 +47,14 @@
                     var(--background-color) 0
                 ),
                 conic-gradient(
-                    {% if percentage_spent <= 25 %}
+                    {% if percentage_spent < 0 %}
+                    /* negative percentage to anti clockwise coloring in primary color */
+                    var(--secondary-color) 0,
+                    var(--secondary-color) {{ 100 - percentage_spent|abs }}%,
+                    var(--primary-color) 0,
+                    var(--primary-color) 100%
+
+                    {% elif percentage_spent <= 25 %}
                     var(--green) 0,
                     var(--green) {{ percentage_spent }}%,
                     var(--secondary-color) 0,
@@ -84,6 +91,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -100,13 +108,12 @@
         </div>
         {% include "components/nav-element.html" %}
 	</div>
-
     <div id="overview" class="content" style="display: flex;">
-        <div class="pie-chart">
+        <div class="pie-chart" onclick="togglePieChart()">
             <div style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
-                <div style="font-size: 12px;">I have spent</div>
-                <div style="font-size: 30px; color: var(--text-color); font-weight: bold;">{{ amount_spent }} €</div>
-                <div style="font-size: 12px;">this month.</div>
+                <div id="pie-chart-text-top" style="font-size: 12px;">I have spent</div>
+                <div id="pie-chart-text-center" style="font-size: 30px; color: var(--text-color); font-weight: bold;">{{ amount_spent }} €</div>
+                <div id="pie-chart-text-bottom" style="font-size: 12px;">this month.</div>
             </div>
         </div>
 
@@ -144,7 +151,7 @@
                 {% for receipt in receipts_current_month %}
                     <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid var(--box-shadow-color); cursor: pointer; color: var(--text-color); text-decoration: none;">
                         <p style="flex: 1; margin: 0; text-align: left; display: flex;">{{ receipt["merchant_name"] }}</p>
-                        <p style="margin: 0; display: flex;">{{ receipt["total"] }} €</p>
+                        <p style="margin: 0; font-weight: bold; display: flex;{% if not receipt["is_income"] %} color: var(--red);{% else %} color: var(--green);{% endif %}">{% if not receipt["is_income"] %}-{% else %}+{% endif %}{{ receipt["total"] }} €</p>
                     </a>
                 {% endfor %}
             </div>
@@ -168,9 +175,9 @@
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 style="margin-bottom: 30px;">Add Expense</h2>
-        <input type="text" id="title" style="margin: 0; display: flex;" placeholder="Product name">
-        <input type="text" id="price" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Price">
-        <select id="payment_method" style="margin: 0; display: flex; margin-top: 10px; -webkit-appearance: none;" placeholder="Payment Method">
+        <input type="text" id="title-expense" style="margin: 0; display: flex;" placeholder="Product name">
+        <input type="text" id="price-expense" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Price">
+        <select id="payment_method-expense" style="margin: 0; display: flex; margin-top: 10px; -webkit-appearance: none;" placeholder="Payment Method">
             <option value="other" disabled selected>Payment Method</option>
             <option value="cash">Cash</option>
             <option value="paypal">PayPal</option>
@@ -190,9 +197,13 @@
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 style="margin-bottom: 30px;">Add Income</h2>
-        <input type="text" id="title" style="margin: 0; display: flex;" placeholder="Income Source">
-        <input type="text" id="price" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Amount">
-        <select id="payment_method" style="margin: 0; display: flex; margin-top: 10px; -webkit-appearance: none;" placeholder="Payment Method">
+        <input type="text" id="title-income" style="margin: 0; display: flex;" placeholder="Income Source">
+        <input type="text" id="price-income" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Amount">
+        <div style="display: flex; align-items: center; justify-content: left; flex-direction: row; gap: 10px;">
+            <input type="checkbox" id="add-to-budget-income" style="margin: 0; display: flex; margin-top: 10px;">
+            <label for="add-to-budget-income" style="margin: 0; display: flex; margin-top: 10px;">Do you want to add this income to your budget?</label>
+        </div>
+        <select id="payment_method-income" style="margin: 0; display: flex; margin-top: 10px; -webkit-appearance: none;" placeholder="Payment Method">
             <option value="other" disabled selected>Payment Method</option>
             <option value="cash">Cash</option>
             <option value="paypal">PayPal</option>
@@ -204,7 +215,7 @@
             <option value="banktransfer">Bank Transfer</option>
             <option value="other">Other</option>
         </select>
-        <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addExpense()">Add Income</button>
+        <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addIncome()">Add Income</button>
     </div>
     
     <script>
@@ -226,9 +237,9 @@
         }
 
         function addExpense() {
-            var title = document.getElementById("title").value;
-            var price = document.getElementById("price").value;
-            var payment_method = document.getElementById("payment_method").value;
+            var title = document.getElementById("title-expense").value;
+            var price = document.getElementById("price-expense").value;
+            var payment_method = document.getElementById("payment_method-expense").value;
 
             if (title == "" || price == "") {
                 return;
@@ -250,6 +261,34 @@
             xhr.send(JSON.stringify({"title": title, "price": price, "payment_method": payment_method}));
         }
 
+        function addIncome() {
+            var title = document.getElementById("title-income").value;
+            var price = document.getElementById("price-income").value;
+            var payment_method = document.getElementById("payment_method-income").value;
+            var add_to_budget = document.getElementById("add-to-budget-income").checked;
+
+            if (title == "" || price == "") {
+                return;
+            }
+
+            console.log(title, price, payment_method);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/create_income", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        window.location.href = "/finance";
+                    } else {
+                        console.error("Request failed with status: " + xhr.status);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({"title": title, "price": price, "payment_method": payment_method, "add_to_budget": add_to_budget}));
+        }
+
         function toggleButtons() {
             var buttons = document.getElementById('buttons');
             if (buttons.style.display === 'none') {
@@ -265,6 +304,18 @@
                     buttons.style.display = 'none';
                     buttons.classList.remove('animate__slideOutRight');
                 }, 750);
+            }
+        }
+
+        function togglePieChart() {
+            if (document.getElementById('pie-chart-text-top').innerHTML === 'I have spent') {
+                document.getElementById('pie-chart-text-top').innerHTML = 'I have';
+                document.getElementById('pie-chart-text-center').innerHTML = '{{ amount_remaining }} €';
+                document.getElementById('pie-chart-text-bottom').innerHTML = 'of {{ monthly_budget }} € left.';
+            } else {
+                document.getElementById('pie-chart-text-top').innerHTML = 'I have spent';
+                document.getElementById('pie-chart-text-center').innerHTML = '{{ amount_spent }} €';
+                document.getElementById('pie-chart-text-bottom').innerHTML = 'this month.';
             }
         }
     </script>

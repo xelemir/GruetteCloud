@@ -18,10 +18,20 @@ def expense_tracker():
     
     sql = SQLHelper.SQLHelper()
     amount_spent = 0
-    monthly_budget = 350
+    monthly_budget = sql.readSQL(f"SELECT finance_budget FROM gruttechat_users WHERE username = '{str(session['username'])}'")[0]["finance_budget"]
+    amount_remaining = monthly_budget
     receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(session['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW())")
     for receipt in receipts_current_month:
-        amount_spent += float(receipt["total"])
+        if receipt["is_income"]:
+            if receipt["add_to_budget"]:
+                amount_remaining += float(receipt["total"])
+                amount_spent -= float(receipt["total"])
+        else:
+            amount_remaining -= float(receipt["total"])
+            amount_spent += float(receipt["total"])
+
+    amount_remaining = f"{float(amount_remaining):.2f}".replace(".", ",")
+    
     
     percentage_spent = (amount_spent / monthly_budget) * 100
     amount_spent = f"{float(amount_spent):.2f}".replace(".", ",")
@@ -29,7 +39,7 @@ def expense_tracker():
     for receipt in receipts_current_month:
         receipt["total"] = f"{float(receipt['total']):.2f}".replace(".", ",")
     
-    return render_template("expense_tracker.html", menu=th.user(session), amount_spent=amount_spent, monthly_budget=monthly_budget, percentage_spent=percentage_spent, receipts_current_month=receipts_current_month)
+    return render_template("expense_tracker.html", menu=th.user(session), amount_spent=amount_spent, monthly_budget=monthly_budget, percentage_spent=percentage_spent, receipts_current_month=receipts_current_month, amount_remaining=amount_remaining)
 
 @expense_tracker_route.route("/upload-receipt", methods=["GET", "POST"])
 def upload_receipt():
@@ -76,7 +86,7 @@ def upload_receipt():
         receipt_id = secrets.token_hex(8)
         
         sql = SQLHelper.SQLHelper()
-        sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method) VALUES ('{str(session['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}', 'other')")
+        sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(session['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}', 'other', {False})")
         for item in items_list:
             sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{item['name']}', '{item['price']}')")
         
@@ -145,9 +155,62 @@ def delete_receipt(receipt_id):
     sql.writeSQL(f"DELETE FROM gruettecloud_receipt_items WHERE receipt_id = '{receipt_id}'")
     
     return jsonify({"status": "success"})
+
+@expense_tracker_route.route("/receipt/delete_item/<receipt_id>", methods=["POST"])
+def delete_item(receipt_id):
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    receipt = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE receipt_id = '{receipt_id}'")
+    if receipt == []:
+        abort(404)
+    elif receipt[0]["username"] != session["username"]:
+        abort(403)
+    
+    request_data = request.get_json()
+    sql.writeSQL(f"DELETE FROM gruettecloud_receipt_items WHERE receipt_id = '{receipt_id}' AND id = '{request_data['id']}'")
+    
+    return jsonify({"status": "success"})
+
+@expense_tracker_route.route("/receipt/add_item/<receipt_id>", methods=["POST"])
+def add_item(receipt_id):
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    receipt = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE receipt_id = '{receipt_id}'")
+    if receipt == []:
+        abort(404)
+    elif receipt[0]["username"] != session["username"]:
+        abort(403)
+        
+    try:
+        price = request.get_json()["price"]
+        float(price)
+    except:
+        return jsonify({"status": "error", "message": "Invalid price"})
+    
+    request_data = request.get_json()
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{request_data['item']}', '{request_data['price']}')")
+    
+    return jsonify({"status": "success"})
     
 @expense_tracker_route.route("/create_expense", methods=["POST"])
 def create_expense():
+    if "username" not in session:
+        return redirect("/")
+    
+    request_data = request.get_json()
+    sql = SQLHelper.SQLHelper()
+    receipt_id = secrets.token_hex(8)
+
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}', '{request_data['payment_method']}', {False})")
+
+    return jsonify({"status": "success"})
+
+@expense_tracker_route.route("/create_income", methods=["POST"])
+def create_income():
     if "username" not in session:
         return redirect("/")
     
@@ -156,7 +219,24 @@ def create_expense():
     sql = SQLHelper.SQLHelper()
     receipt_id = secrets.token_hex(8)
 
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}', '{request_data['payment_method']}')")
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}', '{request_data['payment_method']}', {True}, {request_data['add_to_budget']})")
+
+    return jsonify({"status": "success"})
+
+@expense_tracker_route.route("/change_budget", methods=["POST"])
+def change_budget():
+    if "username" not in session:
+        return redirect("/")
+    
+    request_data = request.get_json()
+    budget = request_data["budget"]
+    try:
+        budget = int(budget)
+    except:
+        return jsonify({"status": "error", "message": "Invalid budget"})
+    
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"UPDATE gruttechat_users SET finance_budget = '{budget}' WHERE username = '{session['username']}'")
 
     return jsonify({"status": "success"})
     

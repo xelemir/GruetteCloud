@@ -23,6 +23,20 @@
             flex-direction: column;
         }
 
+
+        input,
+        select {
+            margin: 0;
+            display: none;
+            margin-top: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        
         input,
         select {
             margin: 0;
@@ -68,9 +82,20 @@
             
             <h1 id="merchant-name" class="item_original" style="margin-bottom: 10px; display: none; ">{{ receipt["merchant_name"] }}</h1>
             <p class="item_id" style="display: none;">merchant_name</p>
-            <input type="text" class="item_edit" style="margin: 0; display: none;" value="{{ receipt["merchant_name"] }}">
+            <input type="text" class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ receipt["merchant_name"] }}">
 
             <p style="margin-bottom: 30px;">{{ receipt["date"] }}</p>
+
+            <div class="edit-only" style="display: none; justify-content: flex-end; width: 100%; cursor: pointer; gap: 10px; margin-bottom: 20px; flex-direction: row;">
+                <div onclick="deleteReceipt()" style="flex-shrink: 0; gap: 10px; display: flex; align-items: center; justify-content: center; padding: 7px 15px; border-radius: 30px; background-color: var(--red); color: var(--white-color);">
+                    <span class="material-symbols-outlined">delete</span>Delete
+                </div>
+                <div onclick="saveReceipt()" style="flex-shrink: 0; gap: 10px; display: flex; align-items: center; justify-content: center; padding: 7px 15px; border-radius: 30px; background-color: var(--primary-color); color: var(--white-color);">
+                    <span class="material-symbols-outlined">save</span>Save
+                </div>
+            </div>
+            
+
             {% for item in items %}
                 <div style="display: flex; justify-content: space-between; width: 100%; gap: 10px; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
                     <p class="item_original" style="flex: 1; margin: 0; text-align: left; display: flex;">{{ item["item"] }}</p>
@@ -78,35 +103,45 @@
                     <p class="item_id" style="display: none;">{{ item["id"] }}</p>
                     <p class="item_id" style="display: none;">{{ item["id"] }}</p>
 
-                    <input type="text" class="item_edit" style="width: 90%; margin: 0; text-align: left; display: flex; display: none;" value="{{ item["item"] }}">
-                    <input type="text" class="item_edit" style="width: 20%; margin: 0; display: flex; display: none;" value="{{ item["price"] }}">
-                    <button class="button-blue edit-only" style="margin: 0; display: none; background-color: var(--red);" onclick="deleteItem({{ item["id"] }})">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+                    <input type="text" class="item_edit" style="width: 90%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none;" value="{{ item["item"] }}">
+                    <input type="text" class="item_edit" style="width: 20%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ item["price"] }}">
+                    <div class="edit-only" style="display: none; cursor: pointer; padding-top: 7px;" onclick="deleteItem({{ item["id"] }})">
+                        <span class="material-symbols-outlined align-icons-center">delete</span>
+                    </div>
                 </div>
             {% endfor %}
             {% if items|length == 0 %}
-                <b style="margin: 15px;">Manual Receipt</b>
-                <p style="margin-bottom: 30px; text-align: center;">Adding items to this type of receipt is not supported yet.</p>
+                <b style="margin: 15px;">Receipt does not contain any individual items.</b>
             {% endif %}
+
+            <div id="add-item" class="edit-only" style="display: none; justify-content: flex-end; width: 100%; cursor: pointer; gap: 10px; margin-bottom: 20px; flex-direction: column; background-color: var(--box-shadow-color); padding: 10px; border-radius: 25px;">
+                <div style="display: flex; justify-content: space-between; width: 100%; gap: 10px;">
+                    <input id="item-name" type="text" style="width: 90%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: flex;" placeholder="Item Name">
+                    <input id="item-price" type="text" style="width: 20%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: flex; text-align: center;" placeholder="Price">
+                </div>
+                <div onclick="addItem()" style="flex-shrink: 0; gap: 10px; display: flex; align-items: center; justify-content: center; padding: 7px 15px; border-radius: 30px; background-color: var(--primary-color); color: var(--white-color);">
+                    <span class="material-symbols-outlined">add</span>Add Item
+                </div>
+            </div>
+
             <div style="display: flex; justify-content: space-between; width: 100%; gap: 20px; margin-bottom: 10px; padding: 10px;">
                 <b style="flex: 1; margin: 0; text-align: left;">Total</b>
                 <b class="item_original" style="margin: 0; display: flex;">{{ receipt["total"] }} €</b>
                 <p class="item_id" style="display: none;">total</p>
-                <input type="text" class="item_edit" style="width: 20%; margin: 0; text-align: left; display: none;" value="{{ receipt["total"] }}">
+                <input type="text" class="item_edit" style="width: 20%; margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ receipt["total"] }}">
             </div>
                 
             <p style="margin-bottom: 20px; margin-top: 20px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 Paid with:
                 {% if receipt["payment_method"] == "cash" or receipt["payment_method"] == "other" %}
-                    <span class="material-symbols-outlined" style="font-size: 30px; margin-left: 10px;">payments</span>
+                    <span class="material-symbols-outlined" style="font-size: 30px; margin: 0 10px;">payments</span>
                 {% elif receipt["payment_method"] == "banktransfer" %}
-                    <span class="material-symbols-outlined" style="font-size: 30px; margin-left: 10px;">account_balance</span>
+                    <span class="material-symbols-outlined" style="font-size: 30px; margin: 0 10px;">account_balance</span>
                 {% else %}
-                    <img src="https://cdn.simpleicons.org/{{ receipt["payment_method"] }}/black" class="align-icons-center" style="height: 30px; margin-left: 10px;">
+                    <img src="https://cdn.simpleicons.org/{{ receipt["payment_method"] }}/black" class="align-icons-center" style="height: 30px; margin: 0 10px;">
                 {% endif %}
                 <span class="item_original" style="display: none;">{{ receipt["payment_method"] }}</span>
-                <select class="item_edit" style="">
+                <select class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center; -webkit-appearance: none;">
                     <option value="{{ receipt["payment_method"] }}" selected>{{ receipt["payment_method"] }}</option>
                     <option value="cash">Cash</option>
                     <option value="paypal">PayPal</option>
@@ -120,9 +155,6 @@
                 </select>
                 <span class="item_id" style="display: none;">payment_method</span>
             </p>
-
-            <button class="button-blue edit-only" style="margin-top: 20px; width: 100%; display: none;" onclick="saveReceipt()">Save</button>
-            <button class="button-blue edit-only" style="margin-top: 20px; width: 100%; background-color: var(--red); display: none;" onclick="deleteReceipt()">Delete</button>
         </div>
     </div>
 	<div id="cookie-banner"></div>
@@ -163,7 +195,7 @@
                 items_edit[i].style.display = "flex";
             }
             for (let i = 0; i < document.getElementsByClassName("edit-only").length; i++) {
-                document.getElementsByClassName("edit-only")[i].style.display = "block";
+                document.getElementsByClassName("edit-only")[i].style.display = "flex";
             }
         }
     }
@@ -210,10 +242,10 @@
                 }
             }
         };
-
         xhr.send(JSON.stringify(items_changed));
-
     }
+
+
 
     function deleteReceipt() {
         var xhr = new XMLHttpRequest();
@@ -221,6 +253,47 @@
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send();
         window.location.href = "/finance";
+    }
+
+    function deleteItem(id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/receipt/delete_item/{{ receipt_id }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    window.location.href = "/receipt/{{ receipt_id }}";
+                } else {
+                    console.error("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        xhr.send(JSON.stringify({"id": id}));
+    }
+
+    function addItem() {
+        var item_name = document.getElementById("item-name").value;
+        var item_price = document.getElementById("item-price").value;
+
+        if (item_name == "" || item_price == "") {
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/receipt/add_item/{{ receipt_id }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    window.location.href = "/receipt/{{ receipt_id }}";
+                } else {
+                    console.error("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        xhr.send(JSON.stringify({"item": item_name, "price": item_price}));
     }
 </script>
 
