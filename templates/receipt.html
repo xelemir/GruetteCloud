@@ -238,7 +238,7 @@
                 }
 
             }
-            else if (copy != item_edit[i].value) {
+            else if (copy != item_edit[i].value || copy != item_edit[i].value.replace(".", ",")) {
                 items_changed.push({
                     "new": item_edit[i].value,
                     "old": copy,
