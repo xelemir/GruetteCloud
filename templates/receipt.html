@@ -53,20 +53,20 @@
     <div class="content">
         <div style="display: flex; flex-direction: column; align-items: center; background-color: #FFFFFF; color: #000000; border-radius: 20px; padding: 20px; max-width: 90vw; width: 400px; overflow: hidden;">
             {% if receipt["merchant_name"].lower() in ["lidl", "edeka", "kauland", "aldi", "amazon", "apple", "netflix", "spotify", "nike", "ikea", "mediamarkt", "saturn", "zalando"] %}
-                <img src="https://cdn.simpleicons.org/{{ receipt["merchant_name"] }}/black" style="height: 100px; margin-top: 20px;">
+                <img id="merchant-logo" src="https://cdn.simpleicons.org/{{ receipt["merchant_name"] }}/black" style="height: 100px; margin-top: 20px;">
             {% elif "google" in receipt["merchant_name"].lower() %}
-                <img src="https://cdn.simpleicons.org/google/black" style="height: 100px; margin-top: 20px;">
+                <img id="merchant-logo" src="https://cdn.simpleicons.org/google/black" style="height: 100px; margin-top: 20px;">
             {% elif "telekom" in receipt["merchant_name"].lower() %}
-                <img src="https://cdn.simpleicons.org/tmobile/black" style="height: 100px; margin-top: 20px;">
+                <img id="merchant-logo" src="https://cdn.simpleicons.org/tmobile/black" style="height: 100px; margin-top: 20px;">
             {% else %}
-                <span class="material-symbols-outlined" style="font-size: 100px; margin-top: 20px;">shopping_cart</span>
+                <span id="merchant-logo" class="material-symbols-outlined" style="font-size: 100px; margin-top: 20px;">shopping_cart</span>
             {% endif %}
                 
             <div style="display: flex; justify-content: flex-end; width: 100%; cursor: pointer;" onclick="editReceipt()">
                 <span class="material-symbols-outlined">edit</span>
             </div>
             
-            <h1 class="item_original" style="margin-bottom: 10px; display: flex;">{{ receipt["merchant_name"] }}</h1>
+            <h1 id="merchant-name" class="item_original" style="margin-bottom: 10px; display: none; ">{{ receipt["merchant_name"] }}</h1>
             <p class="item_id" style="display: none;">merchant_name</p>
             <input type="text" class="item_edit" style="margin: 0; display: none;" value="{{ receipt["merchant_name"] }}">
 
@@ -132,13 +132,23 @@
 </html>
 
 <script>
+    if (document.getElementById("merchant-logo").innerHTML == "shopping_cart") {
+        document.getElementById("merchant-name").style.display = "flex";
+    }
+
     function editReceipt() {
         let items = document.getElementsByClassName("item_original");
         let items_edit = document.getElementsByClassName("item_edit");
 
-        if (items[0].style.display == "none") {
+        if (items[1].style.display == "none") {
             for (let i = 0; i < items.length; i++) {
-                if (i != items.length - 1) {
+                if (i == 0) {
+                    if (document.getElementById("merchant-logo").innerHTML == "shopping_cart") {
+                        items[i].style.display = "flex";
+                    } else {
+                        items[i].style.display = "none";
+                    }
+                } else if (i != items.length - 1) {
                     items[i].style.display = "flex";
                 }
                 items_edit[i].style.display = "none";

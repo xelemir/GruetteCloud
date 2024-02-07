@@ -65,6 +65,10 @@ def upload_receipt():
         items = r["document"]["inference"]["pages"][0]["prediction"]["line_items"]
         merchant_name = r["document"]["inference"]["pages"][0]["prediction"]["supplier_name"]["raw_value"]
         total = r["document"]["inference"]["pages"][0]["prediction"]["total_amount"]["value"]
+        try:
+            total = float(total)
+        except:
+            total = 0
         items_list = []
         for item in items:
             items_list.append({"name": item["description"], "price": item["total_amount"]})
@@ -112,6 +116,10 @@ def edit_receipt(receipt_id):
         if item["id"] == "merchant_name":
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET merchant_name = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND merchant_name = '{item['old']}'")
         elif item["id"] == "total":
+            try:
+                total = float(total)
+            except:
+                total = 0
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{float(item['new'])}' WHERE receipt_id = '{receipt_id}'")
         elif item["id"] == "payment_method":
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET payment_method = '{item['new']}' WHERE receipt_id = '{receipt_id}'")

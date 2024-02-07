@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<title>Expense Tracker</title>
+	<title>GrütteFinance</title>
 	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
 	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
@@ -22,24 +22,6 @@
         .application-form {
             display: flex;
             flex-direction: column;
-        }
-
-        @media (min-width: 768px) {
-            .desktop-only-flex {
-                display: flex;
-            }
-            .mobile-only-flex {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .desktop-only-flex {
-                display: none;
-            }
-            .mobile-only-flex {
-                display: flex;
-            }
         }
 
         input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select, textarea {
@@ -128,33 +110,25 @@
             </div>
         </div>
 
-        <div class="desktop-only-flex" style="flex-direction: row; align-items: center; margin-top: 30px; justify-content: center; width: 100%; max-width: 300px; background-color: var(--secondary-color); border-radius: 50px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
-            <label for="upload-receipt" id="upload-receipt-label" style="width: 50%; cursor: pointer; color: var(--text-color); padding: 13px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: var(--primary-color);">document_scanner</span>
-                <p style="font-size: 15px;">Scan Receipt</p>
-            </label>
-            <input id="upload-receipt" type="file" onchange="uploadReceipt(this.files)" style="display: none;">
-            <div onclick="openMenu()" style="width: 50%; cursor: pointer; color: var(--text-color); padding: 13px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row;">
-                <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: var(--primary-color);">request_quote</span>
-                <p style="font-size: 15px;">Other Expense</p>
-            </div>
-        </div>
-
-        <div class="mobile-only-flex" style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px;">
-            <div id="mobile-buttons" class="animate__animated animate__slideInRight" style="display: none;">
-                <label for="upload-receipt" id="upload-receipt-label" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--primary-color);">
+        <div style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px;">
+            <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
+                <div onclick="openMenuIncome()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--green);">
+                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">add</span>
+                    <p style="font-size: 16px; margin: 0; color: #fff;">Add Income</p>
+                </div>
+                <div onclick="openMenuExpense()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--primary-color); margin-top: 10px;">
+                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">remove</span>
+                    <p style="font-size: 16px; margin: 0; color: #fff;">Add Expense</p>
+                </div>
+                <label for="upload-receipt" id="upload-receipt-label" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--primary-color); margin-top: 10px;">
                     <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">document_scanner</span>
                     <p style="font-size: 16px; margin: 0; color: #fff;">Scan Receipt</p>
                 </label>
                 <input id="upload-receipt" type="file" onchange="uploadReceipt(this.files)" style="display: none;">
-                <div onclick="openMenu()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; background-color: var(--primary-color); margin-top: 10px;">
-                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">request_quote</span>
-                    <p style="font-size: 16px; margin: 0; color: #fff;">Other Expense</p>
-                </div>
             </div>
             <div style="width: 100%; display: flex; align-items: right; justify-content: right; flex-direction: row;">
-                <div onclick="toggleMobileButton()" style="cursor: pointer; color: var(--text-color); border-radius: 50px; display: flex; padding: 10px; align-items: center; justify-content: center; flex-direction: row; background-color: var(--primary-color); margin-top: 10px;">
-                    <span id="toggle-mobile-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">add</span>
+                <div onclick="toggleButtons()" style="cursor: pointer; color: var(--text-color); border-radius: 50px; display: flex; padding: 10px; align-items: center; justify-content: center; flex-direction: row; background-color: var(--primary-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  margin-top: 10px;">
+                    <span id="toggle-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">add</span>
                 </div>
             </div>
         </div>
@@ -189,8 +163,8 @@
 
 	<div id="cookie-banner"></div>
 
-    <div id="manualExpenseMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
-        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeMenu()">
+    <div id="expenseMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
+        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeMenuExpense()">
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 style="margin-bottom: 30px;">Add Expense</h2>
@@ -210,16 +184,47 @@
         </select>
         <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addExpense()">Add Expense</button>
     </div>
+
+    <div id="incomeMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
+        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeMenuIncome()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <h2 style="margin-bottom: 30px;">Add Income</h2>
+        <input type="text" id="title" style="margin: 0; display: flex;" placeholder="Income Source">
+        <input type="text" id="price" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Amount">
+        <select id="payment_method" style="margin: 0; display: flex; margin-top: 10px; -webkit-appearance: none;" placeholder="Payment Method">
+            <option value="other" disabled selected>Payment Method</option>
+            <option value="cash">Cash</option>
+            <option value="paypal">PayPal</option>
+            <option value="applepay">Apple Pay</option>
+            <option value="googlepay">Google Pay</option>
+            <option value="visa">Visa</option>
+            <option value="mastercard">Mastercard</option>
+            <option value="americanexpress">American Express</option>
+            <option value="banktransfer">Bank Transfer</option>
+            <option value="other">Other</option>
+        </select>
+        <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addExpense()">Add Income</button>
+    </div>
     
     <script>
-        function closeMenu() {
-            document.getElementById('manualExpenseMenu').style.display = 'none';
+        function closeMenuExpense() {
+            document.getElementById('expenseMenu').style.display = 'none';
             document.getElementById('overview').style.display = 'flex';
         }
-        function openMenu() {
+        function openMenuExpense() {
             document.getElementById('overview').style.display = 'none';
-            document.getElementById('manualExpenseMenu').style.display = 'flex';
+            document.getElementById('expenseMenu').style.display = 'flex';
         }
+        function closeMenuIncome() {
+            document.getElementById('incomeMenu').style.display = 'none';
+            document.getElementById('overview').style.display = 'flex';
+        }
+        function openMenuIncome() {
+            document.getElementById('overview').style.display = 'none';
+            document.getElementById('incomeMenu').style.display = 'flex';
+        }
+
         function addExpense() {
             var title = document.getElementById("title").value;
             var price = document.getElementById("price").value;
@@ -245,14 +250,21 @@
             xhr.send(JSON.stringify({"title": title, "price": price, "payment_method": payment_method}));
         }
 
-        function toggleMobileButton() {
-            var mobileButtons = document.getElementById('mobile-buttons');
-            if (mobileButtons.style.display === 'none') {
-                mobileButtons.style.display = 'block';
-                document.getElementById('toggle-mobile-button').innerHTML = 'close';
+        function toggleButtons() {
+            var buttons = document.getElementById('buttons');
+            if (buttons.style.display === 'none') {
+                document.getElementById('toggle-button').innerHTML = 'close';
+                buttons.classList.remove('animate__slideOutRight');
+                buttons.classList.add('animate__slideInRight');
+                buttons.style.display = 'block';
             } else {
-                mobileButtons.style.display = 'none';
-                document.getElementById('toggle-mobile-button').innerHTML = 'add';
+                document.getElementById('toggle-button').innerHTML = 'add';
+                buttons.classList.remove('animate__slideInRight');
+                buttons.classList.add('animate__slideOutRight');
+                setTimeout(function() {
+                    buttons.style.display = 'none';
+                    buttons.classList.remove('animate__slideOutRight');
+                }, 750);
             }
         }
     </script>

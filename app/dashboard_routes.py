@@ -431,7 +431,30 @@ def close_ticket():
     
     return {"success": True}
 
+@dashboard_route.route("/dashboard/sql", methods=["GET", "POST"])
+def sql_query():
+    if "username" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    if not bool(user["is_admin"]):
+        # Log the attempt
+        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (name, username, email, message, status) VALUES ('SQL Injection Attempt', '{session['username']}', '{user['email']}', 'User tried to access the SQL query page.', 'opened')")
+        return redirect("/")
+    
+    if request.args.get("operation") == "" or request.args.get("query") == "":
+        return redirect("/dashboard")
 
-#assignticket(ticket_id)
-#reopenTicket(ticket_id)
-#closeTicket(ticket_id)
+    operation = request.args.get("operation")
+    query = request.args.get("query")
+    
+    print(f"Operation: {operation}, Query: {query}")
+    
+    if operation == "read":
+        result = sql.readSQL(query)
+    else:
+        result = sql.writeSQL(query)
+        
+    return {"result": result}
