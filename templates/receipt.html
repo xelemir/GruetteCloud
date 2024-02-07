@@ -84,8 +84,15 @@
             <p class="item_id" style="display: none;">merchant_name</p>
             <input type="text" class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ receipt["merchant_name"] }}">
 
-            <p style="margin-bottom: 30px;">{{ receipt["date"] }}</p>
-
+            <p class="item_original" style="margin-bottom: 30px;">{{ receipt["date"] }}</p>
+            <p class="item_id" style="display: none;">date</p>
+            <input id="date" type="datetime" class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ receipt["date"] }}">
+            <script>
+                var [day, month, year, hours, minutes] = "{{ receipt["date"] }}".match(/\d+/g).map(Number);
+                var jsDate = new Date(year, month - 1, day, hours, minutes);
+                document.getElementById("date").valueAsDate = jsDate;
+            </script>
+            
             <div class="edit-only" style="display: none; justify-content: flex-end; width: 100%; cursor: pointer; gap: 10px; margin-bottom: 20px; flex-direction: row;">
                 <div onclick="deleteReceipt()" style="flex-shrink: 0; gap: 10px; display: flex; align-items: center; justify-content: center; padding: 7px 15px; border-radius: 30px; background-color: var(--red); color: var(--white-color);">
                     <span class="material-symbols-outlined">delete</span>Delete
@@ -111,7 +118,7 @@
                 </div>
             {% endfor %}
             {% if items|length == 0 %}
-                <b style="margin: 15px;">Receipt does not contain any individual items.</b>
+                <b style="margin-bottom: 15px; text-align: center; text-wrap: balance">Receipt has no individual items.</b>
             {% endif %}
 
             <div id="add-item" class="edit-only" style="display: none; justify-content: flex-end; width: 100%; cursor: pointer; gap: 10px; margin-bottom: 20px; flex-direction: column; background-color: var(--box-shadow-color); padding: 10px; border-radius: 25px;">
@@ -212,6 +219,10 @@
         for (let i = 0; i < items.length; i++) {
             copy = items[i].innerHTML;
             copy = copy.replace(" €", "");
+            /*if (i == 1) {
+                console.log(item_edit[i].value);
+                console.log(items[i].innerHTML);
+            }*/
             if (copy != item_edit[i].value) {
                 items_changed.push({
                     "new": item_edit[i].value,

@@ -1,5 +1,6 @@
 import os
 import secrets
+from datetime import datetime
 from flask import Blueprint, abort, jsonify, session, redirect, render_template, request
 import requests
 
@@ -52,9 +53,7 @@ def expense_tracker():
                 receipts_date.append([receipt])
             else:
                 receipts_date[-1].append(receipt)
-                
-    print(len(receipts_date))
-    
+                    
     return render_template("expense_tracker.html", menu=th.user(session), amount_spent=amount_spent, monthly_budget=monthly_budget, percentage_spent=percentage_spent, receipts_date=receipts_date, amount_remaining=amount_remaining)
 
 @expense_tracker_route.route("/upload-receipt", methods=["GET", "POST"])
@@ -149,6 +148,9 @@ def edit_receipt(receipt_id):
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{float(item['new'])}' WHERE receipt_id = '{receipt_id}'")
         elif item["id"] == "payment_method":
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET payment_method = '{item['new']}' WHERE receipt_id = '{receipt_id}'")
+        elif item["id"] == "date":
+            date = datetime.strptime(item['new'], "%d.%m.%Y %H:%M")
+            sql.writeSQL(f"UPDATE gruettecloud_receipts SET date = '{date}' WHERE receipt_id = '{receipt_id}'")
         else:
             sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET item = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND item = '{item['old']}'")
             sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET price = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND price = '{item['old']}'")
