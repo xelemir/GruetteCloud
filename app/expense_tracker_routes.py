@@ -20,7 +20,7 @@ def expense_tracker():
     amount_spent = 0
     monthly_budget = sql.readSQL(f"SELECT finance_budget FROM gruttechat_users WHERE username = '{str(session['username'])}'")[0]["finance_budget"]
     amount_remaining = monthly_budget
-    receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(session['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW())")
+    receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(session['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW()) ORDER BY date DESC")
     for receipt in receipts_current_month:
         if receipt["is_income"]:
             if receipt["add_to_budget"]:
