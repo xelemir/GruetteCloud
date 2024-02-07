@@ -306,6 +306,8 @@
             return;
         }
 
+        item_price = item_price.replace(",", ".");
+
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/receipt/add_item/{{ receipt_id }}", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
