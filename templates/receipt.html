@@ -82,15 +82,17 @@
             
             <h1 id="merchant-name" class="item_original" style="margin-bottom: 10px; display: none; ">{{ receipt["merchant_name"] }}</h1>
             <p class="item_id" style="display: none;">merchant_name</p>
-            <input type="text" class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ receipt["merchant_name"] }}">
+            <input type="text" class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center; width: 100%;" value="{{ receipt["merchant_name"] }}">
 
             <p class="item_original" style="margin-bottom: 30px;">{{ receipt["date"] }}</p>
             <p class="item_id" style="display: none;">date</p>
-            <input id="date" type="datetime" class="item_edit" style="margin: 0px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); display: none; text-align: center;" value="{{ receipt["date"] }}">
+            <input type="datetime-local" id="date" class="item_edit" value="" style="margin-bottom: 20px; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); text-align: center; color: var(--text-color); padding: 10px 20px; cursor: pointer; width: 100%;" -webkit-appearance: none;>
+
             <script>
                 var [day, month, year, hours, minutes] = "{{ receipt["date"] }}".match(/\d+/g).map(Number);
-                var jsDate = new Date(year, month - 1, day, hours, minutes);
-                document.getElementById("date").valueAsDate = jsDate;
+                var jsDate = new Date(year, month - 1, day, hours + 1, minutes);
+                document.getElementById("date").value = jsDate.toISOString().slice(0, 16);
+                console.log(jsDate);
             </script>
             
             <div class="edit-only" style="display: none; justify-content: flex-end; width: 100%; cursor: pointer; gap: 10px; margin-bottom: 20px; flex-direction: row;">
@@ -219,11 +221,24 @@
         for (let i = 0; i < items.length; i++) {
             copy = items[i].innerHTML;
             copy = copy.replace(" €", "");
-            /*if (i == 1) {
-                console.log(item_edit[i].value);
-                console.log(items[i].innerHTML);
-            }*/
-            if (copy != item_edit[i].value) {
+            if (i == 1) {
+                var [day, month, year, hours, minutes] = items[i].innerHTML.match(/\d+/g).map(Number);
+                var jsDate = new Date(year, month - 1, day, hours + 1, minutes);
+                var x = jsDate.toISOString().slice(0, 16);
+
+                if (x != item_edit[i].value) {
+                    var date = new Date(item_edit[i].value);
+                    var formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+
+                    items_changed.push({
+                        "new": formattedDate,
+                        "old": items[i].innerHTML,
+                        "id": "date",
+                    });
+                }
+
+            }
+            else if (copy != item_edit[i].value) {
                 items_changed.push({
                     "new": item_edit[i].value,
                     "old": copy,
