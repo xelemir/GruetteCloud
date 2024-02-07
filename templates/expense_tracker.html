@@ -142,14 +142,12 @@
         
         {% if receipts_date %}
             <div style="width: 300px; max-width: 80vw;">
-                <p style="margin-top: 35px; margin-bottom: 30px; text-align: center; font-weight: bold;">Transaction Overview</p>
+                <p style="margin-top: 35px; margin-bottom: 20px; text-align: center; font-weight: bold;">Transaction Overview</p>
             </div>
             <div style="width: 300px; max-width: 80vw;">
                 {% for receipt_date_block in receipts_date %}
-                    <div style="border-top: 1px solid var(--box-shadow-color); margin-bottom: 25px;">
-                        <div style="display: flex; align-items: center;">
-                            <p style="font-size: 0.9em; margin-top: -10px; color: margin-bottom: 5px; text-align: left; margin-left: 5px; background-color: var(--background-color); padding: 0 5px; display: block;">{{ receipt_date_block[0]["date"] }}</p>
-                        </div>
+                    <div style="border-bottom: 1px solid var(--box-shadow-color); padding-bottom: 5px;">
+                        <p style=" margin-top: 15px; margin-bottom: 0px; text-align: left; margin-left: 10px;">{{ receipt_date_block[0]["date"] }}</p>
                         {% for receipt in receipt_date_block %}
                             <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; padding: 8px 10px; cursor: pointer; color: var(--text-color); text-decoration: none;">
                                 <p style="flex: 1; margin: 0; text-align: left; display: flex; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ receipt["merchant_name"] }}</p>

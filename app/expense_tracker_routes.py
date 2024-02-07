@@ -121,6 +121,11 @@ def receipt(receipt_id):
     
     items = sql.readSQL(f"SELECT * FROM gruettecloud_receipt_items WHERE receipt_id = '{receipt_id}'")
     receipt[0]["date"] = receipt[0]["date"].strftime("%d.%m.%Y %H:%M")
+    
+    for item in items:
+        item["price"] = f"{float(item['price']):.2f}".replace(".", ",")
+        
+    receipt[0]["total"] = f"{float(receipt[0]['total']):.2f}".replace(".", ",")
 
     return render_template("receipt.html", menu=th.user(session), receipt_id=receipt_id, receipt=receipt[0], items=items)
 
