@@ -147,8 +147,8 @@ def edit_receipt(receipt_id):
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET merchant_name = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND merchant_name = '{item['old']}'")
         elif item["id"] == "total":
             try:
-                total = float("{:.2f}".format(item["new"].replace(",", ".")))
-            except:
+                total = "{:.2f}".format(float(item["new"].replace(",", ".")))
+            except Exception as e:
                 total = 0
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{total}' WHERE receipt_id = '{receipt_id}'")
         elif item["id"] == "payment_method":
@@ -159,12 +159,16 @@ def edit_receipt(receipt_id):
         else:
             sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET item = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND item = '{item['old']}'")
             try:
-                item["new"] = float("{:.2f}".format(item["new"].replace(",", ".")))
-                item["old"] = float("{:.2f}".format(item["old"].replace(",", ".")))
-            except:
+                item["new"] = "{:.2f}".format(float(item["new"].replace(",", ".")))
+                item["old"] = "{:.2f}".format(float(item["old"].replace(",", ".")))
+                
+                print(item["new"], item["old"])
+                
+                sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET price = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND price = '{item['old']}'")
+            except Exception as e:
+                print(e)
                 return jsonify({"status": "success"})
             
-            sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET price = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND price = '{item['old']}'")
 
     return jsonify({"status": "success"})
 
@@ -221,7 +225,8 @@ def add_item(receipt_id):
         return jsonify({"status": "error", "message": "Invalid price"})
     
     request_data = request.get_json()
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{request_data['item']}', '{request_data['price']}')")
+    price = "{:.2f}".format(float(price.replace(",", ".")))
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{request_data['item']}', '{price}')")
     
     return jsonify({"status": "success"})
     
