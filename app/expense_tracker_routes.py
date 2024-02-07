@@ -147,10 +147,10 @@ def edit_receipt(receipt_id):
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET merchant_name = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND merchant_name = '{item['old']}'")
         elif item["id"] == "total":
             try:
-                total = float(total)
+                total = float("{:.2f}".format(item["new"].replace(",", ".")))
             except:
                 total = 0
-            sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{float(item['new'])}' WHERE receipt_id = '{receipt_id}'")
+            sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{total}' WHERE receipt_id = '{receipt_id}'")
         elif item["id"] == "payment_method":
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET payment_method = '{item['new']}' WHERE receipt_id = '{receipt_id}'")
         elif item["id"] == "date":
@@ -158,6 +158,12 @@ def edit_receipt(receipt_id):
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET date = '{date}' WHERE receipt_id = '{receipt_id}'")
         else:
             sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET item = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND item = '{item['old']}'")
+            try:
+                item["new"] = float("{:.2f}".format(item["new"].replace(",", ".")))
+                item["old"] = float("{:.2f}".format(item["old"].replace(",", ".")))
+            except:
+                return jsonify({"status": "success"})
+            
             sql.writeSQL(f"UPDATE gruettecloud_receipt_items SET price = '{item['new']}' WHERE receipt_id = '{receipt_id}' AND id = '{item['id']}' AND price = '{item['old']}'")
 
     return jsonify({"status": "success"})
