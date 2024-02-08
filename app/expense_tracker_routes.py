@@ -148,9 +148,9 @@ def edit_receipt(receipt_id):
         elif item["id"] == "total":
             try:
                 total = "{:.2f}".format(float(item["new"].replace(",", ".")))
+                sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{total}' WHERE receipt_id = '{receipt_id}'")
             except Exception as e:
-                total = 0
-            sql.writeSQL(f"UPDATE gruettecloud_receipts SET total = '{total}' WHERE receipt_id = '{receipt_id}'")
+                print(e)
         elif item["id"] == "payment_method":
             sql.writeSQL(f"UPDATE gruettecloud_receipts SET payment_method = '{item['new']}' WHERE receipt_id = '{receipt_id}'")
         elif item["id"] == "date":
@@ -200,9 +200,8 @@ def delete_item(receipt_id):
         abort(404)
     elif receipt[0]["username"] != session["username"]:
         abort(403)
-    
-    request_data = request.get_json()
-    sql.writeSQL(f"DELETE FROM gruettecloud_receipt_items WHERE receipt_id = '{receipt_id}' AND id = '{request_data['id']}'")
+        
+    sql.writeSQL(f"DELETE FROM gruettecloud_receipt_items WHERE receipt_id = '{receipt_id}'")
     
     return jsonify({"status": "success"})
 
@@ -238,8 +237,13 @@ def create_expense():
     request_data = request.get_json()
     sql = SQLHelper.SQLHelper()
     receipt_id = secrets.token_hex(8)
+    
+    try:
+        price = "{:.2f}".format(float(request_data["price"].replace(",", ".")))
+    except:
+        return jsonify({"status": "error", "message": "Invalid price"})
 
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}', '{request_data['payment_method']}', {False})")
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(session['username'])}', '{request_data['title']}', '{price}', NOW(), '{receipt_id}', '{request_data['payment_method']}', {False})")
 
     return jsonify({"status": "success"})
 
@@ -252,8 +256,13 @@ def create_income():
     request_data = request.get_json()
     sql = SQLHelper.SQLHelper()
     receipt_id = secrets.token_hex(8)
+    
+    try:
+        price = "{:.2f}".format(float(request_data["price"].replace(",", ".")))
+    except:
+        return jsonify({"status": "error", "message": "Invalid price"})
 
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(session['username'])}', '{request_data['title']}', '{request_data['price']}', NOW(), '{receipt_id}', '{request_data['payment_method']}', {True}, {request_data['add_to_budget']})")
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(session['username'])}', '{request_data['title']}', '{price}', NOW(), '{receipt_id}', '{request_data['payment_method']}', {True}, {request_data['add_to_budget']})")
 
     return jsonify({"status": "success"})
 

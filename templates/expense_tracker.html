@@ -24,7 +24,7 @@
             flex-direction: column;
         }
 
-        input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select, textarea {
+        input[type="text"], input[type="email"], input[type="number"], select, textarea {
             width: 100%;
             margin: 0;
             margin-bottom: 15px;
@@ -35,6 +35,7 @@
             color: var(--text-color);
             padding: 10px;
             resize: none;
+            -webkit-appearance: none;
         }
 
         .pie-chart {
@@ -116,6 +117,31 @@
                 <div id="pie-chart-text-bottom" style="font-size: 12px;">this month.</div>
             </div>
         </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 300px; max-width: 80vw; display: flex; flex-direction: row; gap: 20px; margin-top: 20px;">
+                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="openMenuBudget()">
+                    <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined align-icons-center">credit_card_gear</span>
+                    </div>
+                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Change Budget</p>
+                </div>
+                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="toggleButtons()">
+                    <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined align-icons-center">add</span>
+                    </div>
+                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Add Transaction</p>
+                </div>
+                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="togglePieChart()">
+                    <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined align-icons-center">query_stats</span>
+                    </div>
+                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Change View</p>
+                </div>
+            </div>
+        </div>
+        
+        
 
         <div style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px;">
             <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
@@ -219,6 +245,15 @@
         </select>
         <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="addIncome()">Add Income</button>
     </div>
+
+    <div id="budgetMenu" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: none;">
+        <button style="position: absolute; top: 15px; right: 15px; cursor: pointer; background: none; border: none; font-size: 18px; color: var(--text-color);" onclick="closeMenuBudget()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <h2 style="margin-bottom: 30px;">Change Budget</h2>
+        <input type="number" id="budget" style="margin: 0; display: flex; margin-top: 10px;" placeholder="Monthly Budget" min="1" value="{{ monthly_budget }}">
+        <button class="button-blue edit-only" style="margin-top: 10px; width: 100%;" onclick="changeBudget()">Change Budget</button>
+    </div>
     
     <script>
         function closeMenuExpense() {
@@ -236,6 +271,14 @@
         function openMenuIncome() {
             document.getElementById('overview').style.display = 'none';
             document.getElementById('incomeMenu').style.display = 'flex';
+        }
+        function closeMenuBudget() {
+            document.getElementById('budgetMenu').style.display = 'none';
+            document.getElementById('overview').style.display = 'flex';
+        }
+        function openMenuBudget() {
+            document.getElementById('overview').style.display = 'none';
+            document.getElementById('budgetMenu').style.display = 'flex';
         }
 
         function addExpense() {
@@ -351,6 +394,29 @@
             document.getElementById("overview").style.display = "flex";
             document.getElementById("loading").style.display = "none";
         });
+    }
+
+    function changeBudget() {
+        var budget = document.getElementById("budget").value;
+        if (budget == "") {
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/change_budget", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    window.location.href = "/finance";
+                } else {
+                    console.error("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        xhr.send(JSON.stringify({"budget": budget}));
+    
     }
 </script>
 
