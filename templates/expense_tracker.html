@@ -9,7 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
         .content {
             display: flex;
             flex-direction: column;
@@ -118,31 +126,98 @@
             </div>
         </div>
 
+        <div id="budgetChartDiv" class="chart-container" style="display: none; width: 400px; max-width: 80vw; margin-top: 20px;">
+            <canvas id="budgetChart"></canvas>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var monthLabels = [];
+                var expensesData = [];
+
+                {% for receipt_date_block in receipts_date %}
+                    monthLabels.push("{{ receipt_date_block[0]["date"] }}");
+                    var total = 0;
+                    {% for receipt in receipt_date_block %}
+                        if ({{ receipt["is_income"] }}) {
+                            total -= {{ receipt["total"] }};
+                        } else {
+                            total += {{ receipt["total"] }};
+                        }
+                    {% endfor %}
+                    expensesData.push(total);
+                {% endfor %}
+
+
+                monthLabels.reverse();
+                expensesData.reverse();
+
+
+                // Calculate cumulative expenses
+                availableMoneyByDay = [];
+                budget = {{ monthly_budget }};
+
+                for (var i = 0; i < expensesData.length; i++) {
+                    if (i === 0) {
+                        availableMoneyByDay.push(budget - expensesData[i]);
+                    } else {
+                        availableMoneyByDay.push(availableMoneyByDay[i - 1] - expensesData[i]);
+                    }
+                }
+    
+                // Calculate available money for the month
+    
+                // Get the chart canvas
+                const ctx = document.getElementById('budgetChart').getContext('2d');
+    
+                // Create the chart
+                const budgetChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: monthLabels,
+                        datasets: [{
+                            label: "Expenses",
+                            data: availableMoneyByDay,
+                            borderColor: '#bbb2e9',
+                            fill: false,
+    
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                    },
+                });
+            });
+        </script>
+
         <div style="display: flex; flex-direction: column; align-items: center;">
             <div style="width: 300px; max-width: 80vw; display: flex; flex-direction: row; gap: 20px; margin-top: 20px;">
                 <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="openMenuBudget()">
                     <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                         <span class="material-symbols-outlined align-icons-center">credit_card_gear</span>
                     </div>
-                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Change Budget</p>
+                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Modify Budget</p>
                 </div>
-                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="toggleButtons()">
-                    <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <span class="material-symbols-outlined align-icons-center">add</span>
-                    </div>
-                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Add Transaction</p>
-                </div>
-                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="togglePieChart()">
+                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="toggleGraph()">
                     <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                         <span class="material-symbols-outlined align-icons-center">query_stats</span>
                     </div>
                     <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Change View</p>
                 </div>
+                <div style="width: 33%; display: flex; flex-direction: column; align-items: center; color: var(--white-color); border-radius: 8px; cursor: pointer;" onclick="toggleSearchTransaction()">
+                    <div style="background-color: var(--primary-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined align-icons-center">search</span>
+                    </div>
+                    <p style="margin-top: 10px; color: var(--text-color); text-align: center;">Search Transactions</p>
+                </div>
             </div>
         </div>
         
-        
-
         <div style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px;">
             <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
                 <div onclick="openMenuIncome()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--green);">
@@ -166,26 +241,39 @@
             </div>
         </div>
         
-        {% if receipts_date %}
-            <div style="width: 300px; max-width: 80vw;">
-                <p style="margin-top: 35px; margin-bottom: 20px; text-align: center; font-weight: bold;">Transaction Overview</p>
+        <div id="transactions" style="display: block;">
+            {% if receipts_date %}
+                <div style="width: 300px; max-width: 80vw;">
+                    <p style="margin-top: 35px; margin-bottom: 30px; text-align: center; font-weight: bold;">Transaction Overview</p>
+                </div>
+                <div style="width: 300px; max-width: 80vw;">
+                    {% for receipt_date_block in receipts_date %}
+                        <div style="border-bottom: 1px solid var(--box-shadow-color); padding-bottom: 5px;">
+                            <p style=" margin-top: 15px; margin-bottom: 0px; text-align: left; margin-left: 10px;">{{ receipt_date_block[0]["date"] }}</p>
+                            {% for receipt in receipt_date_block %}
+                                <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; padding: 8px 10px; cursor: pointer; color: var(--text-color); text-decoration: none;">
+                                    <p style="flex: 1; margin: 0; text-align: left; display: flex; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ receipt["merchant_name"] }}</p>
+                                    <p style="margin: 0; font-weight: bold; display: flex;{% if not receipt["is_income"] %} color: var(--red);{% else %} color: var(--green);{% endif %}">{% if not receipt["is_income"] %}-{% else %}+{% endif %}{{ receipt["total"] }} €</p>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">No transactions this month.</p>
+            {% endif %}
+        </div>
+
+        <div id="search-transactions" class="animate__animated animate__zoomIn" style="display: none; width: 300px; max-width: 80vw; flex-direction: row; align-items: center; justify-content: center; margin-top: 30px;">
+            <input type="text" id="search-input" style="margin: 0; display: flex; margin-top: 10px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); padding: 10px; resize: none; -webkit-appearance: none;" placeholder="Search for a transaction">
+            <div style="position: absolute; top: 14px; right: 4px; padding: 4px; cursor: pointer; background-color: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="toggleSearchTransaction()">
+                <span class="material-symbols-outlined" style="color: var(--white-color);">close</span>
             </div>
-            <div style="width: 300px; max-width: 80vw;">
-                {% for receipt_date_block in receipts_date %}
-                    <div style="border-bottom: 1px solid var(--box-shadow-color); padding-bottom: 5px;">
-                        <p style=" margin-top: 15px; margin-bottom: 0px; text-align: left; margin-left: 10px;">{{ receipt_date_block[0]["date"] }}</p>
-                        {% for receipt in receipt_date_block %}
-                            <a href="/receipt/{{ receipt["receipt_id"] }}" style="display: flex; justify-content: space-between; width: 100%; gap: 10px; padding: 8px 10px; cursor: pointer; color: var(--text-color); text-decoration: none;">
-                                <p style="flex: 1; margin: 0; text-align: left; display: flex; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ receipt["merchant_name"] }}</p>
-                                <p style="margin: 0; font-weight: bold; display: flex;{% if not receipt["is_income"] %} color: var(--red);{% else %} color: var(--green);{% endif %}">{% if not receipt["is_income"] %}-{% else %}+{% endif %}{{ receipt["total"] }} €</p>
-                            </a>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p style="margin-top: 35px; margin-bottom: 15px; text-align: left; margin-left: 10px; font-weight: bold;">No transactions this month.</p>
-        {% endif %}
+        </div>
+
+        <div id="search-results" style="width: 300px; max-width: 80vw; margin-top: 20px;">
+        </div>
+
     </div>
 
     <div id="loading" style="position: fixed; top: 60px; left: 0; width: 100%; height: calc(100% - 60px); display: none;">
@@ -281,6 +369,20 @@
             document.getElementById('budgetMenu').style.display = 'flex';
         }
 
+        function toggleSearchTransaction() {
+            var searchTransactions = document.getElementById('search-transactions');
+            var transactions = document.getElementById('transactions');
+            if (searchTransactions.style.display === 'none') {
+                searchTransactions.style.display = 'flex';
+                transactions.style.display = 'none';
+            } else {
+                searchTransactions.style.display = 'none';
+                document.getElementById('search-input').value = "";
+                document.getElementById('search-results').innerHTML = "";
+                transactions.style.display = 'block';
+            }
+        }
+
         function addExpense() {
             var title = document.getElementById("title-expense").value;
             var price = document.getElementById("price-expense").value;
@@ -361,6 +463,18 @@
                 document.getElementById('pie-chart-text-top').innerHTML = 'You have spent';
                 document.getElementById('pie-chart-text-center').innerHTML = '{{ amount_spent }} €';
                 document.getElementById('pie-chart-text-bottom').innerHTML = 'this month.';
+            }
+        }
+
+        function toggleGraph() {
+            var graph = document.getElementById('budgetChartDiv');
+            var pieChart = document.getElementsByClassName('pie-chart')[0];
+            if (graph.style.display === 'none') {
+                graph.style.display = 'block';
+                pieChart.style.display = 'none';
+            } else {
+                graph.style.display = 'none';
+                pieChart.style.display = 'block';
             }
         }
     </script>
@@ -454,6 +568,95 @@
     });
     
     darkModeToggle.style.cursor = 'pointer';
+</script>
+
+
+<script>
+    // ajax request to get the search results
+    document.getElementById("search-input").addEventListener("input", function() {
+        var searchInput = document.getElementById("search-input").value;
+        if (searchInput.length > 0) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/search_transactions?query=" + encodeURIComponent(searchInput));
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var searchResults = document.getElementById("search-results");
+                        searchResults.innerHTML = "";
+                        var results = JSON.parse(xhr.responseText);
+
+                        if (results["receipts"].length === 0) {
+                            searchResults.innerHTML = "No search results.";
+                            return;
+                        }
+
+                        for (var i = 0; i < results["receipts"].length; i++) {
+                            // hr with date 
+                            if (i > 0) {
+                                var hr = document.createElement("hr");
+                                hr.style.marginTop = "5px";
+                                hr.style.marginBottom = "10px";
+                                searchResults.appendChild(hr);
+                            }
+                            var date = document.createElement("p");
+                            date.innerHTML = results["receipts"][i][0]["date"];
+                            date.style.marginTop = "0";
+                            date.style.marginBottom = "0";
+                            date.style.textAlign = "left";
+                            date.style.marginLeft = "10px";
+                            searchResults.appendChild(date);
+
+                            // transactions
+                            for (var j = 0; j < results["receipts"][i].length; j++) {
+                                var transaction = document.createElement("a");
+                                transaction.href = "/receipt/" + results["receipts"][i][j]["receipt_id"];
+                                transaction.style.display = "flex";
+                                transaction.style.justifyContent = "space-between";
+                                transaction.style.width = "100%";
+                                transaction.style.gap = "10px";
+                                transaction.style.padding = "8px 10px";
+                                transaction.style.cursor = "pointer";
+                                transaction.style.color = "var(--text-color)";
+                                transaction.style.textDecoration = "none";
+                                var merchant = document.createElement("p");
+                                merchant.style.flex = "1";
+                                merchant.style.margin = "0";
+                                merchant.style.textAlign = "left";
+                                merchant.style.display = "flex";
+                                merchant.style.whiteSpace = "nowrap";
+                                merchant.style.overflow = "hidden";
+                                merchant.style.textOverflow = "ellipsis";
+                                merchant.innerHTML = results["receipts"][i][j]["merchant_name"];
+                                var total = document.createElement("p");
+                                total.style.margin = "0";
+                                total.style.fontWeight = "bold";
+                                total.style.display = "flex";
+                                if (results["receipts"][i][j]["is_income"]) {
+                                    total.style.color = "var(--green)";
+                                    total.innerHTML = "+" + results["receipts"][i][j]["total"] + " €";
+                                } else {
+                                    total.style.color = "var(--red)";
+                                    total.innerHTML = "-" + results["receipts"][i][j]["total"] + " €";
+                                }
+                                transaction.appendChild(merchant);
+                                transaction.appendChild(total);
+                                searchResults.appendChild(transaction);
+                            }
+
+
+                        }
+                        
+                        
+                    } else {
+                        console.error("Request failed with status: " + xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+        } else {
+            document.getElementById("search-results").innerHTML = "";
+        }
+    });
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>

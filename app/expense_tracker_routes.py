@@ -283,4 +283,32 @@ def change_budget():
 
     return jsonify({"status": "success"})
     
+@expense_tracker_route.route("/search_transactions")
+def search_transactions():
+    if "username" not in session:
+        return redirect("/")
+    
+    query = request.args.get("query")
+    
+    sql = SQLHelper.SQLHelper()
+    receipts = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{session['username']}' AND merchant_name LIKE '%{query}%'")
+    
+    # Format the date
+    for receipt in receipts:
+        receipt["date"] = receipt["date"].strftime("%d.%m.%Y")
+        receipt["total"] = f"{float(receipt['total']):.2f}".replace(".", ",")
+    
+    # 2D list to group receipts by date
+    receipts_date = []
+    for receipt in receipts:
+        if not receipts_date:
+            receipts_date.append([receipt])
+        else:
+            last_date = receipts_date[-1][0]["date"] if receipts_date[-1] else None
 
+            if receipt["date"] != last_date:
+                receipts_date.append([receipt])
+            else:
+                receipts_date[-1].append(receipt)
+        
+    return jsonify({"status": "success", "receipts": receipts_date})

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="budgetChart"></canvas>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const monthLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+            const expensesData = [200, 150, 100, 50];
+
+            // Calculate available money for the month
+            const totalBudget = 1000; // Replace with your total budget
+
+            // Get the chart canvas
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+
+            // Create the chart
+            const budgetChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [{
+                        label: "Expenses",
+                        data: expensesData,
+                        borderColor: '#bbb2e9',
+                        fill: false,
+
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                },
+            });
+        });
+    </script>
+</body>
+</html>
