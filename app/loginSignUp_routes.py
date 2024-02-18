@@ -10,7 +10,7 @@ loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=temp
 
 th = TemplateHelper.TemplateHelper()
 
-@loginSignUp_route.route('/login', methods=['POST', 'GET'])
+@loginSignUp_route.route("/login", methods=['POST', 'GET'])
 def login():
     """ Post route to login. If 2fa is enabled, redirect to 2fa page and set session variable username_2fa instead of username
         as username is used to entirly log the user in.
