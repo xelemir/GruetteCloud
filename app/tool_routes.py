@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from geopy.geocoders import Nominatim
 from threading import Thread
+from tgtg import TgtgClient
+
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
 from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail
@@ -567,3 +569,21 @@ def zuffenhausen_modify():
         application_id = ticket_message[0]["message"].split("#")[2]
         SQLHelper.SQLHelper().writeSQL(f"UPDATE zuffenhausen_visits SET note = '{request.args.get('note')}' WHERE application_id = '{application_id}'")
         return redirect("/dashboard")
+    
+@tool_route.route("/api/v1/tgtg", methods=["GET"])
+def tgtg():
+    if "username" not in session: abort(403)
+    username = session["username"]
+    
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    if user == [] or bool(user[0]["is_admin"]) == False: abort(403)
+    
+    if request.args.get("action") is None or request.args.get("id") is None or request.args.get("access_token") is None or request.args.get("refresh_token") is None or request.args.get("user_id") is None or request.args.get("cookie") is None: abort(400)
+    if request.args.get("action") == "accept":
+        client = TgtgClient(access_token=request.args.get("access_token"), refresh_token=request.args.get("refresh_token"), user_id=request.args.get("user_id"), cookie=request.args.get("cookie"))
+        client.abort_order(request.args.get("id"))
+        return jsonify({"success": True})
+    
+    else:
+        return jsonify({"success": False})
