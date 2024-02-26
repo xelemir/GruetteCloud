@@ -570,8 +570,15 @@ def zuffenhausen_modify():
         SQLHelper.SQLHelper().writeSQL(f"UPDATE zuffenhausen_visits SET note = '{request.args.get('note')}' WHERE application_id = '{application_id}'")
         return redirect("/dashboard")
     
-@tool_route.route("/api/v1/tgtg", methods=["GET"])
+@tool_route.route("/api/v1/tgtg", methods=["GET", "POST"])
 def tgtg():
+    if request.args.get("action") == "sync_wanted_items":
+        """if request.args.get("email") is None: abort(400)
+        sql = SQLHelper.SQLHelper()
+        items = sql.readSQL(f"SELECT * FROM gruettecloud_tgtg_wanted WHERE email = '{request.args.get('email')}'")
+        for item in items:"""
+        return jsonify({"success": True})
+            
     if "username" not in session: abort(403)
     username = session["username"]
     
@@ -584,6 +591,7 @@ def tgtg():
         client = TgtgClient(access_token=request.args.get("access_token"), refresh_token=request.args.get("refresh_token"), user_id=request.args.get("user_id"), cookie=request.args.get("cookie"))
         client.abort_order(request.args.get("id"))
         return jsonify({"success": True})
-    
     else:
         return jsonify({"success": False})
+    
+    
