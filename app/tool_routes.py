@@ -584,7 +584,7 @@ def tgtg():
     elif request.args.get("action") == "sync_wanted_items_set":
         if request.args.get("email") is None or request.args.get("item_id") is None or request.args.get("is_wanted") is None: abort(400)
         sql = SQLHelper.SQLHelper()
-        items = sql.writeSQL(f"UPDATE gruettecloud_tgtg_wanted SET is_wanted = {bool(request.args.get('is_wanted'))} WHERE email = '{request.args.get('email')}' AND item_id = '{request.args.get('item_id')}'")
+        items = sql.writeSQL(f"UPDATE gruettecloud_tgtg_wanted SET is_wanted = {bool(int(request.args.get('is_wanted')))} WHERE email = '{request.args.get('email')}' AND item_id = '{request.args.get('item_id')}'")
         return jsonify({"success": True})
     
     elif request.args.get("action") == "sync_wanted_items_add":
