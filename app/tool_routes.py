@@ -572,33 +572,6 @@ def zuffenhausen_modify():
     
 @tool_route.route("/api/v1/tgtg", methods=["GET", "POST"])
 def tgtg():
-    if request.args.get("action") == "sync_wanted_items_get":
-        if request.args.get("email") is None: abort(400)
-        sql = SQLHelper.SQLHelper()
-        items_list = []
-        items = sql.readSQL(f"SELECT * FROM gruettecloud_tgtg_wanted WHERE email = '{request.args.get('email')}'")
-        for item in items:
-            items_list.append({"item_id": item["item_id"], "is_wanted": bool(item["is_wanted"])})
-        return jsonify(items_list)
-
-    elif request.args.get("action") == "sync_wanted_items_set":
-        if request.args.get("email") is None or request.args.get("item_id") is None or request.args.get("is_wanted") is None: abort(400)
-        sql = SQLHelper.SQLHelper()
-        items = sql.writeSQL(f"UPDATE gruettecloud_tgtg_wanted SET is_wanted = {bool(int(request.args.get('is_wanted')))} WHERE email = '{request.args.get('email')}' AND item_id = '{request.args.get('item_id')}'")
-        return jsonify({"success": True})
-    
-    elif request.args.get("action") == "sync_wanted_items_add":
-        if request.args.get("email") is None or request.args.get("item_id") is None: abort(400)
-        sql = SQLHelper.SQLHelper()
-        items = sql.writeSQL(f"INSERT INTO gruettecloud_tgtg_wanted (email, item_id, is_wanted) VALUES ('{request.args.get('email')}', '{request.args.get('item_id')}', {False})")
-        return jsonify({"success": True})
-    
-    elif request.args.get("action") == "sync_wanted_items_remove":
-        if request.args.get("email") is None or request.args.get("item_id") is None: abort(400)
-        sql = SQLHelper.SQLHelper()
-        items = sql.writeSQL(f"DELETE FROM gruettecloud_tgtg_wanted WHERE email = '{request.args.get('email')}' AND item_id = '{request.args.get('item_id')}'")
-        return jsonify({"success": True})
-        
     if "username" not in session: abort(403)
     username = session["username"]
     
