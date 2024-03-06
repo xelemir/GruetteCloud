@@ -54,9 +54,12 @@ class OpenAIWrapper:
         # Inject the AI personality into the conversation log
         conversation_log.insert(0, {"role": "system", "content": ai_personality})
         
-        # Get the response from the GPT-4 API and append it to the conversation log
-        response = client.chat.completions.create(model="gpt-4", messages=conversation_log, max_tokens=max_tokens)
-        conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
+        try:
+            # Get the response from the GPT-4 API and append it to the conversation log
+            response = client.chat.completions.create(model="gpt-4", messages=conversation_log, max_tokens=max_tokens)
+            conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
+        except:
+            conversation_log.append({"role": "assistant", "content": "I'm sorry, I'm having trouble processing your request. Please try again later."})
         
         # Remove the AI personality from the conversation log
         conversation_log.pop(0)
