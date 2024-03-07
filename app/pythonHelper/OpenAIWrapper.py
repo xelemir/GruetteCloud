@@ -44,8 +44,11 @@ class OpenAIWrapper:
         # Allow the AI to use more tokens if the user has premium
         if has_premium == False:
             max_tokens = 100
+            model = "gpt-3.5-turbo"
         else:
             max_tokens = 1000
+            model = "gpt-4-0125-preview"
+
         
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
@@ -56,7 +59,7 @@ class OpenAIWrapper:
         
         try:
             # Get the response from the GPT-4 API and append it to the conversation log
-            response = client.chat.completions.create(model="gpt-4", messages=conversation_log, max_tokens=max_tokens)
+            response = client.chat.completions.create(model=model, messages=conversation_log, max_tokens=max_tokens)
             conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
         except:
             conversation_log.append({"role": "assistant", "content": "I'm sorry, I'm having trouble processing your request. Please try again later."})
