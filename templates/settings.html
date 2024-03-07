@@ -257,6 +257,9 @@
                     {% if selected_personality != 'Lorde'%}
                         <option value="/change_ai_personality/Lorde">Lorde</option>
                     {% endif %}
+                    {% if selected_personality != 'Taco'%}
+                        <option value="/change_ai_personality/Taco">Taco, the otter</option>
+                    {% endif %}
                 </select>
                 {% if display_back_to_ai %}
                     <a href="/ai/chat" style="text-decoration: none;">
