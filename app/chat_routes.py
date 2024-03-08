@@ -273,8 +273,10 @@ def ai_chat(action):
 
             return jsonify({"chat_history": chat_response})
 
+        sql = SQLHelper.SQLHelper()
+        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]        
         # Reverse chat history to show most recent messages first and render template
-        return render_template("aichat.html", chat_history=chat_history[::-1])
+        return render_template("aichat.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
     
 @chat_route.route('/chat/delete/<recipient>')
 def delete_chat(recipient):

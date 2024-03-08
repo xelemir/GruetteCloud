@@ -327,12 +327,44 @@ def change_ai_personality(ai_personality):
         
     if user == []:
         return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
-    elif bool(user[0]["has_premium"]) == True:
-        sql.writeSQL(f"UPDATE gruttechat_users SET ai_personality = '{str(ai_personality)}' WHERE username = '{str(session['username'])}'")
-        session.pop("chat_history", None)
-        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error=f"MyAI is set to {ai_personality}", selected_personality=ai_personality, has_premium=True, display_back_to_ai=True)
+    #elif bool(user[0]["has_premium"]) == True:
+    sql.writeSQL(f"UPDATE gruttechat_users SET ai_personality = '{str(ai_personality)}' WHERE username = '{str(session['username'])}'")
+    session.pop("chat_history", None)
+    return redirect(f"/ai/chat")
+    #else:
+    #    return redirect(f"/premium")
+    
+@settings_route.route("/changeAiModel/<model>")
+def change_ai_model(model):
+    """ Route to change the user's MyAI model
+
+    Args:
+        model (str): The model to change to
+
+    Returns:
+        HTML: Rendered HTML page
+    """
+
+    if "username" not in session:
+        return redirect(f"/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    
+    if user == []:
+        return redirect("/logout")
+    elif user[0]["has_premium"] == False:
+        return redirect(f"/premium")
+    
+    if model == "gpt3":
+        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt3' WHERE username = '{str(session['username'])}'")
+    elif model == "gpt4":
+        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt4' WHERE username = '{str(session['username'])}'")
     else:
-        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error="Please purchase GrütteCloud PLUS to change your MyAI personality!", selected_personality="Default", has_premium=False)
+        return redirect(f"/settings")
+    
+    return redirect(f"/ai/chat")
         
 @settings_route.route("/ai-preferences", methods=["GET"])
 def ai_preferences():

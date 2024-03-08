@@ -258,7 +258,13 @@
                         <option value="/change_ai_personality/Lorde">Lorde</option>
                     {% endif %}
                     {% if selected_personality != 'Taco'%}
-                        <option value="/change_ai_personality/Taco">Taco, the otter</option>
+                        <option value="/change_ai_personality/Taco">Taco, the Otter</option>
+                    {% endif %}
+                    {% if selected_personality != 'Anakin'%}
+                        <option value="/change_ai_personality/Anakin">Anakin Skywalker</option>
+                    {% endif %}
+                    {% if selected_personality != 'BattleDroid'%}
+                        <option value="/change_ai_personality/BattleDroid">B1 Battle Droid</option>
                     {% endif %}
                 </select>
                 {% if display_back_to_ai %}

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -64,22 +65,22 @@
     </style>
 
 </head>
-<body>
-    <div class="header">
+<body style="padding: 10px;">
+    <div class="header" style="margin-bottom: 10px;">
         <div style="padding: 10px;">
             <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="centered-content" style="display: flex; align-items: center;">
             <h1 style="display: flex; align-items: center;">
                 <img src="https://www.gruettecloud.com/static/profile_pictures/ai.png" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
-                MyAI
+                {{ selected_personality }}
             </h1>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <a href="/ai-preferences" class="white-button-purple-on-hover" title="Change MyAI personality"><span class="material-symbols-outlined">temp_preferences_custom</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/ai/restart" title="Restart MyAI" class="logout"><span class="material-symbols-outlined">delete_forever</span></a>
+            <span onclick="toggleAiPreferences()" title="AI Preferences" class="white-button-purple-on-hover" style="cursor: pointer; text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">temp_preferences_custom</span></span>
         </div>
     </div>
+    
 
     <div class="chat-messages">
         {% for message in chat_history %}
@@ -105,6 +106,63 @@
         </form>
     </div>
     <div id="cookie-banner"></div>
+
+
+    <div id="ai-preferences" class="animate__animated animate__slideInUp" style="position: fixed; bottom: 0; left: 20px; width: calc(100% - 40px); padding: 20px; background-color: var(--background-color); border: 1px solid var(--box-shadow-color); display: none; justify-content: space-between; align-items: center; border-radius: 20px 20px 0 0;">
+        <div onclick="toggleAiPreferences()" style="position: absolute; top: 20px; right: 20px; cursor: pointer;">
+            <span class="material-symbols-outlined">close</span>
+        </div>
+
+        <h1 style="margin-bottom: 30px;">AI Preferences</h1>
+
+        <p style="margin-bottom: 10px; font-size: 0.9em;">Personality:</p>
+        <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="-webkit-appearance: none; width: 100%; padding-left: 20px; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color);">
+            {% if selected_personality != 'Default' %}
+            <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
+            {% endif %}
+            <option value="/change_ai_personality/Default">Default</option>
+            {% if selected_personality != 'UwuGirl'%}
+                <option value="/change_ai_personality/UwuGirl">Uwu Girl (NSFW)</option>
+            {% endif %}
+            {% if selected_personality != 'Pirate'%}
+                <option value="/change_ai_personality/Pirate">Pirate</option>
+            {% endif %}
+            {% if selected_personality != 'Backus'%}
+                <option value="/change_ai_personality/Backus">Backus (BNF inventor)</option>
+            {% endif %}
+            {% if selected_personality != 'Lorde'%}
+                <option value="/change_ai_personality/Lorde">Lorde</option>
+            {% endif %}
+            {% if selected_personality != 'Taco'%}
+                <option value="/change_ai_personality/Taco">Taco, the Otter</option>
+            {% endif %}
+            {% if selected_personality != 'Anakin'%}
+                <option value="/change_ai_personality/Anakin">Anakin Skywalker</option>
+            {% endif %}
+            {% if selected_personality != 'BattleDroid'%}
+                <option value="/change_ai_personality/BattleDroid">B1 Battle Droid</option>
+            {% endif %}
+        </select>
+
+        <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">Language Model:</p>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; background-color: var(--background-tile-color); border-radius: 30px; border: 2px solid var(--box-shadow-color); width: 100%;">
+            <a href="/changeAiModel/gpt3" style="{% if ai_model == "gpt3" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
+                GPT-3.5 Turbo
+            </a>
+            <a href="/changeAiModel/gpt4" style="{% if ai_model == "gpt4" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
+                GPT-4 Turbo
+            </a>
+            {% if not has_premium %}
+                <div style="position: absolute; background-color: var(--purple); margin-top: -10px; padding: 3px 7px; border-radius: 30px; font-size: 0.8em; color: var(--white-color); right: 10px;">
+                    PLUS
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 30px; background-color: var(--background-tile-color); border-radius: 30px;">
+            <a href="/ai/restart" class="white-button-red-on-hover" style="color: var(--text-color); width: 100%; text-align: center; padding: 10px; border-radius: 30px; text-decoration: none;">Restart MyAI</a>
+        </div>
+    </div>
 </body>
 </html>
 
@@ -196,6 +254,24 @@
         // Call the checkAndRequestWelcomeMessage function when the page loads
         checkAndRequestWelcomeMessage();
     });
+
+
+    function toggleAiPreferences() {
+        var aiPreferences = document.getElementById("ai-preferences");
+        if (aiPreferences.style.display === "none") {
+            aiPreferences.style.display = "block";
+            aiPreferences.classList.remove("animate__slideOutDown");
+            aiPreferences.classList.add("animate__slideInUp");
+        } else {
+            aiPreferences.classList.remove("animate__slideInUp");
+            aiPreferences.classList.add("animate__slideOutDown");
+            setTimeout(function() {
+                aiPreferences.style.display = 'none';
+                aiPreferences.classList.remove('animate__slideOutDown');
+            }, 750);
+
+        }
+    }
     
         
 </script>
