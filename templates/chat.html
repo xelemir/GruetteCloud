@@ -183,7 +183,9 @@
                     {% else %}
                         <img src="https://www.gruettecloud.com/static/profile_pictures/{{ pfp }}" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
                     {% endif %}
-                    {{ recipient }}
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55vw;">
+                        {{ recipient }}
+                    </span>
                     {% if verified %}
                         <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-left: 5px; color: var(--primary-color); align-items: center;">verified</span>
                     {% endif %}
