@@ -315,24 +315,18 @@ def change_ai_personality(ai_personality):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
-        return redirect(f"/")
+    """if "username" not in session:
+        return redirect(f"/")"""
 
-    username = str(session["username"])
-    verified = False
-    if username in admin_users:
-        verified = True
+    if "username" not in session:
+        session["ai_personality"] = ai_personality
+        session.pop("chat_history", None)
+        return redirect("/ai/chat")
+    
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
-        
-    if user == []:
-        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, error="Something went wrong on our end :/", selected_personality="Default", has_premium=False)
-    #elif bool(user[0]["has_premium"]) == True:
     sql.writeSQL(f"UPDATE gruttechat_users SET ai_personality = '{str(ai_personality)}' WHERE username = '{str(session['username'])}'")
     session.pop("chat_history", None)
-    return redirect(f"/ai/chat")
-    #else:
-    #    return redirect(f"/premium")
+    return redirect("/ai/chat")
     
 @settings_route.route("/changeAiModel/<model>")
 def change_ai_model(model):

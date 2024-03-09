@@ -220,9 +220,13 @@ def ai_chat(action):
         HTML: Rendered HTML page
     """
 
-    # Ensure the user is authenticated
     if "username" not in session:
-        return redirect("/")
+        
+        # TODO Currently not in use, MyAI can be used by anyone
+        #return redirect("/")
+        
+        #session["ai_personality"] = "Default"
+        pass
     
     if action == "restart":
         session["chat_history"] = []
@@ -246,20 +250,22 @@ def ai_chat(action):
                 chat_history.append({"role": "user", "content": message})
     
 
-            # Retrieve user's selected AI personality and premium status
-            user = sql.readSQL(f"SELECT ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
+            if "username" in session:
+                # Retrieve user's selected AI personality and premium status
+                user = sql.readSQL(f"SELECT username, ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
+            else:
+                ai_personality = session.get("ai_personality", "Default")
+                user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest"}]
 
             if not user:
-                selected_ai_personality = "Default"
-                has_premium = False
+                return redirect("/logout")
             else:
                 selected_ai_personality = user[0]["ai_personality"]
                 has_premium = bool(user[0]["has_premium"])
 
             try:
-
                 # Get AI response and append it to chat history
-                chat_history = ai.get_openai_response(chat_history, username=session["username"], ai_personality=selected_ai_personality, has_premium=has_premium)
+                chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium)
 
             except Exception as e:
                 logging.error(e)
@@ -273,13 +279,25 @@ def ai_chat(action):
 
             return jsonify({"chat_history": chat_response})
 
-        sql = SQLHelper.SQLHelper()
-        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]        
+        if "username" in session:
+            # Retrieve user's selected AI personality and premium status
+            user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+        else:
+            if "ai_personality" in session:
+                print(session)
+
+                selected_ai_personality = session["ai_personality"]
+            else:
+                selected_ai_personality = "Default"
+                print(session)
+            
+            user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt3"}
+                
         # Reverse chat history to show most recent messages first and render template
         return render_template("aichat.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
     
 @chat_route.route('/chat/delete/<recipient>')
-def delete_chat(recipient):
+def delete_chat(recipient): 
     """ Delete chat route
 
     Args:
