@@ -72,8 +72,24 @@
         </div>
         <div class="centered-content" style="display: flex; align-items: center;">
             <h1 style="display: flex; align-items: center;">
-                <img src="https://www.gruettecloud.com/static/profile_pictures/ai.png" style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
-                {{ selected_personality }}
+                <img src="
+                {% if selected_personality == "UwuGirl" %}https://www.gruettecloud.com/static/GamerGirl.jpeg
+                {% elif selected_personality == "Pirate" %}https://www.gruettecloud.com/static/Pirate.jpeg
+                {% elif selected_personality == "Backus" %}https://www.gruettecloud.com/static/Backus.jpeg
+                {% elif selected_personality == "Lorde" %}https://www.gruettecloud.com/static/Lorde.jpeg
+                {% elif selected_personality == "Taco" %}https://www.gruettecloud.com/static/Taco.jpg
+                {% elif selected_personality == "BattleDroid" %}https://www.gruettecloud.com/static/BattleDroid.jpg
+                {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
+                {% else %}https://www.gruettecloud.com/static/profile_pictures/ai.png{% endif %}
+                " style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
+                {% if selected_personality == "UwuGirl" %}uwu Gamer Girl
+                {% elif selected_personality == "Pirate" %}Pirate
+                {% elif selected_personality == "Backus" %}John Backus
+                {% elif selected_personality == "Lorde" %}Lorde
+                {% elif selected_personality == "Taco" %}Taco, the Otter
+                {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
+                {% elif selected_personality == "Anakin" %}Anakin Skywalker
+                {% else %}MyAI{% endif %}
             </h1>
         </div>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
