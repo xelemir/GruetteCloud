@@ -284,12 +284,10 @@ def ai_chat(action):
             user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
         else:
             if "ai_personality" in session:
-                print(session)
 
                 selected_ai_personality = session["ai_personality"]
             else:
                 selected_ai_personality = "Default"
-                print(session)
             
             user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt3"}
                 
