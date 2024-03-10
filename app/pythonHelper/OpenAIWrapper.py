@@ -14,7 +14,7 @@ class OpenAIWrapper:
         """ Constructor for the OpenAIWrapper class
         """
 
-    def get_openai_response(self, conversation_log, username, ai_personality="Default", has_premium=False):
+    def get_openai_response(self, conversation_log, username, ai_personality="Default", has_premium=False, ai_model="gpt3"):
         """ Get a response from the openAI API based on the conversation log
         GrütteCloud PLUS users use the GPT-4-0125-preview model, while free users use the GPT-3.5-turbo model
 
@@ -52,10 +52,15 @@ class OpenAIWrapper:
         if has_premium == False:
             max_tokens = 100
             model = "gpt-3.5-turbo"
+            
         else:
             max_tokens = 1000
-            model = "gpt-4-0125-preview"
-
+            if ai_model != "gpt3" and ai_model != "gpt4":
+                raise ValueError("Invalid AI model, please use 'gpt3' for GPT-3.5 Turbo or 'gpt4' for GPT-4 Turbo")
+            elif ai_model == "gpt3":
+                model = "gpt-3.5-turbo"
+            elif ai_model == "gpt4":
+                model = "gpt-4-0125-preview"
         
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:

@@ -252,20 +252,21 @@ def ai_chat(action):
 
             if "username" in session:
                 # Retrieve user's selected AI personality and premium status
-                user = sql.readSQL(f"SELECT username, ai_personality, has_premium FROM gruttechat_users WHERE username = '{session['username']}'")
+                user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM gruttechat_users WHERE username = '{session['username']}'")
             else:
                 ai_personality = session.get("ai_personality", "Default")
-                user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest"}]
+                user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest", "ai_model": "gpt3"}]
 
             if not user:
                 return redirect("/logout")
             else:
                 selected_ai_personality = user[0]["ai_personality"]
                 has_premium = bool(user[0]["has_premium"])
+                ai_model = user[0]["ai_model"]
 
             try:
                 # Get AI response and append it to chat history
-                chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium)
+                chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
 
             except Exception as e:
                 logging.error(e)
