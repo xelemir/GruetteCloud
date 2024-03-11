@@ -70,10 +70,8 @@
         <div style="padding-top: 10px; padding-bottom: 10px;">
             <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
-        <div class="centered-content" style="display: flex; align-items: center;">
-            <h1 style="display: flex; align-items: center;">
-                <img src="
-                {% if selected_personality == "UwuGirl" %}https://www.gruettecloud.com/static/GamerGirl.jpeg
+        <a href="
+            {% if selected_personality == "UwuGirl" %}https://www.gruettecloud.com/static/GamerGirl.jpeg
                 {% elif selected_personality == "Pirate" %}https://www.gruettecloud.com/static/Pirate.jpeg
                 {% elif selected_personality == "Backus" %}https://www.gruettecloud.com/static/Backus.jpeg
                 {% elif selected_personality == "Lorde" %}https://www.gruettecloud.com/static/Lorde.jpeg
@@ -81,6 +79,17 @@
                 {% elif selected_personality == "BattleDroid" %}https://www.gruettecloud.com/static/BattleDroid.jpg
                 {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
                 {% else %}https://www.gruettecloud.com/static/profile_pictures/ai.png{% endif %}
+            " class="centered-content" style="display: flex; align-items: center; color: var(--text-color); text-decoration: none;">
+            <h1 style="display: flex; align-items: center;">
+                <img src="
+                    {% if selected_personality == "UwuGirl" %}https://www.gruettecloud.com/static/GamerGirl.jpeg
+                    {% elif selected_personality == "Pirate" %}https://www.gruettecloud.com/static/Pirate.jpeg
+                    {% elif selected_personality == "Backus" %}https://www.gruettecloud.com/static/Backus.jpeg
+                    {% elif selected_personality == "Lorde" %}https://www.gruettecloud.com/static/Lorde.jpeg
+                    {% elif selected_personality == "Taco" %}https://www.gruettecloud.com/static/Taco.jpg
+                    {% elif selected_personality == "BattleDroid" %}https://www.gruettecloud.com/static/BattleDroid.jpg
+                    {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
+                    {% else %}https://www.gruettecloud.com/static/profile_pictures/ai.png{% endif %}
                 " style="height: 40px; width: auto; border-radius: 50%; margin-right: 10px;">
                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55vw;">
                     {% if selected_personality == "UwuGirl" %}uwu Gamer Girl
@@ -93,7 +102,7 @@
                     {% else %}MyAI{% endif %}
                 </span>
             </h1>
-        </div>
+        </a>
         <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
             <span onclick="toggleAiPreferences()" title="AI Preferences" class="white-button-purple-on-hover" style="cursor: pointer; text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">temp_preferences_custom</span></span>
         </div>
