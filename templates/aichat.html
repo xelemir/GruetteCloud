@@ -113,7 +113,7 @@
         {% for message in chat_history %}
             {% if message.role == 'assistant' %}
                 {% if "https://www.gruettecloud.com/static/" in message.content %}
-                    <div class="message left-bubble" style="display: flex; flex-direction: column;">
+                    <div class="message left-bubble" style="display: flex; flex-direction: column; width: 400px;">
                         <img src="" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">
                         {{ message.content }}
                     </div>
@@ -243,7 +243,7 @@
                 var regex = /\[.*?\]\(.*?\)/g;
                 var msg_without_img = message.content.replace(regex, "");
 
-                chatMessages.prepend('<div class="message ' + messageClass + '" style="display: flex; flex-direction: column;">' 
+                chatMessages.prepend('<div class="message ' + messageClass + '" style="display: flex; flex-direction: column; width: 400px;">' 
                     + '<img src="' + url + '" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">'
                     + msg_without_img + '</div>');
 
