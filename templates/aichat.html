@@ -112,9 +112,16 @@
     <div class="chat-messages">
         {% for message in chat_history %}
             {% if message.role == 'assistant' %}
-                <div class="message left-bubble">
-                    {{ message.content }}
-                </div>
+                {% if "https://www.gruettecloud.com/static/" in message.content %}
+                    <div class="message left-bubble" style="display: flex; flex-direction: column;">
+                        <img src="" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">
+                        {{ message.content }}
+                    </div>
+                {% else %}
+                    <div class="message left-bubble">
+                        {{ message.content }}
+                    </div>
+                {% endif %}
             {% else %}
                 <div class="message right-bubble">
                     {{ message.content }}
@@ -203,10 +210,46 @@
         var messageInput = $("#messageInput");
         var submitButton = $("#submitButton");
         var loadingAnimation = $("#loadingAnimation");
+
+        // Remove pictures from messages via REGEX and add url to images
+        var regex = /\[.*?\]\(.*?\)/g;
+        var messages = $(".message");
+        for (var i = 0; i < messages.length; i++) {
+            var message = messages[i];
+            if (message.innerHTML.includes("https://www.gruettecloud.com/static/")) {
+                var url = message.innerHTML.match(/(https?:\/\/[^\s]+)/g);
+                url = url.toString().replace(")", "");
+                // find image element within message
+                var img = message.getElementsByTagName("img")[0];
+                img.src = url;
+
+                console.log(i);
+                console.log(url);
+            }
+
+            message.innerHTML = message.innerHTML.replace(regex, "");
+        }
     
         function appendMessage(message) {
             var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
-            chatMessages.prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+
+            // if link in message, add image
+            if (message.content.includes("https://www.gruettecloud.com/static/")) {
+
+                var url = message.content.match(/(https?:\/\/[^\s]+)/g);
+                url = url.toString().replace(")", "");
+
+                // Remove [...](...) as REGEX
+                var regex = /\[.*?\]\(.*?\)/g;
+                var msg_without_img = message.content.replace(regex, "");
+
+                chatMessages.prepend('<div class="message ' + messageClass + '" style="display: flex; flex-direction: column;">' 
+                    + '<img src="' + url + '" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">'
+                    + msg_without_img + '</div>');
+
+            } else {
+                chatMessages.prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+            }
         }
     
         function sendMessage(message) {
