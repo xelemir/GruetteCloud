@@ -414,11 +414,17 @@ def create_folder(folder_path):
         return redirect("/drive")
     
     if folder_path == "home":
-        os.mkdir(os.path.join(gruettedrive_path, str(session["username"]), folder_name))
-        os.chdir(os.path.join(gruettedrive_path, str(session["username"]), folder_name))
+        try:
+            os.mkdir(os.path.join(gruettedrive_path, str(session["username"]), folder_name))
+            os.chdir(os.path.join(gruettedrive_path, str(session["username"]), folder_name))
+        except:
+            return redirect("/drive")
     else:
-        os.mkdir(os.path.join(gruettedrive_path, str(session["username"]), folder_path, folder_name))
-        os.chdir(os.path.join(gruettedrive_path, str(session["username"]), folder_path, folder_name))
+        try:
+            os.mkdir(os.path.join(gruettedrive_path, str(session["username"]), folder_path, folder_name))
+            os.chdir(os.path.join(gruettedrive_path, str(session["username"]), folder_path, folder_name))
+        except:
+            return redirect("/drive")
 
     f = open(".#folderconfig.json", "w")
     f.write(json.dumps({"color": folder_color}))
