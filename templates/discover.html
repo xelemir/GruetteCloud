@@ -59,6 +59,14 @@
             max-height: 70vh;
             width: auto;
         }
+
+        .desktop-only-flex {
+            display: flex;
+        }
+
+        .mobile-only-flex {
+            display: none;
+        }
     
         @media (max-width: 768px) {
             .dynamic-container {
@@ -79,6 +87,14 @@
                 max-width: 50vw;
                 height: auto;
             }
+
+            .desktop-only-flex {
+                display: none;
+            }
+
+            .mobile-only-flex {
+                display: flex;
+            }
         }
 
     </style>
@@ -94,19 +110,22 @@
                     </button>
                     <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
                 </div>
+                <div onclick="openLogin()" style="position: absolute; top: 20px; right: 0; padding-right: 65px; margin-top: 3px; cursor: pointer;">
+                    Login
+                </div>
                 {% include "components/nav-element.html" %}
             </div>
             
             <div class="dynamic-container">
                 <div class="box text" style="text-wrap: balance;">
                     <div id="default" style="display: block;">
-                        <h1 style="margin-bottom: 30px; margin-top: -30px;">Discover GrütteCloud</h1>
+                        <h1 style="margin-bottom: 30px; margin-top: -15px;">Discover GrütteCloud</h1>
                         <p>Empowering You with Cloud Solutions for Your Digital Life!</p>
-                        <span class="desktop-only" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <button class="buy-now-button desktop-only" style="margin-top: 60px; width: 300px; height: 50px; border-radius: 30px; font-size: 15px;" onclick="openSignUp()">Get Started!</button>
-                            <div class="desktop-only" style="margin-top: 20px; font-size: 12px; color: var(--text-color);">
-                            Already have an account? <button class="white-button-blue-on-hover" style="font-size: 12px; background-color: var(--background-color); border: none; color: var(--text-color); text-decoration: underline; cursor: pointer;" onclick="openLogin()">Login here!</button>
-                            </div>
+                        <span class="desktop-only-flex" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <button class="button-blue desktop-only-flex" style="margin-top: 60px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
+                                <span class="material-symbols-outlined align-icons-center">rocket_launch</span>
+                                <span style="font-size: 1.2em;">Get Started!</span>
+                            </button>
                         </span>
                     </div>
                     <div id="loginSignup" style="display: none;"  class="animate__animated animate__slideInLeft">
@@ -159,7 +178,6 @@
                                         I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
                                         Fields with * are required.
                                     </span>
-
                                 </span>
                                 <div style="display: inline-flex; width: 300px; margin-top: 30px; gap: 20px;">
                                     <input type="submit" value="Create GrütteID" name="login" style="width: 100%; border-radius: 30px;" class="send-button">
@@ -175,15 +193,13 @@
                     </div>
                 </div>
                 <div id="heroImage" class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" style="margin-top: -40px;" alt="GrütteCloud Render">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/products.png" style="width: 100%;" alt="GrütteCloud Render">
                 </div>
                 <span id="defaultMobile" style="display: flex;">
-                    <span class="mobile-only" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <button class="buy-now-button mobile-only" style="margin-top: -20px;" onclick="openSignUp()">Get Started!</button>
-                        <div class="mobile-only" style="margin-top: 20px; font-size: 13px; color: var(--text-color);">
-                            Already have an account? <button class="white-button-blue-on-hover" style="background-color: var(--background-color); border: none; color: var(--text-color); text-decoration: underline; cursor: pointer;" onclick="openLogin()">Login here!</button>
-                        </div>
-                    </span>
+                    <button class="button-blue mobile-only-flex" style="margin-top: 10px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
+                        <span class="material-symbols-outlined align-icons-center">rocket_launch</span>
+                        <span style="font-size: 1.2em;">Get Started!</span>
+                    </button>
                 </span>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 1.5vh;">
@@ -213,6 +229,7 @@
                     <p>Enhance Your Conversations with MyAI</p>
                     <p>MyAI, powered OpenAI's GPT-4, offers personalities to chat with.
                     Access it right from GrütteChat's home page for smarter conversations.</p>
+
                 </div>
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat_ai.png" alt="MyAI Render">
