@@ -275,6 +275,8 @@ def change_budget():
     budget = request_data["budget"]
     try:
         budget = int(budget)
+        if budget <= 0:
+            raise Exception
     except:
         return jsonify({"status": "error", "message": "Invalid budget"})
     
