@@ -128,7 +128,7 @@ def signup():
             return redirect("/?error=passwords_not_matching")
         elif username == '' or password == '':
             return redirect("/?error=username_or_password_empty")
-        elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/']] != []:
+        elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', ' ', '?', '/']] != []:
             return redirect("/?error=forbidden_characters")
         elif len(username) >= 40:
             return redirect("/?error=username_less_40")

@@ -259,6 +259,8 @@ def change_username():
     Returns:
         HTML: Rendered HTML page
     """
+    
+    return redirect("/settings") # Disabled for now
 
     if "username" not in session:
         return redirect("/")
