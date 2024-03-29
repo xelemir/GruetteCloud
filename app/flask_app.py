@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, jsonify, s
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import logging
 from threading import Thread
+from flask_cors import CORS
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
@@ -27,6 +28,7 @@ app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
 app.register_blueprint(expense_tracker_route)
+CORS(app, origins=["http://localhost:5100", "https://api.gruettecloud.com"])
 
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
