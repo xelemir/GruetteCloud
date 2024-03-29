@@ -28,7 +28,7 @@ app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
 app.register_blueprint(expense_tracker_route)
-CORS(app, origins=["http://localhost:5100", "https://api.gruettecloud.com"])
+CORS(app, origins=["http://127.0.0.1:5100/", "https://api.gruettecloud.com"])
 
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
