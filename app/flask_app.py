@@ -29,7 +29,7 @@ app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
 app.register_blueprint(expense_tracker_route)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5100"}}) # Just testing
 
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
