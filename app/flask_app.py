@@ -18,6 +18,7 @@ from expense_tracker_routes import expense_tracker_route
 
 
 app = Flask("GrütteCloud")
+CORS(app, resources={r"/*": {"origins": "https://api.gruttecloud.com"}})
 app.secret_key = secret_key
 app.permanent_session_lifetime = 1209600*2 # 4 weeks
 app.register_blueprint(loginSignUp_route)
@@ -28,7 +29,6 @@ app.register_blueprint(drive_route)
 app.register_blueprint(dashboard_route)
 app.register_blueprint(tool_route)
 app.register_blueprint(expense_tracker_route)
-CORS(app, origins=["http://127.0.0.1:5100/", "https://api.gruettecloud.com"])
 
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
