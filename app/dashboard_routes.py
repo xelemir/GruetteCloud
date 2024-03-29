@@ -458,3 +458,16 @@ def sql_query():
         result = sql.writeSQL(query)
         
     return {"result": result}
+
+@dashboard_route.route("/get_status_message")
+def get_status_message():
+    
+    sql = SQLHelper.SQLHelper()
+    
+    platform_message = sql.readSQL(f"SELECT subject, color FROM gruttechat_platform_messages")
+    if platform_message == []:
+        platform_message = jsonify({"created_at": None, "content": None, "subject": None, "color": None, "link": None, "decorator": None})
+    else:
+        platform_message = jsonify({"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"], "link": platform_message[0]["link"], "decorator": platform_message[0]["decorator"]})
+    
+    return platform_message
