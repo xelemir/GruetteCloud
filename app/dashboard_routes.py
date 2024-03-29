@@ -464,7 +464,7 @@ def get_status_message():
     
     sql = SQLHelper.SQLHelper()
     
-    platform_message = sql.readSQL(f"SELECT subject, color FROM gruttechat_platform_messages")
+    platform_message = sql.readSQL(f"SELECT * FROM gruttechat_platform_messages")
     if platform_message == []:
         platform_message = jsonify({"created_at": None, "content": None, "subject": None, "color": None, "link": None, "decorator": None})
     else:
