@@ -3,7 +3,6 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 import logging
 from threading import Thread
 from flask_cors import CORS
-import asdffiwsodjfoi
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
