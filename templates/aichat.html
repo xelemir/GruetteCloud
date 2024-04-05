@@ -217,8 +217,12 @@
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             if (message.innerHTML.includes("https://www.gruettecloud.com/static/")) {
+
                 var url = message.innerHTML.match(/(https?:\/\/[^\s]+)/g)[0];
                 url = url.toString().replace(")", "");
+                if (url.endsWith(".")) {
+                    url = url.slice(0, -1);
+                }
                 
                 // find image element within message
                 var img = message.getElementsByTagName("img")[0];
@@ -239,6 +243,9 @@
 
                 var url = message.content.match(/(https?:\/\/[^\s]+)/g)[0];
                 url = url.toString().replace(")", "");
+                if (url.endsWith(".")) {
+                    url = url.slice(0, -1);
+                }
 
                 // Remove [...](...) as REGEX
                 var regex = /\[.*?\]\(.*?\)/g;

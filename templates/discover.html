@@ -97,6 +97,28 @@
             }
         }
 
+        .pulse {
+            -webkit-animation: pulse 1.5s infinite;
+        }
+
+        .pulse:hover {
+            -webkit-animation: none;
+        }
+
+        @-webkit-keyframes pulse {
+            0% {
+              @include transform(scale(.9));
+            }
+            70% {
+              @include transform(scale(1));
+              box-shadow: 0 0 0 50px rgba(#5a99d4, 0);
+            }
+              100% {
+              @include transform(scale(.9));
+              box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -122,7 +144,7 @@
                         <h1 style="margin-bottom: 30px; margin-top: -15px;">Discover GrütteCloud</h1>
                         <p>Empowering You with Cloud Solutions for Your Digital Life!</p>
                         <span class="desktop-only-flex" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <button class="button-blue desktop-only-flex" style="margin-top: 60px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
+                            <button class="pulse button-blue desktop-only-flex" style="margin-top: 60px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
                                 <span class="material-symbols-outlined align-icons-center">rocket_launch</span>
                                 <span style="font-size: 1.2em;">Get Started!</span>
                             </button>
@@ -196,14 +218,14 @@
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/products.png" style="width: 100%;" alt="GrütteCloud Render">
                 </div>
                 <span id="defaultMobile" style="display: flex;">
-                    <button class="button-blue mobile-only-flex" style="margin-top: 10px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
+                    <button class="pulse button-blue mobile-only-flex" style="margin-top: 10px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
                         <span class="material-symbols-outlined align-icons-center">rocket_launch</span>
                         <span style="font-size: 1.2em;">Get Started!</span>
                     </button>
                 </span>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 1.5vh;">
-                <a href="#section2" class="material-symbols-outlined" style="color: var(--text-color); text-decoration: none;">expand_more</a>
+                <a href="#section2" class="pulse material-symbols-outlined" style="color: var(--text-color); text-decoration: none;">expand_more</a>
             </div>
         </div>
 

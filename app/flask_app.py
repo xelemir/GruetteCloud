@@ -1,8 +1,8 @@
-import hashlib
 from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import logging
 from threading import Thread
+from flask_cors import CORS
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
@@ -18,6 +18,7 @@ from expense_tracker_routes import expense_tracker_route
 
 
 app = Flask("GrütteCloud")
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.secret_key = secret_key
 app.permanent_session_lifetime = 1209600*2 # 4 weeks
 app.register_blueprint(loginSignUp_route)
