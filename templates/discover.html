@@ -354,15 +354,26 @@
                 </div>
             </div>
         </div>
-
         <div class="section" data-anchor="section11">
             <div class="dynamic-container">
                 <div class="box text" style="text-wrap: balance;">
-                    <h1>Technical Stuff</h1>
-                    <p>You can find GrütteCloud's source code on <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a>.
-                    GrütteCloud is built using the following technologies.</p>
-                    
+                    <h1>Downdetector</h1>
+                    <p>Our status page provides real-time information about the availability and health of GrütteCloud services.</p>
+                    <p style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
+                        <a href="https://status.gruettecloud.com" style="color: var(--white-color); text-decoration: none; background-color: var(--primary-color); padding: 5px 30px; border-radius: 30px;">
+                            <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;">monitor_heart</span>
+                            Check Status
+                        </a>
+                    </p>
                 </div>
+                <div class="box">
+                    <img class="tablet product-renders" src="https://www.gruettecloud.com/static/status.png" alt="GrütteCloud Status">
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section12">
+            <div class="dynamic-container">
                 <div class="box">
                     <div style="width: 100%;">
                         <div style="width: 100%; display: flex; flex-direction: inline; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
@@ -385,14 +396,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="box text" style="text-wrap: balance;">
+                    <h1>Technical Stuff</h1>
+                    <p>You can find GrütteCloud's source code on <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a>.
+                    GrütteCloud is built using the following technologies.</p>
+                </div>
             </div>
         </div>
 
-        <div class="section" data-anchor="section12">
+        <div class="section" data-anchor="section13">
             <div class="dynamic-container">
-                <div class="box desktop-only">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
-                </div>
                 <div class="box text" style="text-wrap: balance;">
                     <h1>Join Today</h1>
                     <p>Start Chatting, Storing, and Sharing for Free!<br>
@@ -404,6 +417,9 @@
                             </button>
                         </span>
                     </p>
+                </div>
+                <div class="box desktop-only">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
                 </div>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
@@ -544,8 +560,8 @@
     // Initialize fullPage.js
     new fullpage('#fullpage', {
         // Options
-        sectionsColor: ['transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)'], // Set background colors for sections
-        anchors: ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10', 'section11', 'section12'], // Set the anchor tags for each section
+        sectionsColor: ['transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent'], // Set background colors for sections
+        anchors: ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10', 'section11', 'section12', 'section13'], // Set the anchor tags for each section
         autoScrolling: true, // Enable auto-scrolling
         scrollBar: false, // Hide the scrollbar
         navigation: false, // Show navigation dots

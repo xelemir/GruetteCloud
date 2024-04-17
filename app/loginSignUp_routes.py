@@ -20,14 +20,14 @@ def login():
     """
 
     if "signup" in request.form:
-        return redirect(f'/signup')
+        return redirect("/signup")
     elif request.method == "GET":
         # Deprecated, simply used as people might have the old url saved
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    username = str(request.form['username']).lower()
-    password = str(request.form['password'])
+    username = str(request.form["username"]).lower()
+    password = str(request.form["password"])
     
     # Check if input is valid
     if username == '' or password == '':
