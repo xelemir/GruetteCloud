@@ -134,10 +134,10 @@
 
 
         <div style="display: flex; flex-direction: row; width: 100%; height: 100%; gap: 20px;">
-            <div style="width: 10%; background-color: transparent;">
+            <div style="width: 200px; background-color: transparent;">
                 <a href="/" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
-                    <h1 class="title" style="font-size: 1.5em; padding-left: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0px;">GrütteCloud</h1>
+                    <h1 class="title" style="font-size: 1.5em; padding-left: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0px;">Dashboard</h1>
                 </a>
 
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
@@ -451,7 +451,7 @@
 
                 <div style="width: 60%; padding-bottom: 40px;">
                     <h2 align="center" style="margin-bottom: 20px;">Access Logs</h2>
-                    <div id="events" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 100%; display: flex;">
+                    <div id="events" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 50%; display: flex;">
                         {% for event in events %}
                             <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
                             <div class="navigation-button" style="gap: 10px; width: 100%;" onclick="iplookup('{{ event["ip"] }}')">
@@ -478,8 +478,19 @@
 
                         <div onclick="closeIPlookupResult()" style="display: flex; align-items: center; justify-content: center; margin-top: 20px; cursor: pointer; background-color: var(--red); border-radius: 30px; padding: 10px; width: 100%;">
                             <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Close">close</span>
-                            <p style="padding-left: 5px;">Close</p>
+                            <p style="padding-left: 5px; color: var(--white-color);">Close</p>
                         </div>
+                    </div>
+                    <h2 align="center" style="margin-bottom: 20px;">Error Logs</h2>
+                    <div id="errors" class="file-list" style="font-size: 0.7em; max-height: 100%; height: 50%; display: flex;">
+                        {% for error in errors %}
+                            <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                            <div class="navigation-button" style="gap: 10px; width: 100%;">
+                                <div style="width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    {{ error }}
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -681,7 +692,7 @@
     });
 </script>
 
-{% if status %}
+<!--{% if status %}
 <script>
     // Show status message and fade out after 5 seconds
     var statusMessage = document.getElementById('status-message');
@@ -695,7 +706,7 @@
             window.location.href = '/dashboard';
         }, 5000);
 </script>
-{% endif %}
+{% endif %}-->
 
 <script>
     // Function to handle search functionality
