@@ -643,12 +643,12 @@ def api_login():
 
 @tool_route.route('/api/get_chats', methods=['GET'])
 def api_get_chats():
-    if request.headers.get('Authorization') is None:
+    if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
     try:
         # Check for Bearer and remove
-        auth = request.headers.get('Authorization').split(" ")
+        auth = request.headers.get('Token-Authorization').split(" ")
         if auth[0] != "Bearer":
             return jsonify({'message': 'Invalid token'}), 401
         data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
@@ -683,11 +683,11 @@ def api_get_chats():
 @tool_route.route('/api/get_logged_in_user', methods=['GET'])
 def api_get_logged_in_user():    
     print(request.headers)
-    if request.headers.get('Authorization') is None:
+    if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
     try:
-        auth = request.headers.get('Authorization').split(" ")
+        auth = request.headers.get('Token-Authorization').split(" ")
         if auth[0] != "Bearer":
             return jsonify({'message': 'Invalid token'}), 401
         data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
