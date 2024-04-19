@@ -682,6 +682,7 @@ def api_get_chats():
 
 @tool_route.route('/api/get_logged_in_user', methods=['GET'])
 def api_get_logged_in_user():    
+    print(request.headers)
     if request.headers.get('Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
