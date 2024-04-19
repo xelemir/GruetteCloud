@@ -647,7 +647,8 @@ def api_get_chats():
         return jsonify({'message': 'No token provided'}), 401
     
     try:
-        data = jwt.decode(request.headers.get('Authorization'), secret_key, algorithms=["HS256"])
+        token = request.headers.get('Authorization').split(" ")[1]
+        data = jwt.decode(token, secret_key, algorithms=["HS256"])
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
@@ -677,14 +678,13 @@ def api_get_chats():
     return jsonify(active_chats)
 
 @tool_route.route('/api/get_logged_in_user', methods=['GET'])
-def api_get_logged_in_user():
-    print(request.headers)
-    
+def api_get_logged_in_user():    
     if request.headers.get('Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
     try:
-        data = jwt.decode(request.headers.get('Authorization'), secret_key, algorithms=["HS256"])
+        token = request.headers.get('Authorization').split(" ")[1]
+        data = jwt.decode(token, secret_key, algorithms=["HS256"])
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
