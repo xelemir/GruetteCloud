@@ -590,16 +590,88 @@ def tgtg():
     
     
 
-@tool_route.route('/loginflutter', methods=['POST'])
-def loginFlutter():
-    data = request.form
-    email = data.get('email')
-    password = data.get('password')
-    
-    VALID_EMAIL = 'test@email.com'
-    VALID_PASSWORD = '12345'
+# Test Endpoints for Flutter App
 
-    if email == VALID_EMAIL and password == VALID_PASSWORD:
-        return jsonify({'message': f'Hello {email}'}), 200
+import jwt
+import datetime
+from config import secret_key
+from werkzeug.security import check_password_hash
+
+
+
+@tool_route.route('/api/login', methods=['POST'])
+def api_login():
+    data = request.form
+    username = str(data.get('username').lower())
+    password = str(data.get('password'))
+
+    sql = SQLHelper.SQLHelper()
+    
+    # Search for user in database
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    
+    # If user exists, check if password is correct
+    if user != []:
+        # If username and password are correct
+        if user[0]["username"].lower() == username and check_password_hash(user[0]["password"], password):
+            
+            # Check if the user has verified their account
+            if not bool(user[0]["is_email_verified"]):
+                return jsonify({'message': 'Please verify your email address before logging in.'}), 401
+            
+            # Check if 2FA is enabled
+            if bool(user[0]["is_2fa_enabled"]):
+                return jsonify({'message': '2FA is enabled on this account. This is a test endpoint which does not support 2FA.'}), 401
+            
+            # Check if user is an admin
+            if not bool(user[0]["is_admin"]):
+                return jsonify({'message': 'You are not eligible to use this endpoint.'}), 401
+            
+            # Log the user in
+            else:
+                # Generate JWT token
+                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(minutes=30)}, secret_key)
+                return jsonify({'message': f'Hello {username}', 'token': token}), 200
+
+        # If password is or username is incorrect
+        else:
+            return jsonify({'message': 'Invalid credentials'}), 401
+        
+    # If user does not exist
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
+
+@tool_route.route('/api/get_chats', methods=['GET'])
+def api_get_chats():
+    if request.args.get('token') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        data = jwt.decode(request.args.get('token'), secret_key)
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    sql = SQLHelper.SQLHelper()    
+    
+    # Fetch active chats from the database
+    active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{data['username']}' OR username_receive = '{data['username']}'")
+    active_chats = []
+                
+    # Add all active chats to a list
+    for chat in active_chats_database:
+        if chat["username_send"].lower() == data["username"].lower():
+            if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
+                unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_receive']}' AND username_receive = '{data["username"]}' AND is_read = '{False}'"))
+                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_receive']}'")
+                blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_receive']}' AND username_blocked = '{data["username"]}' OR username = '{data["username"]}' AND username_blocked = '{chat['username_receive']}'"))
+                if user_db != []:
+                    active_chats.append({"username": chat["username_receive"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
+        else:
+            if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
+                unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_send']}' AND username_receive = '{data["username"]}' AND is_read = '{False}'"))
+                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_send']}'")
+                blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_send']}' AND username_blocked = '{data["username"]}' OR username = '{data["username"]}' AND username_blocked = '{chat['username_send']}'"))
+                if user_db != []:
+                    active_chats.append({"username": chat["username_send"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
+    
+    return jsonify(active_chats)
