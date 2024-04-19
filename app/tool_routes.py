@@ -588,3 +588,18 @@ def tgtg():
         return jsonify({"success": False})
     
     
+    
+
+@tool_route.route('/loginflutter', methods=['POST'])
+def loginFlutter():
+    data = request.form
+    email = data.get('email')
+    password = data.get('password')
+    
+    VALID_EMAIL = 'test@email.com'
+    VALID_PASSWORD = '12345'
+
+    if email == VALID_EMAIL and password == VALID_PASSWORD:
+        return jsonify({'message': f'Hello {email}'}), 200
+    else:
+        return jsonify({'message': 'Invalid credentials'}), 401
