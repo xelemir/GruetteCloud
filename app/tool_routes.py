@@ -630,7 +630,7 @@ def api_login():
             # Log the user in
             else:
                 # Generate JWT token
-                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(minutes=30)}, secret_key)
+                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(minutes=30)}, secret_key, algorithm="HS256")
                 return jsonify({'message': f'Hello {username}', 'token': token}), 200
 
         # If password is or username is incorrect
@@ -643,11 +643,11 @@ def api_login():
 
 @tool_route.route('/api/get_chats', methods=['GET'])
 def api_get_chats():
-    if request.args.get('token') is None:
+    if request.headers.get('Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
     try:
-        data = jwt.decode(request.args.get('token'), secret_key)
+        data = jwt.decode(request.headers.get('Authorization'), secret_key, algorithms=["HS256"])
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
@@ -678,11 +678,11 @@ def api_get_chats():
 
 @tool_route.route('/api/get_logged_in_user', methods=['GET'])
 def api_get_logged_in_user():
-    if request.args.get('token') is None:
+    if request.headers.get('Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
     try:
-        data = jwt.decode(request.args.get('token'), secret_key)
+        data = jwt.decode(request.headers.get('Authorization'), secret_key, algorithms=["HS256"])
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
@@ -693,4 +693,4 @@ def api_get_logged_in_user():
     if user == []:
         return jsonify({'message': 'User not found'}), 404
     
-    return jsonify({'username': user[0]['username'], 'email': user[0]['email'], 'is_verified': user[0]['is_verified'], 'is_admin': user[0]['is_admin'], "has_premium": user[0]['has_premium'], 'profile_picture': user[0]['profile_picture']})
+    return jsonify({'username': user[0]['username'], 'email': user[0]['email'], 'is_verified': bool(user[0]['is_verified']), 'is_admin': bool(user[0]['is_admin']), "has_premium": bool(user[0]['has_premium']), 'profile_picture': user[0]['profile_picture']})
