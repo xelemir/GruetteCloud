@@ -675,3 +675,22 @@ def api_get_chats():
                     active_chats.append({"username": chat["username_send"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
     
     return jsonify(active_chats)
+
+@tool_route.route('/api/get_logged_in_user', methods=['GET'])
+def api_get_logged_in_user():
+    if request.args.get('token') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        data = jwt.decode(request.args.get('token'), secret_key)
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{data['username']}'")
+    
+    if user == []:
+        return jsonify({'message': 'User not found'}), 404
+    
+    return jsonify({'username': user[0]['username'], 'email': user[0]['email'], 'is_verified': user[0]['is_verified'], 'is_admin': user[0]['is_admin'], "has_premium": user[0]['has_premium'], 'profile_picture': user[0]['profile_picture']})
