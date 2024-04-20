@@ -733,10 +733,12 @@ def api_get_chat():
         local_messages = request.headers.get('local_messages').split(",")
     except:
         local_messages = []
+        
+    print(request.headers)
             
     eh = EncryptionHelper.EncryptionHelper()
     for message in messages:
-        if str(message["id"]) not in local_messages:
+        if message["id"] not in local_messages:
             try:
                 decrypted_message = str(eh.decrypt_message(message["message_content"]))
             except:
