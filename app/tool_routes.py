@@ -717,7 +717,7 @@ def api_get_chat():
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
-    if request.headers.get('username') is None:
+    if request.headers.get('Username') is None:
         return jsonify({'message': 'No username provided'}), 400
     
     sql = SQLHelper.SQLHelper()
@@ -730,7 +730,7 @@ def api_get_chat():
     
     new_messages = []
     try:
-        local_messages = request.headers.get('local_messages').split(",")
+        local_messages = request.headers.get('Messages').split(",")
     except:
         local_messages = []
         
