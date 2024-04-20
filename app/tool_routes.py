@@ -749,6 +749,34 @@ def api_get_chat():
     
     return jsonify(new_messages)
 
+@tool_route.route('/api/send_message', methods=['POST'])
+def api_send_message():
+    if request.headers.get('Token-Authorization') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        auth = request.headers.get('Token-Authorization').split(" ")
+        if auth[0] != "Bearer":
+            return jsonify({'message': 'Invalid token'}), 401
+        data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    if request.headers.get('Username') is None:
+        return jsonify({'message': 'No username provided'}), 400
+    
+    sql = SQLHelper.SQLHelper()
+    
+    message = str(data.get('message'))
+    
+    # Encrypt message
+    eh = EncryptionHelper.EncryptionHelper()
+    encrypted_message = eh.encrypt_message(message)
+    
+    sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{data['username']}', '{request.headers.get('Username')}', '{encrypted_message}', {False})")
+    
+    return jsonify({'message': 'Message sent'}), 200
+
 
 @tool_route.route('/api/get_expenses', methods=['GET'])
 def api_get_expenses():
