@@ -771,9 +771,8 @@ def api_send_message():
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
     
-    print(str(request.headers.get('Messages')))
     
-    encrypted_message = eh.encrypt_message(str(request.headers.get('Messages')))
+    encrypted_message = eh.encrypt_message(str(request.headers.get('Message')))
     
     sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{data['username']}', '{request.headers.get('Username')}', '{encrypted_message}', {False})")
     
