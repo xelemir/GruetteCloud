@@ -765,16 +765,15 @@ def api_send_message():
     if request.headers.get('Username') is None:
         return jsonify({'message': 'No username provided'}), 400
     
-    
-    try:
-        message = str(data.get('message'))
-    except:
-        return jsonify({'message': 'No message provided'}), 400
+    if request.headers.get('Messages') is None:
+        return jsonify({'message': 'No messages provided'}), 400
     
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
     
-    encrypted_message = eh.encrypt_message(message)
+    print(str(request.headers.get('Messages')))
+    
+    encrypted_message = eh.encrypt_message(str(request.headers.get('Messages')))
     
     sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{data['username']}', '{request.headers.get('Username')}', '{encrypted_message}', {False})")
     
