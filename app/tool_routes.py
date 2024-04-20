@@ -596,7 +596,7 @@ import jwt
 import datetime
 from config import secret_key
 from werkzeug.security import check_password_hash
-
+from pythonHelper import EncryptionHelper
 
 
 @tool_route.route('/api/login', methods=['POST'])
@@ -733,10 +733,15 @@ def api_get_chat():
         local_messages = request.headers.get('local_messages').split(",")
     except:
         local_messages = []
-    
+            
+    eh = EncryptionHelper.EncryptionHelper()
     for message in messages:
         if str(message["id"]) not in local_messages:
-            new_messages.append({"message_id": message["id"], "message": message["message_content"], "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
+            try:
+                decrypted_message = str(eh.decrypt_message(message["message_content"]))
+            except:
+                decrypted_message = "Decryption Error!"
+            new_messages.append({"message_id": message["id"], "message": decrypted_message, "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
     
     return jsonify(new_messages)
 
