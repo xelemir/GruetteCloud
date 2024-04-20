@@ -739,3 +739,57 @@ def api_get_chat():
             new_messages.append({"message_id": message["id"], "message": message["message"], "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
     
     return jsonify(new_messages)
+
+
+@tool_route.route('/api/get_expenses', methods=['GET'])
+def api_get_expenses():
+    if request.headers.get('Token-Authorization') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        auth = request.headers.get('Token-Authorization').split(" ")
+        if auth[0] != "Bearer":
+            return jsonify({'message': 'Invalid token'}), 401
+        data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    sql = SQLHelper.SQLHelper()
+    
+    amount_spent = 0
+    monthly_budget = sql.readSQL(f"SELECT finance_budget FROM gruttechat_users WHERE username = '{str(session['username'])}'")[0]["finance_budget"]
+    amount_remaining = monthly_budget
+    receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(session['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW()) ORDER BY date DESC")
+    for receipt in receipts_current_month:
+        if receipt["is_income"]:
+            if receipt["add_to_budget"]:
+                amount_remaining += float(receipt["total"])
+                amount_spent -= float(receipt["total"])
+        else:
+            amount_remaining -= float(receipt["total"])
+            amount_spent += float(receipt["total"])
+
+    amount_remaining = f"{float(amount_remaining):.2f}".replace(".", ",")
+    
+    
+    percentage_spent = (amount_spent / monthly_budget) * 100
+    amount_spent = f"{float(amount_spent):.2f}".replace(".", ",")
+    
+    receipts_date = []
+    
+    
+    for receipt in receipts_current_month:
+        receipt["total"] = f"{float(receipt['total']):.2f}".replace(".", ",")
+        receipt["date"] = receipt["date"].strftime("%d.%m.%Y")
+
+        if not receipts_date:  # Check if receipts_date is empty
+            receipts_date.append([receipt])
+        else:
+            last_date = receipts_date[-1][0]["date"] if receipts_date[-1] else None
+
+            if receipt["date"] != last_date:
+                receipts_date.append([receipt])
+            else:
+                receipts_date[-1].append(receipt)
+                
+    return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date})
