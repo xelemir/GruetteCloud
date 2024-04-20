@@ -738,7 +738,7 @@ def api_get_chat():
             
     eh = EncryptionHelper.EncryptionHelper()
     for message in messages:
-        if message["id"] not in local_messages:
+        if str(message["id"]) not in local_messages:
             try:
                 decrypted_message = str(eh.decrypt_message(message["message_content"]))
             except:
@@ -800,3 +800,13 @@ def api_get_expenses():
                 receipts_date[-1].append(receipt)
                 
     return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date})
+
+
+
+
+
+
+
+
+
+
