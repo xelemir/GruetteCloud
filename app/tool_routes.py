@@ -702,3 +702,40 @@ def api_get_logged_in_user():
         return jsonify({'message': 'User not found'}), 404
     
     return jsonify({'username': user[0]['username'], 'email': user[0]['email'], 'is_verified': bool(user[0]['is_verified']), 'is_admin': bool(user[0]['is_admin']), "has_premium": bool(user[0]['has_premium']), 'profile_picture': user[0]['profile_picture']})
+
+
+@tool_route.route('/api/get_chat', methods=['GET'])
+def api_get_chat():
+    if request.headers.get('Token-Authorization') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        auth = request.headers.get('Token-Authorization').split(" ")
+        if auth[0] != "Bearer":
+            return jsonify({'message': 'Invalid token'}), 401
+        data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    if request.headers.get('username') is None:
+        return jsonify({'message': 'No username provided'}), 400
+    
+    sql = SQLHelper.SQLHelper()
+    
+    # Fetch messages from the database
+    messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{data['username']}' AND username_receive = '{request.headers.get('username')}' OR username_send = '{request.headers.get('username')}' AND username_receive = '{data['username']}' ORDER BY created_at")
+    
+    # Mark all messages as read
+    sql.writeSQL(f"UPDATE gruttechat_messages SET is_read = {True} WHERE username_send = '{request.headers.get('username')}' AND username_receive = '{data['username']}'")
+    
+    new_messages = []
+    try:
+        local_messages = request.headers.get('local_messages').split(",")
+    except:
+        local_messages = []
+    
+    for message in messages:
+        if str(message["id"]) not in local_messages:
+            new_messages.append({"message_id": message["id"], "message": message["message"], "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
+    
+    return jsonify(new_messages)
