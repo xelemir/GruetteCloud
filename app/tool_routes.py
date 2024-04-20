@@ -736,7 +736,7 @@ def api_get_chat():
     
     for message in messages:
         if str(message["id"]) not in local_messages:
-            new_messages.append({"message_id": message["id"], "message": message["message"], "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
+            new_messages.append({"message_id": message["id"], "message": message["message_content"], "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
     
     return jsonify(new_messages)
 
