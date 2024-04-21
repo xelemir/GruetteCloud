@@ -601,8 +601,8 @@ from pythonHelper import EncryptionHelper
 from urllib.parse import unquote
 
 
-@tool_route.route('/api/login', methods=['POST'])
-def api_login():
+@tool_route.route('/api/v1/login', methods=['POST'])
+def api_v1_login():
     data = request.form
     username = str(data.get('username').lower())
     password = str(data.get('password'))
@@ -643,8 +643,8 @@ def api_login():
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
 
-@tool_route.route('/api/get_chats', methods=['GET'])
-def api_get_chats():
+@tool_route.route('/api/v1/get_chats', methods=['GET'])
+def api_v1_get_chats():
     if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
@@ -682,8 +682,8 @@ def api_get_chats():
     
     return jsonify(active_chats)
 
-@tool_route.route('/api/get_logged_in_user', methods=['GET'])
-def api_get_logged_in_user():    
+@tool_route.route('/api/v1/get_logged_in_user', methods=['GET'])
+def api_v1_get_logged_in_user():    
     print(request.headers)
     if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
@@ -706,8 +706,8 @@ def api_get_logged_in_user():
     return jsonify({'username': user[0]['username'], 'email': user[0]['email'], 'is_verified': bool(user[0]['is_verified']), 'is_admin': bool(user[0]['is_admin']), "has_premium": bool(user[0]['has_premium']), 'profile_picture': user[0]['profile_picture']})
 
 
-@tool_route.route('/api/get_chat', methods=['GET'])
-def api_get_chat():
+@tool_route.route('/api/v1/get_chat', methods=['GET'])
+def api_v1_get_chat():
     if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
@@ -751,8 +751,8 @@ def api_get_chat():
     
     return jsonify(new_messages)
 
-@tool_route.route('/api/send_message', methods=['POST'])
-def api_send_message():
+@tool_route.route('/api/v1/send_message', methods=['POST'])
+def api_v1_send_message():
     if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
@@ -781,9 +781,40 @@ def api_send_message():
     
     return jsonify({'message': 'Message sent'}), 200
 
+@tool_route.route('/api/v1/get_available_chats', methods=['GET'])
+def api_v1_get_available_chats():
+    if request.headers.get('Token-Authorization') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        auth = request.headers.get('Token-Authorization').split(" ")
+        if auth[0] != "Bearer":
+            return jsonify({'message': 'Invalid token'}), 401
+        data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    if request.headers.get('query') is None:
+        return jsonify({'message': 'No query provided'}), 400
+    
+    sql = SQLHelper.SQLHelper()
+    
+    # Fetch all users from the database
+    users = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{request.headers.get('query')}%'")
+    
+    available_chats = []
+    
+    for user in users:
+        if user["username"].lower() != data["username"]:
+            available_chats.append({"username": user["username"], "is_verified": user["is_verified"], "profile_picture": user["profile_picture"]})
 
-@tool_route.route('/api/get_expenses', methods=['GET'])
-def api_get_expenses():
+    return jsonify(available_chats)
+
+
+
+
+@tool_route.route('/api/v1/get_expenses', methods=['GET'])
+def api_v1_get_expenses():
     if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
