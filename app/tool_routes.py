@@ -800,7 +800,7 @@ def api_v1_get_available_chats():
     sql = SQLHelper.SQLHelper()
     
     # Fetch all users from the database
-    users = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{request.headers.get('query')}%'")
+    users = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{request.headers.get('query')}%' MAX 10")
     
     available_chats = []
     
