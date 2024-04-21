@@ -806,7 +806,7 @@ def api_v1_get_available_chats():
     
     for user in users:
         if user["username"].lower() != data["username"]:
-            available_chats.append({"username": user["username"], "is_verified": user["is_verified"], "profile_picture": user["profile_picture"]})
+            available_chats.append({"username": user["username"], "is_verified": user["is_verified"], "pfp": user["profile_picture"]})
 
     return jsonify(available_chats)
 
