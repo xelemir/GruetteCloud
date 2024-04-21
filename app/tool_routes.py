@@ -5,6 +5,7 @@ import secrets
 from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from flask_socketio import SocketIO
 import requests
+import urllib3
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from geopy.geocoders import Nominatim
@@ -597,6 +598,7 @@ import datetime
 from config import secret_key
 from werkzeug.security import check_password_hash
 from pythonHelper import EncryptionHelper
+from urllib.parse import unquote
 
 
 @tool_route.route('/api/login', methods=['POST'])
@@ -771,8 +773,9 @@ def api_send_message():
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
     
-    
-    encrypted_message = eh.encrypt_message(str(request.headers.get('Message')))
+    message = str(request.headers.get('Message'))
+    message = unquote(message)
+    encrypted_message = eh.encrypt_message(message)
     
     sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{data['username']}', '{request.headers.get('Username')}', '{encrypted_message}', {False})")
     
@@ -831,13 +834,3 @@ def api_get_expenses():
                 receipts_date[-1].append(receipt)
                 
     return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date})
-
-
-
-
-
-
-
-
-
-
