@@ -632,7 +632,7 @@ def api_v1_login():
             # Log the user in
             else:
                 # Generate JWT token
-                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(minutes=1)}, secret_key, algorithm="HS256")
+                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(weeks=3)}, secret_key, algorithm="HS256")
                 return jsonify({'message': f'{username}', 'token': token}), 200
 
         # If password is or username is incorrect
@@ -684,7 +684,6 @@ def api_v1_get_chats():
 
 @tool_route.route('/api/v1/get_logged_in_user', methods=['GET'])
 def api_v1_get_logged_in_user():    
-    print(request.headers)
     if request.headers.get('Token-Authorization') is None:
         return jsonify({'message': 'No token provided'}), 401
     
@@ -735,9 +734,7 @@ def api_v1_get_chat():
         local_messages = request.headers.get('Messages').split(",")
     except:
         local_messages = []
-        
-    print(request.headers)
-            
+                    
     eh = EncryptionHelper.EncryptionHelper()
     for message in messages:
         if str(message["id"]) not in local_messages:
