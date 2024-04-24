@@ -632,7 +632,7 @@ def api_v1_login():
             # Log the user in
             else:
                 # Generate JWT token
-                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(minutes=30)}, secret_key, algorithm="HS256")
+                token = jwt.encode({'username': username, 'exp': datetime.datetime.now() + datetime.timedelta(minutes=1)}, secret_key, algorithm="HS256")
                 return jsonify({'message': f'{username}', 'token': token}), 200
 
         # If password is or username is incorrect
