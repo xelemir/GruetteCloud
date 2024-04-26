@@ -861,4 +861,4 @@ def api_v1_get_expenses():
             else:
                 receipts_date[-1].append(receipt)
                 
-    return jsonify({"amount_spent": "35", "amount_remaining": "315", "percentage_spent": 10.0, "receipts": receipts_date})
+    return jsonify({"amount_spent": "175", "amount_remaining": "175", "percentage_spent": 50.0, "receipts": receipts_date})
