@@ -826,9 +826,9 @@ def api_v1_get_expenses():
     sql = SQLHelper.SQLHelper()
     
     amount_spent = 0
-    monthly_budget = sql.readSQL(f"SELECT finance_budget FROM gruttechat_users WHERE username = '{str(session['username'])}'")[0]["finance_budget"]
+    monthly_budget = sql.readSQL(f"SELECT finance_budget FROM gruttechat_users WHERE username = '{str(data['username'])}'")[0]["finance_budget"]
     amount_remaining = monthly_budget
-    receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(session['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW()) ORDER BY date DESC")
+    receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(data['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW()) ORDER BY date DESC")
     for receipt in receipts_current_month:
         if receipt["is_income"]:
             if receipt["add_to_budget"]:
@@ -861,4 +861,4 @@ def api_v1_get_expenses():
             else:
                 receipts_date[-1].append(receipt)
                 
-    return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date})
+    return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date, "monthly_budget": monthly_budget})
