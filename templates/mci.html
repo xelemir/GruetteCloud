@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<title>MCI Tests - Powered by GrütteCloud</title>
+	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <style>
+        * {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            font-size: 2em;
+        }
+
+        p {
+            margin-bottom: 7px;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 90svh;
+            margin-top: -40px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="phone"], select, textarea {
+            width: 100%;
+            margin: 0;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            padding-left: 20px;
+            background-color: transparent;
+            border: 2px solid var(--box-shadow-color);
+            color: var(--text-color);
+            padding: 10px;
+            resize: none;
+        }
+        
+    </style>
+</head>
+<body>
+	<div class="header">
+		<div class="centered-content">
+            <a href="/" class="logo" title="Home">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
+            </a>
+        </div>
+        {% include "components/nav-element.html" %}
+	</div>
+
+	<main>
+        <section class="content">
+            <div class="application-form" style="display: flex; flex-direction: column;">
+                <div style="flex-direction: column;" enctype="multipart/form-data">
+                    <div id="section1" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <h1>MCI Test</h1>
+                        <div style="text-align: left; margin-bottom: 20px;">
+                            <p style="font-size: 1.2em; margin-bottom: 20px;">Bitte lese die folgenden Anweisungen sorgfältig durch.</p>
+                            <p>1. Insgesamt sind 3 Tests durchzuführen</p>
+                            <p>2. Jeder Test muss 10 mal durchgeführt werden</p>
+                            <p>3. Deine Ergebnisse werden automatisch gespeichert und übermittelt.</p>
+                            <p>4. Diese Seite führt dich durch die Tests.</p>
+                        </div>
+
+                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                            <div class="send-button" onclick="next()" style="border-radius: 30px; cursor: pointer; text-align: center;">
+                                <span>Weiter</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="section2" style="display: none; flex-direction: column;">
+                        <h1 style="color: var(--primary-color); margin-bottom: 40px;">Über Dich</h1>
+
+                        <div id="registered-successfully" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 20px;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span style="font-size: 1.2em;">Erfolgreich registriert.</span>
+                            <span id="test-id"></span>
+                        </div>
+                        <div id="registered-failed" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 20px;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--red);">error</span>
+                            <span style="font-size: 1.2em;">Registrierung fehlgeschlagen.</span>
+                        </div>
+
+                        <input type="text" id="name" name="name" autocomplete="off" -webkit-appearance: none; placeholder="Dein Name" required>
+
+                        <textarea style="height: 150px; border-radius: 20px;" type="text" id="demographic-data" name="demographic-data" autocomplete="off" placeholder="Demografische Daten" required></textarea>
+                        
+                        <div style="display: inline-flex; width: 300px; gap: 20px;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span>Zurück</span>
+                            </div>
+                            <div id="save-user" class="send-button" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                <span id="save_user_icon">Speichern</span>
+                            </div>
+
+                            <script>
+                                document.getElementById("save-user").addEventListener("click", function() {
+                                    var saveUserIcon = document.getElementById("save_user_icon");
+
+                                    if (saveUserIcon.innerHTML == "Weiter" || saveUserIcon.innerHTML == '<i class="fas fa-spinner fa-spin"></i>') {
+                                        return;
+                                    }
+
+                                    saveUserIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                                    var name = document.getElementById("name").value;
+                                    var demographicData = document.getElementById("demographic-data").value;
+
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "/mci/save-user", true);
+                                    xhr.setRequestHeader("Content-Type", "application/json");
+                                    xhr.send(JSON.stringify({
+                                        name: name,
+                                        demographicData: demographicData
+                                    }));
+
+                                    xhr.onreadystatechange = function() {
+                                        if (xhr.readyState == 4 && xhr.status == 200) {
+                                            response = JSON.parse(xhr.responseText);
+
+                                            document.cookie = "mci_test_id=" + response.id;
+
+                                            saveUserIcon.innerHTML = "Weiter";
+                                            document.getElementById("test-id").innerHTML = response.id;
+                                            document.getElementById("save-user").onclick = function() {
+                                                next();
+                                            }
+                                            document.getElementById("registered-failed").style.display = "none";
+                                            document.getElementById("registered-successfully").style.display = "flex";
+                                        } else if (xhr.readyState == 4 && xhr.status != 200) {
+                                            saveUserIcon.innerHTML = "Speichern";
+                                            document.getElementById("registered-successfully").style.display = "none";
+                                            document.getElementById("registered-failed").style.display = "flex";
+                                        }
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </div>
+
+                    <div id="section3" style="display: none; flex-direction: column;">
+                        <h1 id="test1-title" style="color: var(--primary-color); margin-bottom: 40px;">Los geht's</h1>
+
+                        <div id="test1-text" style="text-align: left; margin-bottom: 20px; max-width: 300px; display: block;">
+                            <p>Wir starten nun mit dem ersten Test.</p>
+                            <p>Pro Runde wirst du 30 Quadrate sehen, die langsam sichtbar werden.</p>
+                            <p>Drücke die Leertaste, sobald du das Quadrat jeweils erkennst.</p>
+                        </div>
+
+                        <div id="test1-completed" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span style="font-size: 1.2em;">Erfolgreich abgeschlossen.</span>
+                        </div>
+
+
+                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span>Zurück</span>
+                            </div>
+                            <a id="test1" class="send-button" href="/mci/test1" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
+                                <span>Öffnen</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="section4" style="display: none; flex-direction: column;">
+                        <h1 id="test2-title" style="color: var(--primary-color); margin-bottom: 40px;">Weiter geht's</h1>
+
+                        <div id="test2-text" style="text-align: left; margin-bottom: 20px; max-width: 300px; display: block;">
+                            <p>Sehr gut! Du hast den ersten Test erfolgreich abgeschlossen.</p>
+                            <p>Wir starten nun mit dem zweiten Test.</p>
+                            <p>Pro Runde wirst du Quadrate und Dreiecke sehen. Drücke die Leertaste, sobald du das Quadrat erkennst.</p>
+                            <p>Bei einem Dreieck warte ein paar Sekunden, oder überspringe es mit 'a'.</p>
+                        </div>
+
+                        <div id="test2-completed" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span style="font-size: 1.2em;">Erfolgreich abgeschlossen.</span>
+                        </div>
+
+                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span>Zurück</span>
+                            </div>
+                            <a id="test2" class="send-button" href="/mci/test2" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
+                                <span>Öffnen</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="section5" style="display: none; flex-direction: column;">
+                        <h1 id="test3-title" style="color: var(--primary-color); margin-bottom: 40px;">Fast geschafft</h1>
+
+                        <div id="test3-text" style="text-align: left; margin-bottom: 20px; max-width: 300px; display: block;">
+                            <p>Kommen wir zum letzten Test.</p>
+                            <p>Pro Runde wirst du Bilder von Speisen aus Deutschland, China und Mexico sehen.</p>
+                            <p>Drücke die 'd', sobald du das Bild einer deutschen Speise erkennst.</p>
+                            <p>Drücke die 'f', für eine chinesischen Speise.</p>
+                            <p>Und drücke die 'g', für eine mexikanische Speise.</p>
+                        </div>
+
+                        <div id="test3-completed" style="max-width: 300px; display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px; text-align: center;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span style="font-size: 1.2em;">Deine Ergebnisse wurden erfolgreich übermittelt.</span>
+                            <span style="font-size: 1.2em;">Du kannst die Seite nun schließen.</span>
+                            <span style="font-size: 1.2em;">Vielen Dank für deine Teilnahme.</span>
+                        </div>
+
+                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                <span>Zurück</span>
+                            </div>
+                            <a id="test3" class="send-button" href="/mci/test3" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
+                                <span>Öffnen</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+	<div id="cookie-banner"></div>
+
+    {% include "components/error.html" %}
+
+</body>
+</html>
+
+<script>
+    if (document.cookie.includes("mci_test_id")) {
+        document.getElementById("section1").style.display = "none";
+        document.getElementById("section2").style.display = "none";
+        document.getElementById("section3").style.display = "flex";
+        document.getElementById("section4").style.display = "none";
+        document.getElementById("section5").style.display = "none";
+
+        document.getElementById("save-user").onclick = function() {
+            next();
+        }
+
+        document.getElementById("save_user_icon").innerHTML = "Weiter";
+
+        document.getElementById("registered-successfully").style.display = "flex";
+        document.getElementById("test-id").innerHTML = document.cookie.split("mci_test_id=")[1];
+    }
+
+    if (document.cookie.includes("mci_test_completed")) {
+        mci_test_completed = document.cookie.split("mci_test_completed=", 2)[1].split(";")[0];
+
+        if (mci_test_completed == 1) {
+            document.getElementById("test1").href = "javascript:void(0)";
+            document.getElementById("test1").innerHTML = "Weiter";
+            document.getElementById("test1").onclick = function() {
+                next();
+            }
+
+            document.getElementById("test1-text").style.display = "none";
+            document.getElementById("test1-completed").style.display = "flex";
+            document.getElementById("test1-title").innerHTML = "Test 1";
+
+            document.getElementById("section1").style.display = "none";
+            document.getElementById("section2").style.display = "none";
+            document.getElementById("section3").style.display = "none";
+            document.getElementById("section4").style.display = "flex";
+            document.getElementById("section5").style.display = "none";
+
+        } else if (mci_test_completed == 2) {
+            document.getElementById("test1").href = "javascript:void(0)";
+            document.getElementById("test1").innerHTML = "Weiter";
+            document.getElementById("test1").onclick = function() {
+                next();
+            }
+            document.getElementById("test2").href = "javascript:void(0)";
+            document.getElementById("test2").innerHTML = "Weiter";
+            document.getElementById("test2").onclick = function() {
+                next();
+            }
+
+            document.getElementById("test1-text").style.display = "none";
+            document.getElementById("test1-completed").style.display = "flex";
+            document.getElementById("test1-title").innerHTML = "Test 1";
+
+            document.getElementById("test2-text").style.display = "none";
+            document.getElementById("test2-completed").style.display = "flex";
+            document.getElementById("test2-title").innerHTML = "Test 2";
+
+            document.getElementById("section1").style.display = "none";
+            document.getElementById("section2").style.display = "none";
+            document.getElementById("section3").style.display = "none";
+            document.getElementById("section4").style.display = "none";
+            document.getElementById("section5").style.display = "flex";
+
+
+        } else if (mci_test_completed == 3) {
+            document.getElementById("test1").href = "javascript:void(0)";
+            document.getElementById("test1").innerHTML = "Weiter";
+            document.getElementById("test1").onclick = function() {
+                next();
+            }
+            document.getElementById("test2").href = "javascript:void(0)";
+            document.getElementById("test2").innerHTML = "Weiter";
+            document.getElementById("test2").onclick = function() {
+                next();
+            }
+            document.getElementById("test3").style.display = "none";
+
+            document.getElementById("test1-text").style.display = "none";
+            document.getElementById("test1-completed").style.display = "flex";
+            document.getElementById("test1-title").innerHTML = "Test 1";
+
+            document.getElementById("test2-text").style.display = "none";
+            document.getElementById("test2-completed").style.display = "flex";
+            document.getElementById("test2-title").innerHTML = "Test 2";
+
+            document.getElementById("test3-text").style.display = "none";
+            document.getElementById("test3-completed").style.display = "flex";
+            document.getElementById("test3-title").innerHTML = "Test 3";
+
+            document.getElementById("section1").style.display = "none";
+            document.getElementById("section2").style.display = "none";
+            document.getElementById("section3").style.display = "none";
+            document.getElementById("section4").style.display = "none";
+            document.getElementById("section5").style.display = "flex";
+
+        }
+    }
+
+    function next() {
+        var section1 = document.getElementById("section1");
+        var section2 = document.getElementById("section2");
+        var section3 = document.getElementById("section3");
+        var section4 = document.getElementById("section4");
+        var section5 = document.getElementById("section5");
+
+
+
+        if (section1.style.display == "flex") {
+            section1.style.display = "none";
+            section2.style.display = "flex";
+        } else if (section2.style.display == "flex") {
+            section2.style.display = "none";
+            section3.style.display = "flex";
+        } else if (section3.style.display == "flex") {
+            section3.style.display = "none";
+            section4.style.display = "flex";
+        } else if (section4.style.display == "flex") {
+            section4.style.display = "none";
+            section5.style.display = "flex";
+        }
+    }
+
+    function previous() {
+        var section1 = document.getElementById("section1");
+        var section2 = document.getElementById("section2");
+        var section3 = document.getElementById("section3");
+        var section4 = document.getElementById("section4");
+        var section5 = document.getElementById("section5");
+
+        if (section2.style.display == "flex") {
+            section2.style.display = "none";
+            section1.style.display = "flex";
+        } else if (section3.style.display == "flex") {
+            section3.style.display = "none";
+            section2.style.display = "flex";
+        } else if (section4.style.display == "flex") {
+            section4.style.display = "none";
+            section3.style.display = "flex";
+        } else if (section5.style.display == "flex") {
+            section5.style.display = "none";
+            section4.style.display = "flex";
+        }
+    }
+</script>
+
+<script src="https://www.gruettecloud.com/static/cookies.js"></script>

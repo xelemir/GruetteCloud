@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision Reaction Test</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: #2c2c2e;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #007aff;
+            margin-top: 10px;
+        }
+
+        .square {
+            height: 120px;
+            width: 120px;
+            background-color: transparent;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid transparent;
+        }
+
+        p {
+            margin: 7px 0;
+        }
+
+        .logs {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            gap: 10px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div style="height: 180px; display: flex; flex-direction: row; gap: 10px;">
+        <div style="display: flex; text-align: center; flex-direction: column; width: 30%; background-color: #d1d1d6; padding: 10px; border-radius: 20px;">
+            <h1 id="title">B.2 Binary Test</h1>
+            <p id="instruction">Press space to start!</p>
+        </div>
+        <div style="display: flex; flex-direction: row; width: 70%; background-color: #d1d1d6; padding: 10px; border-radius: 20px; gap: 10px;">
+            <div style="display: flex; flex-direction: column; justify-content: space-between; width: 50%; background-color: orange; padding: 10px; border-radius: 15px;">
+                <p style="margin: 0; font-size: 18px;">Results orange</p>
+                <div class="logs"><span class="material-symbols-outlined">speed</span><p id="time-orange">Reaction time: -</p></div>
+                <div class="logs"><span class="material-symbols-outlined">event_repeat</span><p id="count-orange">Count: 0</p></div>
+                <div class="logs"><span class="material-symbols-outlined">avg_time</span><p id="mean-orange">Mean: -</p></div>
+                <div class="logs"><span class="material-symbols-outlined">bar_chart</span><p id="sd-orange">SD: -</p></div>
+                <div class="logs"><span class="material-symbols-outlined">warning</span><p id="error-orange">Errors: 0</p></div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: space-between; width: 50%; background-color: purple; padding: 10px; color: white; border-radius: 15px;">
+                <p style="margin: 0; font-size: 18px;">Results purple</p>
+                <div class="logs"><span class="material-symbols-outlined">speed</span><p id="time-purple">Reaction time: -</p></div>
+                <div class="logs"><span class="material-symbols-outlined">event_repeat</span><p id="count-purple">Count: 0</p></div>
+                <div class="logs"><span class="material-symbols-outlined">avg_time</span><p id="mean-purple">Mean: -</p></div>
+                <div class="logs"><span class="material-symbols-outlined">bar_chart</span><p id="sd-purple">SD: -</p></div>
+                <div class="logs"><span class="material-symbols-outlined">warning</span><p id="error-purple">Errors: 0</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="stimulus-container" style="margin-top: 10px; height: calc(100svh - 210px); background-color: #d1d1d6; border-radius: 20px; justify-content: center; align-items: center; display: flex;">
+        <div id="stimulus" class="triangle"></div>
+    </div>
+    
+
+    <script>
+        let totalRounds = 0;
+        let all_results = [];
+
+
+        let experimentActive = false;
+        let stimulusIsVisible = false;
+        let stimulusTimestamp;
+        let testStimulusTimeout;
+        let timesOrange = [];
+        let timesPurple = [];
+        let errorCountOrange = 0;
+        let errorCountPurple = 0;
+
+        let timeElementOrange = document.getElementById('time-orange');
+        let countElementOrange = document.getElementById('count-orange');
+        let meanElementOrange = document.getElementById('mean-orange');
+        let stdDevElementOrange = document.getElementById('sd-orange');
+        let errorElementOrange = document.getElementById('error-orange');
+
+        let timeElementPurple = document.getElementById('time-purple');
+        let countElementPurple = document.getElementById('count-purple');
+        let meanElementPurple = document.getElementById('mean-purple');
+        let stdDevElementPurple = document.getElementById('sd-purple');
+        let errorElementPurple = document.getElementById('error-purple');
+
+        let instructionElement = document.getElementById('instruction');
+        let stimulusElement = document.getElementById('stimulus');
+
+        function getMean(data) {
+            let sum = data.reduce((acc, val) => acc + val, 0);
+            return sum / data.length;
+        }
+
+        function getStandardDeviation(data) {
+            let mean = getMean(data);
+            let squareSum = data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
+            return Math.sqrt(squareSum / data.length);
+        }
+
+        function clearResults() {
+            timeElementOrange.textContent = 'Reaction time: -';
+            countElementOrange.textContent = 'Count: 0';
+            meanElementOrange.textContent = 'Mean: -';
+            stdDevElementOrange.textContent = 'SD: -';
+            errorElementOrange.textContent = 'Errors: 0';
+
+            timeElementPurple.textContent = 'Reaction time: -';
+            countElementPurple.textContent = 'Count: 0';
+            meanElementPurple.textContent = 'Mean: -';
+            stdDevElementPurple.textContent = 'SD: -';
+            errorElementPurple.textContent = 'Errors: 0';
+
+        }
+
+        function showResults() {
+            let meanDeltaTimeOrange = getMean(timesOrange);
+            let stdDevOrange = getStandardDeviation(timesOrange);
+
+            let meanDeltaTimePurple = getMean(timesPurple);
+            let stdDevPurple = getStandardDeviation(timesPurple);
+
+            countElementOrange.textContent = 'Count: ' + timesOrange.length;
+            meanElementOrange.textContent = 'Mean: ' + Math.round(meanDeltaTimeOrange) + ' ms';
+            stdDevElementOrange.textContent = 'SD: ' + Math.round(stdDevOrange) + ' ms';
+            errorElementOrange.textContent = 'Errors: ' + errorCountOrange
+
+            countElementPurple.textContent = 'Count: ' + timesPurple.length;
+            meanElementPurple.textContent = 'Mean: ' + Math.round(meanDeltaTimePurple) + ' ms';
+            stdDevElementPurple.textContent = 'SD: ' + Math.round(stdDevPurple) + ' ms';
+            errorElementPurple.textContent = 'Errors: ' + errorCountPurple;
+
+            all_results.push({
+                count: timesOrange.length + timesPurple.length,
+                meanOrange: meanDeltaTimeOrange,
+                sdOrange: stdDevOrange,
+                errorsOrange: errorCountOrange,
+                meanPurple: meanDeltaTimePurple,
+                sdPurple: stdDevPurple,
+                errorsPurple: errorCountPurple
+            });
+        }
+
+        function setStimulusProperties(newColor) {
+            // Random number between 50 and 150 * 2 to make sure size mod 2 == 0
+            let size = (Math.floor(Math.random() * 100) + 50) * 2;
+
+            if (stimulusElement.classList.contains('triangle')) {
+                stimulusElement.style.borderBottom = size + 'px solid ' + newColor;
+                stimulusElement.style.borderLeft = (size/2) + 'px solid transparent';
+                stimulusElement.style.borderRight = (size/2) + 'px solid transparent';
+
+                stimulusElement.style.backgroundColor = 'transparent';
+                stimulusElement.style.height = '0px';
+                stimulusElement.style.width = '0px';
+                
+                if (newColor === 'orange') {
+                    stimulusElement.classList.remove('purple');
+                    stimulusElement.classList.add('orange');
+                } else {
+                    stimulusElement.classList.remove('orange');
+                    stimulusElement.classList.add('purple');
+                }
+
+            } else {
+                stimulusElement.style.backgroundColor = newColor;
+                stimulusElement.style.height = size + 'px';
+                stimulusElement.style.width = size + 'px';
+
+                stimulusElement.style.borderBottom = '0px';
+                stimulusElement.style.borderLeft = '0px';
+                stimulusElement.style.borderRight = '0px';
+
+                if (newColor === 'orange') {
+                    stimulusElement.classList.remove('purple');
+                    stimulusElement.classList.add('orange');
+                } else {
+                    stimulusElement.classList.remove('orange');
+                    stimulusElement.classList.add('purple');
+                }
+            }
+        }
+
+        function startTestTrial() {
+            setStimulusProperties('transparent');
+            stimulusIsVisible = false;
+
+            let timeToWaitInSeconds = Math.random() * 4 + 2; // 2 - 6s
+            testStimulusTimeout = setTimeout(showStimulus, timeToWaitInSeconds * 1000);
+        }
+
+        function showStimulus() {
+            var availableColors = ['purple', 'orange'];
+
+            // 50:50 chance TRIAGLE or SQUARE
+            if (Math.random() > 0.5) {
+                stimulusElement.classList.add('triangle');
+                stimulusElement.classList.remove('square');
+
+                testStimulusTimeout = setTimeout(showStimulus, 6000);
+
+            } else {
+                stimulusElement.classList.add('square');
+                stimulusElement.classList.remove('triangle');
+            }
+
+            setStimulusProperties(availableColors[Math.floor(Math.random() * availableColors.length)]);
+
+            stimulusIsVisible = true;
+            stimulusTimestamp = Date.now();
+        }
+
+        function recordStimulusReactionTime() {
+            let deltaTime = Date.now() - stimulusTimestamp;
+
+            if (stimulusElement.classList.contains('orange')) {
+                timesOrange.push(deltaTime);
+                timeElementOrange.textContent = 'Reaction time: ' + deltaTime + ' ms';
+                countElementOrange.textContent = 'Count: ' + timesOrange.length;
+            } else {
+                timesPurple.push(deltaTime);
+                timeElementPurple.textContent = 'Reaction time: ' + deltaTime + ' ms';
+                countElementPurple.textContent = 'Count: ' + timesPurple.length;
+            }
+        }
+
+        function startExperiment() {
+            clearResults();
+            instructionElement.textContent = "Press SPACE when you see a square! Press 'a' to skip a triangle!";
+
+            timesOrange = [];
+            errorCountOrange = 0;
+
+            timesPurple = [];
+            errorCountPurple = 0;
+
+            experimentActive = true;
+            startTestTrial();
+        }
+
+        function stopExperiment() {
+            clearTimeout(testStimulusTimeout);
+            stimulusIsVisible = false;
+            experimentActive = false;
+            totalRounds++;
+
+            if (totalRounds < 10) {
+                instructionElement.textContent = 'Press SPACE to start!';
+                showResults();
+            } else {
+                showResults();
+                instructionElement.textContent = 'Experiment finished! Saving results...';
+                test_id = document.cookie.split("mci_test_id=")[1];
+                if (test_id === undefined) window.location.href = '/mci';
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/mci/save-test-results", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(JSON.stringify({
+                    testNumber: 2,
+                    testId: test_id,
+                    results: all_results
+                }));
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        instructionElement.textContent = 'Results saved! Press ANY KEY to end the test.';
+                        document.cookie = "mci_test_completed=" + 2;
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('keydown', (event) => {
+            if (instructionElement.textContent === 'Experiment finished! Saving results...') {
+                return;
+            } else if (instructionElement.textContent === 'Results saved! Press ANY KEY to end the test.') {
+                window.location.href = '/mci';
+            }
+
+            if (event.key === ' ') {
+                if (!experimentActive) {
+                    startExperiment();
+                    return;
+                }
+
+                if (stimulusIsVisible) {
+                    if (stimulusElement.classList.contains('square')) {
+                        recordStimulusReactionTime();
+
+                        if (timesOrange.length + timesPurple.length >= 30) {
+                            stopExperiment();
+                            return;
+                        }
+                        startTestTrial();
+                    } else {
+                        // count error separately for each color
+                        if (stimulusElement.classList.contains('orange')) {
+                            errorCountOrange++;
+                            errorElementOrange.textContent = 'Errors: ' + errorCountOrange;
+                        } else {
+                            errorCountPurple++;
+                            errorElementPurple.textContent = 'Errors: ' + errorCountPurple;
+                        }
+                        clearTimeout(testStimulusTimeout);
+                        startTestTrial();
+                    }
+                } else {
+                    // Early key pressed without stimulus
+                    if (stimulusElement.classList.contains('triangle')) {
+                        if (stimulusElement.classList.contains('orange')) {
+                            errorCountOrange++;
+                            errorElementOrange.textContent = 'Errors: ' + errorCountOrange;
+                        } else {
+                            errorCountPurple++;
+                            errorElementPurple.textContent = 'Errors: ' + errorCountPurple;
+                        }
+                    }
+                    clearTimeout(testStimulusTimeout);
+                    startTestTrial();
+                }
+
+            } else if (event.key === 'a') {
+                if (experimentActive && stimulusIsVisible && stimulusElement.classList.contains('triangle')) {
+                    clearTimeout(testStimulusTimeout);
+                    startTestTrial();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

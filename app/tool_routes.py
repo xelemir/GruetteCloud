@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import secrets
+import time
 from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from flask_socketio import SocketIO
 import requests
@@ -862,3 +863,79 @@ def api_v1_get_expenses():
                 receipts_date[-1].append(receipt)
                 
     return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date, "monthly_budget": monthly_budget})
+
+
+
+
+
+
+# HCI Endpoints
+
+
+
+
+
+
+
+
+@tool_route.route('/mci', methods=['GET'])
+def mci():
+    return render_template("mci.html", menu=th.user(session))
+
+@tool_route.route('/mci/save-user', methods=['POST'])
+def mci_save_user():
+    name = request.json['name']
+    demographic_data = request.json['demographicData']
+    
+    random_hex = secrets.token_hex(8)
+    
+    json_object = json.dumps({"name": name, "demographic_data": demographic_data, "test1": None, "test2": None, "test3": None}, indent=4)
+    
+    with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{random_hex}.json"), "w") as outfile:
+        outfile.write(json_object)
+        
+    time.sleep(5)
+
+    return jsonify({"success": True, "id": random_hex})
+
+@tool_route.route('/mci/save-test-results', methods=['POST'])
+def mci_save_test_results():
+    results = request.json['results']
+    test_id = request.json['testId']
+    test_number = request.json['testNumber']
+    
+    old = None
+    with open(os.path.join(gruettedrive_path, "mci_user", "MCI_2b6f0800d92bc753.json"), "r") as infile:
+        old = json.load(infile)
+        
+    test1 = old["test1"]
+    test2 = old["test2"]
+    test3 = old["test3"]
+    
+    print(test_number)
+    
+    if test_number == 1:
+        test1 = results
+    elif test_number == 2:
+        test2 = results
+    elif test_number == 3:
+        test3 = results
+    
+    json_object = json.dumps({"name": old["name"], "demographic_data": old["demographic_data"], "test1": test1, "test2": test2, "test3": test3}, indent=4)
+    
+    with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "w") as outfile:
+        outfile.write(json_object)
+    
+    return jsonify({"success": True})
+
+@tool_route.route('/mci/test1', methods=['GET'])
+def mci_test1():
+    return render_template("mci_1.html", menu=th.user(session))
+
+@tool_route.route('/mci/test2', methods=['GET'])
+def mci_test2():
+    return render_template("mci_2.html", menu=th.user(session))
+
+@tool_route.route('/mci/test3', methods=['GET'])
+def mci_test3():
+    return render_template("mci_3.html", menu=th.user(session))
