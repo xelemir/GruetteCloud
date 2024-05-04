@@ -887,6 +887,9 @@ def mci_save_user():
     name = request.json['name']
     demographic_data = request.json['demographicData']
     
+    if name == None or demographic_data == None or name == "" or demographic_data == "":
+        return jsonify({"success": False}), 401
+    
     random_hex = secrets.token_hex(8)
     
     json_object = json.dumps({"name": name, "demographic_data": demographic_data, "test1": None, "test2": None, "test3": None}, indent=4)
@@ -894,8 +897,6 @@ def mci_save_user():
     with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{random_hex}.json"), "w") as outfile:
         outfile.write(json_object)
         
-    time.sleep(5)
-
     return jsonify({"success": True, "id": random_hex})
 
 @tool_route.route('/mci/save-test-results', methods=['POST'])
@@ -911,9 +912,7 @@ def mci_save_test_results():
     test1 = old["test1"]
     test2 = old["test2"]
     test3 = old["test3"]
-    
-    print(test_number)
-    
+        
     if test_number == 1:
         test1 = results
     elif test_number == 2:
