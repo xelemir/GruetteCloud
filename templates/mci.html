@@ -47,11 +47,38 @@
             padding: 10px;
             resize: none;
         }
+
+        .bug-report-tip:before {
+            content: "";
+            position: absolute;
+            top: -16px;
+            left: -30px;
+            transform: rotate(45deg);
+            border-style: solid;
+            border-width: 20px 18px 0 40px;
+            border-color: var(--red) transparent transparent transparent;
+            z-index: -1;
+        }
+
         
     </style>
 </head>
 <body>
 	<div class="header">
+        <div style="position: absolute; top: 20px; left: 0; padding-left: 20px; display: flex; flex-direction: row; gap: 10px;">
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
+            <a href="/support" class="white-button-blue-on-hover bug-report-button" style="cursor: pointer; display: flex; background-color: var(--background-color); border: none; margin: 0; padding: 0; text-decoration: none;">
+                <span class="material-symbols-outlined">bug_report</span>
+            </a>
+            <span id="bug-report-tip" class="bug-report-tip" style="display: none; position: absolute; top: 60px; left: 90px; z-index: 2; background-color: var(--red); padding: 10px; border-radius: 10px; color: var(--white-color); width: 150px;">
+                Melde Fehler bitte direkt hier, damit wir sie schnellstmöglich beheben können.
+            </span>
+            <span id="bug-report-tip-close" onclick="closeBugReportTip()" style="display: none; cursor: pointer; position: absolute; top: 40px; left: 220px; z-index: 3; background-color: var(--red); padding: 8px; border-radius: 50%; color: var(--white-color);">
+                <span class="material-symbols-outlined align-icons-center">close</span>
+            <span>
+        </div>
+        
+        
 		<div class="centered-content">
             <a href="/" class="logo" title="Home">
                 <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
@@ -67,7 +94,7 @@
                     <div id="section1" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
                         <h1>MCI Test</h1>
                         <div style="text-align: left; margin-bottom: 20px;">
-                            <p style="font-size: 1.2em; margin-bottom: 20px;">Bitte lese die folgenden Anweisungen sorgfältig durch.</p>
+                            <p style="font-size: 1.2em; margin-bottom: 20px;">Bitte lies die folgenden Anweisungen sorgfältig durch.</p>
                             <p>1. Insgesamt sind 3 Tests durchzuführen</p>
                             <p>2. Jeder Test muss 10 mal durchgeführt werden</p>
                             <p>3. Deine Ergebnisse werden automatisch gespeichert und übermittelt.</p>
@@ -232,14 +259,33 @@
             </div>
         </section>
     </main>
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
+        <a class="footer-link" href="https://www.gruettecloud.com/about">Impressum</a><br>
+    </div>
+
 	<div id="cookie-banner"></div>
 
     {% include "components/error.html" %}
+
+
+    <div id="allow-js" style="position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--red); color: var(--white-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center; display: flex;">
+        <h2 style="margin-bottom: 30px;">Fehler</h2>
+        <p>Bitte aktiviere JavaScript, um diese Seite nutzen zu können.</p>
+        <p>Für die Funktionalität sind außerdem Cookies notwendig.</p>
+    </div>
 
 </body>
 </html>
 
 <script>
+
+    document.getElementById("allow-js").style.display = "none";
+
+    if (!localStorage.getItem('bug_report_tip_closed')) {
+        document.getElementById("bug-report-tip").style.display = "block";
+        document.getElementById("bug-report-tip-close").style.display = "block";
+    }
+
     if (localStorage.getItem('mci_test_id')) {
         document.getElementById("section1").style.display = "none";
         document.getElementById("section2").style.display = "none";
@@ -383,6 +429,14 @@
             section4.style.display = "flex";
         }
     }
+
+    function closeBugReportTip() {
+        document.getElementById("bug-report-tip").style.display = "none";
+        document.getElementById("bug-report-tip-close").style.display = "none";
+
+        localStorage.setItem('bug_report_tip_closed', true);
+    }
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>
