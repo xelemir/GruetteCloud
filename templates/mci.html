@@ -131,7 +131,7 @@
                                         if (xhr.readyState == 4 && xhr.status == 200) {
                                             response = JSON.parse(xhr.responseText);
 
-                                            document.cookie = "mci_test_id=" + response.id;
+                                            localStorage.setItem('mci_test_id', response.id);
 
                                             saveUserIcon.innerHTML = "Weiter";
                                             document.getElementById("test-id").innerHTML = response.id;
@@ -240,7 +240,7 @@
 </html>
 
 <script>
-    if (document.cookie.includes("mci_test_id")) {
+    if (localStorage.getItem('mci_test_id')) {
         document.getElementById("section1").style.display = "none";
         document.getElementById("section2").style.display = "none";
         document.getElementById("section3").style.display = "flex";
@@ -254,11 +254,11 @@
         document.getElementById("save_user_icon").innerHTML = "Weiter";
 
         document.getElementById("registered-successfully").style.display = "flex";
-        document.getElementById("test-id").innerHTML = document.cookie.split("mci_test_id=")[1];
+        document.getElementById("test-id").innerHTML = localStorage.getItem('mci_test_id');
     }
 
-    if (document.cookie.includes("mci_test_completed")) {
-        mci_test_completed = document.cookie.split("mci_test_completed=", 2)[1].split(";")[0];
+    if (localStorage.getItem('mci_test_completed')) {
+        mci_test_completed = localStorage.getItem('mci_test_completed');
 
         if (mci_test_completed == 1) {
             document.getElementById("test1").href = "javascript:void(0)";

@@ -192,7 +192,7 @@
             } else {
                 showResults();
                 instructionElement.textContent = 'Experiment finished! Saving results...';
-                test_id = document.cookie.split("mci_test_id=")[1];
+                test_id = localStorage.getItem('mci_test_id');
                 if (test_id === undefined) window.location.href = '/mci';
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/mci/save-test-results", true);
@@ -206,7 +206,7 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         instructionElement.textContent = 'Results saved! Press ANY KEY to end the test.';
-                        document.cookie = "mci_test_completed=" + 1;
+                        localStorage.setItem('mci_test_completed', 1);
                     }
                 }
             }
