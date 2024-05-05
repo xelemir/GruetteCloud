@@ -309,7 +309,7 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         instructionElement.textContent = 'Results saved! Press ANY KEY to end the test.';
-                        //localStorage.setItem('mci_test_completed', 3);
+                        localStorage.setItem('mci_test_completed', 3);
                     }
                 }
             }
