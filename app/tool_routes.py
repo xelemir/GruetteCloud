@@ -906,7 +906,7 @@ def mci_save_test_results():
     test_number = request.json['testNumber']
     
     old = None
-    with open(os.path.join(gruettedrive_path, "mci_user", "MCI_2b6f0800d92bc753.json"), "r") as infile:
+    with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "r") as infile:
         old = json.load(infile)
         
     test1 = old["test1"]
