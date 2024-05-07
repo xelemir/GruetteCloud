@@ -944,6 +944,6 @@ def mci_rate_survey():
     test_id = request.json['test_id']
     rating = request.json['rating']
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('MCI User', 'MCI User rated the survey with {rating} stars.', 'opened')")
+    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('MCI User', 'Tests rated with {rating} stars. Test ID: {test_id}', 'opened')")
     
     return jsonify({"success": True})
