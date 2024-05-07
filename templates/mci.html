@@ -132,56 +132,58 @@
 
                         <textarea style="height: 150px; border-radius: 20px;" type="text" id="demographic-data" name="demographic-data" autocomplete="off" placeholder="Demographische Daten, wie Alter, Geschlecht und Nationalität (-en)" required></textarea>
                         
-                        <div style="display: inline-flex; width: 300px; gap: 20px;">
-                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
-                                <span>Zurück</span>
-                            </div>
-                            <div id="save-user" class="send-button" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
-                                <span id="save_user_icon">Speichern</span>
-                            </div>
+                        <span style="display: flex; justify-content: center; align-items: center;">
+                            <div style="display: inline-flex; width: 300px; gap: 20px;">
+                                <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                    <span>Zurück</span>
+                                </div>
+                                <div id="save-user" class="send-button" style="border-radius: 30px; cursor: pointer; text-align: center; margin-left: auto;">
+                                    <span id="save_user_icon">Speichern</span>
+                                </div>
 
-                            <script>
-                                document.getElementById("save-user").addEventListener("click", function() {
-                                    var saveUserIcon = document.getElementById("save_user_icon");
+                                <script>
+                                    document.getElementById("save-user").addEventListener("click", function() {
+                                        var saveUserIcon = document.getElementById("save_user_icon");
 
-                                    if (saveUserIcon.innerHTML == "Weiter" || saveUserIcon.innerHTML == '<i class="fas fa-spinner fa-spin"></i>') {
-                                        return;
-                                    }
-
-                                    saveUserIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                                    var name = document.getElementById("name").value;
-                                    var demographicData = document.getElementById("demographic-data").value;
-
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("POST", "/mci/save-user", true);
-                                    xhr.setRequestHeader("Content-Type", "application/json");
-                                    xhr.send(JSON.stringify({
-                                        name: name,
-                                        demographicData: demographicData
-                                    }));
-
-                                    xhr.onreadystatechange = function() {
-                                        if (xhr.readyState == 4 && xhr.status == 200) {
-                                            response = JSON.parse(xhr.responseText);
-
-                                            localStorage.setItem('mci_test_id', response.id);
-
-                                            saveUserIcon.innerHTML = "Weiter";
-                                            document.getElementById("test-id").innerHTML = response.id;
-                                            document.getElementById("save-user").onclick = function() {
-                                                next();
-                                            }
-                                            document.getElementById("registered-failed").style.display = "none";
-                                            document.getElementById("registered-successfully").style.display = "flex";
-                                        } else if (xhr.readyState == 4 && xhr.status != 200) {
-                                            saveUserIcon.innerHTML = "Speichern";
-                                            document.getElementById("registered-successfully").style.display = "none";
-                                            document.getElementById("registered-failed").style.display = "flex";
+                                        if (saveUserIcon.innerHTML == "Weiter" || saveUserIcon.innerHTML == '<i class="fas fa-spinner fa-spin"></i>') {
+                                            return;
                                         }
-                                    }
-                                });
-                            </script>
-                        </div>
+
+                                        saveUserIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                                        var name = document.getElementById("name").value;
+                                        var demographicData = document.getElementById("demographic-data").value;
+
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open("POST", "/mci/save-user", true);
+                                        xhr.setRequestHeader("Content-Type", "application/json");
+                                        xhr.send(JSON.stringify({
+                                            name: name,
+                                            demographicData: demographicData
+                                        }));
+
+                                        xhr.onreadystatechange = function() {
+                                            if (xhr.readyState == 4 && xhr.status == 200) {
+                                                response = JSON.parse(xhr.responseText);
+
+                                                localStorage.setItem('mci_test_id', response.id);
+
+                                                saveUserIcon.innerHTML = "Weiter";
+                                                document.getElementById("test-id").innerHTML = response.id;
+                                                document.getElementById("save-user").onclick = function() {
+                                                    next();
+                                                }
+                                                document.getElementById("registered-failed").style.display = "none";
+                                                document.getElementById("registered-successfully").style.display = "flex";
+                                            } else if (xhr.readyState == 4 && xhr.status != 200) {
+                                                saveUserIcon.innerHTML = "Speichern";
+                                                document.getElementById("registered-successfully").style.display = "none";
+                                                document.getElementById("registered-failed").style.display = "flex";
+                                            }
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </span>
                     </div>
 
                     <div id="section3" style="display: none; flex-direction: column;">
@@ -198,15 +200,16 @@
                             <span style="font-size: 1.2em;">Erfolgreich abgeschlossen.</span>
                         </div>
 
-
-                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
-                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
-                                <span>Zurück</span>
+                        <span style="display: flex; justify-content: center; align-items: center;">
+                            <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                                <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                    <span>Zurück</span>
+                                </div>
+                                <a id="test1" class="send-button" href="/mci/test1" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
+                                    <span>Öffnen</span>
+                                </a>
                             </div>
-                            <a id="test1" class="send-button" href="/mci/test1" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
-                                <span>Öffnen</span>
-                            </a>
-                        </div>
+                        </span>
                     </div>
 
                     <div id="section4" style="display: none; flex-direction: column;">
@@ -224,20 +227,22 @@
                             <span style="font-size: 1.2em;">Erfolgreich abgeschlossen.</span>
                         </div>
 
-                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
-                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
-                                <span>Zurück</span>
+                        <span style="display: flex; justify-content: center; align-items: center;">
+                            <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                                <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                    <span>Zurück</span>
+                                </div>
+                                <a id="test2" class="send-button" href="/mci/test2" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
+                                    <span>Öffnen</span>
+                                </a>
                             </div>
-                            <a id="test2" class="send-button" href="/mci/test2" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
-                                <span>Öffnen</span>
-                            </a>
-                        </div>
+                        </span>
                     </div>
 
                     <div id="section5" style="display: none; flex-direction: column;">
-                        <h1 id="test3-title" style="color: var(--primary-color); margin-bottom: 40px;">Fast geschafft</h1>
 
                         <div id="test3-text" style="text-align: left; margin-bottom: 20px; max-width: 300px; display: block;">
+                            <h1 style="color: var(--primary-color); margin-bottom: 40px;">Fast geschafft</h1>
                             <p>Kommen wir zum letzten Test.</p>
                             <p>Pro Runde wirst du Bilder von Speisen aus Deutschland, China und Mexico sehen.</p>
                             <p>Drücke die 'd', sobald du das Bild einer deutschen Speise erkennst.</p>
@@ -245,22 +250,41 @@
                             <p>Und drücke die 'g', für eine mexikanische Speise.</p>
                         </div>
 
-                        <div id="test3-completed" style="max-width: 300px; display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px; text-align: center;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
-                            <span style="font-size: 1.2em;">Deine Ergebnisse wurden erfolgreich übermittelt.</span>
-                            <span style="font-size: 1.2em;">Du kannst die Seite nun schließen.</span>
-                            <span style="font-size: 1.2em;">Für deine Teilname danken dir:</span>
-                            <span style="font-size: 1.2em;">George, Jan und Kevin</span>
+                        <div id="test3-completed" style="max-width: 500px; display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px; text-align: center;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 7em; color: var(--green); margin-bottom: 30px;">check_circle</span>
+                            <h1 style="font-size: 1.7em; max-width: 350px;">Vielen Dank für deine Teilnahme</h1>
+                            <span style="font-size: 1.2em; text-wrap: balance; max-width: 350px;">Deine Ergebnisse wurden erfolgreich an uns übermittelt.</span>
+                            
+                            
+
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 25px; flex-direction: row;">
+                                <span style="font-size: 1.2em;">Bewerte die Studie:</span>
+                            </div>
+
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; flex-direction: row;">
+                                <span id="star1" onclick="rateSurvey(1)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--yellow); cursor: pointer;">star_rate</span>
+                                <span id="star2" onclick="rateSurvey(2)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star3" onclick="rateSurvey(3)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star4" onclick="rateSurvey(4)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star5" onclick="rateSurvey(5)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                            </div>
+
+                            <div onclick="sendRating()" class="send-button" style="border-radius: 30px; cursor: pointer; text-align: center; margin-top: 20px; width: auto; padding: 10px 30px;">
+                                Absenden
+                            </div>
+                        
                         </div>
 
-                        <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
-                            <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
-                                <span>Zurück</span>
+                        <span id="test3-buttons" style="display: flex; justify-content: center; align-items: center;">
+                            <div style="display: inline-flex; width: 300px; gap: 20px; justify-content: center;">
+                                <div class="send-button" onclick="previous()" style="border-radius: 30px; cursor: pointer; text-align: center; margin-right: auto; background-color: var(--box-shadow-color); color: var(--text-color);">
+                                    <span>Zurück</span>
+                                </div>
+                                <a id="test3" class="send-button" href="/mci/test3" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
+                                    <span>Öffnen</span>
+                                </a>
                             </div>
-                            <a id="test3" class="send-button" href="/mci/test3" style="border-radius: 30px; cursor: pointer; text-align: center; text-decoration: none;">
-                                <span>Öffnen</span>
-                            </a>
-                        </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -380,7 +404,7 @@
 
             document.getElementById("test3-text").style.display = "none";
             document.getElementById("test3-completed").style.display = "flex";
-            document.getElementById("test3-title").innerHTML = "Test 3";
+            document.getElementById("test3-buttons").style.display = "none";
 
             document.getElementById("section1").style.display = "none";
             document.getElementById("section2").style.display = "none";
@@ -442,6 +466,72 @@
         document.getElementById("bug-report-tip-close").style.display = "none";
 
         localStorage.setItem('bug_report_tip_closed', true);
+    }
+
+    function rateSurvey(rating) {
+        if (rating == 1) {
+            document.getElementById("star1").style.color = "var(--yellow)";
+            document.getElementById("star2").style.color = "var(--box-shadow-color)";
+            document.getElementById("star3").style.color = "var(--box-shadow-color)";
+            document.getElementById("star4").style.color = "var(--box-shadow-color)";
+            document.getElementById("star5").style.color = "var(--box-shadow-color)";
+        } else if (rating == 2) {
+            document.getElementById("star1").style.color = "var(--yellow)";
+            document.getElementById("star2").style.color = "var(--yellow)";
+            document.getElementById("star3").style.color = "var(--box-shadow-color)";
+            document.getElementById("star4").style.color = "var(--box-shadow-color)";
+            document.getElementById("star5").style.color = "var(--box-shadow-color)";
+        } else if (rating == 3) {
+            document.getElementById("star1").style.color = "var(--yellow)";
+            document.getElementById("star2").style.color = "var(--yellow)";
+            document.getElementById("star3").style.color = "var(--yellow)";
+            document.getElementById("star4").style.color = "var(--box-shadow-color)";
+            document.getElementById("star5").style.color = "var(--box-shadow-color)";
+        } else if (rating == 4) {
+            document.getElementById("star1").style.color = "var(--yellow)";
+            document.getElementById("star2").style.color = "var(--yellow)";
+            document.getElementById("star3").style.color = "var(--yellow)";
+            document.getElementById("star4").style.color = "var(--yellow)";
+            document.getElementById("star5").style.color = "var(--box-shadow-color)";
+        } else if (rating == 5) {
+            document.getElementById("star1").style.color = "var(--yellow)";
+            document.getElementById("star2").style.color = "var(--yellow)";
+            document.getElementById("star3").style.color = "var(--yellow)";
+            document.getElementById("star4").style.color = "var(--yellow)";
+            document.getElementById("star5").style.color = "var(--yellow)";
+        }
+    }
+
+    function sendRating() {
+        var rating = 0;
+
+        if (document.getElementById("star5").style.color == "var(--yellow)") {
+            rating = 5;
+        } else if (document.getElementById("star4").style.color == "var(--yellow)") {
+            rating = 4;
+        } else if (document.getElementById("star3").style.color == "var(--yellow)") {
+            rating = 3;
+        } else if (document.getElementById("star2").style.color == "var(--yellow)") {
+            rating = 2;
+        } else {
+            rating = 1;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/mci/rate-survey", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({
+            rating: rating
+            test_id: localStorage.getItem('mci_test_id')
+        }));
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                localStorage.removeItem('mci_test_id');
+                localStorage.removeItem('mci_test_completed');
+                window.location.href = "/";
+            }
+        }
     }
 </script>
 

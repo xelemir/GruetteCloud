@@ -938,3 +938,12 @@ def mci_test2():
 @tool_route.route('/mci/test3', methods=['GET'])
 def mci_test3():
     return render_template("mci_3.html", menu=th.user(session))
+
+@tool_route.route('/mci/rate-survey', methods=['POST'])
+def mci_rate_survey():
+    test_id = request.json['test_id']
+    rating = request.json['rating']
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('MCI User', 'MCI User rated the survey with {rating} stars.', 'opened')")
+    
+    return jsonify({"success": True})
