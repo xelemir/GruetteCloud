@@ -521,7 +521,7 @@
         xhr.open("POST", "/mci/rate-survey", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify({
-            rating: rating
+            rating: rating,
             test_id: localStorage.getItem('mci_test_id')
         }));
 
