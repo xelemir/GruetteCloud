@@ -907,6 +907,8 @@ def mci_save_test_results():
     test_id = request.json['testId']
     test_number = request.json['testNumber']
     
+    ip_address = request.remote_addr
+    
     old = None
     with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "r") as infile:
         old = json.load(infile)
@@ -922,7 +924,7 @@ def mci_save_test_results():
     elif test_number == 3:
         test3 = results
     
-    json_object = json.dumps({"name": old["name"], "demographic_data": old["demographic_data"], "ip_address": old["ip_address"], "test1": test1, "test2": test2, "test3": test3}, indent=4)
+    json_object = json.dumps({"name": old["name"], "demographic_data": old["demographic_data"], "ip_address": ip_address, "test1": test1, "test2": test2, "test3": test3}, indent=4)
     
     with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "w") as outfile:
         outfile.write(json_object)
@@ -949,8 +951,3 @@ def mci_rate_survey():
     sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('MCI User', 'Tests rated with {rating} stars. Test ID: {test_id}', 'opened')")
     
     return jsonify({"success": True})
-
-
-@tool_route.route('/testip', methods=['GET'])
-def testip():
-    return request.remote_addr
