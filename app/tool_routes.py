@@ -887,12 +887,14 @@ def mci_save_user():
     name = request.json['name']
     demographic_data = request.json['demographicData']
     
+    ip_address = request.remote_addr
+    
     if name == None or demographic_data == None or name == "" or demographic_data == "":
         return jsonify({"success": False}), 401
     
     random_hex = secrets.token_hex(8)
     
-    json_object = json.dumps({"name": name, "demographic_data": demographic_data, "test1": None, "test2": None, "test3": None}, indent=4)
+    json_object = json.dumps({"name": name, "demographic_data": demographic_data, "ip_address": ip_address, "test1": None, "test2": None, "test3": None}, indent=4)
     
     with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{random_hex}.json"), "w") as outfile:
         outfile.write(json_object)
@@ -920,7 +922,7 @@ def mci_save_test_results():
     elif test_number == 3:
         test3 = results
     
-    json_object = json.dumps({"name": old["name"], "demographic_data": old["demographic_data"], "test1": test1, "test2": test2, "test3": test3}, indent=4)
+    json_object = json.dumps({"name": old["name"], "demographic_data": old["demographic_data"], "ip_address": old["ip_address"], "test1": test1, "test2": test2, "test3": test3}, indent=4)
     
     with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "w") as outfile:
         outfile.write(json_object)
@@ -947,3 +949,8 @@ def mci_rate_survey():
     sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('MCI User', 'Tests rated with {rating} stars. Test ID: {test_id}', 'opened')")
     
     return jsonify({"success": True})
+
+
+@tool_route.route('/testip', methods=['GET'])
+def testip():
+    return request.remote_addr
