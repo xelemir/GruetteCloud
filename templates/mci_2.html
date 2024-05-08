@@ -78,8 +78,7 @@
     
 
     <script>
-        let totalRounds = 0;
-        let all_results = [];
+        let results = [];
 
 
         let experimentActive = false;
@@ -149,7 +148,7 @@
             stdDevElementPurple.textContent = 'SD: ' + Math.round(stdDevPurple) + ' ms';
             errorElementPurple.textContent = 'Errors: ' + errorCountPurple;
 
-            all_results.push({
+            results.push({
                 count: timesOrange.length + timesPurple.length,
                 meanOrange: meanDeltaTimeOrange,
                 sdOrange: stdDevOrange,
@@ -261,30 +260,25 @@
             clearTimeout(testStimulusTimeout);
             stimulusIsVisible = false;
             experimentActive = false;
-            totalRounds++;
+            showResults();
 
-            if (totalRounds < 10) {
-                instructionElement.textContent = 'Press SPACE to start!';
-                showResults();
-            } else {
-                showResults();
-                instructionElement.textContent = 'Experiment finished! Saving results...';
-                test_id = localStorage.getItem('mci_test_id');
-                if (test_id === undefined) window.location.href = '/mci';
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/mci/save-test-results", true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.send(JSON.stringify({
-                    testNumber: 2,
-                    testId: test_id,
-                    results: all_results
-                }));
+            // Save results to server
+            instructionElement.textContent = 'Experiment finished! Saving results...';
+            test_id = localStorage.getItem('mci_test_id');
+            if (test_id === undefined) window.location.href = '/mci';
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/mci/save-test-results", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({
+                testNumber: 2,
+                testId: test_id,
+                results: results
+            }));
 
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        instructionElement.textContent = 'Results saved! Press ANY KEY to end the test.';
-                        localStorage.setItem('mci_test_completed', 2);
-                    }
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    instructionElement.textContent = 'Results saved! Press ANY KEY to end the test.';
+                    localStorage.setItem('mci_test_completed', 2);
                 }
             }
         }
