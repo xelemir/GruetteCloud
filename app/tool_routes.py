@@ -15,7 +15,7 @@ from tgtg import TgtgClient
 
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
-from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail
+from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail, mindee_api_key
 
     
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
@@ -864,6 +864,56 @@ def api_v1_get_expenses():
                 
     return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date, "monthly_budget": monthly_budget})
 
+@tool_route.route('/api/v1/upload-receipt', methods=['POST'])
+def api_v1_upload_receipt():
+    if request.headers.get('Token-Authorization') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        auth = request.headers.get('Token-Authorization').split(" ")
+        if auth[0] != "Bearer":
+            return jsonify({'message': 'Invalid token'}), 401
+        data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    if request.files['image'] is None:
+        return jsonify({'message': 'No file provided'}), 400
+    
+    url = 'https://api.mindee.net/v1/products/mindee/expense_receipts/v5/predict'
+
+    # Multipart/form-data payload
+    files = {'document': request.files['image']}
+
+    # Headers
+    headers = {
+        'Authorization': f'Token {mindee_api_key}',
+    }
+
+    # Make the API request
+    response = requests.post(url, files=files, headers=headers)
+
+    # Print the response
+    r = response.json()
+    items = r["document"]["inference"]["pages"][0]["prediction"]["line_items"]
+    merchant_name = r["document"]["inference"]["pages"][0]["prediction"]["supplier_name"]["raw_value"]
+    total = r["document"]["inference"]["pages"][0]["prediction"]["total_amount"]["value"]
+    try:
+        total = float(total)
+    except:
+        total = 0
+    items_list = []
+    for item in items:
+        items_list.append({"name": item["description"], "price": item["total_amount"]})
+    
+    receipt_id = secrets.token_hex(8)
+    
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(session['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}', 'other', {False})")
+    for item in items_list:
+        sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{item['name']}', '{item['price']}')")
+    
+    return jsonify({'message': 'Receipt uploaded', 'receipt_id': receipt_id}), 200
 
 
 
