@@ -872,7 +872,7 @@ def api_v1_upload_receipt():
     try:
         auth = request.headers.get('Token-Authorization').split(" ")
         if auth[0] != "Bearer":
-            return jsonify({'message': 'Invalid token'}), 401
+            return jsonify({'message': 'Invalid token; Bearer tag missing'}), 401
         data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
     except:
         return jsonify({'message': 'Invalid token'}), 401
@@ -909,7 +909,7 @@ def api_v1_upload_receipt():
     receipt_id = secrets.token_hex(8)
     
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(session['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}', 'other', {False})")
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income) VALUES ('{str(data['username'])}', '{merchant_name}', '{total}', NOW(), '{receipt_id}', 'other', {False})")
     for item in items_list:
         sql.writeSQL(f"INSERT INTO gruettecloud_receipt_items (receipt_id, item, price) VALUES ('{receipt_id}', '{item['name']}', '{item['price']}')")
     
