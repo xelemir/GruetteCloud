@@ -86,8 +86,16 @@
             text-align: left;
             border-bottom: 1px solid var(--box-shadow-color);
         }
+
+        .mobile-center {
+            justify-content: left;
+        }
     
         @media (max-width: 768px) {
+            h1 {
+                font-size: 3vh;
+            }
+
             .dynamic-container {
                 flex-direction: column; /* Stack boxes on top of each other */
                 align-items: center; /* Horizontally center the stacked boxes */
@@ -118,6 +126,10 @@
 
             .text-box {
                 width: 80vw;
+            }
+
+            .mobile-center {
+                justify-content: center;
             }
         }
 
@@ -276,10 +288,12 @@
                         <h1 style="text-align: left; margin-bottom: 30px;">Meet MyAI</h1>
                         <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Pick a personality and ask away.</p>
                         <p style="text-align: left; margin-bottom: 25px;">Powered by OpenAI, MyAI is your personal assistant. Ask MyAI anything and it will provide you with the best answer.</p>
-                        <a href="https://status.gruettecloud.com" class="button-blue" style="height: 50px; border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px;">
-                            <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;">temp_preferences_custom</span>
-                            Start Chatting  
-                        </a>
+                        <div class="mobile-center" style="display: flex;">
+                            <a href="https://status.gruettecloud.com" class="button-blue" style="border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px; display: flex; align-items: center;">
+                                <span class="material-symbols-outlined align-icons-center" style="margin-right: 8px;">temp_preferences_custom</span>
+                                Start Chatting  
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="box">
@@ -426,14 +440,6 @@
                         <span class="material-symbols-outlined align-icons-center" style="color: var(--green);">check_circle</span> Available&nbsp;&nbsp;&nbsp;<span class="material-symbols-outlined align-icons-center" style="color: var(--yellow);">error</span> Issues&nbsp;&nbsp;&nbsp;<span class="material-symbols-outlined align-icons-center" style="color: var(--red);">cancel</span> Outage
                         <table>
                             <tbody><tr>
-                                <td><b>Service</b></td>
-                                <td style="text-align: center;"><b>Status</b></td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://www.gruettecloud.com/" style="color: var(--text-color); text-decoration: none;">GrütteCloud</a></td>
-                                <td id="status-gruettecloud" style="text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
-                            </tr>
-                            <tr>
                                 <td><a href="https://www.gruettecloud.com/chat" style="color: var(--text-color); text-decoration: none;">GrütteChat</a></td>
                                 <td id="status-chat" style="text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
                             </tr>
@@ -457,10 +463,12 @@
                         <div class="text-box" style="text-align: left;">
                             <h1 style="text-align: left; margin-bottom: 30px;">Is it just me?</h1>
                             <p style="text-align: left; margin-bottom: 25px;">Check the availability of GrütteCloud services and see if it's just You or if the service is down for everyone.</p>
-                            <a href="https://status.gruettecloud.com" class="button-blue" style="height: 50px; border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px;">
-                                <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;">visibility</span>
-                                Check Status
-                            </a>
+                            <div class="mobile-center" style="display: flex;">
+                                <a href="https://status.gruettecloud.com" class="button-blue" style="border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px; display: flex; align-items: center;">
+                                    <span class="material-symbols-outlined align-icons-center" style="margin-right: 8px;">visibility</span>
+                                    Check Status
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
