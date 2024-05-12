@@ -50,11 +50,6 @@
             justify-content: center;
             /*text-align: left;*/
         }
-    
-        .phone {
-            max-height: 60vh;
-            width: auto;
-        }
 
         .tablet {
             max-height: 70vh;
@@ -90,6 +85,11 @@
         .mobile-center {
             justify-content: left;
         }
+
+        .square-render {
+            height: auto;
+            width: 40vw;
+        }
     
         @media (max-width: 768px) {
             h1 {
@@ -104,11 +104,6 @@
             .box {
                 width: 100%;
                 max-height: 50svh;
-            }
-
-            .phone {
-                max-height: 40vh;
-                width: auto;
             }
 
             .tablet {
@@ -130,6 +125,11 @@
 
             .mobile-center {
                 justify-content: center;
+            }
+
+            .square-render {
+                height: auto;
+                width: 90vw;
             }
         }
 
@@ -251,7 +251,7 @@
                     </div>
                 </div>
                 <div id="heroImage" class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/products.png" style="width: 100%;" alt="GrütteCloud Render">
+                    <img class="square product-renders" src="https://www.gruettecloud.com/static/renders/new/products.png" style="width: 100%;" alt="GrütteCloud Render">
                 </div>
                 <span id="defaultMobile" style="display: flex;">
                     <button class="pulse button-blue mobile-only-flex" style="margin-top: 10px; width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
@@ -269,9 +269,9 @@
         <div class="section" data-anchor="section2">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat2.png" alt="GrütteChat Render">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/chat2.png" alt="GrütteChat Render">
                 </div>
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Welcome to GrütteCloud</h1>
                         <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Your Digital Life, Simplified.</p>
@@ -283,7 +283,10 @@
 
         <div class="section" data-anchor="section3">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box mobile-only">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/chat_ai.png" alt="MyAI Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Meet MyAI</h1>
                         <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Pick a personality and ask away.</p>
@@ -296,8 +299,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat_ai.png" alt="MyAI Render">
+                <div class="box desktop-only">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/chat_ai.png" alt="MyAI Render">
                 </div>
             </div>
         </div>
@@ -305,9 +308,9 @@
         <div class="section" data-anchor="section4">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat.png" alt="GrütteChat Render">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/chat.png" alt="GrütteChat Render">
                 </div>
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Hello, World!</h1>
                         <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Text in real-time on GrütteChat.</p>
@@ -320,9 +323,9 @@
         <div class="section" data-anchor="section5">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/drive.png" alt="GrütteDrive Render">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/drive.png" alt="GrütteDrive Render">
                 </div>
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Your Files.<br>Anywhere. Anytime.</h1>
                         <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Introducing our cloud storage service, GrütteDrive.</p>
@@ -335,15 +338,18 @@
 
         <div class="section" data-anchor="section6">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box mobile-only">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/drive2.png" alt="GrütteDrive Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Share with the World.</h1>
                         <p style="text-align: left;">Share your files with anyone. No account required. Just send the link.
                         Don't wanna share the file anymore? Just make it private with a click of a button.</p>
                     </div>
                 </div>
-                <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/drive2.png" alt="GrütteDrive Render">
+                <div class="box desktop-only">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/drive2.png" alt="GrütteDrive Render">
                 </div>
             </div>
         </div>
@@ -351,9 +357,9 @@
         <div class="section" data-anchor="section7">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="tablet product-renders" src="https://www.gruettecloud.com/static/renders/light/maps1.png" alt="GrütteMaps Render">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/light/maps1.png" alt="GrütteMaps Render">
                 </div>
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Find Routes.<br>Blazingly Fast.</h1>
                         <p style="text-align: left;">GrütteMaps Maps calculates Your route to the university within milliseconds.
@@ -365,7 +371,10 @@
 
         <div class="section" data-anchor="section8">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box mobile-only">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/light/maps3.png" alt="GrütteMaps Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; margin-bottom: 30px;">Search Places.</h1>
                         <p style="text-align: left;">
@@ -378,8 +387,8 @@
                         </p>
                     </div>
                 </div>
-                <div class="box">
-                    <img class="tablet product-renders" src="https://www.gruettecloud.com/static/renders/light/maps3.png" alt="GrütteMaps Render">
+                <div class="box desktop-only">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/light/maps3.png" alt="GrütteMaps Render">
                 </div>
             </div>
         </div>
@@ -387,9 +396,9 @@
         <div class="section" data-anchor="section9">
             <div class="dynamic-container">
                 <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/security.png" alt="GrütteID Render">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/new/security.png" alt="GrütteID Render">
                 </div>
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                         <h1 style="text-align: left; display: inline-flex; wrap: nowrap; margin-bottom: 30px;">Unlimited Possibilites.<br>One Account.</h1>
                         <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Access all GrütteCloud services with one login.</p>
@@ -401,7 +410,7 @@
 
         <div class="section" data-anchor="section10">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex ;justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
                     <h1 style="text-align: left; margin-bottom: 30px;">No Secrets Here.</h1>
                     <p style="text-align: left;">You can find GrütteCloud's source code on <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a>.
@@ -458,8 +467,8 @@
                         </tbody></table>
                     </div>
                 </div>
-                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
-                    <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
+                    <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                         <div class="text-box" style="text-align: left;">
                             <h1 style="text-align: left; margin-bottom: 30px;">Is it just me?</h1>
                             <p style="text-align: left; margin-bottom: 25px;">Check the availability of GrütteCloud services and see if it's just You or if the service is down for everyone.</p>
@@ -490,7 +499,7 @@
                     </p>
                 </div>
                 <div class="box desktop-only">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
+                    <img class="square-render product-renders" src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud Render">
                 </div>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 3vh;">
