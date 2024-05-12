@@ -149,7 +149,7 @@
             }
 
             .hero-image {
-                max-height: 15svh;
+                max-height: 25svh;
                 width: auto;
             }
         }
@@ -274,14 +274,15 @@
                 <div id="heroImage" class="box-landingpage">
                     <img class="square product-renders hero-image" src="https://www.gruettecloud.com/static/renders/new/products.png" alt="GrütteCloud Render">
                 </div>
-                <span id="defaultMobile" style="display: flex;">
+
+                <div id="defaultMobile" style="position: fixed; bottom: 60px; display: flex; justify-content: space-between; align-items: center;">
                     <button class="pulse button-blue mobile-only-flex" style="width: 300px; height: 50px; border-radius: 30px; justify-content: center; align-items: center; gap: 10px;" onclick="openSignUpBottom()">
                         <span class="material-symbols-outlined align-icons-center">rocket_launch</span>
                         <span style="font-size: 1.2em;">Get Started!</span>
-                    </button>
+                    </button>                    
                 </span>
             </div>
-            <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; padding: 1.5vh;">
+            <div style="position: fixed; bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
                 <a href="#section2" class="pulse material-symbols-outlined" style="color: var(--text-color); text-decoration: none;">expand_more</a>
             </div>
         </div>
