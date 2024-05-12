@@ -33,7 +33,8 @@
         .dynamic-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            align-items: center;
+            height: 100svh;
         }
     
         .box {
@@ -67,6 +68,24 @@
         .mobile-only-flex {
             display: none;
         }
+
+        .text-box {
+            width: 70%;
+        }
+
+        table {
+            margin: 20px auto;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--background-tile-color);
+            border-radius: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--box-shadow-color);
+        }
     
         @media (max-width: 768px) {
             .dynamic-container {
@@ -76,6 +95,7 @@
     
             .box {
                 width: 100%;
+                max-height: 50svh;
             }
 
             .phone {
@@ -94,6 +114,10 @@
 
             .mobile-only-flex {
                 display: flex;
+            }
+
+            .text-box {
+                width: 80vw;
             }
         }
 
@@ -235,23 +259,28 @@
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat2.png" alt="GrütteChat Render">
                 </div>
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Introducing GrütteChat</h1>
-                    <p>Stay Connected with GrütteChat</p>
-                    <p>Your free, open-source messaging app.
-                    Connect with friends and family effortlessly.</p>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Welcome to GrütteCloud</h1>
+                        <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Your Digital Life, Simplified.</p>
+                        <p style="text-align: left;">GrütteCloud is a suite of cloud services designed to make your digital life easier. Chat with friends, store files, and navigate the world with GrütteCloud.</p>   
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="section" data-anchor="section3">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Meet MyAI</h1>
-                    <p>Enhance Your Conversations with MyAI</p>
-                    <p>MyAI, powered OpenAI's GPT-4, offers personalities to chat with.
-                    Access it right from GrütteChat's home page for smarter conversations.</p>
-
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Meet MyAI</h1>
+                        <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Pick a personality and ask away.</p>
+                        <p style="text-align: left; margin-bottom: 25px;">Powered by OpenAI, MyAI is your personal assistant. Ask MyAI anything and it will provide you with the best answer.</p>
+                        <a href="https://status.gruettecloud.com" class="button-blue" style="height: 50px; border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px;">
+                            <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;">temp_preferences_custom</span>
+                            Start Chatting  
+                        </a>
+                    </div>
                 </div>
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat_ai.png" alt="MyAI Render">
@@ -264,50 +293,40 @@
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/chat.png" alt="GrütteChat Render">
                 </div>
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Real-Time Messaging</h1>
-                    <p>Stay in Touch with Confidence</p>
-                    <p>Chat in real-time with the ones who matter, securely encrypted.
-                    Your privacy is our priority.</p>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Hello, World!</h1>
+                        <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Text in real-time on GrütteChat.</p>
+                        <p style="text-align: left;">Send messages and even photos to anyone on GrütteChat. No need to worry about privacy. All messages are securely encrypted.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="section" data-anchor="section5">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Looks Great</h1>
-                    <p>Experience GrütteCloud Everywhere</p>
-                    <p>All our services are designed with responsiveness in mind.
-                    Enjoy GrütteCloud on your phone, tablet, laptop, or desktop computer.</p>
-                </div>
                 <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/light/ai2.png" alt="GrütteCloud Render">
+                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/drive.png" alt="GrütteDrive Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Your Files.<br>Anywhere. Anytime.</h1>
+                        <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Introducing our cloud storage service, GrütteDrive.</p>
+                        <p style="text-align: left;">Access and securely store your files from anywhere in the world.
+                        Store up to 5 GB of files for free.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="section" data-anchor="section6">
             <div class="dynamic-container">
-                <div class="box">
-                    <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/drive.png" alt="GrütteDrive Render">
-                </div>
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Introducing GrütteDrive</h1>
-                    <p>Your Files, Anywhere, Anytime</p>
-                    <p>Access and securely store your files from anywhere in the world.
-                    Store up to 5 GB of files for free.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" data-anchor="section7">
-            <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Share with Ease</h1>
-                    <p>Effortless File Sharing</p>
-                    <p>Share your files with anyone, even if they don't have a GrütteCloud account.
-                    Simplify collaboration with sharing links.</p>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Share with the World.</h1>
+                        <p style="text-align: left;">Share your files with anyone. No account required. Just send the link.
+                        Don't wanna share the file anymore? Just make it private with a click of a button.</p>
+                    </div>
                 </div>
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/drive2.png" alt="GrütteDrive Render">
@@ -315,25 +334,35 @@
             </div>
         </div>
 
-        <div class="section" data-anchor="section8">
+        <div class="section" data-anchor="section7">
             <div class="dynamic-container">
                 <div class="box">
                     <img class="tablet product-renders" src="https://www.gruettecloud.com/static/renders/light/maps1.png" alt="GrütteMaps Render">
                 </div>
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Find Routes.<br>With GrütteMaps</h1>
-                    <p>GrütteMaps calculates Your route to the University within milliseconds</p>
-                    <p>In fact, it's so speedy, You'll probably reach Your Destination before the S-Bahn Stuttgart can even leave the station.</p>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Find Routes.<br>Blazingly Fast.</h1>
+                        <p style="text-align: left;">GrütteMaps Maps calculates Your route to the university within milliseconds.
+                        In fact, it's so speedy, You'll probably reach Your destination before the S-Bahn Stuttgart can even leave the station.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="section" data-anchor="section9">
+        <div class="section" data-anchor="section8">
             <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Dark Mode</h1>
-                    <p>Protect Your Eyes with Dark Mode</p>
-                    <p>GrütteMaps fully supports Dark Mode. Your welcome :)</p>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Search Places.</h1>
+                        <p style="text-align: left;">
+                            Click the map to set Your
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 1.2em;">directions_car</span>
+                            start and 
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 1.2em;">location_on</span>
+                            destination. Or search for any place in Germany using the search bar. As a bonus, You can use 
+                            <span style="background-color: var(--primary-color); color: var(--white-color); padding: 4px 10px; border-radius: 30px; font-size: 0.8em;">My Location</span> as a starting point.
+                        </p>
+                    </div>
                 </div>
                 <div class="box">
                     <img class="tablet product-renders" src="https://www.gruettecloud.com/static/renders/light/maps3.png" alt="GrütteMaps Render">
@@ -341,39 +370,30 @@
             </div>
         </div>
 
-        <div class="section" data-anchor="section10">
+        <div class="section" data-anchor="section9">
             <div class="dynamic-container">
                 <div class="box">
                     <img class="mac product-renders" src="https://www.gruettecloud.com/static/renders/new/security.png" alt="GrütteID Render">
                 </div>
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>GrütteID</h1>
-                    <p>An account for all GrütteCloud services.</p>
-                    <p>Your data is safe and securely stored on our servers.
-                    To protect your data even further, you can enable two-factor authentication.</p>
-                </div>
-            </div>
-        </div>
-        <div class="section" data-anchor="section11">
-            <div class="dynamic-container">
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Downdetector</h1>
-                    <p>Our status page provides real-time information about the availability and health of GrütteCloud services.</p>
-                    <p style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
-                        <a href="https://status.gruettecloud.com" style="color: var(--white-color); text-decoration: none; background-color: var(--primary-color); padding: 5px 30px; border-radius: 30px;">
-                            <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;">monitor_heart</span>
-                            Check Status
-                        </a>
-                    </p>
-                </div>
-                <div class="box">
-                    <img class="tablet product-renders" src="https://www.gruettecloud.com/static/status.png" alt="GrütteCloud Status">
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; display: inline-flex; wrap: nowrap; margin-bottom: 30px;">Unlimited Possibilites.<br>One Account.</h1>
+                        <p style="text-align: left; margin-bottom: 10px; font-size: 1.2em;">Access all GrütteCloud services with one login.</p>
+                        <p style="text-align: left;">Your data is securely stored and encrypted. For additional security, enable two-factor authentication.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="section" data-anchor="section12">
+        <div class="section" data-anchor="section10">
             <div class="dynamic-container">
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                    <h1 style="text-align: left; margin-bottom: 30px;">No Secrets Here.</h1>
+                    <p style="text-align: left;">You can find GrütteCloud's source code on <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a>.
+                    GrütteCloud is built using the following technologies.</p>
+                    </div>
+                </div>
                 <div class="box">
                     <div style="width: 100%;">
                         <div style="width: 100%; display: flex; flex-direction: inline; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
@@ -396,15 +416,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="box text" style="text-wrap: balance;">
-                    <h1>Technical Stuff</h1>
-                    <p>You can find GrütteCloud's source code on <a href="https://github.com/xelemir/GruetteCloud" style="color: var(--text-color);">GitHub</a>.
-                    GrütteCloud is built using the following technologies.</p>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section11">
+            <div class="dynamic-container">
+                <div class="box">
+                    <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 1px 15px; background-color: var(--background-tile-color); border-radius: 30px; margin: 30px auto; width: 400px; max-width: 90vw; padding-top: 20px;">
+                        <span class="material-symbols-outlined align-icons-center" style="color: var(--green);">check_circle</span> Available&nbsp;&nbsp;&nbsp;<span class="material-symbols-outlined align-icons-center" style="color: var(--yellow);">error</span> Issues&nbsp;&nbsp;&nbsp;<span class="material-symbols-outlined align-icons-center" style="color: var(--red);">cancel</span> Outage
+                        <table>
+                            <tbody><tr>
+                                <td><b>Service</b></td>
+                                <td style="text-align: center;"><b>Status</b></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://www.gruettecloud.com/" style="color: var(--text-color); text-decoration: none;">GrütteCloud</a></td>
+                                <td id="status-gruettecloud" style="text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://www.gruettecloud.com/chat" style="color: var(--text-color); text-decoration: none;">GrütteChat</a></td>
+                                <td id="status-chat" style="text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://www.gruettecloud.com/drive" style="color: var(--text-color); text-decoration: none;">GrütteDrive</a></td>
+                                <td id="status-drive" style="text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://www.gruettecloud.com/maps" style="color: var(--text-color); text-decoration: none;">GrütteMaps</a></td>
+                                <td id="status-maps" style="text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: none;"><a href="https://www.gruettecloud.com/finance" style="color: var(--text-color); text-decoration: none;">GrütteFinance</a></td>
+                                <td id="status-finance" style="border-bottom: none; text-align: center;"><span class="material-symbols-outlined" style="color: var(--green);">check_circle</span></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                    <div class="box text" style="text-wrap: balance; display: flex;justify-content: center; align-items: center;">
+                        <div class="text-box" style="text-align: left;">
+                            <h1 style="text-align: left; margin-bottom: 30px;">Is it just me?</h1>
+                            <p style="text-align: left; margin-bottom: 25px;">Check the availability of GrütteCloud services and see if it's just You or if the service is down for everyone.</p>
+                            <a href="https://status.gruettecloud.com" class="button-blue" style="height: 50px; border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px;">
+                                <span class="material-symbols-outlined align-icons-center" style="margin-right: 5px;">visibility</span>
+                                Check Status
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="section" data-anchor="section13">
+        <div class="section" data-anchor="section12">
             <div class="dynamic-container">
                 <div class="box text" style="text-wrap: balance;">
                     <h1>Join Today</h1>
@@ -560,8 +623,8 @@
     // Initialize fullPage.js
     new fullpage('#fullpage', {
         // Options
-        sectionsColor: ['transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent'], // Set background colors for sections
-        anchors: ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10', 'section11', 'section12', 'section13'], // Set the anchor tags for each section
+        sectionsColor: ['transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)'], // Set background colors for sections
+        anchors: ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10', 'section11', 'section12'], // Set the anchor tags for each section
         autoScrolling: true, // Enable auto-scrolling
         scrollBar: false, // Hide the scrollbar
         navigation: false, // Show navigation dots
