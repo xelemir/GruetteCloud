@@ -959,9 +959,12 @@ def mci_save_test_results():
     
     ip_address = request.remote_addr
     
-    old = None
-    with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "r") as infile:
-        old = json.load(infile)
+    try :
+        old = None
+        with open(os.path.join(gruettedrive_path, "mci_user", f"MCI_{test_id}.json"), "r") as infile:
+            old = json.load(infile)
+    except:
+        return jsonify({"success": False}), 401
         
     test1 = old["test1"]
     test2 = old["test2"]

@@ -202,6 +202,8 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     instructionElement.textContent = 'Results saved! Press ANY KEY to end the test.';
                     localStorage.setItem('mci_test_completed', 1);
+                } else if (xhr.status == 401) {
+                    instructionElement.textContent = "Unauthorized. TestID doesn't exist. Press ANY KEY to end the test.";
                 }
             }
             
@@ -211,6 +213,9 @@
             if (instructionElement.textContent === 'Experiment finished! Saving results...') {
                 return;
             } else if (instructionElement.textContent === 'Results saved! Press ANY KEY to end the test.') {
+                window.location.href = '/mci';
+            } else if (instructionElement.textContent === "Unauthorized. TestID doesn't exist. Press ANY KEY to end the test.") {
+                localStorage.removeItem('mci_test_id');
                 window.location.href = '/mci';
             }
 
