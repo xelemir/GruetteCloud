@@ -101,10 +101,6 @@
         .hero-image {
             width: 100%;
         }
-
-        .move-up-mobile {
-            margin-top: 0px;
-        }
     
         @media (max-width: 768px) {
             h1 {
@@ -156,10 +152,6 @@
                 max-height: 25svh;
                 width: auto;
             }
-
-            .move-up-mobile {
-                margin-top: -100px;
-            }
         }
 
         .pulse {
@@ -203,9 +195,9 @@
                 {% include "components/nav-element.html" %}
             </div>
             
-            <div class="dynamic-container">
+            <div id="startpage-dynamic-container" class="dynamic-container" style="">
                 <div class="box-landingpage text" style="text-wrap: balance;">
-                    <div id="default" style="display: block; move-up-mobile">
+                    <div id="default" style="display: block;">
                         <h1 style="margin-bottom: 30px; margin-top: -55px; font-size: 5svh;">Discover GrütteCloud</h1>
                         <p>Empowering You with Cloud Solutions for Your Digital Life!</p>
                         <span class="desktop-only-flex" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -279,7 +271,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="heroImage" class="box-landingpage move-up-mobile">
+                <div id="heroImage" class="box-landingpage">
                     <img class="square product-renders hero-image" src="https://www.gruettecloud.com/static/renders/new/products.png" alt="GrütteCloud Render">
                     
                     <div id="defaultMobile" style="display: flex; justify-content: center; margin-top: 40px;">
@@ -586,11 +578,20 @@
 </html>
 
 <script>
+
     document.addEventListener("DOMContentLoaded", function () {
         const usernameInput = document.getElementById("usernameSignUp");
         const availabilityMessage = document.getElementById("availability-message");
         let typingTimer;
-        const doneTypingInterval = 1000; // 3 seconds
+        const doneTypingInterval = 500;
+
+        let startpageDynCont = document.getElementById("startpage-dynamic-container");
+        // mobile only
+        if (window.innerWidth < 768) {
+            startpageDynCont.style.marginTop = "-200px";
+        }
+        
+
 
         usernameInput.addEventListener("input", function () {
             clearTimeout(typingTimer);
@@ -716,6 +717,7 @@
     var login = document.getElementById('login');
     var signup = document.getElementById('signup');
     var closeLoginSignupButton = document.getElementById('closeLoginSignupButton');
+    let startpageDynCont = document.getElementById("startpage-dynamic-container");
 
     function openLogin() {
         loginSignupView.classList.remove('animate__slideOutLeft');
@@ -728,6 +730,7 @@
         if (onMobile()) {
             heroImage.style.display = 'none';
             defaultViewMobile.style.display = 'none';
+            startpageDynCont.style.marginTop = "0px";
         }
         
     }
@@ -743,6 +746,7 @@
         if (onMobile()) {
             heroImage.style.display = 'none';
             defaultViewMobile.style.display = 'none';
+            startpageDynCont.style.marginTop = "0px";
         }
     }
 
@@ -754,6 +758,9 @@
             heroImage.style.display = 'block';
             defaultView.style.display = 'block';
             defaultViewMobile.style.display = 'flex';
+            if (onMobile()) {
+                startpageDynCont.style.marginTop = "-200px";
+            }
           }, 500);
         
     }
