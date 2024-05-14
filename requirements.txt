@@ -6,8 +6,10 @@ mysqlclient==2.1.1
 pytube
 pyotp
 Pillow
+pyjwt
 beautifulsoup4
 geopy
 flask_socketio
 eventlet
+flask_cors
 tgtg

@@ -34,6 +34,8 @@ eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
 
 
+
+
 @app.route("/")
 def index():
     if "username" in session:
@@ -170,6 +172,30 @@ def chat(error=None):
     
     # Render the home page
     return render_template('chathome.html', menu=th.user(session), username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png", selected_personality=user[0]["ai_personality"])
+
+
+
+socketio = SocketIO(app, async_mode="threading")
+
+@app.route('/socket')
+def socket():
+    return render_template('socket.html')
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+    emit('server_response', {'data': 'Connected'})
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
+    emit('server_response', {'data': 'Disconnected'})
+    
+@socketio.on('send_data')
+def handle_send_data(data):
+    print('Data received:', data)
+    emit('server_response', {'data': data})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
