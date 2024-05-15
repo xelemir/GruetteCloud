@@ -337,10 +337,6 @@
         const removeDiv = document.getElementById("removeDiv");
         const messageInput = document.getElementById("messageInput");
 
-        fileLabel.addEventListener("click", function() {
-            fileInput.click();
-        });
-
         fileInput.addEventListener("change", function() {
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
