@@ -189,7 +189,8 @@ def handle_connect():
 @socketio.on('disconnect')
 def handle_disconnect():
     print('Client disconnected')
-    emit('server_response', {'data': 'Disconnected'})
+    
+    
     
 @socketio.on('send_data')
 def handle_send_data(data):

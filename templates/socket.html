@@ -10,7 +10,7 @@
     <h1>Hello, SocketIO!</h1>
 
     <button onclick="connect()">Test Connect</button>
-    <button onclick="disconnect()">Test Disconnect</button>
+    <button onclick="disconnectc()">Test Disconnect</button>
     <button onclick="sendData()">Send Data</button>
 
     <!-- Include SocketIO client script -->
@@ -26,9 +26,13 @@
         socket.on('connect', function() {
             console.log('Connected to server');
         });
-        socket.on('disconnect', function() {
+    }
+
+    function disconnectc() {
+        if (socket !== undefined) {
+            socket.close();
             console.log('Disconnected from server');
-        });
+        }
     }
 
     function sendData() {
