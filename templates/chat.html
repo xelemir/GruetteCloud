@@ -279,31 +279,40 @@
             {% endif %}
         </div>
     {% else %}
-        <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%;">
-            <form action="/chat/{{ recipient }}" method="POST" id="sendMessage" style="display: flex; gap: 10px;" enctype="multipart/form-data">
-                <input type="file" name="file" accept="image/*" id="file" style="display: none;">
-                <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
-                    <span class="material-symbols-outlined">add</span>
-                </div>
-                <div id="removeDiv" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
-                    <span class="material-symbols-outlined">close</span>
-                </div>
-                <input class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; padding-right: 55px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
-                <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                    <span class="material-symbols-outlined">send</span>
-                </button>
-            </form>
+        <!--<div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
+            <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
+            <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+                <span class="material-symbols-outlined">add</span>
+            </div>
+            <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: calc(100% - 80px); padding-left: 20px; padding-right: 10px; height: 55px; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
+            <button id="sendButton" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined">send</span>
+            </button>
+        </div>-->
+    
+        <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
+            <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
+            <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+                <span class="material-symbols-outlined">add</span>
+            </div>
+            <div id="removeDiv" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+                <span class="material-symbols-outlined">close</span>
+            </div>
+            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; padding-right: 55px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
+            <button id="sendButton" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined">send</span>
+            </button>
         </div>
     {% endif %}
-    
-    
+
+    {% include "components/error.html" %}
     <div id="cookie-banner"></div>
 </body>
 </html>
 
 <script>
     window.onload = function() {
-        var input = document.querySelector('input[name="message"]');
+        var input = document.getElementById('messageInput');
         const userAgent = navigator.userAgent;
         input.focus();
     };
@@ -323,10 +332,10 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const fileInput = document.getElementById("file");
+        const fileInput = document.getElementById("fileInput");
         const fileLabel = document.getElementById("fileLabel");
         const removeDiv = document.getElementById("removeDiv");
-        const messageInput = document.querySelector('input[name="message"]');
+        const messageInput = document.getElementById("messageInput");
 
         fileLabel.addEventListener("click", function() {
             fileInput.click();
@@ -351,5 +360,62 @@
             fileLabel.style.display = "flex";
             removeDiv.style.display = "none";
         });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Trigger file input when the fileLabel is clicked
+        $('#fileLabel').click(function() {
+            $('#fileInput').click();
+        });
+
+        // Send message (text or file) using AJAX when the sendButton is clicked
+        $('#sendButton').click(function() {
+            sendMessage();
+        });
+
+        $('#messageInput').keypress(function(event) {
+            if (event.keyCode === 13) { // Check if Enter key is pressed
+                event.preventDefault(); // Prevent default Enter key behavior (like line break)
+                sendMessage(); // Call sendMessage function when Enter is pressed
+            }
+        });
+
+
+        function sendMessage() {
+            var message = $('#messageInput').val(); // Get message text
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0]; // Get selected file
+            let recipient = "{{ recipient }}";
+
+            var formData = new FormData();
+            formData.append('message', message); // Append text message
+            formData.append('file', file); // Append file
+
+            // Add temporary message to chat
+            var messageContainer = $('<div>').addClass('message right-bubble');
+            var messageContent = $('<div>').addClass('message-content').text(message);
+            var read_receipt_wait = $('<span>').addClass('material-symbols-outlined read-receipt').text('schedule');
+            messageContainer.append(messageContent);
+            messageContainer.append(read_receipt_wait);
+            $('#chat-messages').prepend(messageContainer);
+
+            $('#messageInput').val('');
+            $('#fileInput').val('');
+
+
+            $.ajax({
+                url: '/chat/' + recipient,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {},
+                error: function(xhr, status, error) {
+                    errorFs("Couldn't send message.", "An error occurred while sending the message. Please try again.");
+                }
+            });
+        }
     });
 </script>
