@@ -162,7 +162,7 @@
                             {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
                             {% else %}https://www.gruettecloud.com/static/profile_pictures/ai.png{% endif %}
                         " style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
-                        <span style="margin-left: -20px; margin-top: -30px; background-color: var(--red); border-radius: 50%; width 20px; height: 20px; font-size: 0.6em; display: flex; align-items: center; justify-content: center; color: var(--white-color); padding: 3px;">&nbsp;1&nbsp;</span>
+                        <span id="ai-chat-indicator" style="margin-left: -20px; margin-top: -30px; background-color: var(--red); border-radius: 50%; width 20px; height: 20px; font-size: 0.6em; display: flex; align-items: center; justify-content: center; color: var(--white-color); padding: 3px;">&nbsp;1&nbsp;</span>
                         <span class="text-offcutter" style="margin-left: 5px; display: inline; wrap: nowrap; max-width: 45vw;">
                             {% if selected_personality == "UwuGirl" %}uwu Gamer Girl
                             {% elif selected_personality == "Pirate" %}Pirate
@@ -281,6 +281,17 @@
         }
     };
 
+    if (localStorage.getItem('aiChatDismissed')) {
+        document.getElementById('ai-chat-indicator').style.display = 'none';
+
+        // 1 in 10 chance to show the AI chat indicator
+        if (Math.floor(Math.random() * 10) == 0) {
+            document.getElementById('ai-chat-indicator').style.display = 'flex';
+        }        
+
+    } else {
+        document.getElementById('ai-chat-indicator').style.display = 'flex';
+    }
 
     {% if not active_chats %}
         searchForm.style.display = 'block';
