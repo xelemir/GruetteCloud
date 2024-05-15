@@ -53,7 +53,7 @@
                 $.ajax({
                     url: '/get_messages',
                     type: 'GET',
-                    data: {
+                    headers: {
                         username: username,
                         recipient: recipient,
                         messageIDs: messageIDs // Send the message IDs with each request
@@ -279,17 +279,6 @@
             {% endif %}
         </div>
     {% else %}
-        <!--<div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
-            <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
-            <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
-                <span class="material-symbols-outlined">add</span>
-            </div>
-            <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: calc(100% - 80px); padding-left: 20px; padding-right: 10px; height: 55px; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
-            <button id="sendButton" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-outlined">send</span>
-            </button>
-        </div>-->
-    
         <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
             <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
             <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">

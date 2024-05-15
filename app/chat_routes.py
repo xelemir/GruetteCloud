@@ -25,10 +25,10 @@ def get_messages():
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    username = str(request.args.get("username")).lower()
-    recipient = str(request.args.get("recipient")).lower()
-    
-    messageIDs_old_string = request.args.get("messageIDs")    
+    username = str(request.headers.get("username")).lower()
+    recipient = str(request.headers.get("recipient")).lower()
+        
+    messageIDs_old_string = request.headers.get("messageIDs")    
     messageIDs_old = messageIDs_old_string.split(',')
     messageIDs_old = [number for number in messageIDs_old]
     
