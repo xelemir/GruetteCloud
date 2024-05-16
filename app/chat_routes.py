@@ -249,17 +249,6 @@ def ai_chat(action):
                 file_extension = file.filename.split(".")[-1]
                 filename = hex(random.getrandbits(128))[2:] + "." + file_extension
                 file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-                
-                from PIL import Image
-                image = Image.open(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-                filesize = os.path.getsize(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-                # if filesize > 15MB
-                while filesize > 15728640:
-                    width, height = image.size
-                    new_size = (width//2, height//2)
-                    resized_image = image.resize(new_size)
-                    resized_image.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename), optimize=True, quality=50)
-                    filesize = os.path.getsize(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
                             
             if message == "#!# Requesting Welcome Message #!#":
                 chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
@@ -289,13 +278,13 @@ def ai_chat(action):
                 # Get AI response and append it to chat history
                 if file:
                     chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
-                    #os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                    os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
                 else:
                     chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
 
             except Exception as e:
                 logging.error(e)
-                #if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
                 chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
 
             # Save chat history to session
