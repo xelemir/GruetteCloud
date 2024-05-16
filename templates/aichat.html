@@ -360,6 +360,8 @@
                     url = url.toString().replace(")", "");
                     if (url.endsWith(".")) {
                         url = url.slice(0, -1);
+                    } else if (url.endsWith("!")) {
+                        url = url.slice(0, -1);
                     }
                     
                     // find image element within message
@@ -385,6 +387,8 @@
                 var url = message.content.match(/(https?:\/\/[^\s]+)/g)[0];
                 url = url.toString().replace(")", "");
                 if (url.endsWith(".")) {
+                    url = url.slice(0, -1);
+                } else if (url.endsWith("!")) {
                     url = url.slice(0, -1);
                 }
 
