@@ -131,8 +131,8 @@
     </div>
     
     <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
-        {% if ai_model == "gpt4o" %}
         <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
+        {% if ai_model == "gpt4o" %}
         <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
             <span class="material-symbols-outlined">add</span>
         </div>
