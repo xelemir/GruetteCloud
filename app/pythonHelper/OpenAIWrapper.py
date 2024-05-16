@@ -86,7 +86,7 @@ class OpenAIWrapper:
                     },
                 },]
             
-            print(conversation_log)
+            print(str(url))
         
         # Inject the AI personality into the conversation log
         conversation_log.insert(0, {"role": "system", "content": ai_personality})
