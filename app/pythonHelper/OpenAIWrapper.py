@@ -82,9 +82,11 @@ class OpenAIWrapper:
                 {
                     "type": "image_url",
                     "image_url": {
-                        "url": url,
+                        "url": str(url),
                     },
                 },]
+            
+            print(conversation_log)
         
         # Inject the AI personality into the conversation log
         conversation_log.insert(0, {"role": "system", "content": ai_personality})
@@ -92,11 +94,14 @@ class OpenAIWrapper:
         try:
             # Get the response from the GPT-4 API and append it to the conversation log
             response = client.chat.completions.create(model=model, messages=conversation_log, max_tokens=max_tokens)
-            if copy_old_message is not None:
+            if url is not None:
                 conversation_log[-1]["content"] = copy_old_message
             conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
+            
         except Exception as e:
             print(e)
+            if url is not None:
+                conversation_log[-1]["content"] = copy_old_message
             conversation_log.append({"role": "assistant", "content": "I'm sorry, I'm having trouble processing your request. Please try again later."})
         
         # Remove the AI personality from the conversation log
