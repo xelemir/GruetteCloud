@@ -572,23 +572,6 @@ def zuffenhausen_modify():
         SQLHelper.SQLHelper().writeSQL(f"UPDATE zuffenhausen_visits SET note = '{request.args.get('note')}' WHERE application_id = '{application_id}'")
         return redirect("/dashboard")
     
-@tool_route.route("/api/v1/tgtg", methods=["GET", "POST"])
-def tgtg():
-    if "username" not in session: abort(403)
-    username = session["username"]
-    
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
-    if user == [] or bool(user[0]["is_admin"]) == False: abort(403)
-    
-    if request.args.get("action") is None or request.args.get("id") is None or request.args.get("access_token") is None or request.args.get("refresh_token") is None or request.args.get("user_id") is None or request.args.get("cookie") is None: abort(400)
-    if request.args.get("action") == "accept":
-        client = TgtgClient(access_token=request.args.get("access_token"), refresh_token=request.args.get("refresh_token"), user_id=request.args.get("user_id"), cookie=request.args.get("cookie"))
-        client.abort_order(request.args.get("id"))
-        return jsonify({"success": True})
-    else:
-        return jsonify({"success": False})
-    
     
     
 
@@ -1004,3 +987,39 @@ def mci_rate_survey():
     sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('MCI User', 'Tests rated with {rating} stars. Test ID: {test_id}', 'opened')")
     
     return jsonify({"success": True})
+
+
+
+
+
+
+
+@tool_route.route('/api/v1/tgtg', methods=['GET'])
+def tgtg():
+    try:
+        action = request.args.get('action')
+        order_id = request.args.get('id')
+        access_token = request.args.get('access_token')
+        refresh_token = request.args.get('refresh_token')
+        user_id = request.args.get('user_id')
+        cookie = request.args.get('cookie')
+    except:
+        return jsonify({"message": "Missing parameters"}), 400
+    
+    if action is None or order_id is None or access_token is None or refresh_token is None or user_id is None or cookie is None:
+        return jsonify({"message": "Missing parameters"}), 400
+    
+    if action != "accept":
+        return jsonify({"message": "Invalid action"}), 400
+    
+    try:
+        client = TgtgClient(access_token=access_token, refresh_token=refresh_token, user_id=user_id, cookie=cookie)
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    try:
+        client.abort_order(order_id)
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    return jsonify({"message": "Order aborted"}), 200
