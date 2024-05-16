@@ -14,7 +14,7 @@ class OpenAIWrapper:
         """ Constructor for the OpenAIWrapper class
         """
 
-    def get_openai_response(self, conversation_log, username, ai_personality="Default", has_premium=False, ai_model="gpt3"):
+    def get_openai_response(self, conversation_log, username, ai_personality="Default", has_premium=False, ai_model="gpt3", url=None):
         """ Get a response from the openAI API based on the conversation log
         GrütteCloud PLUS users use the GPT-4o model, while free users use the GPT-3.5-turbo model
 
@@ -23,11 +23,18 @@ class OpenAIWrapper:
             username (str): The username of the user
             ai_personality (str, optional): The personality of the AI. Defaults to "Default".
             has_premium (str, optional): Whether the user has premium. Defaults to False.
+            ai_model (str, optional): The AI model to use. Defaults to "gpt3".
+            url (str, optional): The URL of an image to analyze. Defaults to None. Only available for the GPT-4o model.
 
         Returns:
             list: The conversation log with the response appended
         """
-
+        
+        """import time
+        time.sleep(1)
+        
+        conversation_log.append({"role": "assistant", "content": "I'm sorry, I'm having trouble processing your request. Please try again later."})
+        return conversation_log"""
         
         # Set the AI personality
         if ai_personality == "UwuGirl":
@@ -65,6 +72,17 @@ class OpenAIWrapper:
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
             conversation_log[-1]["content"] = conversation_log[-1]["content"][:500]
+            
+        # Check if user has an image to analyze
+        if url is not None and has_premium and ai_model == "gpt4o":
+            conversation_log[-1]["content"] = [
+                {"type": "text", "text": str(conversation_log[-1]["content"])},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": str(url)
+                    },
+                },]
         
         # Inject the AI personality into the conversation log
         conversation_log.insert(0, {"role": "system", "content": ai_personality})
@@ -73,7 +91,8 @@ class OpenAIWrapper:
             # Get the response from the GPT-4 API and append it to the conversation log
             response = client.chat.completions.create(model=model, messages=conversation_log, max_tokens=max_tokens)
             conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
-        except:
+        except Exception as e:
+            print(e)
             conversation_log.append({"role": "assistant", "content": "I'm sorry, I'm having trouble processing your request. Please try again later."})
         
         # Remove the AI personality from the conversation log

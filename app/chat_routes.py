@@ -242,12 +242,34 @@ def ai_chat(action):
 
         if request.method == "POST":
             message = request.form.get("message")
+            file = request.files.get("file")
+            
+            if file:
+                file_extension = file.filename.split(".")[-1]
+                filename = hex(random.getrandbits(128))[2:] + "." + file_extension
+                file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                
+                from PIL import Image
+                image = Image.open(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                filesize = os.path.getsize(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                # if filesize > 15MB
+                while filesize > 15728640:
+                    width, height = image.size
+                    new_size = (width//2, height//2)
+                    resized_image = image.resize(new_size)
+                    resized_image.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename), optimize=True, quality=50)
+                    filesize = os.path.getsize(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                
+                message = f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"
             
             if message == "#!# Requesting Welcome Message #!#":
                 chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
             else:
                 # Append the user's message to chat history
-                chat_history.append({"role": "user", "content": message})
+                if message:
+                    chat_history.append({"role": "user", "content": message})
+                else:
+                    chat_history.append({"role": "user", "content": "Take a look at this image."})
     
 
             if "username" in session:
@@ -266,10 +288,15 @@ def ai_chat(action):
 
             try:
                 # Get AI response and append it to chat history
-                chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
+                if file:
+                    chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
+                    #os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                else:
+                    chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
 
             except Exception as e:
                 logging.error(e)
+                #os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
                 chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
 
             # Save chat history to session

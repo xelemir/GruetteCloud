@@ -130,15 +130,27 @@
         {% endfor %}
     </div>
     
-
-    <div style="position: sticky; bottom: 0px; margin: 0; width: 100% ">
+    <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
+        <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
+        <div id="fileLabel" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+            <span class="material-symbols-outlined">add</span>
+        </div>
+        <div id="removeDiv" style="width: 65px; height: 55px; margin: 0; padding: 5px; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0; cursor: pointer;">
+            <span class="material-symbols-outlined">close</span>
+        </div>
+        <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; padding-right: 55px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
+        <button id="sendButton" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <span class="material-symbols-outlined">send</span>
+        </button>
+    </div>
+    <!--<div style="position: sticky; bottom: 0px; margin: 0; width: 100% ">
         <form action="/ai/chat" method="POST" id="sendMessageForm" style="display: flex; gap: 10px;" enctype="multipart/form-data">
             <input class="message-input" type="text" name="message" id="messageInput" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; width: 100%; padding-left: 20px; padding-right: 55px; height: 55px; width: 100%; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
             <button id="submitButton" name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">send</span>
             </button>
         </form>
-    </div>
+    </div>-->
     <div id="cookie-banner"></div>
 
 
@@ -204,6 +216,210 @@
 <script src="https://www.gruettecloud.com/static/darkmode.js"></script>
 
 <script>
+    window.onload = function() {
+        var input = document.getElementById('messageInput');
+        const userAgent = navigator.userAgent;
+        input.focus();
+    };
+
+    /*var body = document.body;
+    var isDarkMode = localStorage.getItem('darkMode');
+
+    if (isDarkMode === 'true') {
+        body.classList.add('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
+    }*/
+</script>
+
+<script src="https://www.gruettecloud.com/static/cookies.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fileInput = document.getElementById("fileInput");
+        const fileLabel = document.getElementById("fileLabel");
+        const removeDiv = document.getElementById("removeDiv");
+        const messageInput = document.getElementById("messageInput");
+
+        fileInput.addEventListener("change", function() {
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                messageInput.value = selectedFile.name;
+                fileLabel.style.display = "none";
+                removeDiv.style.display = "flex";
+            } else {
+                messageInput.value = '';
+                fileLabel.style.display = "flex";
+                removeDiv.style.display = "none";
+            }
+        });
+
+        removeDiv.addEventListener("click", function() {
+            fileInput.value = ''; // Clear the selected file
+            messageInput.value = ''; // Clear the message
+            fileLabel.style.display = "flex";
+            removeDiv.style.display = "none";
+        });
+    });
+
+    function toggleAiPreferences() {
+        var aiPreferences = document.getElementById("ai-preferences");
+        if (aiPreferences.style.display === "none") {
+            aiPreferences.style.display = "block";
+            aiPreferences.classList.remove("animate__slideOutDown");
+            aiPreferences.classList.add("animate__slideInUp");
+        } else {
+            aiPreferences.classList.remove("animate__slideInUp");
+            aiPreferences.classList.add("animate__slideOutDown");
+            setTimeout(function() {
+                aiPreferences.style.display = 'none';
+                aiPreferences.classList.remove('animate__slideOutDown');
+            }, 750);
+
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Trigger file input when the fileLabel is clicked
+        $('#fileLabel').click(function() {
+            $('#fileInput').click();
+        });
+
+        // Send message (text or file) using AJAX when the sendButton is clicked
+        $('#sendButton').click(function() {
+            sendMessage();
+        });
+
+        $('#messageInput').keypress(function(event) {
+            if (event.keyCode === 13) { // Check if Enter key is pressed
+                event.preventDefault(); // Prevent default Enter key behavior (like line break)
+                sendMessage(); // Call sendMessage function when Enter is pressed
+            }
+        });
+
+
+        function sendMessage(optionalMessage = null) {
+            var message = document.getElementById('messageInput').value;
+            var fileInput = document.getElementById('fileInput');
+
+            if (optionalMessage !== null) {
+                message = optionalMessage;
+            } else if (message === '' && fileInput.files.length === 0) {
+                return; // Don't send empty message
+            } else {
+                appendMessage({ role: "user", content: message });
+            }
+
+            $('#loadingAnimation').show();
+
+            
+            var file = fileInput.files[0]; // Get selected file
+            var formData = new FormData();
+            formData.append('message', message); // Append text message
+            formData.append('file', file); // Append file
+
+
+            appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
+
+            $('#messageInput').val('');
+            $('#fileInput').val('');
+
+            
+            $.ajax({
+                url: '/ai/chat',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $('#loadingAnimation').hide();
+                    var chatMessages = $(".chat-messages");
+                    chatMessages.empty();
+                    for (var i = 0; i < response.chat_history.length; i++) {
+                        appendMessage(response.chat_history[i]);
+                    }
+                    chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
+                    $('#messageInput').focus();
+
+                },
+                error: function(xhr, status, error) {
+                    $('#loadingAnimation').hide();
+                    errorFs("Couldn't send message.", "An error occurred while sending the message. Please try again.");
+                    $('#messageInput').focus();
+                }
+            });
+        }
+
+        function searchAndReplaceImages() {
+            var regex = /\[.*?\]\(.*?\)/g;
+            var messages = $(".message");
+            for (var i = 0; i < messages.length; i++) {
+                var message = messages[i];
+                if (message.innerHTML.includes("https://www.gruettecloud.com/static/")) {
+
+                    var url = message.innerHTML.match(/(https?:\/\/[^\s]+)/g)[0];
+                    url = url.toString().replace(")", "");
+                    if (url.endsWith(".")) {
+                        url = url.slice(0, -1);
+                    }
+                    
+                    // find image element within message
+                    var img = message.getElementsByTagName("img")[0];
+                    img.src = url;
+
+                    console.log(i);
+                    console.log(url);
+                }
+
+                message.innerHTML = message.innerHTML.replace(regex, "");
+            }
+        }
+
+        searchAndReplaceImages();
+
+        function appendMessage(message) {
+            var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
+
+            // if link in message, add image
+            if (message.content.includes("https://www.gruettecloud.com/static/")) {
+
+                var url = message.content.match(/(https?:\/\/[^\s]+)/g)[0];
+                url = url.toString().replace(")", "");
+                if (url.endsWith(".")) {
+                    url = url.slice(0, -1);
+                }
+
+                // Remove [...](...) as REGEX
+                var regex = /\[.*?\]\(.*?\)/g;
+                var msg_without_img = message.content.replace(regex, "");
+
+                $(".chat-messages").prepend('<div class="message ' + messageClass + '" style="display: flex; flex-direction: column; width: 400px;">' 
+                    + '<img src="' + url + '" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">'
+                    + msg_without_img + '</div>');
+
+            } else {
+                $(".chat-messages").prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+            }
+        }
+
+        function checkAndRequestWelcomeMessage() {
+            if ($(".chat-messages").children().length === 0) {
+                sendMessage("#!# Requesting Welcome Message #!#");
+            }
+        }
+    
+        // Call the checkAndRequestWelcomeMessage function when the page loads
+        checkAndRequestWelcomeMessage();
+
+        
+
+    });
+</script>
+
+<!--<script>
     $(document).ready(function() {
         var sendMessageForm = $("#sendMessageForm");
         var chatMessages = $(".chat-messages");
@@ -300,8 +516,7 @@
             });
         }
     
-        sendMessageForm.on("submit", function(e) {
-            e.preventDefault(); // Prevent form submission
+        function sendMessageEvent() {
     
             var message = messageInput.val(); // Get the message text
     
@@ -318,7 +533,7 @@
     
             // Clear the input
             messageInput.val("");
-        });
+        }
     
         // Function to check if chat is empty and request welcome message if needed
         function checkAndRequestWelcomeMessage() {
@@ -331,30 +546,32 @@
     
         // Call the checkAndRequestWelcomeMessage function when the page loads
         checkAndRequestWelcomeMessage();
-    });
+    
 
 
-    function toggleAiPreferences() {
-        var aiPreferences = document.getElementById("ai-preferences");
-        if (aiPreferences.style.display === "none") {
-            aiPreferences.style.display = "block";
-            aiPreferences.classList.remove("animate__slideOutDown");
-            aiPreferences.classList.add("animate__slideInUp");
-        } else {
-            aiPreferences.classList.remove("animate__slideInUp");
-            aiPreferences.classList.add("animate__slideOutDown");
-            setTimeout(function() {
-                aiPreferences.style.display = 'none';
-                aiPreferences.classList.remove('animate__slideOutDown');
-            }, 750);
+        function toggleAiPreferences() {
+            var aiPreferences = document.getElementById("ai-preferences");
+            if (aiPreferences.style.display === "none") {
+                aiPreferences.style.display = "block";
+                aiPreferences.classList.remove("animate__slideOutDown");
+                aiPreferences.classList.add("animate__slideInUp");
+            } else {
+                aiPreferences.classList.remove("animate__slideInUp");
+                aiPreferences.classList.add("animate__slideOutDown");
+                setTimeout(function() {
+                    aiPreferences.style.display = 'none';
+                    aiPreferences.classList.remove('animate__slideOutDown');
+                }, 750);
 
+            }
         }
-    }
 
 
-    if (!localStorage.getItem("aiChatDismissed")) {
-        localStorage.setItem("aiChatDismissed", true);
-    }
+        if (!localStorage.getItem("aiChatDismissed")) {
+            localStorage.setItem("aiChatDismissed", true);
+        }
+
+    });
     
         
-</script>
+</script>-->
