@@ -72,15 +72,17 @@ class OpenAIWrapper:
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
             conversation_log[-1]["content"] = conversation_log[-1]["content"][:500]
-            
+        
+        copy_old_message = None
         # Check if user has an image to analyze
         if url is not None and has_premium and ai_model == "gpt4o":
+            copy_old_message = conversation_log[-1]["content"]
             conversation_log[-1]["content"] = [
                 {"type": "text", "text": str(conversation_log[-1]["content"])},
                 {
                     "type": "image_url",
                     "image_url": {
-                        "url": str(url)
+                        "url": url,
                     },
                 },]
         
@@ -90,6 +92,8 @@ class OpenAIWrapper:
         try:
             # Get the response from the GPT-4 API and append it to the conversation log
             response = client.chat.completions.create(model=model, messages=conversation_log, max_tokens=max_tokens)
+            if copy_old_message is not None:
+                conversation_log[-1]["content"] = copy_old_message
             conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
         except Exception as e:
             print(e)
