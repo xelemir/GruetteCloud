@@ -295,6 +295,10 @@ def ai_chat(action):
         # Reverse chat history to show most recent messages first and render template
         return render_template("aichat.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
     
+    else:
+        return redirect("/ai/chat")
+    
+    
 @chat_route.route('/chat/delete/<recipient>')
 def delete_chat(recipient): 
     """ Delete chat route
