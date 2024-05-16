@@ -265,7 +265,7 @@ def ai_chat(action):
                 chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
             else:
                 # Append the user's message to chat history
-                if not image:
+                if not filename:
                     chat_history.append({"role": "user", "content": message})
                 else:
                     chat_history.append({"role": "user", "content": "Take a look at this image."})
