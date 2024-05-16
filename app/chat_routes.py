@@ -1,6 +1,6 @@
 import os
 import random
-from flask import render_template, request, redirect, session, jsonify, Blueprint, url_for
+from flask import abort, render_template, request, redirect, session, jsonify, Blueprint, url_for
 import logging
 from werkzeug.utils import secure_filename
 
@@ -296,7 +296,7 @@ def ai_chat(action):
         return render_template("aichat.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
     
     else:
-        return redirect("/ai/chat")
+        abort(404)
     
     
 @chat_route.route('/chat/delete/<recipient>')
