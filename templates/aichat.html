@@ -319,9 +319,11 @@
             appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
 
             $('#messageInput').val('');
+            {% if ai_model == "gpt4o" %}
             $('#fileInput').val('');
             document.getElementById('fileLabel').style.display = 'flex';
             document.getElementById('removeDiv').style.display = 'none';
+            {% endif %}
 
             
             $.ajax({
