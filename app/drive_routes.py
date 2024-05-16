@@ -223,14 +223,14 @@ def download(file_path):
         File: File to download
     """
     
-    if "username" not in session:
-        return redirect("/")
-    
     if "GruetteCloud" in file_path:
         filename = file_path.split("/")[-2]
         filename = filename.replace("GruetteCloud", "")
         return send_file(os.path.join(gruettedrive_path, "GruetteCloud",filename), as_attachment=False)
-            
+
+    if "username" not in session:
+        return redirect("/")
+    
     if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
         if os.path.isdir(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
             # zip folder
