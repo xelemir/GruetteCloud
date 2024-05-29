@@ -253,6 +253,9 @@ def send_support():
     async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
     async_mail.start()
     
+    if request.args.get("api") == "true":
+        return jsonify({"success": True})
+    
     return render_template("support.html", menu=th.user(session), error="success")
 
 # API Endpoints for GrütteMaps
