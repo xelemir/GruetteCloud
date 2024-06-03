@@ -273,7 +273,7 @@ def ai_chat(action):
 
             try:
                 # Get AI response and append it to chat history
-                if file:
+                if file and ai_model in ["gpt4o"]:
                     chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
                     os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
                 else:
