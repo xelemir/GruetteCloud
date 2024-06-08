@@ -52,6 +52,7 @@ function setCookieStatus(status) {
   } else {
     setCookieDeclined();
   }
+  unblurPage();
   banner.style.display = 'none';
 }
 
@@ -60,8 +61,23 @@ function handleLoading() {
   
   if (cookieStatus !== 'accepted' && cookieStatus !== 'declined') {
       showCookieBanner();
+      blurPageExcept();
   } 
   loadContent();
+}
+
+function blurPageExcept() {
+  const elements = document.querySelectorAll('body > *:not(#cookie-banner)');
+  elements.forEach(element => {
+    element.classList.add('blurred');
+  });
+}
+
+function unblurPage() {
+  const elements = document.querySelectorAll('.blurred');
+  elements.forEach(element => {
+    element.classList.remove('blurred');
+  });
 }
 
 handleLoading();
