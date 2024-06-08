@@ -1,88 +1,66 @@
 
-// Check if the cookie has been accepted or declined
 function getCookieStatus() {
   return localStorage.getItem('cookieStatus');
 }
 
-// Set the cookie status as accepted
 function setCookieAccepted() {
   localStorage.setItem('cookieStatus', 'accepted');
 }
 
-// Set the cookie status as declined
 function setCookieDeclined() {
   localStorage.setItem('cookieStatus', 'declined');
 }
 
-// Load fonts based on cookie status
-function loadFonts() {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-
-  if (getCookieStatus() === 'accepted') {
-    link.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap';
-  } else {
-    link.href = 'https://www.gruettecloud.com/static/Nunito/static/Nunito-SemiBold.ttf';
+function loadContent() {
+  const cookieStatus = getCookieStatus();
+  if (cookieStatus === 'accepted') {
+    const gtagScript = document.createElement('script');
+    gtagScript.async = true;
+    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-CGWQKX3VYK';
+    document.head.appendChild(gtagScript);
+    const gtagConfig = document.createElement('script');
+    gtagConfig.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CGWQKX3VYK');
+    `;
+    document.head.appendChild(gtagConfig);
   }
-
-  document.head.appendChild(link);
 }
 
-// Show the cookie banner
 function showCookieBanner() {
   const banner = document.getElementById('cookie-banner');
   banner.innerHTML = `
-    <div class="cookie-banner">
-    <div class="inner-tile">
-      <b>Cookie Policy</b><br>
-      <p>This website uses cookies and loads content from Google, CloudFlare and GitHub (USA). Your IP-address will be visible to these companies. By clicking "Accept" you consent to <a href="privacy" style="color: var(--text-color);">our</a> and their privacy policies. If you decline you will have ugly icons and fonts.</p><br>
-      <div style="display: inline;">
-        <button id="accept-cookie" class="cookie-button">Accept</button>
-        <button id="decline-cookie" class="cookie-button">Decline</button>
-      </div><br>
-      <div style="display: inline;">
-        <a href="about" style="color: var(--text-color);">Über Uns</a> | 
-        <a href="help" style="color: var(--text-color);">Help</a> | 
-        <a href="privacy" style="color: var(--text-color);">Privacy</a>
-      </div>
+  <div style="position: absolute; z-index: 300; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--background-tile-color); color: var(--text-color); border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between; width: 600px; max-width: 80vw; max-height: 60svh; text-align: center;">
+    <b>This website uses cookies</b>
+    <p style="margin-top: 20px; text-wrap: balance;">To enhance Your experience on our website and analyze traffic, we use functional and analytical cookies. You have the option to decline non-essential cookies. For more details and to adjust your preferences, please visit our <a href="privacy" style="color: var(--text-color);">Privacy Policy</a>.</p>
+    <div style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+        <button onclick="setCookieStatus('decline')" style="border-radius: 25px; width: 50%; padding: 10px 0; border: none; background-color: var(--secondary-color); cursor: pointer;">Decline Optional</button>
+        <button onclick="setCookieStatus('accept')" style="border-radius: 25px; width: 50%; padding: 10px 0; border: none; background-color: var(--primary-color); color: var(--white-color); cursor: pointer;">Accept All</button>
     </div>
   </div>
   `;
   banner.style.display = 'block';
+}
 
-  document.getElementById('accept-cookie').addEventListener('click', () => {
+function setCookieStatus(status) {
+  if (status === 'accept') {
     setCookieAccepted();
-    banner.style.display = 'none';
-    loadFonts();
-  });
-
-  document.getElementById('decline-cookie').addEventListener('click', () => {
-    setCookieDeclined();
-    banner.style.display = 'none';
-    loadFonts();
-  });
-}
-
-// Hide the cookie banner if cookies are already accepted or declined
-function hideCookieBannerIfAcceptedOrDeclined() {
-  if (getCookieStatus() === 'accepted' || getCookieStatus() === 'declined') {
-    const banner = document.getElementById('cookie-banner');
-    banner.style.display = 'none';
-    loadFonts();
-  }
-}
-
-// Main function to handle the cookie banner
-function handleCookieBanner() {
-  if (getCookieStatus() !== 'accepted') {
-    showCookieBanner();
+    loadContent();
   } else {
-    loadFonts();
+    setCookieDeclined();
   }
+  banner.style.display = 'none';
 }
 
-// Call the main function to handle the cookie banner
-handleCookieBanner();
+function handleLoading() {
+  const cookieStatus = getCookieStatus();
+  
+  if (cookieStatus !== 'accepted' && cookieStatus !== 'declined') {
+      showCookieBanner();
+  } 
+  loadContent();
+}
 
-// Check for cookie acceptance or decline on page load
-hideCookieBannerIfAcceptedOrDeclined();
+handleLoading();
