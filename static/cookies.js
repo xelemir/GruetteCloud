@@ -45,6 +45,7 @@ function showCookieBanner() {
 }
 
 function setCookieStatus(status) {
+  const banner = document.getElementById('cookie-banner');
   if (status === 'accept') {
     setCookieAccepted();
     loadContent();
