@@ -110,7 +110,7 @@ class MailHelper:
         
     def send_verification_email(self, recipient_email, username, verification_code):
         html = f'Thanks for signing up to GrütteCloud!<br>To get started, please enter the following code on the verification page:<h2 style="color: #0A84FF;"><a style="color: #0A84FF; text-decoration: none;" href="https://www.gruettecloud.com/verify/{username}">{verification_code}</a></h2>'
-        self.send_email(recipient_email, username, "Verify your GrütteID", html, token=verification_code, link=True)
+        self.send_email(recipient_email, username, "Verify your GrütteCloud Account", html, token=verification_code, link=True)
 
     def send_support_mail(self, name="None", username="None", email="None", message="None"):
         html = f'''

@@ -215,7 +215,7 @@
                                 <div style="width: 50%; text-align: center; margin-left: 10px; align-content: center;">
                                     <div style="display: flex; flex-direction: column; align-items: center;">
                                         <div style="display: inline-flex; width: 100%;">
-                                            <input type="text" id="username" name="username" autocomplete="off" placeholder="GrütteID" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
+                                            <input type="text" id="username" name="username" autocomplete="off" placeholder="Username" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
                                             <input type="text" id="otp" name="otp" autocomplete="off" placeholder="Google Auth OTP" style="width: 100%; margin: 0px; margin-left: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;" required>
                                         </div>
                                         <div class="spaced-tile"></div>
@@ -273,7 +273,7 @@
 
                     <div id="accountsView" style="display: none; height: 100%;">
                         <h2 align="center" style="margin-bottom: 20px;">Manage Users ({{ all_users|length }})</h2>
-                        <input type="text" id="search-input" placeholder="Search for GrütteID" class="login-input" style="width: 100%; margin: 0px; height: 40px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
+                        <input type="text" id="search-input" placeholder="Search for Username" class="login-input" style="width: 100%; margin: 0px; height: 40px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
                         <div class="file-list" style="font-size: 0.7em; max-height: calc(100% - 120px); height: calc(100% - 120px); display: flex; flex-direction: column; overflow: auto;">
                             {% for user in all_users %}
                                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
@@ -375,7 +375,7 @@
                                                     <b>Assigned to: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
                                                 {% endif %}
                                                 <b>Name: </b>{{ ticket["name"] }}<br>
-                                                <b>GrütteID: </b>{{ ticket["username"] }}<br>
+                                                <b>Username: </b>{{ ticket["username"] }}<br>
                                                 <span class="email-container">
                                                 <b>Email: </b><span class="email blurred-email">{{ ticket["email"] }}</span>
                                                 </span>
