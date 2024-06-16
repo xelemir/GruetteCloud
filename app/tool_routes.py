@@ -542,7 +542,7 @@ def api_v1_get_chat():
                 decrypted_message = str(eh.decrypt_message(message["message_content"]))
             except:
                 decrypted_message = "Decryption Error!"
-            new_messages.append({"message_id": message["id"], "message": decrypted_message, "username_send": message["username_send"], "created_at": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
+            new_messages.append({"message_id": message["id"], "message": decrypted_message, "username_send": message["username_send"], "datetime": message["created_at"].strftime("%d.%m.%Y %H:%M"), "is_read": message["is_read"]})
     
     new_messages = new_messages[::-1]
     
