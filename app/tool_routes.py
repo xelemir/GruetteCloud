@@ -741,7 +741,7 @@ def api_v1_add_transaction():
     if request.form.get('payment_method') is None:
         return jsonify({'message': 'No payment method provided'}), 400
     
-    total = request.form.get('total')
+    total = float(request.form.get('total'))
     merchant_name = request.form.get('merchant_name')
     payment_method = request.form.get('payment_method')
     
