@@ -714,3 +714,44 @@ def api_v1_upload_receipt():
     
     return jsonify({'message': 'Receipt uploaded', 'receipt_id': receipt_id}), 200
 
+@tool_route.route('/api/v1/add_transaction', methods=['POST'])
+def api_v1_add_transaction():
+    if request.headers.get('Token-Authorization') is None:
+        return jsonify({'message': 'No token provided'}), 401
+    
+    try:
+        auth = request.headers.get('Token-Authorization').split(" ")
+        if auth[0] != "Bearer":
+            return jsonify({'message': 'Invalid token; Bearer tag missing'}), 401
+        data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
+    
+    if request.headers.get('total') is None:
+        return jsonify({'message': 'No total provided'}), 400
+    
+    try:
+        total = float(request.headers.get('total'))
+    except:
+        return jsonify({'message': 'Invalid total provided'}), 400
+    
+    if request.headers.get('merchant_name') is None:
+        return jsonify({'message': 'No merchant name provided'}), 400
+    
+    if request.headers.get('payment_method') is None:
+        return jsonify({'message': 'No payment method provided'}), 400
+    
+    total = request.headers.get('total')
+    merchant_name = request.headers.get('merchant_name')
+    payment_method = request.headers.get('payment_method')
+    
+    add_to_budget = False
+    is_income = False
+    if total >= 0:
+        add_to_budget = True
+        is_income = True
+    
+    sql = SQLHelper.SQLHelper()
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(data['username'])}', '{merchant_name}', '{total}', NOW(), '{secrets.token_hex(8)}', '{payment_method}', {is_income}, {add_to_budget})")
+    
+    return jsonify({'message': 'Transaction added'}), 200
