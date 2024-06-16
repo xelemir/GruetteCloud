@@ -752,6 +752,6 @@ def api_v1_add_transaction():
         is_income = True
     
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(data['username'])}', '{merchant_name}', '{total}', NOW(), '{secrets.token_hex(8)}', '{payment_method}', {is_income}, {add_to_budget})")
+    sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(data['username'])}', '{merchant_name}', '{abs(total)}', NOW(), '{secrets.token_hex(8)}', '{payment_method}', {is_income}, {add_to_budget})")
     
     return jsonify({'message': 'Transaction added'}), 200
