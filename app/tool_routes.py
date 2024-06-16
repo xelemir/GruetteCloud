@@ -727,23 +727,23 @@ def api_v1_add_transaction():
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
-    if request.headers.get('total') is None:
+    if request.form.get('total') is None:
         return jsonify({'message': 'No total provided'}), 400
     
     try:
-        total = float(request.headers.get('total'))
+        total = float(request.form.get('total'))
     except:
         return jsonify({'message': 'Invalid total provided'}), 400
     
-    if request.headers.get('merchant_name') is None:
+    if request.form.get('merchant_name') is None:
         return jsonify({'message': 'No merchant name provided'}), 400
     
-    if request.headers.get('payment_method') is None:
+    if request.form.get('payment_method') is None:
         return jsonify({'message': 'No payment method provided'}), 400
     
-    total = request.headers.get('total')
-    merchant_name = request.headers.get('merchant_name')
-    payment_method = request.headers.get('payment_method')
+    total = request.form.get('total')
+    merchant_name = request.form.get('merchant_name')
+    payment_method = request.form.get('payment_method')
     
     add_to_budget = False
     is_income = False
