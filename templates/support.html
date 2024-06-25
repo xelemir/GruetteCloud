@@ -83,15 +83,15 @@
 
     <div style="padding: 20px; margin: auto; width: 600px; max-width: 85vw;">
         {% if not error %}
-        <h2>Contact Us</h2>
+        <h2 style="color: var(--text-color);">Contact Us</h2>
         <p style="text-wrap: balance;">Have you taken a look at our <a href="/help" style="color: var(--primary-color);">FAQ</a> page yet? You might find the answer to your question there. If not, feel free to contact us using one of the options below. We're happy to help!</p>
-        <h2>Options</h2>
+        <h2 style="color: var(--text-color);">Options</h2>
         
         <div style="width: 600px; max-width: 85vw; gap: 20px; display: flex; flex-direction: column;">
             <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
                 <div class="contact-card" onclick="openForm()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">chat</span>
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--text-color);">chat</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">Contact Form</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><24 h wait</h3>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="contact-card" onclick="{% if menu %}window.location.href='/chat/gruettecloud'{% else %}openAccountNeeded(){% endif %}">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">forum</span>
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--text-color);">forum</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">GrütteChat</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;">~12 h wait</h3>
@@ -113,7 +113,7 @@
             <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
                 <div class="contact-card" onclick="openEmail()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">email</span>
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--text-color);">email</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">Email</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><24 h wait</h3>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="contact-card" onclick="openPhone()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">phone</span>
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--text-color);">phone</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">Get a call</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><2 h wait</h3>
