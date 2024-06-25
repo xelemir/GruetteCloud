@@ -87,7 +87,7 @@
         <p style="text-wrap: balance;">Have you taken a look at our <a href="/help" style="color: var(--primary-color);">FAQ</a> page yet? You might find the answer to your question there. If not, feel free to contact us using one of the options below. We're happy to help!</p>
         <h2 style="color: var(--text-color);">Options</h2>
         
-        <div style="width: 600px; max-width: 85vw; gap: 20px; display: flex; flex-direction: column;">
+        <div id="contact-options" style="width: 600px; max-width: 85vw; gap: 20px; display: flex; flex-direction: column;">
             <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
                 <div class="contact-card" onclick="openForm()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
@@ -200,28 +200,6 @@
 </html>
 
 <script>
-    function getCurrentTimeGermany() {
-        // Create a new Date object
-        let germanyTime = new Date();
-      
-        // Get the time zone offset for Berlin (UTC+1 or UTC+2 depending on DST)
-        let offset = germanTime.getTimezoneOffset() / 60; // in hours
-        let germanOffset = offset + 1; // Berlin is UTC+1 in standard time, UTC+2 in daylight saving time
-      
-        // Apply the offset to get the current time in Berlin
-        germanTime.setHours(germanTime.getHours() + germanOffset);
-      
-        // Format the time as HH:mm:ss
-        let timeString = germanTime.toLocaleTimeString('de-DE', {
-          hour12: false,
-          hour: 'numeric',
-          minute: 'numeric'
-        });
-      
-        return timeString;
-    }
-
-
     function openForm() {
         var form = document.getElementById('contact-form');
         var options = document.getElementById('contact-options');
@@ -246,8 +224,6 @@
         accountNeeded.style.display = 'flex';
         options.style.display = 'none';
     }
-
-    
 </script>
 
 <script>
