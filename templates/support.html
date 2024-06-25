@@ -19,8 +19,54 @@
             width: auto; /* Override width property */
             height: auto; /* Override height property */
         }
+        h2 {
+			color: var(--primary-color);
+			font-weight: bold;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border: 2px solid var(--box-shadow-color);
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            border-radius: 20px;
+            box-shadow: 0 0 10px var(--box-shadow-color);
+            cursor: pointer;
+        }
+
+        .contact-card:hover {
+            box-shadow: 0 0 30px var(--box-shadow-color);
+        }
     </style>
 </head>
+<script>
+    function getCurrentTimeGermany() {
+        let germanyTime = new Date();
+      
+        let offset = germanyTime.getTimezoneOffset() / 60;
+        let germanyOffset = offset + 1;
+      
+        germanyTime.setHours(germanyTime.getHours() + germanyOffset);
+      
+        let timeString = germanyTime.toLocaleTimeString('de-DE', {
+          hour12: false,
+          hour: 'numeric',
+          minute: 'numeric'
+        });
+      
+        return timeString;
+    }
+</script>
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
@@ -35,36 +81,116 @@
         {% include "components/nav-element.html" %}
     </div>
 
-    <div class="wrapping-tile centered-div" style="padding: 20px; border-radius: 30px;">
+    <div style="padding: 20px; margin: auto; width: 600px; max-width: 85vw;">
         {% if not error %}
-            <h1>Contact Support</h1>
-            <form action="/support" method="POST" style="flex-direction: column;">
-                <div style="display: inline-flex; width: 300px; margin: 0; gap: 20px;">
-                    <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 100%; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                    <input type="mail" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Email" style="width: 100%; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                </div>
-                <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Username" style="width: 300px; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);">
-                <textarea maxlength="5000" id="message" name="message" class="login-input" autocomplete="off" placeholder="Message*" style="width: 300px; height: 100px; margin: 0px; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); resize: none;" required></textarea>
-                <span style="display: flex; align-items: center; width: 300px; padding: 10px; margin-top: 20px;">
-                    <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
-                    <span style="font-size: 0.8em; text-align: left;">
-                        I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
-                        Fields with * are required.
+        <h2>Contact Us</h2>
+        <p style="text-wrap: balance;">Have you taken a look at our <a href="/help" style="color: var(--primary-color);">FAQ</a> page yet? You might find the answer to your question there. If not, feel free to contact us using one of the options below. We're happy to help!</p>
+        <h2>Options</h2>
+        
+        <div style="width: 600px; max-width: 85vw; gap: 20px; display: flex; flex-direction: column;">
+            <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
+                <div class="contact-card" onclick="openForm()">
+                    <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">chat</span>
                     </span>
-                </span>
-                <div style="display: inline-flex; width: 300px; margin-top: 20px;">
-                    <input type="submit" value="Send" name="login" style="width: 100%; border-radius: 30px;" class="send-button">
+                    <h3 style="margin-top: 0; text-align: center;">Contact Form</h3>
+                    <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><24 h wait</h3>
+                    <p style="text-align: center; color: var(--green); font-size: 13px;">Recommended</p>
                 </div>
-                <span style="display: flex; align-items: center; width: 300px; padding: 10px; margin-top: 20px;">
-                    <span style="font-size: 0.8em; text-align: left;">
-                        Alternatively, you can chat with us on <a href="/chat/gruettecloud" style="color: var(--text-color);">GrütteChat</a>
-                        or send an email to <a href="mailto:info@gruettecloud.com" style="color: var(--text-color);">info@gruettecloud.com</a>.
+                <div class="contact-card" onclick="{% if menu %}window.location.href='/chat/gruettecloud'{% else %}openAccountNeeded(){% endif %}">
+                    <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">forum</span>
                     </span>
+                    <h3 style="margin-top: 0; text-align: center;">GrütteChat</h3>
+                    <h3 style="font-size: 1em; text-align: center; margin-top: 5px;">~12 h wait</h3>
+                    {% if menu %}
+                        <p style="text-align: center; color: var(--green); font-size: 13px;">Available</p>
+                    {% else %}
+                        <p style="text-align: center; color: var(--red); font-size: 13px;">Unavailable: Account required</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
+                <div class="contact-card" onclick="openEmail()">
+                    <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">email</span>
+                    </span>
+                    <h3 style="margin-top: 0; text-align: center;">Email</h3>
+                    <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><24 h wait</h3>
+                    <p style="text-align: center; color: var(--green); font-size: 13px;">Available</p>
+                </div>
+                <div class="contact-card" onclick="openPhone()">
+                    <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">phone</span>
+                    </span>
+                    <h3 style="margin-top: 0; text-align: center;">Get a call</h3>
+                    <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><2 h wait</h3>
+                    <p id="phone-availability" style="text-align: center; color: var(--red); font-size: 13px;">Unavailable</p>
+                    <script>
+                        let currentTime = getCurrentTimeGermany();
+                        if (currentTime >= "10:00" && currentTime <= "21:00") {
+                            document.getElementById('phone-availability').innerText = "Available";
+                            document.getElementById('phone-availability').style.color = "var(--green)";
+                        } else {
+                            document.getElementById('phone-availability').innerText = "Out of hours";
+                            document.getElementById('phone-availability').style.color = "var(--yellow)";
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <form id="contact-form" action="/support" method="POST" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw;">
+            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('contact-form').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <h2 style="margin-top: 0; color: var(--text-color);">Contact Form</h2>
+            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;" required>
+            <input type="mail" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Email" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;">
+            <input type="text" id="username" name="username" class="login-input" autocomplete="off" placeholder="Username" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;">
+            <textarea maxlength="5000" id="message" name="message" class="login-input" autocomplete="off" placeholder="Message*" style="width: 300px; height: 100px; margin: 0px; border-radius: 20px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); resize: none;" required></textarea>
+            <span style="display: flex; align-items: center; padding: 10px; margin-top: 20px;">
+                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                <span style="font-size: 0.8em; text-align: left;">
+                    I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                    Fields with * are required.
                 </span>
-            </form>
+            </span>
+            <div style="display: inline-flex; margin-top: 20px;">
+                <input type="submit" value="Send Message" name="login" style="width: 300px; border-radius: 30px;" class="send-button">
+            </div>
+        </form>
+        <div id="account-needed" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw; align-items: center; justify-content: center;">
+            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('account-needed').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <h2 style="margin-top: 0; color: var(--text-color);">Account needed</h2>
+            <p style="margin-top: 10px; text-wrap: balance;">You need to have a GrütteCloud Account to use this feature. Please <a href="/" style="color: var(--primary-color);">register</a> or <a href="/" style="color: var(--primary-color);">login</a> to continue.</p>
+            <p style="margin-top: 10px; text-wrap: balance;">Please use the contact form or one of the other options if you don't have an account.</p>
+        </div>
+        <div id="email-info" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw; align-items: center; justify-content: center;">
+            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('email-info').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <h2 style="margin-top: 0; color: var(--text-color);">Email</h2>
+            <p style="margin-top: 10px; text-wrap: balance;">You can send us an email to the address below. We will get back to you as soon as possible. Please allow up to 24 hours for a response and include your username if you have one.</p>
+            <a href="mailto:info@gruettecloud.com" style="color: var(--primary-color); font-size: 1.2em; margin-top: 20px;">info@gruettecloud.com</a>
+        </div>
+        <form id="phone-info" action="/support" method="POST" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw;">
+            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('phone-info').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <h2 style="margin-top: 0; color: var(--text-color);">Request a call</h2>
+            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;" required>
+            <input type="hidden" id="mail" name="mail">
+            <input type="phone" id="username" name="username" class="login-input" autocomplete="off" placeholder="Phone number*" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;" required>
+            <input type="hidden" id="message" name="message" value="User requested a call.">
+            <span style="display: flex; align-items: center; padding: 10px; margin-top: 20px;">
+                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                <span style="font-size: 0.8em; text-align: left;">
+                    I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                    Fields with * are required.
+                </span>
+            </span>
+            <div style="display: inline-flex; margin-top: 20px;">
+                <input type="submit" value="Request Call" name="login" style="width: 300px; border-radius: 30px;" class="send-button">
+            </div>
+        </form>
+
         {% else %}
             <h2 style="color: var(--green); margin-bottom: 30px;">Your Message has been sent!</h2>
-            <a href="/" class="white-button-blue-on-hover" style="margin-top: 20px;">Go back to Home</a>
+            <a href="/" class="white-button-blue-on-hover" style="margin-top: 20px;">Homepage</a>
         {% endif %}
     </div>
 
@@ -72,6 +198,57 @@
     {% include "components/footer.html" %}
 </body>
 </html>
+
+<script>
+    function getCurrentTimeGermany() {
+        // Create a new Date object
+        let germanyTime = new Date();
+      
+        // Get the time zone offset for Berlin (UTC+1 or UTC+2 depending on DST)
+        let offset = germanTime.getTimezoneOffset() / 60; // in hours
+        let germanOffset = offset + 1; // Berlin is UTC+1 in standard time, UTC+2 in daylight saving time
+      
+        // Apply the offset to get the current time in Berlin
+        germanTime.setHours(germanTime.getHours() + germanOffset);
+      
+        // Format the time as HH:mm:ss
+        let timeString = germanTime.toLocaleTimeString('de-DE', {
+          hour12: false,
+          hour: 'numeric',
+          minute: 'numeric'
+        });
+      
+        return timeString;
+    }
+
+
+    function openForm() {
+        var form = document.getElementById('contact-form');
+        var options = document.getElementById('contact-options');
+        form.style.display = 'flex';
+        options.style.display = 'none';
+    }
+    function openEmail() {
+        var email = document.getElementById('email-info');
+        var options = document.getElementById('contact-options');
+        email.style.display = 'flex';
+        options.style.display = 'none';
+    }
+    function openPhone() {
+        var phone = document.getElementById('phone-info');
+        var options = document.getElementById('contact-options');
+        phone.style.display = 'flex';
+        options.style.display = 'none';
+    }
+    function openAccountNeeded() {
+        var accountNeeded = document.getElementById('account-needed');
+        var options = document.getElementById('contact-options');
+        accountNeeded.style.display = 'flex';
+        options.style.display = 'none';
+    }
+
+    
+</script>
 
 <script>
     // Show error message and fade out after 5 seconds

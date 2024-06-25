@@ -15,12 +15,8 @@
             height: auto;
         }
 
-        .centered-div {
-            max-width: 90vw;
-            position: relative;
-            left: 0;
-            transform: translateX(0%);
-            top: 0;
+        p {
+            margin-bottom: 5px;
         }
 
         @media (min-width: 768px) {
@@ -33,6 +29,28 @@
                 top: 15%;
                 left: 50%;
                 transform: translateX(-50%);
+            }
+        }
+        h2 {
+			color: var(--primary-color);
+			font-weight: bold;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .main-div {
+            display: flex;
+            flex-direction: row;
+        }
+
+        @media (max-width: 768px) {
+            .main-div {
+                flex-direction: column;
             }
         }
     </style>
@@ -49,68 +67,51 @@
         </div>
         {% include "components/nav-element.html" %}
     </div>
-
-    <div class="wrapping-tile centered-div " style="z-index: 1; text-align: center; padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
-        <h2 style="margin-bottom: 30px;">Impressum</h2>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-            <div style="display: flex; justify-content: center; align-items: center; width: 100%; gap: 20px;">
-                <div style="width: 50%;">
-                    <img src="https://www.gruettecloud.com/static/profile_pictures/{{ pfp_jan }}" style="border-radius: 50%; width: 150px; height: 150px;">
-                </div>
-                <div style="text-align: left; width: 50%;">
-                    <h2>Jan Grüttefien</h2>
-                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-top: 10px; margin-bottom: 10px;">
-
-                    <p>Kapellenweg 47a</p>
-                    <p>70378 Stuttgart</p>
-                    <p>Germany</p>
-
-                    <p><a href="mailto:jan@gruettecloud.com" style="color: var(--text-color);">jan@gruettecloud.com</a></p><br>
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <a href="https://github.com/xelemir" style="text-decoration: none;" title="GitHub">
-                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/github/black">
-                        </a>
-                        <a href="mailto:jan@gruettecloud.com" style="text-decoration: none;" title="Email">
-                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/gmail/black">
-                        </a>
-                        <a href="https://www.linkedin.com/in/jan-gruettefien/" style="text-decoration: none;" title="LinkedIn">
-                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/linkedin/black">
-                        </a>
-                        <a href="https://www.instagram.com/jan.gtm" style="text-decoration: none;" title="Instagram">
-                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/instagram/black">
-                        </a>
-                        <a href="https://open.spotify.com/user/n0c39jatc5pksdv4rhxizx2xy" style="text-decoration: none;" title="Spotify">
-                            <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/spotify/black">
-                        </a>
-                    </div>
-                    <a href="/support">
-                        <button class="button-blue" style="background-color: var(--primary-color); border-radius: 30px; width: 100%;">Contact Jan</button>
-                    </a>
-
-                </div>
-            </div>
-
-            <div style="text-align: left; width: 100%;">
-                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-top: 20px; margin-bottom: 20px;">
-
-                <p id="story-en" style="display: block;">
-                    Hello World!<br>
-                    I'm Jan Grüttefien.<br><br>
-                    
-                    GrütteCloud is my personal cloud solution. It's where I tinker around with new technologies and ideas.
-                    Currently, I'm a student at the University of Stuttgart, studying computer science. If you like to learn more about me, feel free to contact me via email or social media. You can find the links above.
-                    You might also check out my <a href="https://jan.gruettefien.com" style="color: var(--text-color);">personal website</a>. Thanks for visiting GrütteCloud :)
-                </p>
-                <p id="story-de" style="display: none;">
-                    Hello World!<br>
-                    Ich bin Jan Grüttefien.<br><br>
-
-                    GrütteCloud ist meine persönliche Cloud-Solution. Hier tüftle ich an neuen Technologien und Ideen.
-                    Aktuell studiere ich Informatik an der Universität Stuttgart. Wenn du mehr über mich erfahren möchtest, kannst du mich gerne per E-Mail oder Social Media kontaktieren. Die Links dazu findest du oben.
-                    Du kannst auch gerne meine <a href="https://jan.gruettefien.com" style="color: var(--text-color);">persönliche Website</a> besuchen. Vielen Dank für deinen Besuch auf GrütteCloud :)
-                </p>
+    <h1 style="margin-top: 40px;">Impressum</h1>               
+    <div class="main-div" style="padding: 20px; margin: auto; width: 700px; max-width: 90vw; gap: 50px;">
+        <div width="300px">
+            <h2 style="margin-top: 0;">Jan Grüttefien</h2>
+            <p>Kapellenweg 47a</p>
+            <p>70378 Stuttgart</p>
+            <p class="varLan" lan-de="Deutschland">Germany</p>
+            <p><a href="mailto:jan@gruettecloud.com" style="color: var(--text-color);">jan@gruettecloud.com</a></p>
+            <a href="https://jan.gruettefien.com" style="color: var(--text-color);" title="Website">https://jan.gruettefien.com</a>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <a href="https://github.com/xelemir" style="text-decoration: none;" title="GitHub">
+                    <img class="brand-logo" height="25px" width="25px" src="https://cdn.simpleicons.org/github/black">
+                </a>
+                <a href="mailto:jan@gruettecloud.com" style="text-decoration: none;" title="Email">
+                    <img class="brand-logo" height="25px" width="25px" src="https://cdn.simpleicons.org/gmail/black">
+                </a>
+                <a href="https://www.linkedin.com/in/jan-gruettefien/" style="text-decoration: none;" title="LinkedIn">
+                    <img class="brand-logo" height="25px" width="25px" src="https://cdn.simpleicons.org/linkedin/black">
+                </a>
+                <a href="https://www.instagram.com/jan.gtm" style="text-decoration: none;" title="Instagram">
+                    <img class="brand-logo" height="25px" width="25px" src="https://cdn.simpleicons.org/instagram/black">
+                </a>
+                <a href="https://open.spotify.com/user/n0c39jatc5pksdv4rhxizx2xy" style="text-decoration: none;" title="Spotify">
+                    <img class="brand-logo" height="25px" width="25px" src="https://cdn.simpleicons.org/spotify/black">
+                </a>
+                <a href="https://jan.gruettefien.com" style="text-decoration: none;" title="Personal Website">
+                    <span class="material-symbols-outlined" style="font-size: 25px; text-decoration: none; color: var(--text-color);">captive_portal</span>
+                </a>
             </div>
         </div>
+        <form action="/support" method="POST" style="display: block; border-radius: 20px;">
+            <b class="varLan" style="color: var(--text-color);" lan-de="Kontaktformular">Contact Form</b>
+            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 100%; margin: 0; margin-top: 20px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;" required>
+            <input type="hidden" id="mail" name="mail">
+            <input type="hidden" id="username" name="username">
+            <textarea maxlength="5000" id="message" name="message" class="login-input" autocomplete="off" placeholder="Message*" style="width: 100%; height: 100px; margin: 0px; border-radius: 20px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); resize: none;" required></textarea>
+            <div style="display: flex; align-items: center; padding: 10px; margin-top: 8px; border-radius: 20px; border: 2px solid var(--box-shadow-color); background-color: transparent;">
+                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                <span style="font-size: 0.8em; text-align: left;">
+                    I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                </span>
+                <input type="submit" value="Send" class="send-button" style="margin-left: auto; cursor: pointer; border-radius: 10px;">
+            </div>
+            
+        </form>
     </div>
 
     <div id="cookie-banner"></div>
@@ -168,10 +169,11 @@
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
 
 <script>
-    // check useragent for german language
-    var userLang = navigator.language || navigator.userLanguage;
-    if (userLang == 'de-DE' || userLang == 'de') {
-        document.getElementById('story-en').style.display = 'none';
-        document.getElementById('story-de').style.display = 'block';
+    let userLanguage = navigator.language || navigator.userLanguage;
+    let variableLanguageElements = document.getElementsByClassName('varLan');
+    if (userLanguage.startsWith('de')) {
+        for (let i = 0; i < variableLanguageElements.length; i++) {
+            variableLanguageElements[i].innerHTML = variableLanguageElements[i].getAttribute('lan-de');
+        }
     }
 </script>
