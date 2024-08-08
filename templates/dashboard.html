@@ -113,6 +113,24 @@
             .title {
                 display: none;
             }
+
+            .mobile-view {
+                display: flex;
+            }
+
+            .desktop-view {
+                display: none;
+            }
+        }
+
+        @media only screen and (min-width: 1200px) {
+            .mobile-view {
+                display: none;
+            }
+
+            .desktop-view {
+                display: flex;
+            }
         }
 
 
@@ -133,7 +151,7 @@
         </div>
 
 
-        <div style="display: flex; flex-direction: row; width: 100%; height: 100%; gap: 20px;">
+        <div class="desktop-view" style="flex-direction: row; width: 100%; height: 100%; gap: 20px;">
             <div style="width: 200px; background-color: transparent;">
                 <a href="/" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
@@ -176,6 +194,10 @@
                     <a href="/maps" class="navigation-button">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="GrütteDrive">map</span>
                         <p style="padding-left: 15px;">GrütteMaps</p>
+                    </a>
+                    <a href="/finance" class="navigation-button">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="GrütteDrive">payments</span>
+                        <p style="padding-left: 15px;">GrütteFinance</p>
                     </a>
                 </div>
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
@@ -277,7 +299,7 @@
                         <div class="file-list" style="font-size: 0.7em; max-height: calc(100% - 120px); height: calc(100% - 120px); display: flex; flex-direction: column; overflow: auto;">
                             {% for user in all_users %}
                                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
-                                <div class="navigation-button" style="gap: 20px;">
+                                <div class="navigation-button search-item" style="gap: 20px;">
                                     {% if not user["has_premium"] %}
                                         <a href="/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
                                     {% else %}
@@ -326,7 +348,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Message" style="width: 100%; margin: 0px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 100px; resize: none;" maxlength="10000" required></textarea>
+                                <textarea id="content" name="content" class="login-input" autocomplete="off" placeholder="Message" style="width: 100%; margin: 0px; border-radius: 20px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 100px; resize: none;" maxlength="10000" required></textarea>
                                 <button type="submit" class="send-button" style="width: 100%; margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                     <span class="material-symbols-outlined">notification_add</span>
                                     <p>Send Notification</p>
@@ -474,8 +496,52 @@
                 </div>
             </div>
         </div>
+
+        <div class="mobile-view" style="display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
+            <div class="header">
+                <h1 style="display: flex; width: 100%; align-items: center; justify-content: center; margin-top: 5px; padding: 0px;">
+                    <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="width: 40px; height: 40px; margin-right: 15px;">
+                    Dashboard
+                </h1>
+                {% include "components/nav-element.html" %}
+            </div>
+            <div style="display: flex; flex-direction: column; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
+                <div id="mobile-tickets" style="display: flex; flex-direction: column; width: 100%; height: 100%; overflow: auto;">
+                    <h2 align="center" style="margin-bottom: 20px;">Support Tickets</h2>
+                    <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; height: 300px; background-color: var(--background-tile-color);">
+                        {% for ticket in tickets %}
+                            <div class="ticket{% if ticket["status"] == "closed" %} closed-ticket{% endif %}" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 30px; padding: 10px;">
+                                    <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; padding-bottom: 0px; text-align: center; align-items: center; justify-content: center;">
+                                        <b>{{ ticket["created_at"] }}</b>
+                                    </div>
+                                    <div style="display: flex; flex-direction: row; width: 100%; padding: 10px;">
+                                        <div style="flex: 1; overflow: none; white-space: wrap; text-overflow: ellipsis;">
+                                            <b>Status: </b>
+                                            {% if ticket["status"] == "opened" %}
+                                                <span style="color: var(--green);">Opened</span><br>
+                                            {% elif ticket["status"] == "closed" %}
+                                                <span style="color: var(--red);">Closed</span><br>
+                                                <b>Completed by: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
+                                            {% else %}
+                                                <span style="color: var(--yellow);">In Progress</span><br>
+                                                <b>Assigned to: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
+                                            {% endif %}
+                                            <b>Name: </b>{{ ticket["name"] }}<br>
+                                            <b>Username: </b>{{ ticket["username"] }}<br>
+                                            <span class="email-container">
+                                            <b>Email: </b><span class="email blurred-email">{{ ticket["email"] }}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="cookie-banner"></div>
 </body>
 </html>
 
@@ -718,5 +784,4 @@
     }
 </script>
 
-<script src="https://www.gruettecloud.com/static/cookies.js"></script>
 <script src="https://www.gruettecloud.com/static/darkmode.js"></script>
