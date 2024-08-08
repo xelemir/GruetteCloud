@@ -176,7 +176,15 @@
     </div>
 
     <div id="cookie-banner"></div>
-    {% include "components/footer.html" %}
+    <div style="position: absolute; bottom: 0px; margin-bottom: 10px; left: 0; width: 100%; justify-content: center; align-items: center; padding: 1.5vh; display: flex;">
+        <a id="about-us-href" href="about" class="pulse" style="color: var(--text-color); text-decoration: none;">About Us</a>
+        <script>
+            const userLanguage = navigator.language || navigator.userLanguage;  
+            if(userLanguage.startsWith('de')) {
+                document.getElementById("about-us-href").innerHTML = "Über Uns";
+            }
+        </script>
+    </div>
 </body>
 </html>
 
