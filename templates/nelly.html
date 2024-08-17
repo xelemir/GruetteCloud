@@ -110,8 +110,8 @@
 
     <div class="default-view" style="width: 400px; max-width: 80vw; text-align: center; display: flex; align-items: center; justify-content: center;">
         <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-            <div id="map1" style="width: 50%; height: 180px; border-radius: 15px;"></div>
-            <div id="map2" style="width: 50%; height: 180px; border-radius: 15px;"></div>
+            <div id="map1" style="width: 50%; height: 170px; border-radius: 15px;"></div>
+            <div id="map2" style="width: 50%; height: 170px; border-radius: 15px;"></div>
         </div>
         <script>
             var map1 = new L.map('map1', {
@@ -135,7 +135,7 @@
                 maxZoom: 19,
             }).addTo(map2);
             L.marker([48.787070,9.085165]).addTo(map2)
-                .bindPopup('Here we got together &#128152;')
+                .bindPopup('We got together &#128152;')
                 .openPopup();
         </script>
     </div>
