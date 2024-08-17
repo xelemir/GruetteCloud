@@ -6,7 +6,7 @@
 	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
 	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
-    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <link rel="icon" href="https://www.gruettecloud.com/static/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -18,18 +18,47 @@
             margin: 0;
             padding: 0;
         }
+
+        #app-bar {
+            justify-content: center;
+            margin-left: 0;
+        }
+
+        input[type="date"], input[type="time"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: none;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            appearance: none; /* Removes default styling */
+            -webkit-appearance: none; /* For Safari */
+            -moz-appearance: none; /* For Firefox */
+        }
+        
+
+        @media (max-width: 768px) {
+            #app-bar {
+                justify-content: left;
+            }
+
+            #app-bar p {
+                margin-left: 10px;
+            }
+        }
     </style>
 </head>
 <body style="font-size: 1em; background-color: #ffffff; display: flex; align-items: center; padding: 0;">
-    <div style="width: 600px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: left; margin-top: 20px; height: 30px;">
-        <p style="font-size: 1.7em; color: #000000; font-weight: bold; margin-left: 10px;">Nelly + Jan</p>
+    <div id="app-bar" style="width: 600px; max-width: 90vw; text-align: center; display: flex; align-items: center; margin-top: 20px; height: 30px;">
+        <p style="font-size: 1.7em; color: #000000; font-weight: bold; ">Nelly + Jan</p>
         {% include "components/nav-element.html" %}
     </div>
-    <div style="width: 600px; max-width: 90vw; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 30px);">
+    <div class="default-view" style="width: 600px; max-width: 90vw; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 30px);">
 
-        <img src="https://www.gruettecloud.com/static/neleUndJan.jpg" style="width: 70%; border-radius: 15px; margin-bottom: 10px;">
+        <img src="https://www.gruettecloud.com/static/neleUndJan.jpg" style="width: 70%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
 
-        <div style="margin-top: 20px; background-color: #fff0f6; width: 70%; border-radius: 15px; padding: 20px;">
+        <div style="margin-top: 20px; background-color: #fff0f6; width: 70%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
             <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Together for</p>
             <p id="days-together" style="font-size: 4em; color: #ff8fa3;">X</p>
             <p style="font-size: 1.5em; color: #000000; font-weight: bold;">days</p>
@@ -45,30 +74,70 @@
 
         <div style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px;">
             <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
-                <div onclick="openMenuIncome()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--green);">
-                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">add</span>
-                    <p style="font-size: 16px; margin: 0; color: #fff;">Add Income</p>
+                <div onclick="openDateMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
+                    <p style="font-size: 16px; margin: 0; color: #000000;">Plan a date</p>
+                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #000000;">heart_plus</span>
                 </div>
-                <div onclick="openMenuExpense()" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--primary-color); margin-top: 10px;">
-                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">remove</span>
-                    <p style="font-size: 16px; margin: 0; color: #fff;">Add Expense</p>
-                </div>
-                <label for="upload-receipt" id="upload-receipt-label" style="cursor: pointer; color: var(--text-color); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: var(--primary-color); margin-top: 10px;">
-                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">document_scanner</span>
-                    <p style="font-size: 16px; margin: 0; color: #fff;">Scan Receipt</p>
-                </label>
-                <input id="upload-receipt" type="file" onchange="uploadReceipt(this.files)" style="display: none;">
             </div>
             <div style="width: 100%; display: flex; align-items: right; justify-content: right; flex-direction: row;">
-                <div onclick="toggleButtons()" style="cursor: pointer; border-radius: 15px; display: flex; padding: 10px; align-items: center; justify-content: center; flex-direction: row; background-color: #ff8fa3; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  margin-top: 10px;">
-                    <span id="toggle-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #fff;">add</span>
+                <div onclick="toggleButtons()" style="cursor: pointer; border-radius: 15px; display: flex; padding: 15px; align-items: center; justify-content: center; flex-direction: row; background-color: #ff8fa3; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  margin-top: 10px;">
+                    <span id="toggle-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #ffffff;">favorite</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div style="background-color: blue; width: 600px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center; height: 80px;">
-        <p style="font-size: 1.5em; color: #ff8fa3; font-weight: bold;">Nelly + Jan</p>
+    <div id="dateMenu" style="width: 600px; max-width: 90vw; text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 30px);">
+        <div style="margin-top: 20px; background-color: #fff0f6; width: 70%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <h1>Plan a date</h1>
+            <p id="date-notification" style="color: var(--yellow); display: none;">Please fill out all fields.</p>
+            <input type="text" id="title" placeholder="Title">
+            <input type="date" id="date">
+            <input type="time" id="time">
+            <input type="text" id="description" placeholder="Description">
+            <div style="display: flex; flex-direction: row;  justify-content: space-between;">
+                <div onclick="closeDateMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
+                    <p style="margin: 0; color: #000000;">Cancel</p>
+                </div>
+                <div onclick="sendDateMail()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
+                    <p style="margin: 0; color: #ffffff;">Send</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="default-view" style="width: 600px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <div style="display: flex; flex-direction: row; gap: 20px; width: 70%;">
+            <div id="map1" style="width: 50%; height: 190px; border-radius: 15px;"></div>
+            <div id="map2" style="width: 50%; height: 190px; border-radius: 15px;"></div>
+        </div>
+        <script>
+            var map1 = new L.map('map1', {
+                center: [48.799494, 9.171820],
+                zoom: 15,
+                zoomControl: false,
+            });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map1);
+            L.marker([48.799494, 9.171820]).addTo(map1)
+                .bindPopup('Our first date &#129782;')
+                .openPopup();
+
+            var map2 = new L.map('map2', {
+                center: [48.787070, 9.085165],
+                zoom: 15,
+                zoomControl: false,
+            });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map2);
+            L.marker([48.787070,9.085165]).addTo(map2)
+                .bindPopup('Here we got together &#128152;')
+                .openPopup();
+        </script>
     </div>
 
     
@@ -76,5 +145,82 @@
 	<div id="cookie-banner"></div>
 </body>
 </html>
+
+<script>
+    function toggleButtons() {
+        var buttons = document.getElementById('buttons');
+        if (buttons.style.display === 'none') {
+            document.getElementById('toggle-button').innerHTML = 'close';
+            buttons.classList.remove('animate__slideOutRight');
+            buttons.classList.add('animate__slideInRight');
+            buttons.style.display = 'block';
+        } else {
+            document.getElementById('toggle-button').innerHTML = 'favorite';
+            buttons.classList.remove('animate__slideInRight');
+            buttons.classList.add('animate__slideOutRight');
+            setTimeout(function() {
+                buttons.style.display = 'none';
+                buttons.classList.remove('animate__slideOutRight');
+            }, 750);
+        }
+    }
+    function closeDateMenu() {
+        document.getElementById('title').value = '';
+        document.getElementById('date').value = '';
+        document.getElementById('time').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('date-notification').style.display = 'none';
+        document.getElementById('dateMenu').style.display = 'none';
+        var defaultViews = document.getElementsByClassName('default-view');
+        for (var i = 0; i < defaultViews.length; i++) {
+            defaultViews[i].style.display = 'flex';
+        }
+    }
+    function openDateMenu() {
+        document.getElementById('dateMenu').style.display = 'flex';
+        var defaultViews = document.getElementsByClassName('default-view');
+        for (var i = 0; i < defaultViews.length; i++) {
+            defaultViews[i].style.display = 'none';
+        }
+    }
+    function sendDateMail() {
+        var title = document.getElementById('title').value;
+        var date = document.getElementById('date').value;
+        var time = document.getElementById('time').value;
+        var description = document.getElementById('description').value;
+        if (title === '' || date === '' || time === '' || description === '') {
+            document.getElementById('date-notification').innerHTML = 'Please fill out all fields.';
+            document.getElementById('date-notification').style.display = 'block';
+        } else {
+            document.getElementById('date-notification').innerHTML = 'Sending mails...';
+            // AJAX request to send mail
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://api.gruettecloud.com/v1/send-date-email', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                title: title,
+                date: date,
+                time: time,
+                description: description,
+                authentication: "{{ auth_key }}",
+                prod_mode: "false"
+            }));
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('Mail sent');
+                    document.getElementById('title').value = '';
+                    document.getElementById('date').value = '';
+                    document.getElementById('time').value = '';
+                    document.getElementById('description').value = '';
+                    closeDateMenu();
+                } else {
+                    document.getElementById('date-notification').innerHTML = 'Mail not sent. Please try again later.';
+                    document.getElementById('date-notification').style.display = 'block';
+                    console.log('Mail not sent');
+                }
+            }
+        }
+    }
+</script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>

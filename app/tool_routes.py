@@ -15,7 +15,7 @@ from tgtg import TgtgClient
 
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
-from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail, mindee_api_key
+from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail, mindee_api_key, nelly_auth_key
 
     
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
@@ -371,7 +371,7 @@ def nelly():
     elif session["username"] != "jan" and session["username"] != "nele":
         return redirect("/")
     else:
-        return render_template("nelly.html", menu=th.user(session))
+        return render_template("nelly.html", menu=th.user(session), auth_key=nelly_auth_key)
     
 
 # Endpoints for Flutter App
