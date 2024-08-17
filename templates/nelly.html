@@ -72,19 +72,7 @@
             </script>
         </div>
 
-        <div style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px; z-index: 100;">
-            <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
-                <div onclick="openDateMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
-                    <p style="font-size: 16px; margin: 0; color: #000000;">Plan a date</p>
-                    <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #000000;">heart_plus</span>
-                </div>
-            </div>
-            <div style="width: 100%; display: flex; align-items: right; justify-content: right; flex-direction: row;">
-                <div onclick="toggleButtons()" style="cursor: pointer; border-radius: 15px; display: flex; padding: 15px; align-items: center; justify-content: center; flex-direction: row; background-color: #ff8fa3; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  margin-top: 10px;">
-                    <span id="toggle-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #ffffff;">favorite</span>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <div id="dateMenu" style="width: 400px; max-width: 80vw; text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 30px);">
@@ -139,7 +127,19 @@
     </div>
 
     
-    
+    <div style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px; z-index: 100;">
+        <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
+            <div onclick="openDateMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
+                <p style="font-size: 16px; margin: 0; color: #000000;">Plan a date</p>
+                <span class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #000000;">heart_plus</span>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; align-items: right; justify-content: right; flex-direction: row;">
+            <div onclick="toggleButtons()" style="cursor: pointer; border-radius: 15px; display: flex; padding: 15px; align-items: center; justify-content: center; flex-direction: row; background-color: #ff8fa3; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  margin-top: 10px;">
+                <span id="toggle-button" class="material-symbols-outlined align-icons-center" style="font-size: 30px; color: #ffffff;">favorite</span>
+            </div>
+        </div>
+    </div>
 	<div id="cookie-banner"></div>
 </body>
 </html>
