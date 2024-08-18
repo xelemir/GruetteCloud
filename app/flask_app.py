@@ -95,7 +95,7 @@ def error500page():
     return render_template("500.html", menu=th.user(session))
 
 @app.route("/401")
-def error500page():
+def error401page():
     return render_template("401.html", menu=th.user(session))
 
 @app.route("/chat", methods=["GET", "POST"])
