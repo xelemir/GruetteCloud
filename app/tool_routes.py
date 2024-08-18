@@ -382,7 +382,8 @@ def nelly_media(filename):
     else:
         try:
             return send_file(f"{gruettedrive_path}/nelly/{filename}")
-        except:
+        except Exception as e:
+            print(e)
             return abort(404)
     
 @tool_route.route("/send-date-emails", methods=["POST"])
