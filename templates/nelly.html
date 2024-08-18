@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<title>Nelly + Jan</title>
+	<title>Nelly & Jan</title>
 	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
 	<link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
@@ -51,7 +51,7 @@
 </head>
 <body style="font-size: 1em; background-color: #ffffff; display: flex; align-items: center; padding: 0;">
     <div id="app-bar" style="width: 400px; max-width: 80vw; text-align: center; display: flex; align-items: center; margin-top: 20px; height: 30px;">
-        <p style="font-size: 1.7em; color: #000000; font-weight: bold; ">Nelly + Jan</p>
+        <p style="font-size: 1.7em; color: #000000; font-weight: bold; ">Nelly & Jan</p>
         {% include "components/nav-element.html" %}
     </div>
     <div class="default-view" style="width: 400px; max-width: 80vw; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 30px);">
@@ -80,8 +80,8 @@
             <h1>Plan a date</h1>
             <p id="date-notification" style="color: var(--yellow); display: none;">Please fill out all fields.</p>
             <input type="text" id="title" placeholder="Title">
-            <input type="date" id="date">
-            <input type="time" id="time">
+            <input type="date" id="date" placeholder="Date">
+            <input type="time" id="time" placeholder="Time">
             <input type="text" id="description" placeholder="Description">
             <div style="display: flex; flex-direction: row;  justify-content: space-between;">
                 <div onclick="closeDateMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
