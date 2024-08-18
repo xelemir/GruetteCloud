@@ -75,6 +75,10 @@ def errorToTicket(error, username=None):
 def error404page():
     return render_template("404.html", menu=th.user(session))
 
+@app.errorhandler(401)
+def error401(error):
+    return render_template("401.html", menu=th.user(session))
+
 @app.errorhandler(500)
 def error500(error):
     # Return 500 page to user instantly and create a ticket in the background
@@ -89,6 +93,10 @@ def error500(error):
 @app.route("/500")
 def error500page():
     return render_template("500.html", menu=th.user(session))
+
+@app.route("/401")
+def error500page():
+    return render_template("401.html", menu=th.user(session))
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
