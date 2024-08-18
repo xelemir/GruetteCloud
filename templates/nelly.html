@@ -82,6 +82,17 @@
             <input type="text" id="title" placeholder="Title">
             <input type="date" id="date" placeholder="Date">
             <input type="time" id="time" placeholder="Time">
+            <script>
+                var tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                var year = tomorrow.getFullYear();
+                var month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+                var day = String(tomorrow.getDate()).padStart(2, '0');
+                var currentDate = year + '-' + month + '-' + day;
+                
+                document.getElementById('date').value = currentDate;
+                document.getElementById('time').value = "18:00";
+            </script>
             <input type="text" id="description" placeholder="Description">
             <div style="display: flex; flex-direction: row;  justify-content: space-between;">
                 <div onclick="closeDateMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
@@ -304,6 +315,10 @@
         }
     }
     function sendDateMail() {
+        if (document.getElementById('date-notification').style.display === 'block' && document.getElementById('date-notification').innerHTML === 'Sending emails...') {
+            return;
+        }
+
         var title = document.getElementById('title').value;
         var date = document.getElementById('date').value;
         var time = document.getElementById('time').value;
@@ -312,17 +327,16 @@
             document.getElementById('date-notification').innerHTML = 'Please fill out all fields.';
             document.getElementById('date-notification').style.display = 'block';
         } else {
-            document.getElementById('date-notification').innerHTML = 'Sending mails...';
+            document.getElementById('date-notification').innerHTML = 'Sending emails...';
             // AJAX request to send mail
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://api.gruettecloud.com/v1/send-date-email', true);
+            xhr.open('POST', '/send-date-emails', true); //'https://api.gruettecloud.com/v1/send-date-email'
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
                 title: title,
                 date: date,
                 time: time,
                 description: description,
-                authentication: "{{ auth_key }}",
                 prod_mode: "false"
             }));
             xhr.onreadystatechange = function() {
@@ -334,7 +348,7 @@
                     document.getElementById('description').value = '';
                     closeDateMenu();
                 } else {
-                    document.getElementById('date-notification').innerHTML = 'Mail not sent. Please try again later.';
+                    document.getElementById('date-notification').innerHTML = 'Emails not sent. Please try again later.';
                     document.getElementById('date-notification').style.display = 'block';
                     console.log('Mail not sent');
                 }

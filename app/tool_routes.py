@@ -371,7 +371,44 @@ def nelly():
     elif session["username"] != "jan" and session["username"] != "nele":
         return redirect("/")
     else:
-        return render_template("nelly.html", menu=th.user(session), auth_key=nelly_auth_key)
+        return render_template("nelly.html", menu=th.user(session))
+    
+@tool_route.route("/send-date-emails", methods=["POST"])
+def send_date_emails():
+    if "username" not in session:
+        return abort(401)
+    elif session["username"] != "jan" and session["username"] != "nele":
+        return abort(401)
+    else:
+        try:
+            title = request.json['title']
+            date = request.json['date']
+            time = request.json['time']
+            description = request.json['description']
+            prod_mode = request.json['prod_mode']
+        except Exception as e:
+            print(e)
+            return jsonify({"message": "Missing parameters"}), 400
+        
+        if title == "" or date == "" or time == "" or description == "" or prod_mode == "":
+            return jsonify({"message": "Missing parameters"}), 400
+        
+        data = {
+            "title": title,
+            "date": date,
+            "time": time,
+            "description": description,
+            "authentication": nelly_auth_key,
+            "prod_mode": prod_mode
+        }
+
+        response = requests.post("https://api.gruettecloud.com/v1/send-date-email", json=data)
+        
+        if response.status_code == 200:
+            return jsonify({"message": "Emails sent"}), 200
+        else:
+            return jsonify({"message": response.text}), response.status_code
+        
     
 
 # Endpoints for Flutter App
