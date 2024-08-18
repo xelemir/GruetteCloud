@@ -381,7 +381,7 @@ def nelly_media(filename):
         return abort(401)
     else:
         try:
-            return send_file(f"{gruettedrive_path}/nelly_media/{filename}")
+            return send_file(f"{gruettedrive_path}/nelly/{filename}")
         except:
             return abort(404)
     
