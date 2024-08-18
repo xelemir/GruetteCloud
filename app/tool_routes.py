@@ -380,7 +380,10 @@ def nelly_media(filename):
     elif session["username"] != "jan" and session["username"] != "nele":
         return abort(401)
     else:
-        return send_file(f"{gruettedrive_path}/nelly/{filename}")
+        try:
+            return send_file(f"{gruettedrive_path}/nelly_media/{filename}")
+        except:
+            return abort(404)
     
 @tool_route.route("/send-date-emails", methods=["POST"])
 def send_date_emails():
