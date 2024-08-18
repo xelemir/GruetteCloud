@@ -303,25 +303,27 @@
 
 
     <div class="mobile-only">
-        <div class="default-view" style="width: 400px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; min-height: calc(100svh - 50px);">
+        <div class="default-view" style="width: 400px; max-width: 60vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; min-height: calc(100svh - 50px); margin: 0 auto;">
 
             <img src="https://www.gruettecloud.com/nelly_media/neleUndJan.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-
+        
             <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
                 <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Together for</p>
                 <p id="days-together" style="font-size: 4em; color: #ff8fa3;">X</p>
                 <p style="font-size: 1.5em; color: #000000; font-weight: bold;">days</p>
-                <script>
-                    var date1 = new Date("2024-08-09");
-                    var date2 = new Date();
-                    date2.setDate(date2.getDate() - 1);
-                    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                    document.getElementById("days-together").innerHTML = diffDays;
-                    document.getElementById("days-together-desktop").innerHTML = diffDays;
-                </script>
             </div>
+        
+            <script>
+                var date1 = new Date("2024-08-09");
+                var date2 = new Date();
+                date2.setDate(date2.getDate() - 1);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                document.getElementById("days-together").innerHTML = diffDays;
+                document.getElementById("days-together-desktop").innerHTML = diffDays;
+            </script>
         </div>
+        
 
         <div class="default-view" style="width: 400px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 20px; gap: 20px;">
             <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
