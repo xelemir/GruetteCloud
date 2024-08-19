@@ -56,16 +56,15 @@
             width: 100%;
             height: 5px;
             background-color: #f3f3f3;
-            z-index: 9999;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: left;
+            justify-content: left;
         }
         
         #loading-progress {
             height: 100%;
-            background-color: #4caf50;
-            width: 0%;
+            background-color: #ff8fa3;
+            width: 50%;
             transition: width 0.3s;
         }
     </style>
@@ -73,15 +72,16 @@
 <body style="font-size: 1em; background-color: #ffffff; display: flex; align-items: center; padding: 0;">
     <div id="app-bar" style="width: 400px; max-width: 90vw; text-align: center; display: flex; align-items: center; margin-top: 20px; height: 30px;">
         <p style="font-size: 1.7em; color: #000000; font-weight: bold; ">Nelly & Jan</p>
+        <div id="loading-bar">
+            <div id="loading-progress"></div>
+        </div>
         {% include "components/nav-element.html" %}
     </div>
-    <div id="loading-bar">
-        <div id="loading-progress"></div>
-    </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const images = Array.from(document.getElementsByTagName('img'));
-            const totalMedia = images.length + videos.length;
+            const totalMedia = images.length ;
             let loadedMedia = 0;
         
             if (totalMedia === 0) {
@@ -101,6 +101,17 @@
         
                 if (loadedMedia === totalMedia) {
                     document.getElementById('loading-bar').style.display = 'none';
+                    document.getElementById('scroll-hint').style.display = 'block';
+
+                    let placeholders = document.getElementsByClassName('hide-when-loaded');
+                    for (let i = 0; i < placeholders.length; i++) {
+                        placeholders[i].style.display = 'none';
+                    }
+
+                    let images = document.getElementsByClassName('hide-until-loaded');
+                    for (let i = 0; i < images.length; i++) {
+                        images[i].style.display = 'block';
+                    }
                 }
             }
         
@@ -108,14 +119,6 @@
                 img.addEventListener('load', onMediaLoaded);
                 img.addEventListener('error', onMediaLoaded);
                 if (img.complete) {
-                    onMediaLoaded();
-                }
-            });
-        
-            videos.forEach(video => {
-                video.addEventListener('loadeddata', onMediaLoaded);
-                video.addEventListener('error', onMediaLoaded);
-                if (video.readyState >= 2) {
                     onMediaLoaded();
                 }
             });
@@ -168,7 +171,8 @@
 
     <div class="desktop-only">
         <div class="default-view" style="width: 900px; max-width: 90vw; text-align: center; display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: calc(100svh - 50px); gap: 20px;">
-            <img src="https://www.gruettecloud.com/nelly_media/neleUndJan.jpg" style="width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <img class="hide-until-loaded" src="https://www.gruettecloud.com/nelly_media/neleUndJan.jpg" style="display: none; width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;"></div>
             <div style="background-color: #fff0f6; width: 50%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;">
                 <p style="font-size: 2em; color: #000000; font-weight: bold;">Together for</p>
                 <p id="days-together-desktop" style="font-size: 6.5em; color: #ff8fa3;">X</p>
@@ -177,7 +181,7 @@
         </div>
         <div class="default-view">
             <div style="display: flex; position: absolute; bottom: 0px; margin-bottom: 10px; left: 0; width: 100%; justify-content: center; align-items: center; padding: 1.5vh;">
-                <p style="color: var(--text-color); text-decoration: none;">Scroll for more</p>
+                <p id="scroll-hint" style="color: var(--text-color); text-decoration: none; display: none;">Scroll for more</p>
             </div>
         </div>
 
@@ -407,8 +411,9 @@
     <div class="mobile-only">
         <div class="default-view" style="width: 400px; max-width: 60vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; min-height: calc(100svh - 50px); margin: 0 auto;">
 
-            <img src="https://www.gruettecloud.com/nelly_media/neleUndJan.jpg" style="width: 100%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-        
+            <img class="hide-until-loaded" src="https://www.gruettecloud.com/nelly_media/neleUndJan.jpg" style="display: none; width: 100%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); margin-top: 20px; width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 280px;"></div>
+
             <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
                 <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Together for</p>
                 <p id="days-together" style="font-size: 4em; color: #ff8fa3;">X</p>
@@ -428,7 +433,6 @@
         
 
         <div class="default-view" style="width: 400px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 20px; gap: 20px;">
-            
             <div style="height: 30svh;"></div>
             <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">Our story</h1></div>
 

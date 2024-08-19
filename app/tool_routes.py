@@ -375,16 +375,16 @@ def nelly():
     
 @tool_route.route("/nelly_media/<path:filename>", methods=["GET"])
 def nelly_media(filename):
-        """if "username" not in session:
+        if "username" not in session:
             return abort(401)
         elif session["username"] != "jan" and session["username"] != "nele":
             return abort(401)
-        else:"""
-        try:
-            return send_file(f"{gruettedrive_path}/nelly/{filename}")
-        except Exception as e:
-            print(e)
-            return abort(404)
+        else:
+            try:
+                return send_file(f"{gruettedrive_path}/nelly/{filename}")
+            except Exception as e:
+                print(e)
+                return abort(404)
     
 @tool_route.route("/send-date-emails", methods=["POST"])
 def send_date_emails():
