@@ -112,6 +112,11 @@
                     for (let i = 0; i < images.length; i++) {
                         images[i].style.display = 'block';
                     }
+
+                    let blurImages = document.getElementsByClassName('blur-until-loaded');
+                    for (let i = 0; i < blurImages.length; i++) {
+                        blurImages[i].style.filter = 'none';
+                    }
                 }
             }
         
@@ -175,7 +180,7 @@
             <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;"></div>
             <div style="background-color: #fff0f6; width: 50%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;">
                 <p style="font-size: 2em; color: #000000; font-weight: bold;">Together for</p>
-                <p id="days-together-desktop" style="font-size: 6.5em; color: #ff8fa3;">X</p>
+                <p class="blur-until-loaded" id="days-together-desktop" style="font-size: 6.5em; color: #ff8fa3; filter: blur(8px);">X</p>
                 <p style="font-size: 2em; color: #000000; font-weight: bold;">days</p>
             </div>
         </div>
@@ -257,9 +262,11 @@
                                             if (playbackState === "pause") {
                                                 pauseImage();
                                                 document.getElementById("playback-mock-control").innerHTML = "play_arrow";
+                                                document.getElementById("playback-mock-control-mobile").innerHTML = "play_arrow";
                                             } else {
                                                 spinImage();
                                                 document.getElementById("playback-mock-control").innerHTML = "pause";
+                                                document.getElementById("playback-mock-control-mobile").innerHTML = "pause";
                                             }
                                         }
                                     </script>
@@ -416,7 +423,7 @@
 
             <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
                 <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Together for</p>
-                <p id="days-together" style="font-size: 4em; color: #ff8fa3;">X</p>
+                <p id="days-together" class="blur-until-loaded" style="font-size: 4em; color: #ff8fa3; filter: blur(8px);">X</p>
                 <p style="font-size: 1.5em; color: #000000; font-weight: bold;">days</p>
             </div>
         
@@ -522,12 +529,20 @@
 
                         </script>
                     </div>
-                    <div style="height: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
-                        <p style="font-size: 1.2em; color: #000000; font-weight: bold;">You're On Your Own, Kid</p>
-                        <a href="https://open.spotify.com/track/4D7BCuvgdJlYvlX5WlN54t?si=6e81d52f82b84fdc" style="font-size: 1em; margin-top: 0px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; background-color: #ff8fa3; border-radius: 30px; color: #ffffff; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                            <span class="material-symbols-outlined align-icons-center">play_arrow</span>
-                            Listen
-                        </a>
+                    <div style="height: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                        <p style="font-size: 0.9em; color: #000000; font-weight: bold;">You're On Your Own, Kid</p>
+                        <p style="font-size: 0.7em; color: #000000;">Midnights &#183; Taylor Swift</p>
+                        <div style="width: 80%; height: 10px; background-color: #ffffff; border-radius: 10px; margin-top: 20px;">
+                            <div style="width: 40%; height: 100%; background-color: #ff8fa3; border-radius: 10px;"></div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; gap: 10px;">
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 1.2em; color: #ff8fa3; cursor: pointer;">skip_previous</span>
+                            <div style="width: 30px; height: 30px; background-color: #ff8fa3; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                <span class="material-symbols-outlined align-icons-center" style="font-size: 1.4em; color: #ffffff; cursor: pointer;" onclick="doPlaybackAction()" id="playback-mock-control-mobile">pause</span>
+                            </div>
+                            <span class="material-symbols-outlined align-icons-center" style="font-size: 1.2em; color: #ff8fa3; cursor: pointer;">skip_next</span>
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -549,16 +564,10 @@
                     <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
                         <p style="font-size: 1.2em; color: #000000; font-weight: bold;">Jan + Nele = &#10084;&#65039;</p>
                         <p style="font-size: 0.8em; color: #000000;">Our Spotify Blend</p>
-                        <div style="width: 80%; height: 10px; background-color: #ffffff; border-radius: 10px; margin-top: 20px;">
-                            <div style="width: 40%; height: 100%; background-color: #ff8fa3; border-radius: 10px;"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; gap: 10px;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 1.2em; color: #ff8fa3; cursor: pointer;">skip_previous</span>
-                            <a href="https://open.spotify.com/playlist/37i9dQZF1EJIepn9rDsakQ?si=64e0463162214dad" style="width: 30px; height: 30px; background-color: #ff8fa3; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                                <span class="material-symbols-outlined align-icons-center" style="font-size: 1.4em; color: #ffffff; cursor: pointer;">play_arrow</span>
-                            </a>
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 1.2em; color: #ff8fa3; cursor: pointer;">skip_next</span>
-                        </div>
+                        <a href="https://open.spotify.com/playlist/37i9dQZF1EJIepn9rDsakQ?si=64e0463162214dad" style="font-size: 1em; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; background-color: #ff8fa3; border-radius: 30px; color: #ffffff; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+                            <span class="material-symbols-outlined align-icons-center">play_arrow</span>
+                            Listen
+                        </a>
                     </div>
                 </div>
             </div>
