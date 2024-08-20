@@ -33,9 +33,9 @@ eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
 
 
-@app.before_request
+"""@app.before_request
 def maintenanceMode():
-    return render_template('errors/maintenance.html'), 503
+    return render_template('errors/maintenance.html'), 503"""
 
 @app.route("/")
 def index():
