@@ -25,7 +25,7 @@ def drive():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f'/')
 
     username = str(session['username'])
@@ -142,7 +142,7 @@ def get_files(username, folder_dir=None):
 
 @drive_route.route("/movefile")
 def move_file():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     sql = SQLHelper.SQLHelper()
@@ -172,7 +172,7 @@ def move_file():
 
 @drive_route.route("/file/<path:file_path>")
 def open_file(file_path):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
@@ -228,7 +228,7 @@ def download(file_path):
         filename = filename.replace("GruetteCloud", "")
         return send_file(os.path.join(gruettedrive_path, "GruetteCloud",filename), as_attachment=False)
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
@@ -253,7 +253,7 @@ def upload():
         JSON: JSON object containing the filename, or an error message
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     username = str(session['username'])
@@ -298,7 +298,7 @@ def delete(file_path):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
         
     if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
@@ -326,7 +326,7 @@ def share(file_path):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/drive")
     
     sql = SQLHelper.SQLHelper()
@@ -359,7 +359,7 @@ def stopsharing(file_path):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/drive")
     
     sql = SQLHelper.SQLHelper()
@@ -404,7 +404,7 @@ def shared(short_code):
     
 @drive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
 def create_folder(folder_path):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     folder_name = str(request.form["name"])

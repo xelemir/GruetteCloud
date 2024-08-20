@@ -280,7 +280,7 @@ def log_user_location():
     
     sql = SQLHelper.SQLHelper()
 
-    if "username" in session:
+    if "user_id" in session:
         username = session["username"]
         sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('{username}', '{username} logged their location. Lat: {lat}, Lon: {lon}', 'opened')")
     else:
@@ -366,7 +366,7 @@ def maps():
 
 @tool_route.route("/nelly", methods=["GET"])
 def nelly():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     elif session["username"] != "jan" and session["username"] != "nele":
         return abort(401)
@@ -375,7 +375,7 @@ def nelly():
     
 @tool_route.route("/nelly_media/<path:filename>", methods=["GET"])
 def nelly_media(filename):
-        if "username" not in session:
+        if "user_id" not in session:
             return abort(401)
         elif session["username"] != "jan" and session["username"] != "nele":
             return abort(401)
@@ -388,7 +388,7 @@ def nelly_media(filename):
     
 @tool_route.route("/send-date-emails", methods=["POST"])
 def send_date_emails():
-    if "username" not in session:
+    if "user_id" not in session:
         return abort(401)
     elif session["username"] != "jan" and session["username"] != "nele":
         return abort(401)

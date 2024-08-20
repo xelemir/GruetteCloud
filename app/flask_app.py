@@ -39,12 +39,12 @@ def maintenanceMode():
 
 @app.route("/")
 def index():
-    if "username" in session:
+    if "user_id" in session:
         sql = SQLHelper.SQLHelper()
         try:
-            default_app = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]["default_app"]
+            default_app = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]["default_app"]
         except IndexError:
-            logging.error(f"Index error for default app of user {session['username']}")
+            logging.error(f"Index error for default app of user {session['user_id']}")
             default_app = "chat"
         return redirect(f"/{default_app}")
     
@@ -66,12 +66,12 @@ def index():
 def error404(error):
     return render_template("errors/404.html", menu=th.user(session))
 
-def errorToTicket(error, username=None):
+def errorToTicket(error, user_id=None):
     sql = SQLHelper.SQLHelper()
-    if username:
-        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('{username}', '{error}', 'opened')")
+    if user_id:
+        sql.writeSQL(f"INSERT INTO tickets (username, message, status) VALUES ('{user_id}', '{error}', 'opened')")
     else:
-        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (message, status) VALUES ('{error}', 'opened')")
+        sql.writeSQL(f"INSERT INTO tickets (message, status) VALUES ('{error}', 'opened')")
 
 @app.route("/404")
 def error404page():
@@ -84,12 +84,12 @@ def error401(error):
 @app.errorhandler(500)
 def error500(error):
     # Return 500 page to user instantly and create a ticket in the background
-    if "username" in session:
-        username = session["username"]
+    if "user_id" in session:
+        user_id = session["user_id"]
     else:
-        username = None
+        user_id = None
 
-    Thread(target=errorToTicket, args=(f"{str(error)} Route: {str(request.path)}", username)).start()
+    Thread(target=errorToTicket, args=(f"{str(error)} Route: {str(request.path)}", user_id)).start()
     return render_template("errors/500.html", menu=th.user(session))
 
 @app.route("/500")
@@ -114,23 +114,23 @@ def chat(error=None):
     Returns:
         HTML: Rendered HTML page
     """    
-    if 'username' not in session:
-        return redirect(f'/')
+    if 'user_id' not in session:
+        return redirect('/')
 
-    username = str(session['username']).lower()
+    user_id = str(session['user_id'])
     active_chats = []
     sql = SQLHelper.SQLHelper()
 
     if request.method == "POST":
         # Post is used to create a new chat
-        recipient = str(request.form['recipient'])
+        recipient_id = str(request.form['recipient_id'])
 
-        # Check if recipient username is valid
-        if recipient is None or recipient == username or len(recipient) > 50:
-            return redirect(f'/chat')
+        # Check if recipient user_id valid
+        if recipient_id is None or recipient_id == user_id or len(recipient_id) > 10:
+            return redirect('/chat')
 
         # Check if recipient exists
-        user_exists = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{recipient}'")
+        user_exists = sql.readSQL(f"SELECT * FROM users WHERE id = '{int(recipient_id)}'")
 
         if user_exists == []:
             # User does not exist
@@ -138,36 +138,36 @@ def chat(error=None):
 
         else:
             # User exists
-            return redirect(f'/chat/{recipient}')
+            return redirect(f'/chat/{recipient_id}')
 
     # Fetch active chats from the database
-    active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")
+    active_chats_database = sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{int(user_id)}' OR recipient_id = '{int(user_id)}'")
                 
     # Add all active chats to a list
     for chat in active_chats_database:
-        if chat["username_send"].lower() == username:
-            if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
-                unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_receive']}' AND username_receive = '{username}' AND is_read = '{False}'"))
-                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_receive']}'")
-                blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_receive']}' AND username_blocked = '{username}' OR username = '{username}' AND username_blocked = '{chat['username_receive']}'"))
+        if chat["author_id"] == int(user_id):
+            if chat["recipient_id"] not in [x["user_id"] for x in active_chats]:
+                unread_messages = len(sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{chat['recipient_id']}' AND recipient_id = '{user_id}' AND is_read = '{False}'"))
+                user_db = sql.readSQL(f"SELECT * FROM users WHERE id = '{chat['recipient_id']}'")
+                blocked = bool(sql.readSQL(f"SELECT * FROM blocked_users WHERE user_id = '{chat['recipient_id']}' AND blocked_user_id = '{user_id}' OR user_id = '{user_id}' AND blocked_user_id = '{chat['recipient_id']}'"))
                 if user_db != []:
-                    active_chats.append({"username": chat["username_receive"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
+                    active_chats.append({"user_id": chat["recipient_id"], "username": user_db[0]["username"], "pfp": user_db[0]["profile_picture"], "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
         else:
-            if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
-                unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_send']}' AND username_receive = '{username}' AND is_read = '{False}'"))
-                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_send']}'")
-                blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_send']}' AND username_blocked = '{username}' OR username = '{username}' AND username_blocked = '{chat['username_send']}'"))
-                if user_db != []:
-                    active_chats.append({"username": chat["username_send"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
+            if chat["author_id"] not in [x["user_id"] for x in active_chats]:
+                unread_messages = len(sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{chat['author_id']}' AND recipient_id = '{user_id}' AND is_read = '{False}'"))
+                user_db = sql.readSQL(f"SELECT * FROM users WHERE id = '{chat['author_id']}'")
+                blocked = bool(sql.readSQL(f"SELECT * FROM blocked_users WHERE user_id = '{chat['author_id']}' AND blocked_user_id = '{user_id}' OR user_id = '{user_id}' AND blocked_user_id = '{chat['author_id']}'"))
+                if user_db != []:    
+                    active_chats.append({"user_id": chat["author_id"], "username": user_db[0]["username"], "pfp": user_db[0]["profile_picture"], "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
     
     # Get user's premium status
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{user_id}'")
     
     if user == []:
         # Safety check
-        return redirect(f'/logout')
+        return redirect('/logout')
     
-    platform_message = sql.readSQL(f"SELECT * FROM gruttechat_platform_messages")
+    platform_message = sql.readSQL(f"SELECT * FROM platform_notifications")
     
     if platform_message == []:
         platform_message = None
@@ -175,16 +175,16 @@ def chat(error=None):
         platform_message = {"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"], "link": platform_message[0]["link"], "decorator": platform_message[0]["decorator"]}
     
     if active_chats == []:
-        suggest_jan = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = 'jan'")
-        suggest_random = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username != '{username}' AND username != 'jan' ORDER BY RAND() LIMIT 3")
+        suggest_jan = sql.readSQL(f"SELECT * FROM users WHERE username = 'jan'")
+        suggest_random = sql.readSQL(f"SELECT * FROM users WHERE id != '{user_id}' AND username != 'jan' ORDER BY RAND() LIMIT 3")
         suggested = [{"username": suggest_jan[0]["username"], "pfp": f"{suggest_jan[0]['profile_picture']}.png", "is_verified": suggest_jan[0]["is_verified"]}]
         for suggest_user in suggest_random:
-            suggested.append({"username": suggest_user["username"], "pfp": f"{suggest_user['profile_picture']}.png", "is_verified": suggest_user["is_verified"]})
+            suggested.append({"user_id": suggest_user["id"], "username": suggest_user["username"], "pfp": f"{suggest_user['profile_picture']}.png", "is_verified": suggest_user["is_verified"]})
     else:
         suggested = None
     
     # Render the home page
-    return render_template('chathome.html', menu=th.user(session), username=username, active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png", selected_personality=user[0]["ai_personality"])
+    return render_template('chathome.html', menu=th.user(session), active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png", selected_personality=user[0]["ai_personality"])
 
 if __name__ == '__main__':
     app.run(debug=True)

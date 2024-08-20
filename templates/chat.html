@@ -45,8 +45,8 @@
     </style>
     <script>
         $(document).ready(function() {
-            var username = "{{ username }}";
-            var recipient = "{{ recipient }}";
+            var user_id = "{{ user_id }}";
+            var recipient_id = "{{ recipient_id }}";
             var messageIDs = "-1:0"; // The message ID:0 or 1 if message has been read yet
     
             function loadMessages() {
@@ -54,11 +54,12 @@
                     url: '/get_messages',
                     type: 'GET',
                     headers: {
-                        username: username,
-                        recipient: recipient,
+                        userid: user_id,
+                        recipientid: recipient_id,
                         messageIDs: messageIDs // Send the message IDs with each request
                     },
                     success: function(response) {
+                        console.log(response);
                         if (response.messages.length > 0) {
                             messageIDs = String(response.messageIDs); // Update the message IDs
                             
@@ -146,7 +147,7 @@
                     $('#message-id').text(response.id);
                     $('#message-content').text(response.content);
 
-                    if (response.author == '{{ username }}') {
+                    if (response.author != '{{ recipient }}') {
                         $('#message-details-bubble').removeClass('left-bubble');
                         $('#message-details-bubble').addClass('right-bubble');
                         $('.message-delete').css('display', 'flex');
@@ -176,7 +177,7 @@
             <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="centered-content" style="display: flex; align-items: center;">
-            <a href="/profile/{{ recipient }}" style="text-decoration: none; color: var(--text-color);">
+            <a href="/profile/{{ recipient_id }}" style="text-decoration: none; color: var(--text-color);">
                 <h1 style="display: flex; align-items: center;">
                     {% if blocked != "none" %}
                         <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-right: 5px; color: var(--red); align-items: center; height: 40px; width: auto; font-size: 1.5em;">block</span>
@@ -372,7 +373,7 @@
             var message = $('#messageInput').val(); // Get message text
             var fileInput = document.getElementById('fileInput');
             var file = fileInput.files[0]; // Get selected file
-            let recipient = "{{ recipient }}";
+            let recipient = "{{ recipient_id }}";
 
             var formData = new FormData();
             formData.append('message', message); // Append text message

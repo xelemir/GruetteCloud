@@ -5,11 +5,11 @@ class TemplateHelper:
         pass
     
     def user(self, session):
-        if "username" not in session:
+        if "user_id" not in session:
             return
         
         sql = SQLHelper.SQLHelper()
-        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")
+        user = sql.readSQL(f"SELECT username, profile_picture, is_admin, has_premium, advanced_darkmode FROM users WHERE id = '{session['user_id']}'")
         if user == []:
             return
         

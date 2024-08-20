@@ -49,7 +49,7 @@ def dashboard():
         HTML: Rendered HTML page
     """
 
-    if 'username' not in session:
+    if 'user_id' not in session:
         return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
@@ -130,7 +130,7 @@ def dashboard():
 
 @dashboard_route.route('/dashboard/iplookup', methods=['POST'])
 def iplookup():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect('/')
     sql = SQLHelper.SQLHelper()
     user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
@@ -305,7 +305,7 @@ def send_mail():
     
 @dashboard_route.route("/dashboard/assignticket", methods=["POST"])
 def assign_ticket():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -321,7 +321,7 @@ def assign_ticket():
 
 @dashboard_route.route("/dashboard/reopenticket", methods=["POST"])
 def reopen_ticket():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -337,7 +337,7 @@ def reopen_ticket():
 
 @dashboard_route.route("/dashboard/closeticket", methods=["POST"])
 def close_ticket():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -353,7 +353,7 @@ def close_ticket():
 
 @dashboard_route.route("/dashboard/sql", methods=["GET", "POST"])
 def sql_query():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()

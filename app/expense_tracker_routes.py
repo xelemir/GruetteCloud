@@ -14,7 +14,7 @@ expense_tracker_route = Blueprint("Expense Tracker", "Expense Tracker", template
 
 @expense_tracker_route.route("/finance")
 def expense_tracker():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -58,7 +58,7 @@ def expense_tracker():
 
 @expense_tracker_route.route("/upload-receipt", methods=["GET", "POST"])
 def upload_receipt():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     if request.method == 'POST':
@@ -109,7 +109,7 @@ def upload_receipt():
 
 @expense_tracker_route.route("/receipt/<receipt_id>")
 def receipt(receipt_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -131,7 +131,7 @@ def receipt(receipt_id):
 
 @expense_tracker_route.route("/receipt/edit/<receipt_id>", methods=["POST"])
 def edit_receipt(receipt_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -174,7 +174,7 @@ def edit_receipt(receipt_id):
 
 @expense_tracker_route.route("/receipt/delete/<receipt_id>", methods=["POST"])
 def delete_receipt(receipt_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -191,7 +191,7 @@ def delete_receipt(receipt_id):
 
 @expense_tracker_route.route("/receipt/delete_item/<receipt_id>", methods=["POST"])
 def delete_item(receipt_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -207,7 +207,7 @@ def delete_item(receipt_id):
 
 @expense_tracker_route.route("/receipt/add_item/<receipt_id>", methods=["POST"])
 def add_item(receipt_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -231,7 +231,7 @@ def add_item(receipt_id):
     
 @expense_tracker_route.route("/create_expense", methods=["POST"])
 def create_expense():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     request_data = request.get_json()
@@ -249,7 +249,7 @@ def create_expense():
 
 @expense_tracker_route.route("/create_income", methods=["POST"])
 def create_income():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
         
@@ -268,7 +268,7 @@ def create_income():
 
 @expense_tracker_route.route("/change_budget", methods=["POST"])
 def change_budget():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     request_data = request.get_json()
@@ -287,7 +287,7 @@ def change_budget():
     
 @expense_tracker_route.route("/search_transactions")
 def search_transactions():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     query = request.args.get("query")

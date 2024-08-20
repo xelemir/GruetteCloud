@@ -27,7 +27,7 @@ def settings(error=None):
     Returns:
         str: The template to render
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     error = request.args.get("error")
@@ -118,7 +118,7 @@ def change_pfp():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -185,7 +185,7 @@ def remove_pfp():
         _type_: _description_
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -201,7 +201,7 @@ def change_password():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
 
     sql = SQLHelper.SQLHelper()
@@ -231,7 +231,7 @@ def change_email():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
@@ -262,7 +262,7 @@ def change_username():
     
     return redirect("/settings") # Disabled for now
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -288,7 +288,6 @@ def change_username():
             sql.writeSQL(f"UPDATE gruttechat_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_messages SET username_send = '{str(new_username)}' WHERE username_send = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_messages SET username_receive = '{str(new_username)}' WHERE username_receive = '{str(session['username'])}'")
-            sql.writeSQL(f"UPDATE gruttestorage_links SET owner = '{str(new_username)}' WHERE owner = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_blocked_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_blocked_users SET username_blocked = '{str(new_username)}' WHERE username_blocked = '{str(session['username'])}'")
             session["username"] = new_username
@@ -296,7 +295,7 @@ def change_username():
     
 @settings_route.route("/change_default_app/<app>", methods=["POST", "GET"])
 def change_default_app(app):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
@@ -317,10 +316,10 @@ def change_ai_personality(ai_personality):
         HTML: Rendered HTML page
     """
 
-    """if "username" not in session:
+    """if "user_id" not in session:
         return redirect(f"/")"""
 
-    if "username" not in session:
+    if "user_id" not in session:
         session["ai_personality"] = ai_personality
         session.pop("chat_history", None)
         return redirect("/ai/chat")
@@ -341,7 +340,7 @@ def change_ai_model(model):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
@@ -370,7 +369,7 @@ def ai_preferences():
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     username = str(session["username"])
@@ -393,7 +392,7 @@ def delete_account():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     if request.method == "GET":
         return redirect(f"/settings")
@@ -431,7 +430,7 @@ def enable_2fa():
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
@@ -464,7 +463,7 @@ def disable_2fa():
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
@@ -482,7 +481,7 @@ def refresh_2fa():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
@@ -509,7 +508,7 @@ def advanced_darkmode(state):
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()

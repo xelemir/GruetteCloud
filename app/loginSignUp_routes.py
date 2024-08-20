@@ -12,8 +12,8 @@ th = TemplateHelper.TemplateHelper()
 
 @loginSignUp_route.route("/login", methods=["POST", 'GET'])
 def login():
-    """ Post route to login. If 2fa is enabled, redirect to 2fa page and set session variable username_2fa instead of username
-        as username is used to entirly log the user in.
+    """ Post route to login. If 2fa is enabled, redirect to 2fa page and set session variable user_id_2fa instead of user_id
+        as user_id is used to entirly log the user in.
 
     Returns:
         HTML: Rendered HTML page
@@ -34,7 +34,7 @@ def login():
         return redirect("/?error=username_or_password_empty&traceback=login")
     
     # Search for user in database
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
     
     # If user exists, check if password is correct
     if user != []:
@@ -47,12 +47,12 @@ def login():
             
             # Check if 2FA is enabled
             if bool(user[0]["is_2fa_enabled"]) == True:
-                session['username_2fa'] = username
+                session['user_id_2fa'] = user[0]["id"]
                 return redirect(url_for("LoginSignUp.two_fa", target=request.args.get('target')))
             
             # Log the user in
             else:
-                session['username'] = username
+                session['user_id'] = user[0]["id"]
                 session.permanent = True
                 return redirect(url_for("index", target=request.args.get('target')))
 
@@ -72,30 +72,29 @@ def two_fa():
         HTML: Rendered HTML page
     """
 
-    if "username" in session or "username_2fa" not in session:
+    if "user_id" in session or "user_id_2fa" not in session:
         return redirect(f'/')
     if request.method == "GET":
-        return render_template('2fa.html', username=session['username_2fa'])
+        return render_template('2fa.html')
     if request.method == "POST":
         sql = SQLHelper.SQLHelper()
         
         entered_code = str(request.form['code0']) + str(request.form['code1']) + str(request.form['code2']) + str(request.form['code3']) + str(request.form['code4']) + str(request.form['code5'])
-        username = session['username_2fa']
     
-        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+        user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id_2fa']}'")
         user_secret_key = user[0]["2fa_secret_key"]
         
         totp = pyotp.TOTP(user_secret_key)
 
         # Validate the OTP
         if totp.verify(entered_code):
-            session.pop('username_2fa', None)
-            session['username'] = username
+            session.pop('user_id_2fa', None)
+            session['user_id'] = user[0]["id"]
             session.permanent = True
             return redirect(url_for("index", target=request.args.get('target')))
         
         else:
-            return render_template('2fa.html', error="Invalid code", username=username)
+            return render_template('2fa.html', error="Invalid code")
 
 @loginSignUp_route.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -105,7 +104,7 @@ def signup():
         HTML: Rendered HTML page
     """
     
-    if 'username' in session:
+    if 'user_id' in session:
         return redirect(f'/')
     
     # If Method is POST
@@ -140,7 +139,7 @@ def signup():
             return redirect("?error=invalid_email")
         
         # Check if the username already exists
-        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+        search_username = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
         if search_username != []:
             return redirect("/?error=username_already_exists")
         
@@ -150,7 +149,7 @@ def signup():
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name, finance_budget) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}', 350)")
+            sql.writeSQL(f"INSERT INTO users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name, finance_budget) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}', 350)")
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)
@@ -173,7 +172,7 @@ def username_available(username):
     """
 
     sql = SQLHelper.SQLHelper()
-    search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    search_username = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
     if search_username != []:
         return {"available": False}
     else:
@@ -190,25 +189,25 @@ def search_username(username):
         list: List of usernames that start with the input
     """
     
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
 
     if username.startswith("email: "):
         email = username.replace("email: ", "")
-        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE email = '{email}'")
+        search_username = sql.readSQL(f"SELECT * FROM users WHERE email = '{email}'")
     elif username.startswith("phone: "):
         phone = username.replace("phone: ", "")
-        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE phone = '{phone}'")
+        search_username = sql.readSQL(f"SELECT * FROM users WHERE phone = '{phone}'")
     elif username.startswith("name: "):
         name = username.replace("name: ", "")
-        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE first_name LIKE '%{name}%' OR last_name LIKE '%{name}%'")
+        search_username = sql.readSQL(f"SELECT * FROM users WHERE first_name LIKE '%{name}%' OR last_name LIKE '%{name}%'")
     else:
-        search_username = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{username}%'")
+        search_username = sql.readSQL(f"SELECT * FROM users WHERE username LIKE '%{username}%'")
     
     # Dict because WSGI cries otherwise
-    return {"users": [{"username": user["username"], "profile_picture": user["profile_picture"], "is_verified": user["is_verified"]} for user in search_username][:5]}
+    return {"users": [{"user_id": user["id"], "username": user["username"], "profile_picture": user["profile_picture"], "is_verified": user["is_verified"]} for user in search_username][:5]}
 
 @loginSignUp_route.route('/verify/<username>' , methods=['GET', 'POST'])
 def verify(username):
@@ -221,13 +220,13 @@ def verify(username):
         HTML: Rendered HTML page
     """
 
-    if "username" in session or username is None:
+    if "user_id" in session or username is None:
         return redirect('/')
     
     error = None
     username = str(username).lower()
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(username)}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE username = '{str(username)}'")
     
     # User does not exist
     if user == []:
@@ -251,8 +250,8 @@ def verify(username):
             
             # Check if the code is correct, if so, verify the user and log them in
             if create_entered_code == verification_code:
-                sql.writeSQL(f"UPDATE gruttechat_users SET is_email_verified = {True} WHERE username = '{str(username)}'")
-                session['username'] = username
+                sql.writeSQL(f"UPDATE users SET is_email_verified = {True} WHERE username = '{str(username)}'")
+                session['user_id'] = user[0]["id"]
                 session.permanent = True
                 return redirect(f'/')
             

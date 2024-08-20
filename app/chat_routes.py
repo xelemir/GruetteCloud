@@ -21,12 +21,12 @@ def get_messages():
         str: The messages list as JSON
     """
     
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    username = str(request.headers.get("username")).lower()
-    recipient = str(request.headers.get("recipient")).lower()
+    user_id = int(request.headers.get("userid"))
+    recipient_id = int(request.headers.get("recipientid"))
 
     messageIDs_old_string = request.headers.get("messageIDs")    
     messageIDs_old = messageIDs_old_string.split(',')
@@ -35,14 +35,14 @@ def get_messages():
     messages_list = []
     messageIDs_new = []
     
-    if username != session["username"]:
-        return redirect("/")
+    if user_id != session["user_id"]:        
+        return abort(401)
     
     # Fetch all messages from the database
-    get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE ((username_send = '{username}' AND username_receive = '{recipient}') OR (username_send = '{recipient}' AND username_receive = '{username}')) ORDER BY created_at DESC")
+    get_messages = sql.readSQL(f"SELECT * FROM chats WHERE ((author_id = '{user_id}' AND recipient_id = '{recipient_id}') OR (author_id = '{recipient_id}' AND recipient_id = '{user_id}')) ORDER BY created_at DESC")
     
     # If unread messages are found, mark them as read
-    sql.writeSQL(f"UPDATE gruttechat_messages SET is_read = {True} WHERE username_send = '{recipient}' AND username_receive = '{username}' AND is_read = {False}")
+    sql.writeSQL(f"UPDATE chats SET is_read = {True} WHERE author_id = '{recipient_id}' AND recipient_id = '{user_id}' AND is_read = {False}")
     
     for message in get_messages:
         messageIDs_new.append(f"{message['id']}:{int(message['is_read'])}")
@@ -53,10 +53,10 @@ def get_messages():
         except:
             decrypted_message = "Decryption Error!"
 
-        if message["username_send"] == username:
+        if message["author_id"] == int(user_id):
             messages_list.append({"sender": "You", "content": decrypted_message, "is_read": message["is_read"], "id": message["id"]})
         else:
-            messages_list.append({"sender": recipient, "content": decrypted_message, "is_read": message["is_read"], "id": message["id"]})
+            messages_list.append({"sender": recipient_id, "content": decrypted_message, "is_read": message["is_read"], "id": message["id"]})
             
     if set(messageIDs_old) != set(messageIDs_new):
         return jsonify(messages=messages_list, messageIDs=messageIDs_new)
@@ -71,18 +71,18 @@ def get_message_detailed():
         str: The message as JSON
     """
     
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     message_id = str(request.args.get("messageID"))
     
-    get_message = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE id = '{message_id}'")
+    get_message = sql.readSQL(f"SELECT users.username, chats.author_id, chats.recipient_id, chats.message_content, chats.is_read, chats.id, chats.created_at FROM chats JOIN users ON chats.author_id = users.id WHERE chats.id = '{message_id}'")
     
     if get_message == []:
         return redirect("/")
     
-    if get_message[0]["username_send"] != session["username"] and get_message[0]["username_receive"] != session["username"]:
+    if get_message[0]["author_id"] != session["user_id"] and get_message[0]["recipient_id"] != session["user_id"]:
         return redirect("/")
     
     # Decrypt the message
@@ -91,7 +91,7 @@ def get_message_detailed():
     except:
         decrypted_message = "Decryption Error!"
     
-    message = {"author": get_message[0]["username_send"], "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
+    message = {"author": get_message[0]["username"], "content": decrypted_message, "is_read": get_message[0]["is_read"], "id": get_message[0]["id"], "timestamp": get_message[0]["created_at"]}
     
     return jsonify(message)
 
@@ -106,57 +106,57 @@ def delete_message(message_id):
         str: Redirect to home page
     """
     
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     message_id = str(message_id)
     
-    get_message = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE id = '{message_id}'")
+    get_message = sql.readSQL(f"SELECT * FROM chats WHERE id = '{message_id}'")
     
     if get_message == []:
         return redirect("/")
     
-    if get_message[0]["username_send"] != session["username"]:
+    if get_message[0]["author_id"] != session["user_id"]:
         return redirect("/")
     
-    sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE id = '{message_id}'")
+    sql.writeSQL(f"DELETE FROM chats WHERE id = '{message_id}'")
     
-    return redirect(f"/chat/{get_message[0]['username_receive']}")
+    return redirect(f"/chat/{get_message[0]['recipient_id']}")
 
-@chat_route.route("/chat/<recipient>", methods=["GET", "POST"])
-def chat_with(recipient):
+@chat_route.route("/chat/<recipient_id>", methods=["GET", "POST"])
+def chat_with(recipient_id):
     """ Route to chat with a user
 
     Args:
-        recipient (str): the username of the recipient
+        recipient (str): the user ID of the recipient
 
     Returns:
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
-    recipient = str(recipient).lower()
+    recipient = recipient_id
 
     sql = SQLHelper.SQLHelper()
-    username = str(session["username"])
+    user_id = str(session["user_id"])
     messages_list = []
 
     # Check if the recipient exists
-    search_recipient = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(recipient)}'")
+    search_recipient = sql.readSQL(f"SELECT * FROM users WHERE id = '{recipient}'")
     if search_recipient == []:
         return redirect("/chat")
     
     # Get the user from the database
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT is_verified, profile_picture FROM users WHERE id = '{user_id}'")
     if user == []:
         return redirect("/chat")
     
-    blocked = sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{recipient}' OR username = '{recipient}' AND username_blocked = '{session['username']}'")
+    blocked = sql.readSQL(f"SELECT * FROM blocked_users WHERE user_id = '{session['user_id']}' AND blocked_user_id = '{recipient}' OR user_id = '{recipient}' AND blocked_user_id = '{session['user_id']}'")
     if blocked != []:
-        if blocked[0]["username"] == session["username"]:
+        if blocked[0]["user_id"] == session["user_id"]:
             blocked = "other"
         else:
             blocked = "self"
@@ -178,7 +178,7 @@ def chat_with(recipient):
             file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
             
             encypted_message = str(eh.encrypt_message(f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"))
-            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{username}', '{str(recipient)}', '{encypted_message}' , {False})")
+            sql.writeSQL(f"INSERT INTO chats (author_id, recipient_id, message_content, is_read) VALUES ('{user_id}', '{recipient}', '{encypted_message}' , {False})")
             return redirect(f'/chat/{recipient}')
             
         # Check if the message is empty or too long
@@ -190,11 +190,11 @@ def chat_with(recipient):
         # If the message is valid, encrypt it and send it to the database 
         else:
             encypted_message = str(eh.encrypt_message(request.form['message']))
-            sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content, is_read) VALUES ('{username}', '{str(recipient)}', '{encypted_message}', {False})")
+            sql.writeSQL(f"INSERT INTO chats (author_id, recipient_id, message_content, is_read) VALUES ('{user_id}', '{recipient}', '{encypted_message}', {False})")
             return redirect(f'/chat/{recipient}')
 
     # Get is used to load the chat
-    get_messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}' ORDER BY created_at DESC")
+    get_messages = sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{user_id}' AND recipient_id = '{recipient}' OR author_id = '{recipient}' AND recipient_id = '{user_id}' ORDER BY created_at DESC")
 
     for message in get_messages:
         # Decrypt the message
@@ -204,13 +204,13 @@ def chat_with(recipient):
             decrypted_message = "Decryption Error!"
 
         # Check if the message was sent by the user or the recipient and add it to the list
-        if message["username_send"] == username:
+        if message["author_id"] == user_id:
             messages_list.append(["You", decrypted_message])
         else:
             messages_list.append([recipient, decrypted_message])
             
     # Render the template
-    return render_template('chat.html', username=username, recipient=recipient, messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session))
+    return render_template('chat.html', user_id=user_id, recipient=search_recipient[0]["username"], messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session), recipient_id=recipient)
 
 @chat_route.route("/ai/<action>", methods=["POST", "GET"])
 def ai_chat(action):
@@ -220,7 +220,7 @@ def ai_chat(action):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         
         # TODO Currently not in use, MyAI can be used by anyone
         #return redirect("/")
@@ -257,9 +257,9 @@ def ai_chat(action):
                 chat_history.append({"role": "user", "content": message})
     
 
-            if "username" in session:
+            if "user_id" in session:
                 # Retrieve user's selected AI personality and premium status
-                user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM gruttechat_users WHERE username = '{session['username']}'")
+                user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")
             else:
                 ai_personality = session.get("ai_personality", "Default")
                 user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest", "ai_model": "gpt3"}]
@@ -292,9 +292,9 @@ def ai_chat(action):
 
             return jsonify({"chat_history": chat_response})
 
-        if "username" in session:
+        if "user_id" in session:
             # Retrieve user's selected AI personality and premium status
-            user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+            user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
         else:
             if "ai_personality" in session:
 
@@ -311,92 +311,92 @@ def ai_chat(action):
         abort(404)
     
     
-@chat_route.route('/chat/delete/<recipient>')
-def delete_chat(recipient): 
+@chat_route.route('/chat/delete/<recipient_id>')
+def delete_chat(recipient_id): 
     """ Delete chat route
 
     Args:
-        recipient (str): The chat to delete
+        recipient_id (str): The user ID of the chat to delete
 
     Returns:
         str: Redirect to home page
     """    
-    if 'username' not in session:
-        return redirect(f'/')
+    if 'user_id' not in session:
+        return redirect('/')
 
-    username = str(session['username'])
+    user_id = session['user_id']
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' AND username_receive = '{recipient}' OR username_send = '{recipient}' AND username_receive = '{username}'")
+    sql.writeSQL(f"DELETE FROM chats WHERE author_id = '{user_id}' AND recipient_id = '{recipient_id}' OR author_id = '{recipient_id}' AND recipient_id = '{user_id}'")
     return redirect(f'/chat')
 
 
-@chat_route.route("/profile/<username>")
-def profile(username):
+@chat_route.route("/profile/<user_id>")
+def profile(user_id):
     """ Route to view a user's profile
 
     Args:
-        username (str): The username of the user
+        user_id (str): The user ID of the user to view
 
     Returns:
         HTML: Rendered HTML page
     """
     
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     
-    is_blocked = sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{username}' OR username = '{username}' AND username_blocked = '{session['username']}'")
+    is_blocked = sql.readSQL(f"SELECT * FROM blocked_users WHERE user_id = '{session['user_id']}' AND blocked_user_id = '{user_id}' OR user_id = '{user_id}' AND blocked_user_id = '{session['user_id']}'")
     if is_blocked != []:
-        return redirect(f"/chat/{username}")
+        return redirect(f"/chat/{user_id}")
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{user_id}'")
     if user == []:
-        return redirect(f'/chat')
+        return redirect('/chat')
     
     edit = False
-    if username == str(session["username"]):
+    if user_id == session["user_id"]:
         edit = True
 
     joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
-    return render_template("profile.html", menu=th.user(session), username=username, verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit)
+    return render_template("profile.html", menu=th.user(session), verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit)
 
-@chat_route.route("/block/<username>")
-def block(username):
+@chat_route.route("/block/<user_id>")
+def block(user_id):
     """ Route to block a user
 
     Args:
-        username (str): The username of the user to block
+        user_id (str): The user ID of the user to block
 
     Returns:
         str: Redirect to home page
     """
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
-    if (username == session["username"]):
+    if (user_id == session["user_id"]):
         return redirect("/chat")
 
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"INSERT INTO gruttechat_blocked_users (username, username_blocked) VALUES ('{session['username']}', '{username}')")
-    return redirect(f"/chat/{username}")
+    sql.writeSQL(f"INSERT INTO blocked_users (user_id, blocked_user_id) VALUES ('{session['user_id']}', '{user_id}')")
+    return redirect(f"/chat/{user_id}")
 
-@chat_route.route("/unblock/<username>")
-def unblock(username):
+@chat_route.route("/unblock/<user_id>")
+def unblock(user_id):
     """ Route to unblock a user
 
     Args:
-        username (str): The username of the user to unblock
+        user_id (str): The user ID of the user to unblock
 
     Returns:
         str: Redirect to home page
     """
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
-    if (username == session["username"]):
+    if (user_id == session["user_id"]):
         return redirect("/chat")
     
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"DELETE FROM gruttechat_blocked_users WHERE username = '{session['username']}' AND username_blocked = '{username}'")
-    return redirect(f"/chat/{username}")
+    sql.writeSQL(f"DELETE FROM blocked_users WHERE user_id = '{session['user_id']}' AND blocked_user_id = '{user_id}'")
+    return redirect(f"/chat/{user_id}")

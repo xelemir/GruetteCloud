@@ -57,7 +57,7 @@ def premium():
     Returns:
         str: Rendered template
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     # Get user from database
@@ -86,7 +86,7 @@ def payment():
     Returns:
         str: Rendered template
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
 
     # Get user from database
@@ -126,7 +126,7 @@ def success():
     Returns:
         str: Rendered template
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     # Get user from database
@@ -168,7 +168,7 @@ def cancel():
     Returns:
         str: Rendered template
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
 
     # Payment cancelled error
