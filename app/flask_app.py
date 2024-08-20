@@ -33,7 +33,9 @@ eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
 
 
-
+@app.before_request
+def maintenanceMode():
+    return render_template('errors/maintenance.html'), 503
 
 @app.route("/")
 def index():
@@ -62,7 +64,7 @@ def index():
     
 @app.errorhandler(404)
 def error404(error):
-    return render_template("404.html", menu=th.user(session))
+    return render_template("errors/404.html", menu=th.user(session))
 
 def errorToTicket(error, username=None):
     sql = SQLHelper.SQLHelper()
@@ -73,11 +75,11 @@ def errorToTicket(error, username=None):
 
 @app.route("/404")
 def error404page():
-    return render_template("404.html", menu=th.user(session))
+    return render_template("errors/404.html", menu=th.user(session))
 
 @app.errorhandler(401)
 def error401(error):
-    return render_template("401.html", menu=th.user(session))
+    return render_template("errors/401.html", menu=th.user(session))
 
 @app.errorhandler(500)
 def error500(error):
@@ -88,15 +90,19 @@ def error500(error):
         username = None
 
     Thread(target=errorToTicket, args=(f"{str(error)} Route: {str(request.path)}", username)).start()
-    return render_template("500.html", menu=th.user(session))
+    return render_template("errors/500.html", menu=th.user(session))
 
 @app.route("/500")
 def error500page():
-    return render_template("500.html", menu=th.user(session))
+    return render_template("errors/500.html", menu=th.user(session))
 
 @app.route("/401")
 def error401page():
-    return render_template("401.html", menu=th.user(session))
+    return render_template("errors/401.html", menu=th.user(session))
+
+@app.route("/maintenance")
+def maintenance():
+    return render_template("errors/maintenance.html", menu=th.user(session))
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat(error=None):
