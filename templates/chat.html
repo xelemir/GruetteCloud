@@ -59,7 +59,6 @@
                         messageIDs: messageIDs // Send the message IDs with each request
                     },
                     success: function(response) {
-                        console.log(response);
                         if (response.messages.length > 0) {
                             messageIDs = String(response.messageIDs); // Update the message IDs
                             

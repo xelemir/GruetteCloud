@@ -62,7 +62,7 @@ def premium():
     
     # Get user from database
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
 
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
@@ -91,7 +91,7 @@ def payment():
 
     # Get user from database
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
     
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
@@ -106,9 +106,6 @@ def payment():
         
         # Else, create payment and redirect user to PayPal
         else:
-            # Gift PLUS as apparently I am not allowed to make money with this!?! idc tho
-            #sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
-            #return render_template("settings.html", menu=th.user(session), error="You now have GrütteCloud PLUS!", selected_personality=user[0]["ai_personality"], has_premium=True)
             
             paypal_response = pay_with_PayPal(amount=2.99, description="GrütteCloud PLUS")
             
@@ -131,7 +128,7 @@ def success():
     
     # Get user from database
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
    
     # If empty, something went wrong, most likely sql connection issue
     if user == []:
@@ -150,7 +147,7 @@ def success():
         
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
-            sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{str(session['username'])}'")
+            sql.writeSQL(f"UPDATE users SET has_premium = {True} WHERE id = '{str(session['user_id'])}'")
             return redirect(url_for("Settings.settings", error="payment_success"))
         
         # Else if payment failed, return error
@@ -169,7 +166,7 @@ def cancel():
         str: Rendered template
     """    
     if "user_id" not in session:
-        return redirect(f"/")
+        return redirect("/")
 
     # Payment cancelled error
     return redirect(url_for("Settings.settings", error="payment_cancelled"))

@@ -28,20 +28,20 @@ def drive():
     if "user_id" not in session:
         return redirect(f'/')
 
-    username = str(session['username'])
+    user_id = session['user_id']
 
     sql = SQLHelper.SQLHelper()
 
-    username_database = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user_id_database = sql.readSQL(f"SELECT * FROM users WHERE id = '{user_id}'")
 
-    if username_database == []:
+    if user_id_database == []:
         # Security check: Username is invalid and should be deleted. This may happen if the user was deleted from the database.
         return redirect(f'/logout')
 
-    files = get_files(username)
+    files = get_files(user_id)
     file_list = files["file_list"]
         
-    return render_template("drive.html", menu=th.user(session), username=username, files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, has_premium=bool(username_database[0]["has_premium"]), verified=bool(username_database[0]["is_verified"]), is_admin=bool(username_database[0]["is_admin"]))
+    return render_template("drive.html", menu=th.user(session), files=file_list, size_formatted=files["size_formatted"], size_percentage=files["size_percentage"], status=None, has_premium=bool(user_id_database[0]["has_premium"]), verified=bool(user_id_database[0]["is_verified"]), is_admin=bool(user_id_database[0]["is_admin"]))
 
 
 def get_formatted_file_size(size):
@@ -86,11 +86,11 @@ def get_total_file_size(directory):
     return total_size
 
 
-def get_files(username, folder_dir=None):
+def get_files(user_id, folder_dir=None):
     """ Get all files of a user
 
     Args:
-        username (str): Username of the user
+        user_id (int): User ID of the user
 
     Returns:
         dict: Dictionary containing the file list, the formatted size and the size percentage
@@ -98,13 +98,13 @@ def get_files(username, folder_dir=None):
 
     sql = SQLHelper.SQLHelper()
     
-    drive_dir = os.path.join(gruettedrive_path, username)
+    drive_dir = os.path.join(gruettedrive_path, str(user_id).lower())
     if not os.path.exists(drive_dir):
         os.makedirs(drive_dir)
     
     if folder_dir != None:
         sub_dir = folder_dir.split("/")
-        sub_dir.insert(0, username)
+        sub_dir.insert(0, str(user_id).lower())
         sub_dir.insert(0, gruettedrive_path)
         drive_dir = os.path.join(*sub_dir)
 
@@ -147,7 +147,7 @@ def move_file():
 
     sql = SQLHelper.SQLHelper()
     
-    username = str(session["username"]).lower()
+    user_id = str(session["user_id"]).lower()
     file_path = request.args.get("file")
     new_path = request.args.get("folder")
     
@@ -158,8 +158,8 @@ def move_file():
     if new_path == "None":
         new_path = ""
         
-    if os.path.exists(os.path.join(gruettedrive_path, username, file_path)) and os.path.exists(os.path.join(gruettedrive_path, username, new_path)):
-        shutil.move(os.path.join(gruettedrive_path, username, file_path), os.path.join(gruettedrive_path, username, new_path))
+    if os.path.exists(os.path.join(gruettedrive_path, user_id, file_path)) and os.path.exists(os.path.join(gruettedrive_path, user_id, new_path)):
+        shutil.move(os.path.join(gruettedrive_path, user_id, file_path), os.path.join(gruettedrive_path, user_id, new_path))
         
         old_folder = file_path.split("/")[:-1]
         if old_folder == []:
@@ -175,39 +175,39 @@ def open_file(file_path):
     if "user_id" not in session:
         return redirect("/")
     
-    if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
+    if os.path.exists(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
         back_track = file_path.split("/")[:-1]
         back_track = "/".join(back_track)
         if back_track == "":
             back_track = None
         # Check if file is folder
-        if os.path.isdir(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
-            files_in_folder = get_files(str(session["username"]).lower(), file_path)["file_list"]
+        if os.path.isdir(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
+            files_in_folder = get_files(str(session["user_id"]).lower(), file_path)["file_list"]
             
-            if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path, ".#folderconfig.json")):
-                f = open(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path, ".#folderconfig.json"), "r")
+            if os.path.exists(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path, ".#folderconfig.json")):
+                f = open(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path, ".#folderconfig.json"), "r")
                 data = json.load(f)
                 color = data["color"]
                 f.close()
             else:
                 color = "blue"
                 
-            return render_template("folder.html", menu=th.user(session), username=str(session["username"]).lower(), folder=file_path, files=files_in_folder, back=back_track, color=color)
+            return render_template("folder.html", menu=th.user(session), folder=file_path, files=files_in_folder, back=back_track, color=color)
         
         else:
             sql = SQLHelper.SQLHelper()
-            filesize = get_formatted_file_size(os.path.getsize(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)))
-            created_at = datetime.datetime.fromtimestamp(os.path.getctime(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path))).strftime("%d.%m.%Y")
-            icon_path = ih.get_icon(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path))
+            filesize = get_formatted_file_size(os.path.getsize(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)))
+            created_at = datetime.datetime.fromtimestamp(os.path.getctime(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path))).strftime("%d.%m.%Y")
+            icon_path = ih.get_icon(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path))
             filename = file_path.split("/")[-1]
-            search_file = sql.readSQL(f"SELECT * FROM gruttedrive_files_shared WHERE file_path = '{file_path}' AND owner = '{str(session['username'])}'")
+            search_file = sql.readSQL(f"SELECT * FROM drive_links WHERE file_path = '{file_path}' AND user_id = '{str(session['user_id'])}'")
             if search_file != []:
                 is_shared = True
                 code = search_file[0]["short_code"]
             else:
                 is_shared = False
                 code = None
-            return render_template("file.html", menu=th.user(session), username=str(session["username"]).lower(), file_path=file_path, filename=filename, filesize=filesize, created_at=created_at, is_author=True, file_icon=icon_path, back=back_track, is_shared=is_shared, code=code)
+            return render_template("file.html", menu=th.user(session), file_path=file_path, filename=filename, filesize=filesize, created_at=created_at, is_author=True, file_icon=icon_path, back=back_track, is_shared=is_shared, code=code)
 
     
     return redirect("/drive")
@@ -231,17 +231,17 @@ def download(file_path):
     if "user_id" not in session:
         return redirect("/")
     
-    if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
-        if os.path.isdir(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
+    if os.path.exists(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
+        if os.path.isdir(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
             # zip folder
-            shutil.make_archive(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path), 'zip', os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path))
-            return send_file(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path + ".zip"), as_attachment=True)
+            shutil.make_archive(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path), 'zip', os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path))
+            return send_file(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path + ".zip"), as_attachment=True)
             
         action = request.args.get("action")
         if action == "download":
-            return send_file(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path), as_attachment=True)
+            return send_file(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path), as_attachment=True)
         else:
-            return send_file(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path), as_attachment=False)
+            return send_file(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path), as_attachment=False)
     else:
         return redirect("/drive")
      
@@ -256,11 +256,9 @@ def upload():
     if "user_id" not in session:
         return redirect(f"/")
     
-    username = str(session['username'])
-
     if request.method == 'POST':
         sql = SQLHelper.SQLHelper()
-        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+        user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
 
         if user == []:
             # Security check
@@ -268,14 +266,14 @@ def upload():
 
         file = request.files['file']
         if file:
-            username = str(session['username'])
-            drive_dir = os.path.join(gruettedrive_path, username)
+            user_id = str(session['user_id'])
+            drive_dir = os.path.join(gruettedrive_path, user_id)
             if not os.path.exists(drive_dir):
                 os.makedirs(drive_dir)
                 
             # Free users can only upload three files
             if not bool(user[0]["has_premium"]):
-                files = sql.readSQL(f"SELECT * FROM gruttedrive_links WHERE owner = '{username}'")
+                files = sql.readSQL(f"SELECT * FROM drive_links WHERE user_id = '{user_id}'")
                 if len(files) >= 3:
                     abort(403)
                     
@@ -301,11 +299,11 @@ def delete(file_path):
     if "user_id" not in session:
         return redirect(f"/")
         
-    if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
+    if os.path.exists(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
         try:
-            os.remove(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path))
+            os.remove(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path))
         except:
-            shutil.rmtree(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path))
+            shutil.rmtree(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path))
         
         parent_folder = f"/file/{'/'.join(file_path.split('/')[:-1])}"
         if parent_folder == "/file/":
@@ -331,18 +329,18 @@ def share(file_path):
     
     sql = SQLHelper.SQLHelper()
     
-    if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
+    if os.path.exists(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
         # make sure its not a folder
-        if os.path.isdir(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
+        if os.path.isdir(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
             return redirect("/drive")
         
         not_new_code = True
         while not_new_code:
             code = ''.join(random.choice(string.ascii_letters) for _ in range(5))
-            if sql.readSQL(f"SELECT * FROM gruttedrive_links WHERE link_id ='{code}'") == []:
+            if sql.readSQL(f"SELECT * FROM drive_links WHERE short_code ='{code}'") == []:
                 not_new_code = False
                 
-        sql.writeSQL(f"INSERT INTO gruttedrive_files_shared (file_path, owner, short_code, name) VALUES ('{file_path}', '{str(session['username'])}', '{code}', '{file_path.split('/')[-1]}')")
+        sql.writeSQL(f"INSERT INTO drive_links (file_path, user_id, short_code, name) VALUES ('{file_path}', '{session['user_id']}', '{code}', '{file_path.split('/')[-1]}')")
         return redirect(f"/file/{file_path}")
     else:
         return redirect("/drive")
@@ -363,8 +361,8 @@ def stopsharing(file_path):
         return redirect(f"/drive")
     
     sql = SQLHelper.SQLHelper()
-    if os.path.exists(os.path.join(gruettedrive_path, str(session["username"]).lower(), file_path)):
-        sql.writeSQL(f"DELETE FROM gruttedrive_files_shared WHERE file_path = '{file_path}'")
+    if os.path.exists(os.path.join(gruettedrive_path, str(session["user_id"]).lower(), file_path)):
+        sql.writeSQL(f"DELETE FROM drive_links WHERE file_path = '{file_path}'")
         return redirect(f"/file/{file_path}")
     else:
         return redirect("/drive")
@@ -381,23 +379,23 @@ def shared(short_code):
     """
 
     sql = SQLHelper.SQLHelper()
-    file = sql.readSQL(f"SELECT * FROM gruttedrive_files_shared WHERE short_code = '{short_code}'")
+    file = sql.readSQL(f"SELECT * FROM drive_links WHERE short_code = '{short_code}'")
     
     if file == []:
         return redirect("/drive")
     else:
         if request.args.get("action") == "download":
-            return send_file(os.path.join(gruettedrive_path, str(file[0]["owner"]).lower(), file[0]['file_path']), as_attachment=True)
+            return send_file(os.path.join(gruettedrive_path, str(file[0]["user_id"]).lower(), file[0]['file_path']), as_attachment=True)
         elif request.args.get("action") == "preview":
-            return send_file(os.path.join(gruettedrive_path, str(file[0]["owner"]).lower(), file[0]['file_path']), as_attachment=False)
+            return send_file(os.path.join(gruettedrive_path, str(file[0]["user_id"]).lower(), file[0]['file_path']), as_attachment=False)
         
-        elif "username" not in session or str(session["username"]).lower() != str(file[0]["owner"]).lower():
-            filesize = get_formatted_file_size(os.path.getsize(os.path.join(gruettedrive_path, str(file[0]["owner"]).lower(), file[0]['file_path'])))
-            created_at = datetime.datetime.fromtimestamp(os.path.getctime(os.path.join(gruettedrive_path, str(file[0]["owner"]).lower(), file[0]['file_path']))).strftime("%d.%m.%Y")
-            icon_path = ih.get_icon(os.path.join(gruettedrive_path, str(file[0]["owner"]).lower(), file[0]['file_path']))
+        elif "user_id" not in session or str(session["user_id"]).lower() != str(file[0]["user_id"]).lower():
+            filesize = get_formatted_file_size(os.path.getsize(os.path.join(gruettedrive_path, str(file[0]["user_id"]).lower(), file[0]['file_path'])))
+            created_at = datetime.datetime.fromtimestamp(os.path.getctime(os.path.join(gruettedrive_path, str(file[0]["user_id"]).lower(), file[0]['file_path']))).strftime("%d.%m.%Y")
+            icon_path = ih.get_icon(os.path.join(gruettedrive_path, str(file[0]["user_id"]).lower(), file[0]['file_path']))
             filename = file[0]['name']
             code = file[0]["short_code"]
-            return render_template("file.html", menu=th.user(session), username=file[0]["owner"], file_path=file[0]['file_path'], filename=filename, filesize=filesize, created_at=created_at, is_author=False, file_icon=icon_path, is_shared=True, code=code)
+            return render_template("file.html", menu=th.user(session), file_path=file[0]['file_path'], filename=filename, filesize=filesize, created_at=created_at, is_author=False, file_icon=icon_path, is_shared=True, code=code)
 
         else:
             return redirect(f"/file/{file[0]['file_path']}")
@@ -415,14 +413,14 @@ def create_folder(folder_path):
     
     if folder_path == "home":
         try:
-            os.mkdir(os.path.join(gruettedrive_path, str(session["username"]), folder_name))
-            os.chdir(os.path.join(gruettedrive_path, str(session["username"]), folder_name))
+            os.mkdir(os.path.join(gruettedrive_path, str(session["user_id"]), folder_name))
+            os.chdir(os.path.join(gruettedrive_path, str(session["user_id"]), folder_name))
         except:
             return redirect("/drive")
     else:
         try:
-            os.mkdir(os.path.join(gruettedrive_path, str(session["username"]), folder_path, folder_name))
-            os.chdir(os.path.join(gruettedrive_path, str(session["username"]), folder_path, folder_name))
+            os.mkdir(os.path.join(gruettedrive_path, str(session["user_id"]), folder_path, folder_name))
+            os.chdir(os.path.join(gruettedrive_path, str(session["user_id"]), folder_path, folder_name))
         except:
             return redirect("/drive")
 

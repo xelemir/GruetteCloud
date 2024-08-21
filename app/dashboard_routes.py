@@ -54,7 +54,7 @@ def dashboard():
 
     sql = SQLHelper.SQLHelper()
     
-    is_admin = sql.readSQL(f"SELECT is_admin FROM gruttechat_users WHERE username = '{session['username']}'")[0]["is_admin"]
+    is_admin = sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"]
     if not bool(is_admin):
         return redirect('/')
     
@@ -72,17 +72,13 @@ def dashboard():
     elif status == "no_otp":
         status = "No auth secret found. Make sure you have set up 2FA enabled."
     
-    platform_message = sql.readSQL(f"SELECT subject, color FROM gruttechat_platform_messages")
+    platform_message = sql.readSQL(f"SELECT subject, color FROM platform_notifications")
     if platform_message == []:
         platform_message = None
     else:
         platform_message = {"subject": platform_message[0]["subject"], "color": platform_message[0]["color"]}
-    
-    used_space_unformatted = sum(os.path.getsize(os.path.join(gruettedrive_path, item)) for item in os.listdir(gruettedrive_path))
-    used_space = get_formatted_file_size(used_space_unformatted)
-    used_space_percent = (used_space_unformatted / (8 * 1073741824)) * 100  # 8 GB
 
-    all_users = sql.readSQL(f"SELECT username, email, has_premium FROM gruttechat_users")
+    all_users = sql.readSQL(f"SELECT id, username, email, has_premium FROM users")
         
     log_lines = []
     filtered_log_lines = []
@@ -94,7 +90,7 @@ def dashboard():
 
         for entry in log_lines:
             if str(local_ip) not in entry:
-                if "python-requests" in entry or "79.240.134.153" in entry or "/static/" in entry:
+                if "python-requests" in entry or "79.222.232.209" in entry or "/static/" in entry:
                     continue
                 date_regex = re.search(r'\[([^\]]+)\]', entry)
                 ip_regex = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry)
@@ -107,7 +103,7 @@ def dashboard():
     except:
         pass
     
-    support_tickets = sql.readSQL(f"SELECT * FROM gruttecloud_tickets ORDER BY created_at ASC")
+    support_tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at ASC")
     my_tickets = []
     opened_tickets = []
     in_progress_tickets = []
@@ -115,7 +111,7 @@ def dashboard():
     
     
     for ticket in support_tickets:
-        if ticket["assigned_to"] == session["username"]:
+        if ticket["assigned_to"] == session["user_id"]:
             my_tickets.append(ticket)
         elif ticket["status"] == "opened":
             opened_tickets.append(ticket)
@@ -126,14 +122,14 @@ def dashboard():
             
     support_tickets = my_tickets + opened_tickets + in_progress_tickets + closed_tickets
     
-    return render_template('dashboard.html', menu=th.user(session), username=session['username'], used_space=used_space, used_space_percent=used_space_percent, platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, tickets=support_tickets, errors=error_log_lines)
+    return render_template('dashboard.html', user_id=session['user_id'], menu=th.user(session), platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, tickets=support_tickets, errors=error_log_lines)
 
 @dashboard_route.route('/dashboard/iplookup', methods=['POST'])
 def iplookup():
     if "user_id" not in session:
         return redirect('/')
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
         return redirect('/')
     
@@ -154,10 +150,14 @@ def create_status_message():
         HTML: Redirect to the dashboard page
     """
 
-    if "username" not in session or session["username"] not in admin_users:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
+    
+    is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+    if not is_admin:
+        return redirect("/")
 
     subject = str(request.form["subject"])
     content = str(request.form["content"])
@@ -165,8 +165,8 @@ def create_status_message():
     link = str(request.form["link"])
     decorator = str(request.form["decorator"])
     
-    sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
-    sql.writeSQL(f"INSERT INTO gruttechat_platform_messages (subject, content, color, link, decorator) VALUES ('{subject}', '{content}', '{color}', '{link}', '{decorator}')")
+    sql.writeSQL(f"DELETE FROM platform_notifications")
+    sql.writeSQL(f"INSERT INTO platform_notifications (subject, content, color, link, decorator) VALUES ('{subject}', '{content}', '{color}', '{link}', '{decorator}')")
 
     return redirect("/dashboard")
 
@@ -178,73 +178,88 @@ def delete_status_message():
         HTML: Redirect to the dashboard page
     """
 
-    if "username" not in session or session['username'] not in admin_users:
+    if "user_id" not in session:
         return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
+    
+    is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+    if not is_admin:
+        return redirect("/")
 
-    sql.writeSQL(f"DELETE FROM gruttechat_platform_messages")
+    sql.writeSQL(f"DELETE FROM platform_notifications")
 
     return redirect("/dashboard")
 
-@dashboard_route.route('/dashboard/deleteuser/<username>')
-def delete_user(username):
+@dashboard_route.route('/dashboard/deleteuser/<user_id>')
+def delete_user(user_id):
     """ Route to delete a user from the database
 
     Args:
-        username (str): The username of the user to delete
+        user_id (str): The user ID of the user to delete
 
     Returns:
         HTML: Redirect to the dashboard page
     """
 
-    if 'username' not in session or session['username'] not in admin_users:
+    if 'user_id' not in session:
         return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
+    
+    is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+    if not is_admin:
+        return redirect("/")
 
-    sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{username}'")
-    sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{username}' OR username_receive = '{username}'")
+    sql.writeSQL(f"DELETE FROM users WHERE id = '{user_id}'")
 
     return redirect(f'/dashboard')
 
-@dashboard_route.route('/dashboard/giftplus/<username>')
-def gift_plus(username):
+@dashboard_route.route('/dashboard/giftplus/<user_id>')
+def gift_plus(user_id):
     """ Route to gift a user GrütteCloud PLUS instantly and for free
 
     Args:
-        username (str): The username of the user to gift GrütteCloud PLUS to
+        user_id (str): The user ID of the user to gift GrütteCloud PLUS to
 
     Returns:
        HTML: Redirect to the dashboard page
     """
 
-    if 'username' not in session or session['username'] not in admin_users:
+    if 'user_id' not in session:
         return redirect(f'/')
 
     sql = SQLHelper.SQLHelper()
+    
+    is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+    if not is_admin:
+        return redirect("/")
 
-    sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {True} WHERE username = '{username}'")
+    sql.writeSQL(f"UPDATE users SET has_premium = {True} WHERE id = '{user_id}'")
 
     return redirect(f'/dashboard')
 
-@dashboard_route.route('/dashboard/revokeplus/<username>')
-def revoke_plus(username):
+@dashboard_route.route('/dashboard/revokeplus/<user_id>')
+def revoke_plus(user_id):
     """ Route to revoke a user's GrütteCloud PLUS subscription, even if they paid for it
 
     Args:
-        username (str): The username of the user to revoke GrütteCloud PLUS from
+        user_id (str): The user ID of the user to revoke GrütteCloud PLUS from
 
     Returns:
         HTML: Redirect to the dashboard page
     """
 
-    if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'/')
+    if 'user_id' not in session:
+        return redirect('/')
 
     sql = SQLHelper.SQLHelper()
+    
+    is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+    if not is_admin:
+        return redirect("/")
 
-    sql.writeSQL(f"UPDATE gruttechat_users SET has_premium = {False} WHERE username = '{username}'")
+    sql.writeSQL(f"UPDATE users SET has_premium = {False} WHERE id = '{user_id}'")
 
     return redirect(f'/dashboard')
 
@@ -256,11 +271,15 @@ def send_mail():
         HTML: Redirect to the dashboard page
     """
     
-    if 'username' not in session or session['username'] not in admin_users:
-        return redirect(f'/')
+    if 'user_id' not in session:
+        return redirect('/')
+    
+    sql = SQLHelper.SQLHelper()
+    is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+    if not is_admin:
+        return redirect("/")
     
     email = MailHelper.MailHelper()
-    sql = SQLHelper.SQLHelper()
     
     recipient_username = str(request.form["username"])
     subject = str(request.form["mail_subject"])
@@ -271,7 +290,7 @@ def send_mail():
         send_to_all = True
     
     # Get auth secret from db as users here must be admins
-    user = sql.readSQL(f"SELECT 2fa_secret_key FROM gruttechat_users WHERE username = '{session['username']}'")
+    user = sql.readSQL(f"SELECT 2fa_secret_key FROM users WHERE id = '{session['user_id']}'")
     if user == []:
         return redirect(f'/dashboard')
     try:
@@ -288,7 +307,7 @@ def send_mail():
     
     if not send_to_all:
     
-        recipient = sql.readSQL(f"SELECT email, verification_code FROM gruttechat_users WHERE username = '{recipient_username}'")
+        recipient = sql.readSQL(f"SELECT email, verification_code FROM users WHERE username = '{recipient_username}'")
     
         if recipient == []:
             return redirect(f'/dashboard?error=invalid_recipient')
@@ -297,7 +316,7 @@ def send_mail():
         return redirect(f'/dashboard?error=sent')
     
     else:
-        for user in sql.readSQL(f"SELECT username, email, receive_emails, verification_code FROM gruttechat_users"):
+        for user in sql.readSQL(f"SELECT username, email, receive_emails, verification_code FROM users"):
             if bool(user["receive_emails"]):
                 email.send_email(user["email"], user["username"], subject, content, token=user["verification_code"])
                 
@@ -310,12 +329,12 @@ def assign_ticket():
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
         return redirect("/")
     
     ticket_id = request.json["ticket_id"]
-    sql.writeSQL(f"UPDATE gruttecloud_tickets SET assigned_to = '{session['username']}', status = 'in_progress' WHERE id = '{ticket_id}'")
+    sql.writeSQL(f"UPDATE tickets SET assigned_to = '{session['user_id']}', status = 'in_progress' WHERE id = '{ticket_id}'")
     
     return {"success": True}
 
@@ -326,12 +345,12 @@ def reopen_ticket():
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
         return redirect("/")
     
     ticket_id = request.json["ticket_id"]
-    sql.writeSQL(f"UPDATE gruttecloud_tickets SET status = 'opened', assigned_to = NULL WHERE id = '{ticket_id}'")
+    sql.writeSQL(f"UPDATE tickets SET status = 'opened', assigned_to = NULL WHERE id = '{ticket_id}'")
     
     return {"success": True}
 
@@ -342,12 +361,12 @@ def close_ticket():
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
         return redirect("/")
     
     ticket_id = request.json["ticket_id"]
-    sql.writeSQL(f"UPDATE gruttecloud_tickets SET status = 'closed', assigned_to = '{session['username']}' WHERE id = '{ticket_id}'")
+    sql.writeSQL(f"UPDATE tickets SET status = 'closed', assigned_to = '{session['user_id']}' WHERE id = '{ticket_id}'")
     
     return {"success": True}
 
@@ -358,10 +377,10 @@ def sql_query():
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
         # Log the attempt
-        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (name, username, email, message, status) VALUES ('SQL Injection Attempt', '{session['username']}', '{user['email']}', 'User tried to access the SQL query page.', 'opened')")
+        sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('SQL Injection Attempt', '{session['user_id']}', '{user['email']}', 'User tried to access the SQL query page.', 'opened')")
         return redirect("/")
     
     if request.args.get("operation") == "" or request.args.get("query") == "":
@@ -384,7 +403,7 @@ def get_status_message():
     
     sql = SQLHelper.SQLHelper()
     
-    platform_message = sql.readSQL(f"SELECT * FROM gruttechat_platform_messages")
+    platform_message = sql.readSQL(f"SELECT * FROM platform_notifications")
     if platform_message == []:
         platform_message = jsonify({"created_at": None, "content": None, "subject": None, "color": None, "link": None, "decorator": None})
     else:

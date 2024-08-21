@@ -359,7 +359,7 @@ def profile(user_id):
         edit = True
 
     joined_on = user[0]["created_at"].strftime("%d.%m.%Y")
-    return render_template("profile.html", menu=th.user(session), verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit)
+    return render_template("profile.html", menu=th.user(session), profile_user_id=user[0]["id"], verified=user[0]["is_verified"], pfp=f'{user[0]["profile_picture"]}.png', premium=user[0]["has_premium"], joined_on=joined_on, admin=user[0]["is_admin"], edit=edit, username=user[0]["username"])
 
 @chat_route.route("/block/<user_id>")
 def block(user_id):

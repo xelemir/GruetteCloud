@@ -13,4 +13,4 @@ class TemplateHelper:
         if user == []:
             return
         
-        return {"username": user[0]["username"], "pfp": user[0]["profile_picture"], "admin": bool(user[0]["is_admin"]), "premium": bool(user[0]["has_premium"]), "advanced_darkmode": bool(user[0]["advanced_darkmode"])}
+        return {"user_id": session["user_id"], "username": user[0]["username"], "pfp": user[0]["profile_picture"], "admin": bool(user[0]["is_admin"]), "premium": bool(user[0]["has_premium"]), "advanced_darkmode": bool(user[0]["advanced_darkmode"])}
