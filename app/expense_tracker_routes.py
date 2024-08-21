@@ -182,7 +182,7 @@ def delete_receipt(receipt_id):
     receipt = sql.readSQL(f"SELECT * FROM finance_receipts WHERE receipt_id = '{receipt_id}'")
     if receipt == []:
         abort(404)
-    elif receipt[0]["username"] != session["username"]:
+    elif receipt[0]["user_id"] != session["user_id"]:
         abort(403)
     
     sql.writeSQL(f"DELETE FROM finance_receipts WHERE receipt_id = '{receipt_id}'")

@@ -75,7 +75,7 @@ def unsubscribe():
         if user[0]["receive_emails"] == False:
             return redirect("/")
 
-        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{username}'")
+        sql.writeSQL(f"UPDATE users SET receive_emails = {False} WHERE username = '{username}'")
         t2 = Thread(target=MailHelper.MailHelper().send_support_mail, args=("Unsubscribed", username, email, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}")).start()
         t3 = Thread(target=create_ticket, args=(username, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}", email)).start()
         
@@ -371,7 +371,7 @@ def nelly_media(filename):
 def send_date_emails():
     if "user_id" not in session:
         return abort(401)
-    elif str(session["user_id"]) != "0" and str(session["username"]) != "nele":
+    elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1":
         return abort(401)
     else:
         try:
