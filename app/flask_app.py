@@ -35,7 +35,7 @@ th = TemplateHelper.TemplateHelper()
 
 @app.before_request
 def maintenanceMode():
-    if "username" in session: return render_template('errors/maintenance.html'), 503
+    if "username" not in session: return render_template('errors/maintenance.html'), 503
     sql = SQLHelper.SQLHelper()
     is_admin = bool(sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]["is_admin"])
     if is_admin: return
