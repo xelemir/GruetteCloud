@@ -90,6 +90,4 @@ This file contains the update logs for the current database update on GrütteClo
 | `tool_routes.py` | 2024-08-21 | Implemented, however some API-endpoints for the mobile app are still missing. |
 | `dashboard_routes.py` | - | - |
 | `premium_routes.py` | 2024-08-21 | - |
-| Folder: pythonHelper | - | - |
-
-## Notes
+| Folder: pythonHelper | 2024-08-21 | - |
