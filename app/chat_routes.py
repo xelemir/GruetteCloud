@@ -220,7 +220,7 @@ def ai_chat(action):
         HTML: Rendered HTML page
     """
     
-    return redirect("/")
+    return redirect("/chat")
 
     if "username" not in session:
         
