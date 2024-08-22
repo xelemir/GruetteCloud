@@ -4,9 +4,9 @@ from flask import abort, render_template, request, redirect, session, jsonify, B
 import logging
 from werkzeug.utils import secure_filename
 
-from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper, OpenAIWrapper 
+from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper#, OpenAIWrapper 
 from config import templates_path, gruettedrive_path
-
+import OpenAIWrapper
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
 
