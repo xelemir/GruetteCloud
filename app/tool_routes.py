@@ -349,7 +349,7 @@ def maps():
 def nelly():
     if "user_id" not in session:
         return redirect("/")
-    elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1": # Only Jan and Nele can access this page
+    elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41": # Only Jan and Nele can access this page
         return abort(401)
     else:
         return render_template("nelly.html", menu=th.user(session))
@@ -358,7 +358,7 @@ def nelly():
 def nelly_media(filename):
         if "user_id" not in session:
             return abort(401)
-        elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1":
+        elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
             return abort(401)
         else:
             try:
@@ -371,7 +371,7 @@ def nelly_media(filename):
 def send_date_emails():
     if "user_id" not in session:
         return abort(401)
-    elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1":
+    elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
         return abort(401)
     else:
         try:
