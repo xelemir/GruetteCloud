@@ -287,7 +287,11 @@
         // 1 in 10 chance to show the AI chat indicator
         if (Math.floor(Math.random() * 10) == 0) {
             document.getElementById('ai-chat-indicator').style.display = 'flex';
-        }        
+        }
+
+        {% if not active_chats %}
+            document.getElementById('ai-chat-indicator').style.display = 'flex';
+        {% endif %}
 
     } else {
         document.getElementById('ai-chat-indicator').style.display = 'flex';
