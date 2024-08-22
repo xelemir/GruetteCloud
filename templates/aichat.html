@@ -187,10 +187,10 @@
 
         <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">Language Model:</p>
         <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; background-color: var(--background-tile-color); border-radius: 30px; border: 2px solid var(--box-shadow-color); width: 100%;">
-            <a href="/changeAiModel/gpt-4o-mini" style="{% if ai_model == "gpt3" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
+            <a href="/changeAiModel/gpt-4o-mini" style="{% if ai_model == "gpt-4o-mini" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
                 GPT-4o mini
             </a>
-            <a href="/changeAiModel/gpt-4o" style="{% if ai_model == "gpt4o" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
+            <a href="/changeAiModel/gpt-4o" style="{% if ai_model == "gpt-4o" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
                 GPT-4o
             </a>
             {% if not has_premium %}

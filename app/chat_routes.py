@@ -262,7 +262,7 @@ def ai_chat(action):
                 user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM gruttechat_users WHERE username = '{session['username']}'")
             else:
                 ai_personality = session.get("ai_personality", "Default")
-                user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest", "ai_model": "gpt3"}]
+                user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest", "ai_model": "gpt-4o-mini"}]
 
             if not user:
                 return redirect("/logout")
@@ -302,7 +302,7 @@ def ai_chat(action):
             else:
                 selected_ai_personality = "Default"
             
-            user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt3"}
+            user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt-4o-mini"}
                 
         # Reverse chat history to show most recent messages first and render template
         return render_template("aichat.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])

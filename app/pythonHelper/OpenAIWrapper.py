@@ -24,7 +24,7 @@ class OpenAIWrapper:
             username (str): The username of the user
             ai_personality (str, optional): The personality of the AI. Defaults to "Default".
             has_premium (str, optional): Whether the user has premium. Defaults to False.
-            ai_model (str, optional): The AI model to use. Defaults to "gpt3".
+            ai_model (str, optional): The AI model to use. Defaults to "gpt-4o-mini".
             url (str, optional): The URL of an image to analyze. Defaults to None. Only available for the GPT-4o model.
 
         Returns:
