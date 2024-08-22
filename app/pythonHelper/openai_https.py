@@ -60,8 +60,6 @@ class OpenAIWrapper:
         # Inject the AI personality into the conversation log
         conversation_log.insert(0, {"role": "system", "content": ai_personality})
         
-        print(conversation_log)
-        
         # Prepare the payload for the API request
         payload = {
             "model": ai_model,
