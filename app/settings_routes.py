@@ -353,10 +353,10 @@ def change_ai_model(model):
     elif user[0]["has_premium"] == False:
         return redirect(f"/premium")
     
-    if model == "gpt3":
-        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt3' WHERE username = '{str(session['username'])}'")
-    elif model == "gpt4o":
-        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt4o' WHERE username = '{str(session['username'])}'")
+    if model == "gpt-4o-mini":
+        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt-4o-mini' WHERE username = '{str(session['username'])}'")
+    elif model == "gpt-4o":
+        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt-4o' WHERE username = '{str(session['username'])}'")
     else:
         return redirect(f"/settings")
     

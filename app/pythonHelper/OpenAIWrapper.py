@@ -14,9 +14,10 @@ class OpenAIWrapper:
         """ Constructor for the OpenAIWrapper class
         """
 
-    def get_openai_response(self, conversation_log, username, ai_personality="Default", has_premium=False, ai_model="gpt3", url=None):
+    def get_openai_response(self, conversation_log, username, ai_personality="Default", has_premium=False, ai_model="gpt-4o-mini", url=None):
         """ Get a response from the openAI API based on the conversation log
-        GrütteCloud PLUS users use the GPT-4o model, while free users use the GPT-3.5-turbo model
+        GrütteCloud PLUS users are allowed to use the GPT-4o model, which can analyze images,
+        while normal users can only use the GPT-4o-mini model.
 
         Args:
             conversation_log (str): The conversation log
@@ -57,17 +58,13 @@ class OpenAIWrapper:
         
         # Allow the AI to use more tokens if the user has premium
         if has_premium == False:
-            max_tokens = 100
-            model = "gpt-3.5-turbo"
+            max_tokens = 1000
+            ai_model = "gpt-4o-mini"
             
         else:
-            max_tokens = 1000
-            if ai_model != "gpt3" and ai_model != "gpt4o":
-                raise ValueError("Invalid AI model, please use 'gpt3' for GPT-3.5 Turbo or 'gpt4o' for GPT-4o")
-            elif ai_model == "gpt3":
-                model = "gpt-3.5-turbo"
-            elif ai_model == "gpt4o":
-                model = "gpt-4o"
+            max_tokens = 10000
+            if ai_model != "gpt-4o-mini" and ai_model != "gpt-4o":
+                raise ValueError("Invalid AI model, please use 'gpt-4o' or 'gpt-4o-mini'")
         
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
@@ -93,7 +90,7 @@ class OpenAIWrapper:
         
         try:
             # Get the response from the GPT-4 API and append it to the conversation log
-            response = client.chat.completions.create(model=model, messages=conversation_log, max_tokens=max_tokens)
+            response = client.chat.completions.create(model=ai_model, messages=conversation_log, max_tokens=max_tokens)
             if url is not None:
                 conversation_log[-1]["content"] = copy_old_message
             conversation_log.append({"role": "assistant", "content": response.choices[0].message.content})
