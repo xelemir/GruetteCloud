@@ -219,8 +219,6 @@ def ai_chat(action):
         HTML: Rendered HTML page
     """
     
-    return redirect("/chat")
-
     if "username" not in session:
         
         # TODO Currently not in use, MyAI can be used by anyone
@@ -235,7 +233,8 @@ def ai_chat(action):
 
     elif action == "chat":
         # Get AI instance and SQL helper
-        ai = OpenAIWrapper.OpenAIWrapper()
+        from pythonHelper import openai_https
+        ai = openai_https.OpenAIWrapper()
         sql = SQLHelper.SQLHelper()
 
         # Get or initialize the chat history from the session
@@ -274,7 +273,7 @@ def ai_chat(action):
 
             try:
                 # Get AI response and append it to chat history
-                if file and ai_model in ["gpt4o"]:
+                if file and ai_model in ["gpt-4o"]:
                     chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
                     os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
                 else:

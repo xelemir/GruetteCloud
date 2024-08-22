@@ -56,7 +56,7 @@ class OpenAIWrapper:
         
         # Allow the AI to use more tokens if the user has premium
         if has_premium == False:
-            max_tokens = 1000
+            max_tokens = 10000
             ai_model = "gpt-4o-mini"
             
         else:
@@ -70,7 +70,7 @@ class OpenAIWrapper:
         
         copy_old_message = None
         # Check if user has an image to analyze
-        if url is not None and has_premium and ai_model == "gpt4o":
+        if url is not None and has_premium and ai_model == "gpt-4o":
             copy_old_message = conversation_log[-1]["content"]
             conversation_log[-1]["content"] = [
                 {"type": "text", "text": str(conversation_log[-1]["content"])},
