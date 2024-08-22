@@ -40,6 +40,10 @@ class OpenAIWrapper:
             max_tokens = 10000
             if ai_model not in ["gpt-4o-mini", "gpt-4o"]:
                 raise ValueError("Invalid AI model, please use 'gpt-4o' or 'gpt-4o-mini'")
+            elif ai_model == "gpt-4o":
+                ai_model = "chatgpt-4o-latest"
+            else:
+                ai_model = "chatgpt-4o-mini"
         
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
@@ -47,7 +51,7 @@ class OpenAIWrapper:
         
         copy_old_message = None
         # Check if user has an image to analyze
-        if url is not None and has_premium and ai_model == "gpt-4o":
+        if url is not None and has_premium:
             copy_old_message = conversation_log[-1]["content"]
             conversation_log[-1]["content"] = [
                 {"type": "text", "text": str(conversation_log[-1]["content"])},
@@ -120,7 +124,7 @@ if __name__ == "__main__":
     username = "Jan"
     ai_personality = "UwuGirl"
     has_premium = True
-    ai_model = "gpt-4o"
+    ai_model = "gpt-4o-mini"
     url = "https://www.gruettecloud.com/static/gruettechat.png"
 
     response = client.get_openai_response(conversation_log, username, ai_personality, has_premium, ai_model, url)
