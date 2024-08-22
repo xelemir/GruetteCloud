@@ -149,7 +149,7 @@ def signup():
             verification_code = str(random.randint(100000, 999999))
 
             # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name, finance_budget) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}', 350)")
+            sql.writeSQL(f"INSERT INTO users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name, finance_budget, ai_model) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}', 350, 'gpt-4o-mini')")
             
             # Send the email
             mail.send_verification_email(email, username, verification_code)

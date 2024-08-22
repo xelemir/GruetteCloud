@@ -21,6 +21,6 @@ CREATE TABLE
     `last_name` varchar(200) DEFAULT '0',
     `advanced_darkmode` tinyint(1) DEFAULT 0,
     `finance_budget` int(11) DEFAULT 0,
-    `ai_model` varchar(255) DEFAULT 'gpt3',
+    `ai_model` varchar(255) DEFAULT 'gpt-4o-mini',
     PRIMARY KEY (`id`)
   ) ENGINE = InnoDB AUTO_INCREMENT = 43 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci
