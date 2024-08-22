@@ -301,16 +301,16 @@
                                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
                                 <div class="navigation-button search-item" style="gap: 20px;">
                                     {% if not user["has_premium"] %}
-                                        <a href="/dashboard/giftplus/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
+                                        <a href="/dashboard/giftplus/{{ user["id"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Gift GrütteCloud PLUS">
                                     {% else %}
-                                        <a href="/dashboard/revokeplus/{{ user["username"] }}" style="color: var(--purple); display: flex; align-items: center; justify-content: center;" title="Revoke GrütteCloud PLUS">
+                                        <a href="/dashboard/revokeplus/{{ user["id"] }}" style="color: var(--purple); display: flex; align-items: center; justify-content: center;" title="Revoke GrütteCloud PLUS">
                                     {% endif %}
                                         <span class="material-symbols-outlined">workspace_premium</span>
                                     </a>
-                                    <a href="/chat/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="GrütteChat">
+                                    <a href="/chat/{{ user["id"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="GrütteChat">
                                         <span class="material-symbols-outlined">forum</span>
                                     </a>
-                                    <a href="/dashboard/deleteuser/{{ user["username"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Delete User">
+                                    <a href="/dashboard/deleteuser/{{ user["id"] }}" style="color: var(--text-color); display: flex; align-items: center; justify-content: center;" title="Delete User">
                                         <span class="material-symbols-outlined">person_remove</span>
                                     </a>
                                     <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">{{ user["username"] }}</p>
@@ -416,7 +416,7 @@
                                                 <div class="ticket-action-button" style="background-color: var(--red);" onclick="reopenTicket('{{ ticket["id"] }}')">
                                                     <span class="material-symbols-outlined">history</span><p>Reopen</p>
                                                 </div>
-                                            {% elif ticket["status"] == "in_progress" and ticket["assigned_to"] == menu["username"] %}
+                                            {% elif ticket["status"] == "in_progress" and ticket["assigned_to"]|string == menu["user_id"]|string %}
                                                 {% if ticket["username"] %}
                                                     <a href="/dashboard/giftplus/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
                                                         <span class="material-symbols-outlined" style="color: var(--white-color);">workspace_premium</span><p>Gift G+</p>

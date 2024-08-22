@@ -92,7 +92,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="/chat{% if not edit %}/{{ username }}{% endif %}" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/chat{% if not edit %}/{{ profile_user_id }}{% endif %}" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
         </div>
         <div class="centered-content">
@@ -145,7 +145,7 @@
         <a href="/settings" title="More Settings" style="color: var(--text-color);">More Settings</a>
         {% else %}
         <br>
-        <a href="/block/{{ username }}" title="Block {{ username }}" style="color: var(--text-color);">Block {{ username }}</a>
+        <a href="/block/{{ profile_user_id }}" title="Block {{ username }}" style="color: var(--text-color);">Block {{ username }}</a>
         {% endif %}
         
         <!--<div style="justify-content: center; flex-direction: row; display: flex; width: 100%; text-align: center; align-content: center;">

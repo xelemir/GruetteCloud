@@ -27,7 +27,7 @@ def settings(error=None):
     Returns:
         str: The template to render
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     error = request.args.get("error")
@@ -74,13 +74,10 @@ def settings(error=None):
     elif error == "username_changed":
         error = "Your username has been changed."
     
-    username = str(session["username"])
-    verified = False
-    if username in admin_users:
-        verified = True
+    user_id = str(session["user_id"])
     
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
 
     if user == []:
         error="Something went wrong on our end :/"
@@ -97,16 +94,16 @@ def settings(error=None):
         totp = pyotp.TOTP(user[0]["2fa_secret_key"])
 
         totp_now = totp.now()
-        provisioning_uri = totp.provisioning_uri(f" {username}", issuer_name="GrütteCloud")
+        provisioning_uri = totp.provisioning_uri(f"{user[0]['username']}", issuer_name="GrütteCloud")
         
-        return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now, admin=user[0]["is_admin"], default_app=user[0]["default_app"], phone=user[0]["phone"], first_name=user[0]["first_name"], last_name=user[0]["last_name"])
+        return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=bool(user[0]["is_admin"]), error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=True, qr_code_data=provisioning_uri, otp=totp_now, admin=user[0]["is_admin"], default_app=user[0]["default_app"], phone=user[0]["phone"], first_name=user[0]["first_name"], last_name=user[0]["last_name"])
  
     else:
         is_two_fa_enabled = False
         qr_image_base64 = None
         totp_now = None
         
-    return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=verified, username=username, error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now, admin=user[0]["is_admin"], default_app=user[0]["default_app"], phone=user[0]["phone"], first_name=user[0]["first_name"], last_name=user[0]["last_name"])
+    return render_template("settings.html", created_at=created_at, email=user[0]["email"], menu=th.user(session), verified=bool(user[0]["is_admin"]), error=error, selected_personality=selected_personality, has_premium=has_premium, is_two_fa_enabled=is_two_fa_enabled, qr_code=qr_image_base64, otp=totp_now, admin=user[0]["is_admin"], default_app=user[0]["default_app"], phone=user[0]["phone"], first_name=user[0]["first_name"], last_name=user[0]["last_name"])
 
 @settings_route.route("/change_pfp", methods=["POST"])
 def change_pfp():
@@ -118,14 +115,14 @@ def change_pfp():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
-    username = str(session["username"])
+    user_id = str(session["user_id"])
 
     if "profilePicture" not in request.files:
-        return redirect(f"/profile/{username}")
+        return redirect(f"/profile/{user_id}")
     
     file = request.files["profilePicture"]
     filename = file.filename
@@ -136,7 +133,7 @@ def change_pfp():
         potential_id = str(random.randint(10000000, 99999999))
         if not os.path.exists(os.path.join(pfp_path, f"{potential_id}.png")):
             filename = potential_id
-            sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{filename}' WHERE username = '{str(session['username'])}'")
+            sql.writeSQL(f"UPDATE user SET profile_picture = '{filename}' WHERE id = '{str(session['user_id'])}'")
             id_not_found = True
             
     file.save(os.path.join(pfp_path, f"{filename}.{file_extension}"))
@@ -185,12 +182,12 @@ def remove_pfp():
         _type_: _description_
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     
-    sql.writeSQL(f"UPDATE gruttechat_users SET profile_picture = '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}' WHERE username = '{str(session['username'])}'")
+    sql.writeSQL(f"UPDATE users SET profile_picture = '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}' WHERE id = '{str(session['user_id'])}'")
     return redirect(f"/settings")
 
 @settings_route.route("/change_password", methods=["POST"])
@@ -201,13 +198,13 @@ def change_password():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
 
     sql = SQLHelper.SQLHelper()
     new_password = str(request.form["new_password"])
     old_password = str(request.form["old_password"])
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
     
     if user == []:
         return redirect(url_for("Settings.settings", error="error"))
@@ -219,7 +216,7 @@ def change_password():
     if not check_password_hash(user[0]["password"], old_password):
         return redirect(url_for("Settings.settings", error="not_matching_password"))
     else:
-        sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(new_password)}' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET password = '{generate_password_hash(new_password)}' WHERE id = '{str(session['user_id'])}'")
 
     return redirect(url_for("Settings.settings", error="password_changed"))
 
@@ -231,13 +228,13 @@ def change_email():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     new_email = str(request.form["new_email"])
     password_form = str(request.form["password"])
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
     
     if user == []:
         return redirect(url_for("Settings.settings", error="error"))
@@ -248,7 +245,7 @@ def change_email():
         if not check_password_hash(user[0]["password"], password_form):
             return redirect(url_for("Settings.settings", error="not_matching_password"))
         else:
-            sql.writeSQL(f"UPDATE gruttechat_users SET email = '{str(new_email)}' WHERE username = '{str(session['username'])}'")
+            sql.writeSQL(f"UPDATE users SET email = '{str(new_email)}' WHERE id = '{str(session['user_id'])}'")
 
         return redirect(url_for("Settings.settings", error="email_changed"))
     
@@ -262,13 +259,13 @@ def change_username():
     
     return redirect("/settings") # Disabled for now
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     new_username = str(request.form["new_username"]).lower()
     password_form = str(request.form["password"])
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['username'])}'")
     all_users = sql.readSQL(f"SELECT username FROM gruttechat_users")
     all_users_list = [x["username"].lower() for x in all_users]
 
@@ -288,7 +285,6 @@ def change_username():
             sql.writeSQL(f"UPDATE gruttechat_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_messages SET username_send = '{str(new_username)}' WHERE username_send = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_messages SET username_receive = '{str(new_username)}' WHERE username_receive = '{str(session['username'])}'")
-            sql.writeSQL(f"UPDATE gruttestorage_links SET owner = '{str(new_username)}' WHERE owner = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_blocked_users SET username = '{str(new_username)}' WHERE username = '{str(session['username'])}'")
             sql.writeSQL(f"UPDATE gruttechat_blocked_users SET username_blocked = '{str(new_username)}' WHERE username_blocked = '{str(session['username'])}'")
             session["username"] = new_username
@@ -296,12 +292,12 @@ def change_username():
     
 @settings_route.route("/change_default_app/<app>", methods=["POST", "GET"])
 def change_default_app(app):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     
-    sql.writeSQL(f"UPDATE gruttechat_users SET default_app = '{str(app)}' WHERE username = '{str(session['username'])}'")
+    sql.writeSQL(f"UPDATE users SET default_app = '{str(app)}' WHERE id = '{str(session['user_id'])}'")
     
     return redirect("/settings")
 
@@ -317,16 +313,16 @@ def change_ai_personality(ai_personality):
         HTML: Rendered HTML page
     """
 
-    """if "username" not in session:
+    """if "user_id" not in session:
         return redirect(f"/")"""
 
-    if "username" not in session:
+    if "user_id" not in session:
         session["ai_personality"] = ai_personality
         session.pop("chat_history", None)
         return redirect("/ai/chat")
     
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"UPDATE gruttechat_users SET ai_personality = '{str(ai_personality)}' WHERE username = '{str(session['username'])}'")
+    sql.writeSQL(f"UPDATE users SET ai_personality = '{str(ai_personality)}' WHERE id = '{str(session['user_id'])}'")
     session.pop("chat_history", None)
     return redirect("/ai/chat")
     
@@ -341,12 +337,12 @@ def change_ai_model(model):
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
     
     if user == []:
         return redirect("/logout")
@@ -354,37 +350,14 @@ def change_ai_model(model):
         return redirect(f"/premium")
     
     if model == "gpt-4o-mini":
-        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt-4o-mini' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET ai_model = 'gpt-4o-mini' WHERE id = '{str(session['user_id'])}'")
     elif model == "gpt-4o":
-        sql.writeSQL(f"UPDATE gruttechat_users SET ai_model = 'gpt-4o' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET ai_model = 'gpt-4o' WHERE id = '{str(session['user_id'])}'")
     else:
         return redirect(f"/settings")
     
     return redirect(f"/ai/chat")
-        
-@settings_route.route("/ai-preferences", methods=["GET"])
-def ai_preferences():
-    """ Route to change the user's MyAI preferences
-        TODO: This currently just renders Settings page with "back to MyAI button". must be solved differently in the future
-
-    Returns:
-        HTML: Rendered HTML page
-    """    
-    if "username" not in session:
-        return redirect(f"/")
-    
-    username = str(session["username"])
-    verified = False
-    if username in admin_users:
-        verified = True
-    sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{str(session['username'])}'")
-    
-    if user == []:
-        return redirect(url_for("Settings.settings", error="error"))
-    else:
-        return render_template("settings.html", menu=th.user(session), verified=verified, username=username, selected_personality=user[0]["ai_personality"], has_premium=bool(user[0]["has_premium"]), display_back_to_ai=True)
-        
+      
 @settings_route.route("/delete_account", methods=["GET", "POST"])
 def delete_account():
     """ Post route to delete the user's account
@@ -393,17 +366,17 @@ def delete_account():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     if request.method == "GET":
         return redirect(f"/settings")
     
     sql = SQLHelper.SQLHelper()
-    username_session = str(session["username"])
+    user_id = str(session["user_id"])
     username_form = str(request.form["username"])
     password_form = str(request.form["password"])
     email_form = str(request.form["email"])
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username_session}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{user_id}'")
         
     if user == []:
         return redirect(url_for("Settings.settings", error="error"))
@@ -418,10 +391,9 @@ def delete_account():
     elif email_db != email_form:
         return redirect(url_for("Settings.settings", error="not_matching_email"))
     else:
-        sql.writeSQL(f"DELETE FROM gruttechat_users WHERE username = '{str(username_session)}'")
-        sql.writeSQL(f"DELETE FROM gruttechat_messages WHERE username_send = '{str(username_session)}' OR username_receive = '{str(username_session)}'")
-        session.pop('username', None)
-        return redirect(f'/')
+        sql.writeSQL(f"DELETE FROM users WHERE id = '{str(user_id)}'")
+        session.pop('user_id', None)
+        return redirect('/')
 
 @settings_route.route("/2fa/enable")
 def enable_2fa():
@@ -431,29 +403,29 @@ def enable_2fa():
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM users WHERE id = '{str(session['user_id'])}'")
     if user == []:
-        return redirect(f"/")
+        return redirect("/")
     
     if user[0]["2fa_secret_key"] == '0' and bool(user[0]["is_2fa_enabled"]):
         # If 2fa is enabled but the secret key is 0, generate a new secret key
         two_fa_secret_key = str(pyotp.random_base32())
-        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE id = '{str(session['user_id'])}'")
         return redirect(f"/settings")
     
     elif bool(user[0]["is_2fa_enabled"]):
         return redirect(f"/settings")
     elif user[0]["2fa_secret_key"] != '0':
-        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True} WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET is_2fa_enabled = {True} WHERE id = '{str(session['user_id'])}'")
         return redirect(f"/settings")
     else:
         two_fa_secret_key = str(pyotp.random_base32())
-        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE id = '{str(session['user_id'])}'")
         return redirect(f"/settings")
 
 @settings_route.route("/2fa/disable")
@@ -464,12 +436,12 @@ def disable_2fa():
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
-    sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {False} WHERE username = '{str(session['username'])}'")
+    sql.writeSQL(f"UPDATE users SET is_2fa_enabled = {False} WHERE id = '{str(session['user_id'])}'")
     
     return redirect(f"/settings")
 
@@ -482,12 +454,12 @@ def refresh_2fa():
         HTML: Rendered HTML page
     """
 
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect(f"/")
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM gruttechat_users WHERE username = '{str(session['username'])}'")
+    user = sql.readSQL(f"SELECT is_2fa_enabled, 2fa_secret_key FROM users WHERE id = '{str(session['user_id'])}'")
     
     if user == []:
         return redirect(f"/")
@@ -495,7 +467,7 @@ def refresh_2fa():
         return redirect(f"/settings")
     else:
         two_fa_secret_key = str(pyotp.random_base32())
-        sql.writeSQL(f"UPDATE gruttechat_users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET is_2fa_enabled = {True}, 2fa_secret_key = '{two_fa_secret_key}' WHERE id = '{str(session['user_id'])}'")
         return redirect(f"/settings")
     
 @settings_route.route("/advanced_darkmode/<state>", methods=["GET", "POST"])
@@ -509,14 +481,14 @@ def advanced_darkmode(state):
     Returns:
         HTML: Rendered HTML page
     """    
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
     
     sql = SQLHelper.SQLHelper()
     
     if state == "enable":
-        sql.writeSQL(f"UPDATE gruttechat_users SET advanced_darkmode = {True} WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET advanced_darkmode = {True} WHERE id = '{str(session['user_id'])}'")
     else:
-        sql.writeSQL(f"UPDATE gruttechat_users SET advanced_darkmode = {False} WHERE username = '{str(session['username'])}'")
+        sql.writeSQL(f"UPDATE users SET advanced_darkmode = {False} WHERE id = '{str(session['user_id'])}'")
     
     return redirect("/settings")

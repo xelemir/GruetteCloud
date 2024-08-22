@@ -536,18 +536,6 @@ function requestLocation() {
 function useUserLocation(position) {
     inputSelected = "start";
     setCoordinates(position.coords.latitude, position.coords.longitude);
-    // log users position by sending it to the server
-    $.ajax({
-        url: "/log_user_location?lat=" + encodeURIComponent(position.coords.latitude) + "&lon=" + encodeURIComponent(position.coords.longitude) + "&useragent=" + encodeURIComponent(navigator.userAgent),
-        method: 'GET',
-        success: function(response) {
-            // do nothing
-        },
-        error: function(xhr, status, error) {
-            // do nothing
-        }
-    });
-
 }
 
 function toggleChangeTransportationMode() {

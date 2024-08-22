@@ -183,7 +183,7 @@
                 {% for chat in suggested %}
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
                     <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
-                        <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
+                        <a href="/chat/{{ chat['user_id'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                             <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
                                 <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                                 <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
@@ -198,7 +198,7 @@
             {% for chat in active_chats %}
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 25px; margin-right: 25px;">
                 <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
-                    <a href="/chat/{{ chat['username'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
+                    <a href="/chat/{{ chat['user_id'] }}" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                         <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
                             {% if not chat["blocked"] %}
                                 <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
@@ -210,7 +210,7 @@
                             {% endif %}
                             <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
                             {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                            <a href="/chat/delete/{{ chat['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
+                            <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                         </button>
                     </a>
                 </div>
@@ -400,6 +400,7 @@
                             for (let i = 0; i < data.users.length; i++) {
                                 const chat = data.users[i];
                                 const username = chat.username;
+                                const user_id = chat.user_id;
                                 const profile_picture = "https://www.gruettecloud.com/static/profile_pictures/" + chat.profile_picture + ".png";
                     
                                 // Create the HTML elements
@@ -416,7 +417,7 @@
                                 divElement.style.marginTop = "5px";
                     
                                 const aElement = document.createElement("a");
-                                aElement.href = "/chat/" + username;
+                                aElement.href = "/chat/" + user_id;
                                 aElement.style.color = "var(--text-color)";
                                 aElement.style.textDecoration = "none";
                                 aElement.style.display = "flex";

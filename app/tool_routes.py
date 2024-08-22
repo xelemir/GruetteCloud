@@ -28,13 +28,13 @@ def logout():
     Returns:
         str: Redirect to home page
     """    
-    session.pop("username", None)
+    session.pop("user_id", None)
     session.clear()
     return redirect("/")
 
 def create_ticket(username, message, email):
     sql = SQLHelper.SQLHelper()
-    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (name, username, email, message, status) VALUES ('{username}', '{username}', '{email}', '{message}', 'opened')")
+    sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{username}', '{username}', '{email}', '{message}', 'opened')")
         
 @tool_route.route("/unsubscribe", methods=["GET", "POST"])
 def unsubscribe():
@@ -51,7 +51,7 @@ def unsubscribe():
             if "email" not in request.form or request.form["email"] == "":
                 return redirect("/unsubscribe")
             email = str(request.form["email"])
-            sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE email = '{email}'")
+            sql.writeSQL(f"UPDATE users SET receive_emails = {False} WHERE email = '{email}'")
             t1 = Thread(target=create_ticket, args=("unknown", f"Someone unsubscribed from communication emails. Email: {email}", email)).start()
             return render_template("unsubscribe.html", menu=th.user(session), mode="unsubscribe_confirmed")
 
@@ -64,18 +64,18 @@ def unsubscribe():
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="unsubscribe")
     
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{username}'")
 
     if user == []:
         return redirect("/")
     elif user[0]["email"] != email or user[0]["verification_code"] != token:
         return redirect("/")
     else:
-        user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+        user = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
         if user[0]["receive_emails"] == False:
             return redirect("/")
 
-        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {False} WHERE username = '{username}'")
+        sql.writeSQL(f"UPDATE users SET receive_emails = {False} WHERE username = '{username}'")
         t2 = Thread(target=MailHelper.MailHelper().send_support_mail, args=("Unsubscribed", username, email, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}")).start()
         t3 = Thread(target=create_ticket, args=(username, f"{username} unsubscribed from communication emails. Reason: {request.form['reason']}", email)).start()
         
@@ -94,14 +94,14 @@ def resubscribe():
     token = request.args.get("token")
     
     sql = SQLHelper.SQLHelper()
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
     
     if user == []:
         return redirect("/")
     elif user[0]["email"] != email or user[0]["verification_code"] != token:
         return redirect("/")
     else:
-        sql.writeSQL(f"UPDATE gruttechat_users SET receive_emails = {True} WHERE username = '{username}'")
+        sql.writeSQL(f"UPDATE users SET receive_emails = {True} WHERE username = '{username}'")
         t1 = Thread(target=create_ticket, args=(username, f"{username} changed their mind and resubscribed to communication emails. Please manually gift them GrütteCloud PLUS", email)).start()
         return render_template("unsubscribe.html", menu=th.user(session), username=username, email=email, token=token, mode="resubscribe")
     
@@ -119,7 +119,7 @@ def reset_password():
             sql = SQLHelper.SQLHelper()
             token = str(request.args.get("token"))
             
-            token_db = sql.readSQL(f"SELECT * FROM reset_password WHERE token = '{token}'")
+            token_db = sql.readSQL(f"SELECT * FROM password_resets WHERE token = '{token}'")
             if token_db == []:
                 return redirect("/reset_password")
             
@@ -143,14 +143,14 @@ def reset_password():
             mail = MailHelper.MailHelper()
             sql = SQLHelper.SQLHelper()
             
-            user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}' AND email = '{email}'")
+            user = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}' AND email = '{email}'")
             if user == []:
                 return render_template("reset_password.html", menu=th.user(session), action="email_sent", email=email)
             
             else:
                 generate_token = secrets.token_hex(15)
                 
-                sql.writeSQL(f"INSERT INTO reset_password (username, token) VALUES ('{username}', '{generate_token}')")
+                sql.writeSQL(f"INSERT INTO password_resets (username, token) VALUES ('{username}', '{generate_token}')")
                 
                 text = f"""
                     You have requested to reset your password.<br>
@@ -176,7 +176,7 @@ def reset_password():
                 return redirect(f"/reset_password?token={token}")
             
             sql = SQLHelper.SQLHelper()
-            token_db = sql.readSQL(f"SELECT * FROM reset_password WHERE token = '{token}'")
+            token_db = sql.readSQL(f"SELECT * FROM password_resets WHERE token = '{token}'")
             if token_db == []:
                 return redirect("/reset_password")
             
@@ -192,8 +192,8 @@ def reset_password():
                 return redirect("/reset_password")
             
             username = token_db[0]["username"]
-            sql.writeSQL(f"UPDATE gruttechat_users SET password = '{generate_password_hash(password)}', is_2fa_enabled = {False} WHERE username = '{username}'")
-            sql.writeSQL(f"UPDATE reset_password SET is_used = {True} WHERE token = '{token}'")
+            sql.writeSQL(f"UPDATE users SET password = '{generate_password_hash(password)}', is_2fa_enabled = {False} WHERE username = '{username}'")
+            sql.writeSQL(f"UPDATE password_resets SET is_used = {True} WHERE token = '{token}'")
             
             return render_template("reset_password.html", menu=th.user(session), action="password_reset")
         
@@ -204,7 +204,7 @@ def help():
 @tool_route.route("/about", methods=["GET"])
 def about():
     sql = SQLHelper.SQLHelper()
-    pfp_jan = sql.readSQL("SELECT profile_picture FROM gruttechat_users WHERE username = 'jan'")[0]["profile_picture"]
+    pfp_jan = sql.readSQL("SELECT profile_picture FROM users WHERE username = 'jan'")[0]["profile_picture"]
     return render_template("about.html", menu=th.user(session), pfp_jan=pfp_jan)
 
 @tool_route.route("/discover", methods=["GET"])
@@ -248,7 +248,7 @@ def send_support():
     email = str(request.form["mail"])
     message = str(request.form["message"])
     
-    sql.writeSQL(f"INSERT INTO gruttecloud_tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
+    sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
     
     async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
     async_mail.start()
@@ -271,25 +271,6 @@ def search_place():
     for result in results:
         locations.append(result.raw)
     return jsonify(locations)
-
-@tool_route.route("/log_user_location", methods=["GET"])
-def log_user_location():
-    lat = request.args.get("lat")
-    lon = request.args.get("lon")
-    useragent = request.args.get("useragent")
-    
-    sql = SQLHelper.SQLHelper()
-
-    if "username" in session:
-        username = session["username"]
-        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (username, message, status) VALUES ('{username}', '{username} logged their location. Lat: {lat}, Lon: {lon}', 'opened')")
-    else:
-        username = None
-        sql.writeSQL(f"INSERT INTO gruttecloud_tickets (message, status) VALUES ('{username} logged their location. Lat: {lat}, Lon: {lon}', 'opened')")
-        
-    sql.writeSQL(f"INSERT INTO gruettecloud_user_locations (username, lat, lon, useragent) VALUES ('{username}', '{lat}', '{lon}', '{useragent}')")
-    
-    return jsonify({"success": True})
 
 @tool_route.route("/route", methods=["GET"])
 def mapsRoute():
@@ -366,18 +347,18 @@ def maps():
 
 @tool_route.route("/nelly", methods=["GET"])
 def nelly():
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/")
-    elif session["username"] != "jan" and session["username"] != "nele":
+    elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1": # Only Jan and Nele can access this page
         return abort(401)
     else:
         return render_template("nelly.html", menu=th.user(session))
     
 @tool_route.route("/nelly_media/<path:filename>", methods=["GET"])
 def nelly_media(filename):
-        if "username" not in session:
+        if "user_id" not in session:
             return abort(401)
-        elif session["username"] != "jan" and session["username"] != "nele":
+        elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1":
             return abort(401)
         else:
             try:
@@ -388,9 +369,9 @@ def nelly_media(filename):
     
 @tool_route.route("/send-date-emails", methods=["POST"])
 def send_date_emails():
-    if "username" not in session:
+    if "user_id" not in session:
         return abort(401)
-    elif session["username"] != "jan" and session["username"] != "nele":
+    elif str(session["user_id"]) != "0" and str(session["user_id"]) != "1":
         return abort(401)
     else:
         try:
@@ -443,7 +424,7 @@ def api_v1_login():
     sql = SQLHelper.SQLHelper()
     
     # Search for user in database
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{username}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
     
     # If user exists, check if password is correct
     if user != []:
@@ -476,6 +457,7 @@ def api_v1_login():
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
 
+# TODO: Method not working, must be adapted to new database structure
 @tool_route.route('/api/v1/get_chats', methods=['GET'])
 def api_v1_get_chats():
     if request.headers.get('Token-Authorization') is None:
@@ -490,10 +472,12 @@ def api_v1_get_chats():
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
+    return jsonify({'message': 'This endpoint is not implemented yet.'}), 501
+    
     sql = SQLHelper.SQLHelper()    
     
     # Fetch active chats from the database
-    active_chats_database = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{data['username']}' OR username_receive = '{data['username']}'")
+    active_chats_database = sql.readSQL(f"SELECT * FROM chats WHERE username_send = '{data['username']}' OR username_receive = '{data['username']}'")
     active_chats = []
                 
     # Add all active chats to a list
@@ -501,14 +485,14 @@ def api_v1_get_chats():
         if chat["username_send"].lower() == data["username"].lower():
             if chat["username_receive"].lower() not in [x["username"].lower() for x in active_chats]:
                 unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_receive']}' AND username_receive = '{data['username']}' AND is_read = '{False}'"))
-                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_receive']}'")
+                user_db = sql.readSQL(f"SELECT * FROM users WHERE id = '{chat['username_receive']}'")
                 blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_receive']}' AND username_blocked = '{data['username']}' OR username = '{data['username']}' AND username_blocked = '{chat['username_receive']}'"))
                 if user_db != []:
                     active_chats.append({"username": chat["username_receive"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
         else:
             if chat["username_send"].lower() not in [x["username"].lower() for x in active_chats]:
                 unread_messages = len(sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{chat['username_send']}' AND username_receive = '{data['username']}' AND is_read = '{False}'"))
-                user_db = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{chat['username_send']}'")
+                user_db = sql.readSQL(f"SELECT * FROM users WHERE id = '{chat['username_send']}'")
                 blocked = bool(sql.readSQL(f"SELECT * FROM gruttechat_blocked_users WHERE username = '{chat['username_send']}' AND username_blocked = '{data['username']}' OR username = '{data['username']}' AND username_blocked = '{chat['username_send']}'"))
                 if user_db != []:
                     active_chats.append({"username": chat["username_send"].lower(), "pfp": f"{user_db[0]['profile_picture']}.png", "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
@@ -530,14 +514,14 @@ def api_v1_get_logged_in_user():
     
     sql = SQLHelper.SQLHelper()
     
-    user = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{data['username']}'")
+    user = sql.readSQL(f"SELECT * FROM users WHERE username = '{data['username']}'")
     
     if user == []:
         return jsonify({'message': 'User not found'}), 404
     
     return jsonify({'username': user[0]['username'], 'email': user[0]['email'], 'is_verified': bool(user[0]['is_verified']), 'is_admin': bool(user[0]['is_admin']), "has_premium": bool(user[0]['has_premium']), 'profile_picture': user[0]['profile_picture']})
 
-
+# TODO: Method not working, must be adapted to new database structure
 @tool_route.route('/api/v1/get_chat', methods=['GET'])
 def api_v1_get_chat():
     if request.headers.get('Token-Authorization') is None:
@@ -554,10 +538,12 @@ def api_v1_get_chat():
     if request.headers.get('Username') is None:
         return jsonify({'message': 'No username provided'}), 400
     
+    return jsonify({'message': 'This endpoint is not implemented yet.'}), 501
+    
     sql = SQLHelper.SQLHelper()
     
     # Fetch messages from the database
-    messages = sql.readSQL(f"SELECT * FROM gruttechat_messages WHERE username_send = '{data['username']}' AND username_receive = '{request.headers.get('username')}' OR username_send = '{request.headers.get('username')}' AND username_receive = '{data['username']}' ORDER BY created_at")
+    messages = sql.readSQL(f"SELECT * FROM chats WHERE username_send = '{data['username']}' AND username_receive = '{request.headers.get('username')}' OR username_send = '{request.headers.get('username')}' AND username_receive = '{data['username']}' ORDER BY created_at")
     
     # Mark all messages as read
     sql.writeSQL(f"UPDATE gruttechat_messages SET is_read = {True} WHERE username_send = '{request.headers.get('username')}' AND username_receive = '{data['username']}'")
@@ -581,6 +567,7 @@ def api_v1_get_chat():
     
     return jsonify(new_messages)
 
+# TODO: Method not working, must be adapted to new database structure
 @tool_route.route('/api/v1/send_message', methods=['POST'])
 def api_v1_send_message():
     if request.headers.get('Token-Authorization') is None:
@@ -599,6 +586,8 @@ def api_v1_send_message():
     
     if request.headers.get('Message') is None:
         return jsonify({'message': 'No message provided'}), 400
+    
+    return jsonify({'message': 'This endpoint is not implemented yet.'}), 501
     
     sql = SQLHelper.SQLHelper()
     eh = EncryptionHelper.EncryptionHelper()
@@ -630,7 +619,7 @@ def api_v1_get_available_chats():
     sql = SQLHelper.SQLHelper()
     
     # Fetch all users from the database
-    users = sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username LIKE '%{request.headers.get('query')}%' LIMIT 10")
+    users = sql.readSQL(f"SELECT * FROM users WHERE id LIKE '%{request.headers.get('query')}%' LIMIT 10")
     
     available_chats = []
     
@@ -642,7 +631,7 @@ def api_v1_get_available_chats():
 
 
 
-
+# TODO: Method not working, must be adapted to new database structure
 @tool_route.route('/api/v1/get_expenses', methods=['GET'])
 def api_v1_get_expenses():
     if request.headers.get('Token-Authorization') is None:
@@ -656,10 +645,12 @@ def api_v1_get_expenses():
     except:
         return jsonify({'message': 'Invalid token'}), 401
     
+    return jsonify({'message': 'This endpoint is not implemented yet.'}), 501
+    
     sql = SQLHelper.SQLHelper()
     
     amount_spent = 0
-    monthly_budget = sql.readSQL(f"SELECT finance_budget FROM gruttechat_users WHERE username = '{str(data['username'])}'")[0]["finance_budget"]
+    monthly_budget = sql.readSQL(f"SELECT finance_budget FROM users WHERE id = '{str(data['username'])}'")[0]["finance_budget"]
     amount_remaining = monthly_budget
     receipts_current_month = sql.readSQL(f"SELECT * FROM gruettecloud_receipts WHERE username = '{str(data['username'])}' AND MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW()) ORDER BY date DESC")
     for receipt in receipts_current_month:
@@ -696,6 +687,7 @@ def api_v1_get_expenses():
                 
     return jsonify({"amount_spent": amount_spent, "amount_remaining": amount_remaining, "percentage_spent": percentage_spent, "receipts": receipts_date, "monthly_budget": monthly_budget})
 
+# TODO: Method not working, must be adapted to new database structure
 @tool_route.route('/api/v1/upload-receipt', methods=['POST'])
 def api_v1_upload_receipt():
     if request.headers.get('Token-Authorization') is None:
@@ -708,6 +700,8 @@ def api_v1_upload_receipt():
         data = jwt.decode(auth[1], secret_key, algorithms=["HS256"])
     except:
         return jsonify({'message': 'Invalid token'}), 401
+    
+    return jsonify({'message': 'This endpoint is not implemented yet.'}), 501
     
     if request.files['image'] is None:
         return jsonify({'message': 'No file provided'}), 400
@@ -747,6 +741,7 @@ def api_v1_upload_receipt():
     
     return jsonify({'message': 'Receipt uploaded', 'receipt_id': receipt_id}), 200
 
+# TODO: Method not working, must be adapted to new database structure
 @tool_route.route('/api/v1/add_transaction', methods=['POST'])
 def api_v1_add_transaction():
     if request.headers.get('Token-Authorization') is None:
@@ -773,6 +768,8 @@ def api_v1_add_transaction():
     
     if request.form.get('payment_method') is None:
         return jsonify({'message': 'No payment method provided'}), 400
+    
+    return jsonify({'message': 'This endpoint is not implemented yet.'}), 501
     
     total = float(request.form.get('total'))
     merchant_name = request.form.get('merchant_name')
