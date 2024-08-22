@@ -4,7 +4,7 @@ from flask import abort, render_template, request, redirect, session, jsonify, B
 import logging
 from werkzeug.utils import secure_filename
 
-from pythonHelper import EncryptionHelper, OpenAIWrapper, SQLHelper, TemplateHelper
+from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper#, OpenAIWrapper 
 from config import templates_path, gruettedrive_path
 
 
@@ -219,6 +219,8 @@ def ai_chat(action):
     Returns:
         HTML: Rendered HTML page
     """
+    
+    return redirect("/")
 
     if "username" not in session:
         
