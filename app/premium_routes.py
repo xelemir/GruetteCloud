@@ -157,19 +157,6 @@ def success():
     # Something went wrong
     except:
         return redirect(url_for("Settings.settings", error="error"))
-
-@premium_route.route('/premium-success', methods=['GET'])
-def premium_success():
-    """ Premium success route
-
-    Returns:
-        str: Rendered template
-    """    
-    if "user_id" not in session:
-        return redirect("/")
-
-    # Payment successful
-    return render_template("premium_success.html")
     
 @premium_route.route('/cancel')
 def cancel():
