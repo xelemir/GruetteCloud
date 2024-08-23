@@ -24,6 +24,38 @@
         .button-chat:hover {
             background-color: var(--secondary-color);
         }
+
+        .dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dreamy-text {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
     </style>
 </head>
 <body>
@@ -173,8 +205,10 @@
                             {% elif selected_personality == "Taco" %}Taco the otter
                             {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
                             {% elif selected_personality == "Anakin" %}Anakin Skywalker
-                            {% else %}MyAI{% endif %}</span>
-                        <a title="MyAI" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">smart_toy</span></a>
+                            {% else %}MyAI{% endif %}
+                        </span>
+                        <span class="material-symbols-outlined dreamy-text" style="margin-left: 10px; align-self: center;">temp_preferences_custom</span>
+                        <a title="MyAI" style="text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">temp_preferences_custom</span></a>
                     </button>
                 </a>
             </div>
@@ -211,7 +245,7 @@
                                 <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-right: 10px; color: var(--red); align-items: center; height: 40px; width: 40px; margin-left: 10px; font-size: 40px;">block</span>
                             {% endif %}
                             <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
-                            {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+                            {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 10px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
                             <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                         </button>
                     </a>

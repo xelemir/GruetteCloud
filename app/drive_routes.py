@@ -273,7 +273,7 @@ def upload():
                 
             # Free users can only upload three files
             if not bool(user[0]["has_premium"]):
-                files = sql.readSQL(f"SELECT * FROM drive_links WHERE user_id = '{user_id}'")
+                files = os.listdir(drive_dir)
                 if len(files) >= 3:
                     abort(403)
                     

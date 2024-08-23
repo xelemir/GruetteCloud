@@ -85,6 +85,18 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
+        .dreamy-text {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+        
+
         .unselected-button {
             background-color: var(--background-tile-color);
             color: var(--text-color);
@@ -135,10 +147,8 @@
                 </span>
             </h1>
         </a>
-        <div onclick="toggleAiPreferences()" title="AI Preferences" style="cursor: pointer;">
-            <div class="dreamy-button" style="width: 40px; height: 40px; border-radius: 50%; font-size: 0.5em; color: var(--white-color); cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-outlined" style="font-size: 20px;">temp_preferences_custom</span>
-            </div>
+        <div onclick="toggleAiPreferences()" title="AI Preferences" style="cursor: pointer; margin-right: 10px;">
+            <span class="material-symbols-outlined dreamy-text">temp_preferences_custom</span>
         </div>
     </div>
     

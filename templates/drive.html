@@ -65,6 +65,27 @@
                 display: none;
             }
         }
+
+        .dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
       </style>
 </head>
 <body>
@@ -81,19 +102,7 @@
     </div>
 
     {% if not has_premium %}
-        <div id="premium-banner" style="display: block;">
-            <button id="dismiss-button" class="button-delete" style="z-index: 1; position: absolute; top: 55px; right: 5px; height: 40px; width: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--purple); color: var(--white-color); border-radius: 30px;">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <a href="/premium" style="text-decoration: none; color: var(--white-color);">
-                <div class="wrapping-tile" style="text-align: center; background-color: var(--purple); padding: 20px; border-radius: 30px;">
-                    <h1>Unlock GrütteCloud PLUS</h1>
-                    only 2.99 € once!
-                    <!-- It's free! -->
-                </div>
-            </a>
-            <div class="spaced-tile"></div>
-        </div>
+        {% include "components/premium-banner.html" %}
     {% endif %}
 
     <div class="dynamic-container">

@@ -13,12 +13,42 @@
 				max-width: 500px;
 			}
 		}	
+
+		.dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dreamy-text {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
 	</style>
 </head>
 <body>
 	<div class="header">
 		<div class="dark-mode-toggle">
-			<a href="/settings" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			<span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
 		</div>
 		<div class="centered-content">
@@ -42,34 +72,28 @@
 
 	<div class="wrapping-tile" style="border-radius: 30px; text-align: center; margin-top: 5vh; padding: 20px;">
 		<div class="spaced-tile"></div>
-        <h1>GrütteCloud PLUS</h1>
-		<div style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px; margin-top: 30px;">
-			<p style="padding-bottom: 1em;">• Unlock all MyAI personalities</p>
-			<p style="padding-bottom: 1em;">• GPT-4 powered MyAI</p>
-			<p style="padding-bottom: 1em;">• 4x longer MyAI conversations</p>
-			<p style="padding-bottom: 1em;">• Up to 10x longer MyAI replies</p>
-			<p style="padding-bottom: 1em;">• Upload unlimited files GrütteDrive</p>
-			<p style="padding-bottom: 1em;">• Access to all upcoming features</p>
+        <h1 class="dreamy-text" style="margin-bottom: 30px;">GrütteCloud PLUS</h1>
+		<div style="width: 100%; display: flex; justify-content: center;">
+			<div style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px; width: 80%;">
+				<p style="padding-bottom: 1em;">• GPT-4o powered MyAI</p>
+				<p style="padding-bottom: 1em;">• MyAI responds to uploaded images</p>
+				<p style="padding-bottom: 1em;">• 4x longer MyAI conversations</p>
+				<p style="padding-bottom: 1em;">• Up to 10x longer MyAI replies</p>
+				<p style="padding-bottom: 1em;">• Upload unlimited files GrütteDrive</p>
+				<p style="padding-bottom: 1em;">• Access to all upcoming features</p>
+				<p style="padding-bottom: 1em;">• Your support helps us to improve GrütteCloud</p>
+			</div>
 		</div>
-		<p>Only 2.99 € for lifetime access*</p>
-		<!--<p>Get lifetime access*. It's FREE</p>-->
 		<form action="/payment" method="POST">
-			<input type="submit" value="Unlock now!*" class="buy-now-button">
+			<input type="submit" class="dreamy-button" style="border-radius: 30px; padding: 15px; font-size: 1.1em; width: 75%; margin-top: 20px;" value="Unlock now for 2.99 €*">
 		</form>
 		<div class="spaced-tile"><br></div>
 		<div style="text-align: center; font-size: 0.6em;">
-			<!--* We currently only accept PayPal as a payment method, sorry about that :/<br>
-			14-day money-back guarantee if you are not satisfied with GrütteCloud PLUS.<br>-->
-			GrütteCloud PLUS is currently 2.99 €. We reserve the right to change this at any time.
-			After purchasing GrütteCloud PLUS, you will have access to the above mentioned features for lifetime.
-			However we reserve the right to change the features of GrütteCloud PLUS at any time.
-			Lifetime means as long as the service is available. Visit the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> for more info.<br>
-			EU-platform for online dispute resolution: <a href="https://ec.europa.eu/consumers/odr" style="color: var(--text-color);">https://ec.europa.eu/consumers/odr</a>
+			<p>*Payment is handled by PayPal.<br>By clicking "Unlock now!" you agree to our <a href="/terms" class="dreamy-text">Terms of Service</a>.</p>
 		</div>
 	</div>
 
 	<div id="cookie-banner"></div>
-	{% include "components/footer.html" %}
 </body>
 </html>
 <script>
