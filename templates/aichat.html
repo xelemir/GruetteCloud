@@ -95,7 +95,7 @@
 
 </head>
 <body style="padding: 10px;">
-    <div class="header" style="margin-bottom: 10px;">
+    <div class="header" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
         <div style="padding-top: 10px; padding-bottom: 10px;">
             <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
@@ -135,9 +135,9 @@
                 </span>
             </h1>
         </a>
-        <div onclick="toggleAiPreferences()" title="AI Preferences" style="position: absolute; top: 10px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <div class="dreamy-button" style="width: 40px; height: 40px; border-radius: 50%; font-size: 0.7em; color: var(--white-color); cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                <span style="cursor: pointer; text-decoration: none; color: var(--white-color);"><span class="material-symbols-outlined">temp_preferences_custom</span></span>
+        <div onclick="toggleAiPreferences()" title="AI Preferences" style="cursor: pointer;">
+            <div class="dreamy-button" style="width: 40px; height: 40px; border-radius: 50%; font-size: 0.5em; color: var(--white-color); cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 20px;">temp_preferences_custom</span>
             </div>
         </div>
     </div>
@@ -248,7 +248,7 @@
             <div class="unselected-button" style="text-decoration: none; border-radius: 50%; width: 50px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center;">
                 <span id="darkModeToggle" class="material-symbols-outlined" title="Darkmode" style="margin: 0;">light_mode</span>
             </div>
-            <a href="/ai/restart" class="unselected-button" style="text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
+            <a href="/ai/restart" class="unselected-button" style="gap: 10px; text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
                 <span class="material-symbols-outlined" title="Restart" style="margin: 0;">restart_alt</span>
                 Restart MyAI
             </a>
