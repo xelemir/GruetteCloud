@@ -326,37 +326,36 @@ def change_ai_personality(ai_personality):
     session.pop("chat_history", None)
     return redirect("/ai/chat")
     
-@settings_route.route("/changeAiModel/<model>")
-def change_ai_model(model):
+@settings_route.route("/changeAiModel", methods=["POST"])
+def change_ai_model():
     """ Route to change the user's MyAI model
-
-    Args:
-        model (str): The model to change to
 
     Returns:
         HTML: Rendered HTML page
     """
 
     if "user_id" not in session:
-        return redirect(f"/")
+        return jsonify({"error": "User not found"}), 404
     
     sql = SQLHelper.SQLHelper()
     
     user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
     
     if user == []:
-        return redirect("/logout")
+        return jsonify({"error": "User not found"}), 404
     elif user[0]["has_premium"] == False:
-        return redirect(f"/premium")
+        return jsonify({"error": "GrütteCloud PLUS required"}), 401
     
-    if model == "gpt-4o-mini":
+    model = str(request.form["model"])
+    
+    if model == "free":
         sql.writeSQL(f"UPDATE users SET ai_model = 'gpt-4o-mini' WHERE id = '{str(session['user_id'])}'")
-    elif model == "gpt-4o":
+    elif model == "premium":
         sql.writeSQL(f"UPDATE users SET ai_model = 'gpt-4o' WHERE id = '{str(session['user_id'])}'")
     else:
-        return redirect(f"/settings")
+        return jsonify({"error": "Invalid model"}), 400
     
-    return redirect(f"/ai/chat")
+    return jsonify({"success": "Model changed"}), 200
       
 @settings_route.route("/delete_account", methods=["GET", "POST"])
 def delete_account():

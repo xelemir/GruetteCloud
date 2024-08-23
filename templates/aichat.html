@@ -63,6 +63,34 @@
             max-width: 100%;
             max-height: 100%;
         }
+
+        .dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .unselected-button {
+            background-color: var(--background-tile-color);
+            color: var(--text-color);
+            cursor: pointer;
+            box-shadow: none;
+        }
     </style>
 
 </head>
@@ -107,8 +135,10 @@
                 </span>
             </h1>
         </a>
-        <div class="dark-mode-toggle" style="position: absolute; top: 20px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
-            <span onclick="toggleAiPreferences()" title="AI Preferences" class="white-button-purple-on-hover" style="cursor: pointer; text-decoration: none; color: var(--text-color);"><span class="material-symbols-outlined">temp_preferences_custom</span></span>
+        <div onclick="toggleAiPreferences()" title="AI Preferences" style="position: absolute; top: 10px; right: 0; transform: translateX(100%-20px); padding-right: 20px">
+            <div class="dreamy-button" style="width: 40px; height: 40px; border-radius: 50%; font-size: 0.7em; color: var(--white-color); cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <span style="cursor: pointer; text-decoration: none; color: var(--white-color);"><span class="material-symbols-outlined">temp_preferences_custom</span></span>
+            </div>
         </div>
     </div>
     
@@ -160,9 +190,18 @@
         <h1 style="margin-bottom: 30px;">AI Preferences</h1>
 
         <p style="margin-bottom: 10px; font-size: 0.9em;">Personality:</p>
-        <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="-webkit-appearance: none; width: 100%; padding-left: 20px; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color);">
+        <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="-webkit-appearance: none; width: 100%; padding-left: 20px; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color); font-size: 1em;">
             {% if selected_personality != 'Default' %}
-            <option value="/change_ai_personality/{{ selected_personality }}">{{ selected_personality }}</option>
+            <option value="/change_ai_personality/{{ selected_personality }}">
+                {% if selected_personality == "UwuGirl" %}Uwu Girl (NSFW)
+                {% elif selected_personality == "Pirate" %}Pirate
+                {% elif selected_personality == "Backus" %}Backus (BNF inventor)
+                {% elif selected_personality == "Lorde" %}Lorde
+                {% elif selected_personality == "TaylorSwift" %}Taylor Swift
+                {% elif selected_personality == "Taco" %}Taco the otter
+                {% elif selected_personality == "Anakin" %}Anakin Skywalker
+                {% endif %}
+            </option>
             {% endif %}
             <option value="/change_ai_personality/Default">Default</option>
             {% if selected_personality != 'UwuGirl'%}
@@ -191,23 +230,30 @@
             {% endif %}
         </select>
 
-        <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">Language Model:</p>
+        <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">AI Model:</p>
         <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; background-color: var(--background-tile-color); border-radius: 30px; border: 2px solid var(--box-shadow-color); width: 100%;">
-            <a href="/changeAiModel/gpt-4o-mini" style="{% if ai_model == "gpt-4o-mini" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
+            <div id="free-model" class="" onclick="changeAiModel('free');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center;">
                 GPT-4o mini
-            </a>
-            <a href="/changeAiModel/gpt-4o" style="{% if ai_model == "gpt-4o" %}background-color: var(--primary-color); color: var(--white-color); {% else %}color: var(--text-color); {% endif %}padding: 10px; border-radius: 30px; width: 50%; text-align: center; text-decoration: none;">
+            </div>
+            <div id="premium-model" class="" onclick="changeAiModel('premium');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center;">
                 GPT-4o
-            </a>
+            </div>
             {% if not has_premium %}
-                <div style="position: absolute; background-color: var(--purple); margin-top: -10px; padding: 3px 7px; border-radius: 30px; font-size: 0.8em; color: var(--white-color); right: 10px;">
+                <div class="dreamy-button" style="position: absolute; margin-top: -10px; padding: 3px 7px; border-radius: 30px; font-size: 0.8em; color: var(--white-color); right: 10px;">
                     PLUS
                 </div>
             {% endif %}
         </div>
 
-        <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 30px; background-color: var(--background-tile-color); border-radius: 30px;">
-            <a href="/ai/restart" class="white-button-red-on-hover" style="color: var(--text-color); width: 100%; text-align: center; padding: 10px; border-radius: 30px; text-decoration: none;">Restart MyAI</a>
+        <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">System Controls:</p>
+        <div style="display: flex; flex-direction: row; width: 100%; gap: 10px;">
+            <div class="unselected-button" style="text-decoration: none; border-radius: 50%; width: 50px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center;">
+                <span id="darkModeToggle" class="material-symbols-outlined" title="Darkmode" style="margin: 0;">light_mode</span>
+            </div>
+            <a href="/ai/restart" class="unselected-button" style="text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
+                <span class="material-symbols-outlined" title="Restart" style="margin: 0;">restart_alt</span>
+                Restart MyAI
+            </a>
         </div>
     </div>
 </body>
@@ -221,6 +267,13 @@
         var input = document.getElementById('messageInput');
         const userAgent = navigator.userAgent;
         input.focus();
+
+        {% if ai_model == "gpt-4o-mini" %}
+            document.getElementById('free-model').classList.add('dreamy-button');
+        {% else %}
+            document.getElementById('premium-model').classList.add('dreamy-button');
+        {% endif %}
+
     };
 
     /*var body = document.body;
@@ -279,6 +332,52 @@
             }, 750);
 
         }
+    }
+
+    function changeAiModel(model) {
+        if (document.getElementById('free-model').classList.contains('dreamy-button') && model === "free") {
+            return;
+        } else if (document.getElementById('premium-model').classList.contains('dreamy-button') && model === "premium") {
+            return;
+        }
+
+        if (model === "premium") {
+            document.getElementById('free-model').classList.remove('dreamy-button');
+            document.getElementById('premium-model').classList.add('dreamy-button');
+        } else {
+            document.getElementById('premium-model').classList.remove('dreamy-button');
+            document.getElementById('free-model').classList.add('dreamy-button');
+        }
+        $.ajax({
+            url: '/changeAiModel',
+            type: 'POST',
+            data: { model: model },
+            success: function(response) {
+                if (response.success) {
+                    return;
+                } else {
+                    errorFs("Error", "An error occurred while changing the AI model. Please try again.");
+                }
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status === 401) {
+                    window.location.href = '/premium';
+                } else if (xhr.status === 404) {
+                    window.location.href = '/';
+                } else if (xhr.status === 400) {
+                    console.log("Error: " + xhr.responseText);
+                } else {
+                    errorFs("Error", "An error occurred while changing the AI model. Please try again.");
+                }
+                if (model === "premium") {
+                    document.getElementById('premium-model').classList.remove('dreamy-button');
+                    document.getElementById('free-model').classList.add('dreamy-button');
+                } else {
+                    document.getElementById('free-model').classList.remove('dreamy-button');
+                    document.getElementById('premium-model').classList.add('dreamy-button');
+                }
+            }
+        });
     }
 </script>
 
