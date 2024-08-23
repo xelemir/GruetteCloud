@@ -516,8 +516,6 @@
                 var content = message.innerHTML;
                 // **bold** -> <b>bold</b>
                 content = content.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
-                // __underline__ -> <u>underline</u>
-                content = content.replace(/__(.*?)__/g, "<u>$1</u>");
                 // *italic* -> <i>italic</i>
                 content = content.replace(/\*(.*?)\*/g, "<i>$1</i>");
                 // ~~strikethrough~~ -> <s>strikethrough</s>
@@ -538,8 +536,6 @@
                 // `code` -> <span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 5px; display: inline-block;'><code>code</code></span>
                 content = content.replace(/`([^`]+)`/g, "<span style='background-color: var(--background-tile-color); border-radius: 5px; padding: 5px; display: inline-block;'><code>$1</code></span>");
                 
-                // # Heading -> <h1>Heading</h1>
-                content = content.replace(/# (.*?)\n/g, "<h3>$1</h3>");
                 // blank line -> <br>
                 content = content.replace(/\n/g, "<br>");
 
