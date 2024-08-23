@@ -450,10 +450,13 @@
             appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
 
             $('#messageInput').val('');
+            console.log("AI model: {{ ai_model }}");
+            
             {% if ai_model == "gpt-4o" %}
-            $('#fileInput').val('');
-            document.getElementById('fileLabel').style.display = 'flex';
-            document.getElementById('removeDiv').style.display = 'none';
+                console.error("GPT-4o model selected");
+                $('#fileInput').val('');
+                document.getElementById('fileLabel').style.display = 'flex';
+                document.getElementById('removeDiv').style.display = 'none';
             {% endif %}
 
             
