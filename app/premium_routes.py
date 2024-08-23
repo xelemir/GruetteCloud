@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, session, make_response, Blueprint, url_for
+from flask import jsonify, render_template, request, redirect, session, make_response, Blueprint, url_for
 from paypalrestsdk import Payment, set_config
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
@@ -104,6 +104,22 @@ def payment():
         if bool(user[0]["has_premium"]) == True:
             return redirect(url_for("Settings.settings", error="already_premium"))
         
+        # If promo code in form, apply promo code
+        if "promo_code" in request.form and request.form["promo_code"] != "":
+            promo_code = request.form["promo_code"]
+            promo_code_db = sql.readSQL(f"SELECT * FROM promo_codes WHERE code = '{promo_code}'")
+            
+            # If promo code is valid, apply promo code
+            if promo_code_db != []:
+                sql.writeSQL(f"UPDATE users SET has_premium = {True} WHERE id = '{str(session['user_id'])}'")
+                if promo_code_db[0]["type"] == "single_use":
+                    sql.writeSQL(f"DELETE FROM promo_codes WHERE code = '{promo_code}'")
+                return render_template("premium_success.html")
+            
+            # Else, return error
+            else:
+                return redirect(url_for("Settings.settings", error="invalid_promo_code"))
+        
         # Else, create payment and redirect user to PayPal
         else:
             
@@ -170,3 +186,36 @@ def cancel():
 
     # Payment cancelled error
     return redirect(url_for("Settings.settings", error="payment_cancelled"))
+
+@premium_route.route('/add_promo_code', methods=["POST"])
+def add_promo_code():
+    """ Add promo code route
+
+    Returns:
+        str: Rendered template
+    """    
+    if "user_id" not in session:
+        return redirect("/")
+    
+    # Get user from database
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{str(session['user_id'])}'")
+    
+    # If empty, something went wrong, most likely sql connection issue
+    if user == []:
+        return redirect(url_for("Settings.settings", error="error"))
+    
+    # If good to go, check if user has premium
+    if bool(user[0]["has_premium"]) == True:
+        return redirect(url_for("Settings.settings", error="already_premium"))
+    
+    # Get promo code from form
+    promo_code = request.form['code']
+    
+    # Check if promo code is valid
+    promo_code_db = sql.readSQL(f"SELECT * FROM promo_codes WHERE code = '{promo_code}'")
+    
+    if promo_code_db != []:
+        return jsonify({"success": True, "message": "Promo code applied successfully!"}), 200
+    else:
+        return jsonify({"success": False, "message": "Invalid promo code!"}), 400
