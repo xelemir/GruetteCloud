@@ -43,7 +43,7 @@ class OpenAIWrapper:
             elif ai_model == "gpt-4o":
                 ai_model = "chatgpt-4o-latest"
             else:
-                ai_model = "chatgpt-4o-mini"
+                ai_model = "gpt-4o-mini"
         
         # Shorten last user message if it's too long
         if len(conversation_log[-1]["content"]) > 500:
