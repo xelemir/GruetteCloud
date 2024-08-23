@@ -451,11 +451,11 @@
 
             $('#messageInput').val('');
             
-            {% if ai_model == "gpt-4o" %}
+            if (fileInput.files.length > 0) {
                 $('#fileInput').val('');
                 document.getElementById('fileLabel').style.display = 'flex';
                 document.getElementById('removeDiv').style.display = 'none';
-            {% endif %}
+            }
 
             
             $.ajax({
