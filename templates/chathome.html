@@ -184,7 +184,7 @@
             <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 5px;">
                 <a href="/ai/chat" style="color: var(--text-color); text-decoration: none; display: flex; align-items: center; flex: 1;">
                     <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
-                        <img src="
+                        <img id="myai-image" src="
                             {% if selected_personality == "UwuGirl" %}https://www.gruettecloud.com/static/GamerGirl.jpeg
                             {% elif selected_personality == "Pirate" %}https://www.gruettecloud.com/static/Pirate.jpeg
                             {% elif selected_personality == "Backus" %}https://www.gruettecloud.com/static/Backus.jpeg
@@ -196,7 +196,7 @@
                             {% else %}https://www.gruettecloud.com/static/profile_pictures/ai.png{% endif %}
                         " style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                         <span id="ai-chat-indicator" style="margin-left: -20px; margin-top: -30px; background-color: var(--red); border-radius: 50%; width 20px; height: 20px; font-size: 0.6em; display: flex; align-items: center; justify-content: center; color: var(--white-color); padding: 3px;">&nbsp;1&nbsp;</span>
-                        <span class="text-offcutter" style="margin-left: 5px; display: inline; wrap: nowrap; max-width: 45vw;">
+                        <span id="myai-name" class="text-offcutter" style="margin-left: 5px; display: inline; wrap: nowrap; max-width: 45vw; overflow: hidden; text-overflow: ellipsis;">
                             {% if selected_personality == "UwuGirl" %}uwu Gamer Girl
                             {% elif selected_personality == "Pirate" %}Pirate
                             {% elif selected_personality == "Backus" %}John Backus
@@ -224,7 +224,7 @@
                                 <img src="https://www.gruettecloud.com/static/profile_pictures/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                                 <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
                                 {% if suggested['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                                <a href="/chat/delete/{{ chat['username'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
+                                <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                             </button>
                         </a>
                     </div>
@@ -325,19 +325,55 @@
             document.getElementById('ai-chat-indicator').style.display = 'flex';
         }
 
-        {% if not active_chats %}
-            document.getElementById('ai-chat-indicator').style.display = 'flex';
-        {% endif %}
-
     } else {
         document.getElementById('ai-chat-indicator').style.display = 'flex';
     }
 
     {% if not active_chats %}
-        searchForm.style.display = 'block';
-        showSearch.style.display = 'none';
-        toggleHelp.style.display = 'block';
+        document.getElementById('ai-chat-indicator').style.display = 'flex';
+        changeAiContinuously();
     {% endif %}
+
+    function changeAiContinuously() {
+        const aiImage = document.getElementById('myai-image');
+        const aiName = document.getElementById('myai-name');
+    
+        const aiImages = [
+            "https://www.gruettecloud.com/static/profile_pictures/ai.png",
+            "https://www.gruettecloud.com/static/Pirate.jpeg",
+            "https://www.gruettecloud.com/static/Backus.jpeg",
+            "https://www.gruettecloud.com/static/Lorde.jpeg",
+            "https://www.gruettecloud.com/static/taylorSwift.jpeg",
+            "https://www.gruettecloud.com/static/Taco.jpg",
+            "https://www.gruettecloud.com/static/BattleDroid.jpg",
+            "https://www.gruettecloud.com/static/Anakin.jpg",
+            "https://www.gruettecloud.com/static/GamerGirl.jpeg",
+        ];
+    
+        const aiNames = [
+            "MyAI",
+            "Pirate",
+            "John Backus",
+            "Lorde",
+            "Taylor Swift",
+            "Taco the otter",
+            "B1 Battle Droid",
+            "Anakin Skywalker",
+            "Uwu Gamer Girl",
+        ];
+    
+        let currentIndex = 0;
+    
+        function updateAI() {
+            aiImage.src = aiImages[currentIndex];
+            aiName.textContent = aiNames[currentIndex];
+            currentIndex = (currentIndex + 1) % aiImages.length;  // Loop back to the start
+            setTimeout(updateAI, 4000);  // Change image and name every 5 seconds
+        }
+    
+        updateAI();  // Start the loop
+    }
+    
 </script>
 
 <script>

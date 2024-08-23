@@ -148,7 +148,7 @@ def success():
         # If successful, update user in database
         if payment.execute({"payer_id": payer_id}):
             sql.writeSQL(f"UPDATE users SET has_premium = {True} WHERE id = '{str(session['user_id'])}'")
-            return redirect(url_for("Settings.settings", error="payment_success"))
+            return render_template("premium_success.html")
         
         # Else if payment failed, return error
         else:
@@ -157,6 +157,19 @@ def success():
     # Something went wrong
     except:
         return redirect(url_for("Settings.settings", error="error"))
+
+@premium_route.route('/premium-success', methods=['GET'])
+def premium_success():
+    """ Premium success route
+
+    Returns:
+        str: Rendered template
+    """    
+    if "user_id" not in session:
+        return redirect("/")
+
+    # Payment successful
+    return render_template("premium_success.html")
     
 @premium_route.route('/cancel')
 def cancel():

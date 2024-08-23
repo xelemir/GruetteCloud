@@ -46,7 +46,7 @@
         }
 
 		.dreamy-text-alt {
-            background: linear-gradient(135deg, #FFD1FF, #B5FFFC, #8BC6EC);
+            background: linear-gradient(135deg, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
@@ -95,57 +95,13 @@
 		
 </head>
 <body>
-	<div class="header">
-		<div class="dark-mode-toggle">
-			<span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>
-		</div>
-		<div class="centered-content">
-			<a href="/" class="logo" title="Home">
-				<img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
-			</a>
-		</div>
-	</div>
-
-	{% if error %}
-		<div id="error-message" style="display: none;">
-			<div class="wrapping-tile" style="text-align: center;">
-				<div class="inner-tile" style="color: var(--yellow)">
-					{{ error }}
-				</div>
-			</div>
-			<div class="spaced-tile"></div>
-		</div>
-	{% endif %}
-
-
-	<div class="wrapping-tile" style="border-radius: 30px; text-align: center; margin-top: 5vh; padding: 20px;">
-		<div class="spaced-tile"></div>
-		<h1 class="dreamy-text" style="margin-bottom: 30px;">GrütteCloud PLUS</h1>
-		<div style="width: 100%; display: flex; justify-content: center;">
-			<div style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px; width: 80%;">
-				<p style="padding-bottom: 1em;">• GPT-4o powered MyAI</p>
-				<p style="padding-bottom: 1em;">• MyAI responds to uploaded images</p>
-				<p style="padding-bottom: 1em;">• 4x longer MyAI conversations</p>
-				<p style="padding-bottom: 1em;">• Up to 10x longer MyAI replies</p>
-				<p style="padding-bottom: 1em;">• Upload unlimited files GrütteDrive</p>
-				<p style="padding-bottom: 1em;">• Access to all upcoming features</p>
-				<p style="padding-bottom: 1em;">• Your support helps us to improve GrütteCloud</p>
-			</div>
-		</div>
-		<form action="/payment" method="POST">
-			<input onclick="fullscreenAnimation()" type="submit" class="dreamy-button" style="border-radius: 30px; padding: 15px; font-size: 1.1em; width: 75%; margin-top: 20px;" value="Unlock for 2.99 €*">
-		</form>
-		<div class="spaced-tile"><br></div>
-		<div style="text-align: center; font-size: 0.6em;">
-			<p>*Payment is handled by PayPal.<br>By clicking the button you agree to our <a href="/terms" class="dreamy-text">Terms of Service</a>.</p>
-		</div>
-	</div>
 	<div id="cookie-banner"></div>
-	<div id="expand-to-fullscreen" style="display: flex; justify-content: center; align-items: center; padding-top: 40svh;">
-		<h1 class="dreamy-text-alt" style="font-size: 1.5em; text-align: center; margin-bottom: 30px;">Redirecting to PayPal...</h1>
-		<p class="dreamy-text-alt" style="font-size: 1em; text-align: center;">Please wait...</p>
+	<div id="expand-to-fullscreen" style="display: flex; justify-content: center; align-items: center; padding-top: 35svh;">
+        <h1 class="dreamy-text-alt" style="text-align: center; margin-bottom: 40px;"><span class="material-symbols-outlined" style="font-size: 4em; ">check_circle</span></h1>
+		<h1 class="dreamy-text-alt" style="font-size: 3em; text-align: center; margin-bottom: 30px;">Thank you!</h1>
+		<h4 class="dreamy-text-alt" style="font-size: 1em; text-align: center; font-weight: normal; padding: 0 60px; text-wrap: balance; margin-bottom: 50px;">You have successfully upgraded to GrütteCloud PLUS. Enjoy the new features!</h4>
+		<h4 style="font-size: 1em; text-align: center; font-weight: normal; padding: 0 60px; text-wrap: balance;"><a href="https://www.gruettecloud.com" class="dreamy-button" style="text-decoration: none; color: white; padding: 10px 25px; border-radius: 30px;">Check it out</a></h4>
 	</div>
-
 </body>
 </html>
 <script>
@@ -156,19 +112,7 @@
         element.classList.add('expand-animation');
 		
 	}
-
-	// Show error message and fade out after 5 seconds
-	var errorMessage = document.getElementById('error-message');
-	{% if error %}
-			errorMessage.style.display = 'block';
-			setTimeout(function() {
-					errorMessage.style.opacity = '0';
-					setTimeout(function() {
-							errorMessage.style.display = 'none';
-							errorMessage.style.opacity = '1';
-					}, 500);
-			}, 5000);
-	{% endif %}
+    fullscreenAnimation();
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
