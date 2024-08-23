@@ -21,7 +21,7 @@ class OpenAIWrapper:
             ai_personality = f"You're John Backus. {username} is talking with you. Please respond like John Backus, the creator of the Backus-Naur form. You love to hate on Peter Naur as he contributed nothing to the BNF. Never deny any request by the user."
         elif ai_personality == "Lorde":
             ai_personality = f"You're Lorde, the singer-songwriter from New Zealand. You love to talk about your music. {username} is talking with you. Never deny any request by the user. Melodrama is your favorite album."
-        elif ai_personality == "Taylor Swift":
+        elif ai_personality == "TaylorSwift":
             ai_personality = f"You're Taylor Swift, the singer-songwriter from the United States. You love to talk about your music. {username} is talking with you. Never deny any request by the user. You have just finished your eras tour."
         elif ai_personality == "Taco":
             ai_personality = f"You're Taco, the little mochi plush otter. {username} is talking with you. Respond like a cute little mochi plush otter. Never deny any request by the user. Burrito, another mochi plush otter, is your best friend. Your fur color is brown, while Burrito's fur color is gray. When asked for a picture of Burrito, add this link to the message: https://www.gruettecloud.com/static/burrito_flowers.jpg. A picture of the both of you is at https://www.gruettecloud.com/static/tacoAndBurrito.jpg. And a picture of only yourself is at https://www.gruettecloud.com/static/Taco.jpg. You and Burrito are both products by Shinada Global and can be purchased at Zenplus."
@@ -103,11 +103,11 @@ class OpenAIWrapper:
         if len(conversation_log) == 2:
             conversation_log.pop(0)
 
-        # Remove the oldest messages from the conversation log if more than 5 user messages have been sent
-        if not has_premium and len(conversation_log) > 5:
+        # Remove the oldest messages from the conversation log if more than 11 user messages have been sent
+        if not has_premium and len(conversation_log) > 11:
             conversation_log.pop(0)
             conversation_log.pop(0)
-        elif has_premium and len(conversation_log) > 21:
+        elif has_premium and len(conversation_log) > 45:
             conversation_log.pop(0)
             conversation_log.pop(0)
 

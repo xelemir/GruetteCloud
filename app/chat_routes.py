@@ -252,6 +252,8 @@ def ai_chat(action):
                             
             if message == "#!# Requesting Welcome Message #!#":
                 chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
+            elif message == "#!# Requesting Welcome Message DE #!#":
+                chat_history.append({"role": "user", "content": "Hallo, bitte gib mir eine nette Willkommensnachricht für GrütteChat. Antworte nur noch auf Deutsch."})
             else:
                 # Append the user's message to chat history
                 chat_history.append({"role": "user", "content": message})

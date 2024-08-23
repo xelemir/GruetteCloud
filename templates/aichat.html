@@ -208,6 +208,7 @@
                 {% elif selected_personality == "TaylorSwift" %}Taylor Swift
                 {% elif selected_personality == "Taco" %}Taco the otter
                 {% elif selected_personality == "Anakin" %}Anakin Skywalker
+                {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
                 {% endif %}
             </option>
             {% endif %}
@@ -539,7 +540,12 @@
 
         function checkAndRequestWelcomeMessage() {
             if ($(".chat-messages").children().length === 0) {
-                sendMessage("#!# Requesting Welcome Message #!#");
+                const userLanguage = navigator.language || navigator.userLanguage;
+                if (userLanguage.startsWith('de')) {
+                    sendMessage("#!# Requesting Welcome Message DE #!#");
+                } else {
+                    sendMessage("#!# Requesting Welcome Message #!#");
+                }
             }
         }
     
