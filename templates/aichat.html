@@ -482,7 +482,7 @@
             });
         }
 
-        function searchAndReplaceImages() {
+        /*function searchAndReplaceImages() {
             var regex = /\[.*?\]\(.*?\)/g;
             var messages = $(".message");
             for (var i = 0; i < messages.length; i++) {
@@ -507,35 +507,69 @@
 
                 message.innerHTML = message.innerHTML.replace(regex, "");
             }
+        }*/
+
+        function findAndReplaceMarkdown() {
+            var messages = $(".message");
+            for (var i = 0; i < messages.length; i++) {
+                var message = messages[i];
+                var content = message.innerHTML;
+                // **bold** -> <b>bold</b>
+                content = content.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+                // __underline__ -> <u>underline</u>
+                content = content.replace(/__(.*?)__/g, "<u>$1</u>");
+                // *italic* -> <i>italic</i>
+                content = content.replace(/\*(.*?)\*/g, "<i>$1</i>");
+                // ~~strikethrough~~ -> <s>strikethrough</s>
+                content = content.replace(/~~(.*?)~~/g, "<s>$1</s>");
+
+                // Remove coding language from code block
+                content = content.replace(/```(.*?)\n/g, "```");
+
+                // ```code``` -> <span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>any lines of anything</code></span>
+                content = content.replace(/```([\s\S]*?)```/g, "<span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>$1</code></span>");
+                
+                const codeBlockRegex = /<code>((?:.|\n)*?)<\/code>/g;
+                content = content.replace(codeBlockRegex, (match, code) => {
+                    const indentedCode = code.replace(/(    )/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    return `<code>${indentedCode}</code>`;
+                });
+
+                // `code` -> <span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 5px; display: inline-block;'><code>code</code></span>
+                content = content.replace(/`([^`]+)`/g, "<span style='background-color: var(--background-tile-color); border-radius: 5px; padding: 5px; display: inline-block;'><code>$1</code></span>");
+                
+                // # Heading -> <h1>Heading</h1>
+                content = content.replace(/# (.*?)\n/g, "<h3>$1</h3>");
+                // blank line -> <br>
+                content = content.replace(/\n/g, "<br>");
+
+                // ![link](url) -> <a href="url"><img src="url"></a>
+                content = content.replace(/\!\[(.*?)\]\((.*?)\)/g,
+                "<br><img src=\"$2\" style='margin: 10px 0; border-radius: 15px; max-width: 45vw;'><br>");
+
+                //    - list item -> <li>list item</li>
+                content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
+
+                // if content starts with <br>, remove it
+                if (content.startsWith("<br>")) {
+                    content = content.slice(4);
+                }
+                
+                message.innerHTML = content;
+
+
+                
+            }
         }
 
-        searchAndReplaceImages();
+        findAndReplaceMarkdown();
+
+        //searchAndReplaceImages();
 
         function appendMessage(message) {
             var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
-
-            // if link in message, add image
-            if (message.content.includes("https://www.gruettecloud.com/static/")) {
-
-                var url = message.content.match(/(https?:\/\/[^\s]+)/g)[0];
-                url = url.toString().replace(")", "");
-                if (url.endsWith(".")) {
-                    url = url.slice(0, -1);
-                } else if (url.endsWith("!")) {
-                    url = url.slice(0, -1);
-                }
-
-                // Remove [...](...) as REGEX
-                var regex = /\[.*?\]\(.*?\)/g;
-                var msg_without_img = message.content.replace(regex, "");
-
-                $(".chat-messages").prepend('<div class="message ' + messageClass + '" style="display: flex; flex-direction: column; width: 400px;">' 
-                    + '<img src="' + url + '" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">'
-                    + msg_without_img + '</div>');
-
-            } else {
-                $(".chat-messages").prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
-            }
+            $(".chat-messages").prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+            findAndReplaceMarkdown();
         }
 
         function checkAndRequestWelcomeMessage() {

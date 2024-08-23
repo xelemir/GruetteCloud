@@ -181,7 +181,7 @@ def chat(error=None):
     if active_chats == []:
         suggest_jan = sql.readSQL(f"SELECT * FROM users WHERE username = 'jan'")
         suggest_random = sql.readSQL(f"SELECT * FROM users WHERE id != '{user_id}' AND username != 'jan' ORDER BY RAND() LIMIT 2")
-        suggested = [{"username": suggest_jan[0]["username"], "pfp": f"{suggest_jan[0]['profile_picture']}.png", "is_verified": suggest_jan[0]["is_verified"]}]
+        suggested = [{"user_id": suggest_jan[0]["id"], "username": suggest_jan[0]["username"], "pfp": f"{suggest_jan[0]['profile_picture']}.png", "is_verified": suggest_jan[0]["is_verified"]}]
         for suggest_user in suggest_random:
             suggested.append({"user_id": suggest_user["id"], "username": suggest_user["username"], "pfp": f"{suggest_user['profile_picture']}.png", "is_verified": suggest_user["is_verified"]})
     else:
