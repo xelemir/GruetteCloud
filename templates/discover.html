@@ -194,7 +194,38 @@
               box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
             }
         }
+        
+        .dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
 
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dreamy-text {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
     </style>
 </head>
 <body>
@@ -334,11 +365,11 @@
                 </div>
                 <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
                     <div class="text-box" style="text-align: left;">
-                        <h1 style="text-align: left; margin-bottom: 30px;">Meet MyAI.</h1>
+                        <h1 class="dreamy-text" style="text-align: left; margin-bottom: 30px; cursor: text;">Meet MyAI.</h1>
                         <p style="text-align: left; margin-bottom: 15px; font-size: 2.5svh;">Choose a personality and start chatting.</p>
-                        <p style="text-align: left; margin-bottom: 25px;">Powered by OpenAI's GPT-4o, MyAI is your personal multimodal AI assistant. Ask questions, share images, and get answers. It's like having a friend in your pocket.</p>
+                        <p style="text-align: left; margin-bottom: 25px;">Powered by OpenAI's GPT-4o, MyAI is your personal, multimodal AI assistant. Ask questions, share images, and get answers. You can choose between a variety of personalities to chat with.</p>
                         <div class="mobile-center" style="display: flex;">
-                            <a href="https://www.gruettecloud.com/ai/chat" class="button-blue" style="border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px; display: flex; align-items: center;">
+                            <a href="https://www.gruettecloud.com/ai/chat" class="dreamy-button" style="border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px; display: flex; align-items: center; text-decoration: none;">
                                 <span class="material-symbols-outlined align-icons-center" style="margin-right: 8px; font-size: 1.2em;">temp_preferences_custom</span>
                                 Try MyAI
                             </a>
