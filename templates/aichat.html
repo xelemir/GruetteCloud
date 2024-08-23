@@ -524,8 +524,8 @@
                 // Remove coding language from code block
                 content = content.replace(/```(.*?)\n/g, "```");
 
-                // ```code``` -> <span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>any lines of anything</code></span>
-                content = content.replace(/```([\s\S]*?)```/g, "<span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>$1</code></span>");
+                // ```code``` -> <span style='background-color: var(--box-shadow-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>any lines of anything</code></span>
+                content = content.replace(/```([\s\S]*?)```/g, "<span style='background-color: var(--box-shadow-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>$1</code></span>");
                 
                 const codeBlockRegex = /<code>((?:.|\n)*?)<\/code>/g;
                 content = content.replace(codeBlockRegex, (match, code) => {
@@ -533,8 +533,8 @@
                     return `<code>${indentedCode}</code>`;
                 });
 
-                // `code` -> <span style='background-color: var(--background-tile-color); border-radius: 10px; padding: 5px; display: inline-block;'><code>code</code></span>
-                content = content.replace(/`([^`]+)`/g, "<span style='background-color: var(--background-tile-color); border-radius: 5px; padding: 5px; display: inline-block;'><code>$1</code></span>");
+                // `code` -> <span style='background-color: var(--box-shadow-color); border-radius: 10px; padding: 5px; display: inline-block;'><code>code</code></span>
+                content = content.replace(/`([^`]+)`/g, "<span style='background-color: var(--box-shadow-color); border-radius: 5px; padding: 5px; display: inline-block;'><code>$1</code></span>");
                 
                 // blank line -> <br>
                 content = content.replace(/\n/g, "<br>");
