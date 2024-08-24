@@ -371,6 +371,11 @@
         function sendMessage() {
             var message = $('#messageInput').val(); // Get message text
             var fileInput = document.getElementById('fileInput');
+
+            if (message === '' && fileInput.files.length === 0) {
+                return;
+            }
+
             var file = fileInput.files[0]; // Get selected file
             let recipient = "{{ recipient_id }}";
 
