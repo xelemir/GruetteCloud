@@ -107,7 +107,7 @@
 <body>
 	<div class="header">
         <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">light_mode</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         
 		<div class="centered-content">
@@ -554,7 +554,7 @@
             body.classList.remove('dark-mode');
             localStorage.setItem('darkMode', 'false');
             document.documentElement.setAttribute('data-theme', 'light');
-            darkModeToggle.innerHTML = 'light_mode';
+            darkModeToggle.innerHTML = 'sunny';
         } else {
             body.classList.add('dark-mode');
             localStorage.setItem('darkMode', 'true');

@@ -3,7 +3,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>MyAI | GrütteChat</title>
-    <meta name="description" content="Chat with your own AI assistant. Customize your AI's personality and OpenAI LLM model. Choose between GPT-4o mini Turbo and GPT-4o. GPT-4o even supports multimodal inputs (text and images).">
+    <meta name="description" content="Chat with your own AI assistant. Customize your AI's personality and OpenAI LLM model. Choose between GPT-4o mini and GPT-4o. GPT-4o even supports multimodal inputs. Available personalities include Uwu Gamer Girl, a Pirate, John Backus, Lorde, Taylor Swift, Taco the otter, B1 Battle Droid, and Anakin Skywalker." />
+    <meta name="keywords" content="AI, Chat, Assistant, OpenAI, GPT-4o, GPT-4o mini, Multimodal, Chatbot, GrütteChat, MyAI, GrütteCloud MyAI, gruettecloud, Gamer Girl chatbot, Pirate chatbot, John Backus chatbot, Lorde chatbot, Taylor Swift chatbot, Taco chatbot, B1 Battle Droid chatbot, Anakin Skywalker chatbot" />
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
     <link rel="stylesheet" href="https://www.gruettecloud.com/static/stylesheet.css">
@@ -198,7 +199,7 @@
         <h1 style="margin-bottom: 30px;">AI Preferences</h1>
 
         <p style="margin-bottom: 10px; font-size: 0.9em;">Personality:</p>
-        <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="-webkit-appearance: none; width: 100%; padding-left: 20px; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color); font-size: 1em;">
+        <select id="color" name="myAI" onchange="location = this.value;" class="login-input" style="-webkit-appearance: none; width: 100%; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color); font-size: 1em; padding: 10px; padding-left: 20px; ">
             {% if selected_personality != 'Default' %}
             <option value="/change_ai_personality/{{ selected_personality }}">
                 {% if selected_personality == "UwuGirl" %}Uwu Girl (NSFW)
@@ -239,13 +240,65 @@
             {% endif %}
         </select>
 
-        <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">AI Model:</p>
-        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; background-color: var(--background-tile-color); border-radius: 30px; border: 2px solid var(--box-shadow-color); width: 100%;">
-            <div id="free-model" class="" onclick="changeAiModel('free');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center;">
-                GPT-4o mini
+        <div style="display: flex; flex-direction: row; align-items: center; margin-top: 20px; margin-bottom: 10px; gap: 5px;">
+            <p style="font-size: 0.9em;">AI Model:</p>
+            <span class="material-symbols-outlined align-icons-center" style="color: var(--text-color); cursor: pointer; font-size: 0.9em;" onclick="toggleModelHelp()">info</span>
+        </div>
+
+        <div id="model-help" style="display: none; flex-direction: column; flex-wrap: wrap; justify-content: space-between; width: 100%; font-size: 0.9em; margin-bottom: 15px;" class="animate__animated animate__fadeIn"> 
+            <b style="margin-bottom: 10px; margin-top: 10px; text-align: center;">What model to choose?</b>
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; padding: 10px; gap: 10px;">
+                <div style="width: 45%; text-align: left; text-wrap: balance; display: flex; align-items: center; justify-content: center; flex-direction: row; font-size: 1em; font-weight: bold; gap: 10px;">
+                    <span class="material-symbols-outlined dreamy-text" style="cursor: text;">bolt</span>
+                    GPT-4o mini
+                </div>
+                <div style="width: 45%; text-align: left; text-wrap: balance; display: flex; align-items: center; justify-content: center; flex-direction: row; font-size: 1em; font-weight: bold; gap: 10px;">
+                    <span class="material-symbols-outlined dreamy-text" style="cursor: text;">temp_preferences_custom</span>
+                    GPT-4o
+                </div>
             </div>
-            <div id="premium-model" class="" onclick="changeAiModel('premium');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center;">
-                GPT-4o
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; padding: 10px; gap: 10px;">
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center;">
+                    <p>Great for fast and lightweight tasks</p>
+                </div>
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center;">
+                    <p>Best for complex, multi-step tasks requiring high-intelligence</p>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; padding: 10px; gap: 10px;">
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center; gap: 10px;">
+                    <p>Context window of last 11 messages</p>
+                </div>
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center; gap: 10px;">
+                    <p>4x longer context window</p>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; padding: 10px; gap: 10px;">
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center; gap: 10px;">
+                    <p>Text only</p>
+                </div>
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center; gap: 10px;">
+                    <p>Text and images</p>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; padding: 10px; gap: 10px;">
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center; gap: 10px;">
+                    Available for free
+                </div>
+                <div style="width: 45%; display: flex; text-align: center; text-wrap: balance; justify-content: center; gap: 10px;">
+                    Included with GrütteCloud PLUS
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; background-color: var(--background-tile-color); border-radius: 30px; border: 2px solid var(--box-shadow-color); width: 100%;">
+            <div id="free-model" class="" onclick="changeAiModel('free');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center; gap: 10px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                <span class="material-symbols-outlined align-icons-center" style="margin: 0; font-size: 1.2em;">bolt</span>
+                <p>GPT-4o mini</p>
+            </div>
+            <div id="premium-model" class="" onclick="changeAiModel('premium');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center; gap: 10px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                <span class="material-symbols-outlined align-icons-center" style="margin: 0; font-size: 1.2em;">temp_preferences_custom</span>
+                <p>GPT-4o</p>
             </div>
             {% if not has_premium %}
                 <div class="dreamy-button" style="position: absolute; margin-top: -10px; padding: 3px 7px; border-radius: 30px; font-size: 0.8em; color: var(--white-color); right: 10px;">
@@ -257,10 +310,10 @@
         <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">System Controls:</p>
         <div style="display: flex; flex-direction: row; width: 100%; gap: 10px;">
             <div class="unselected-button" style="text-decoration: none; border-radius: 50%; width: 50px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center;">
-                <span id="darkModeToggle" class="material-symbols-outlined" title="Darkmode" style="margin: 0;">light_mode</span>
+                <span id="darkModeToggle" class="material-symbols-outlined" title="Darkmode" style="margin: 0;">sunny</span>
             </div>
             <a href="/ai/restart" class="unselected-button" style="gap: 10px; text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
-                <span class="material-symbols-outlined" title="Restart" style="margin: 0;">restart_alt</span>
+                <span class="material-symbols-outlined" title="Restart" style="margin: 0;">sync</span>
                 Restart MyAI
             </a>
         </div>
@@ -286,15 +339,6 @@
         {% endif %}
 
     };
-
-    /*var body = document.body;
-    var isDarkMode = localStorage.getItem('darkMode');
-
-    if (isDarkMode === 'true') {
-        body.classList.add('dark-mode');
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkModeToggle.innerHTML = 'dark_mode'; // Change the inner HTML to the dark mode icon
-    }*/
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>
@@ -337,11 +381,21 @@
         } else {
             aiPreferences.classList.remove("animate__slideInUp");
             aiPreferences.classList.add("animate__slideOutDown");
+            document.getElementById("model-help").style.display = "none";
             setTimeout(function() {
                 aiPreferences.style.display = 'none';
                 aiPreferences.classList.remove('animate__slideOutDown');
             }, 750);
 
+        }
+    }
+
+    function toggleModelHelp() {
+        var modelHelp = document.getElementById("model-help");
+        if (modelHelp.style.display === "none") {
+            modelHelp.style.display = "flex";
+        } else {
+            modelHelp.style.display = "none";
         }
     }
 
@@ -359,6 +413,7 @@
             document.getElementById('premium-model').classList.remove('dreamy-button');
             document.getElementById('free-model').classList.add('dreamy-button');
         }
+        document.getElementById("model-help").style.display = "none";
         $.ajax({
             url: '/changeAiModel',
             type: 'POST',

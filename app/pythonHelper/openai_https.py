@@ -41,7 +41,8 @@ class OpenAIWrapper:
             if ai_model not in ["gpt-4o-mini", "gpt-4o"]:
                 raise ValueError("Invalid AI model, please use 'gpt-4o' or 'gpt-4o-mini'")
             elif ai_model == "gpt-4o":
-                ai_model = "chatgpt-4o-latest"
+                #ai_model = "chatgpt-4o-latest"
+                ai_model = "gpt-4o-2024-08-06"
             else:
                 ai_model = "gpt-4o-mini"
         
@@ -124,7 +125,7 @@ if __name__ == "__main__":
     username = "Jan"
     ai_personality = "UwuGirl"
     has_premium = True
-    ai_model = "gpt-4o-mini"
+    ai_model = "gpt-4o"
     url = "https://www.gruettecloud.com/static/gruettechat.png"
 
     response = client.get_openai_response(conversation_log, username, ai_personality, has_premium, ai_model, url)
