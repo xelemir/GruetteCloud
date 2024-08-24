@@ -427,9 +427,13 @@
             if (optionalMessage !== null) {
                 message = optionalMessage;
             } else if (message === '' && fileInput.files.length === 0) {
-                return; // Don't send empty message
+                return;
             } else {
                 appendMessage({ role: "user", content: message });
+                // scroll to bottom
+                var chatMessages = $(".chat-messages");
+                chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
+                
             }
 
             $('#loadingAnimation').show();
@@ -476,33 +480,6 @@
                 }
             });
         }
-
-        /*function searchAndReplaceImages() {
-            var regex = /\[.*?\]\(.*?\)/g;
-            var messages = $(".message");
-            for (var i = 0; i < messages.length; i++) {
-                var message = messages[i];
-                if (message.innerHTML.includes("https://www.gruettecloud.com/static/")) {
-
-                    var url = message.innerHTML.match(/(https?:\/\/[^\s]+)/g)[0];
-                    url = url.toString().replace(")", "");
-                    if (url.endsWith(".")) {
-                        url = url.slice(0, -1);
-                    } else if (url.endsWith("!")) {
-                        url = url.slice(0, -1);
-                    }
-                    
-                    // find image element within message
-                    var img = message.getElementsByTagName("img")[0];
-                    img.src = url;
-
-                    console.log(i);
-                    console.log(url);
-                }
-
-                message.innerHTML = message.innerHTML.replace(regex, "");
-            }
-        }*/
 
         function findAndReplaceMarkdown() {
             var messages = $(".message");
