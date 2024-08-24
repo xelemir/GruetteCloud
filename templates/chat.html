@@ -270,9 +270,9 @@
     {% if blocked != "none" %}
         <div id="user-input" style="display: block; justify-content: center; align-items: center; color: var(--text-color); text-align: center; margin-bottom: 20px; background-color: var(--background-tile-color); border-radius: 30px; padding: 10px; border-style: solid; border-color: var(--box-shadow-color); border-width: 2px;">
             {% if blocked == "other" %}
-                <p>You have blocked {{ recipient }}.</p>
+                <p>You have blocked {{ {{ recipient_id }} }}.</p>
                 <p>You will not receive any messages from them.</p>
-                <a href="/unblock/{{ recipient }}" class="white-button-blue-on-hover" style="margin-left: 10px;">Unblock {{ recipient }}</a>
+                <a href="/unblock/{{ {{ recipient_id }} }}" class="white-button-blue-on-hover" style="margin-left: 10px;">Unblock {{ recipient }}</a>
             {% else %}
                 <p>{{ recipient }} has blocked you.</p>
                 <p>You cannot send them any messages.</p>
