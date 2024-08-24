@@ -69,15 +69,15 @@ This file contains the update logs for the current database update on GrütteClo
 
 | Table Name | Created | Data Migrated |
 |------------|---------|---------------|
-| `users` | 2024-08-20 | - |
-| `chats` | 2024-08-20 | - |
-| `blocked_users` | 2024-08-20 | - |
-| `finance_receipts` | 2024-08-20 | - |
-| `finance_receipt_items` | 2024-08-20 | - |
-| `platform_notifications` | 2024-08-20 | - |
-| `tickets` | 2024-08-20 | - |
-| `drive_links` | 2024-08-20 | - |
-| `password_resets` | 2024-08-20 | - |
+| `users` | 2024-08-20 | 2024-08-22 |
+| `chats` | 2024-08-20 | 2024-08-22 |
+| `blocked_users` | 2024-08-20 | 2024-08-22 |
+| `finance_receipts` | 2024-08-20 | 2024-08-22 |
+| `finance_receipt_items` | 2024-08-20 | 2024-08-22 |
+| `platform_notifications` | 2024-08-20 | 2024-08-22 |
+| `tickets` | 2024-08-20 | 2024-08-22 |
+| `drive_links` | 2024-08-20 | 2024-08-22 |
+| `password_resets` | 2024-08-20 | 2024-08-22 |
 
 | Python File Name | Code Updated | Notes |
 |------------------|--------------|-------|
@@ -90,4 +90,4 @@ This file contains the update logs for the current database update on GrütteClo
 | `tool_routes.py` | 2024-08-21 | Implemented, however some API-endpoints for the mobile app are still missing. |
 | `dashboard_routes.py` | 2024-08-21 | - |
 | `premium_routes.py` | 2024-08-21 | - |
-| Folder: pythonHelper | 2024-08-21 | - |
+| Folder `pythonHelper` | 2024-08-21 | - |
