@@ -435,9 +435,7 @@
             }
 
             $('#loadingAnimation').show();
-            // scroll to bottom
-            var chatMessages = $(".chat-messages");
-            chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
+            
 
             
             var file = fileInput.files[0]; // Get selected file
@@ -449,6 +447,10 @@
             appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
 
             $('#messageInput').val('');
+
+            // scroll to bottom
+            var chatMessages = $(".chat-messages");
+            chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
             
             if (fileInput.files.length > 0) {
                 $('#fileInput').val('');
