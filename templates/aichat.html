@@ -103,6 +103,13 @@
             cursor: pointer;
             box-shadow: none;
         }
+
+        .message {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            white-space: normal; 
+        }
     </style>
 
 </head>
@@ -156,10 +163,9 @@
     <div class="chat-messages">
         {% for message in chat_history %}
             {% if message.role == 'assistant' %}
-                
-                    <div class="message left-bubble">
-                        {{ message.content }}
-                    </div>
+                <div class="message left-bubble">
+                    {{ message.content }}
+                </div>
             {% else %}
                 <div class="message right-bubble">
                     {{ message.content }}
