@@ -156,16 +156,10 @@
     <div class="chat-messages">
         {% for message in chat_history %}
             {% if message.role == 'assistant' %}
-                {% if "https://www.gruettecloud.com/static/" in message.content %}
-                    <div class="message left-bubble" style="display: flex; flex-direction: column; width: 400px;">
-                        <img src="" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">
-                        {{ message.content }}
-                    </div>
-                {% else %}
+                
                     <div class="message left-bubble">
                         {{ message.content }}
                     </div>
-                {% endif %}
             {% else %}
                 <div class="message right-bubble">
                     {{ message.content }}
@@ -542,16 +536,19 @@
 
                 // ![link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\!\[(.*?)\]\((.*?)\)/g,
-                "<br><img src=\"$2\" style='margin: 10px 0; border-radius: 10px; max-height: 300px; max-width: 100%;'><br>");
+                "<br><a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
 
                 // [link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g,
-                "<br><img src=\"$2\" style='margin: 10px 0; border-radius: 10px; max-height: 300px; max-width: 100%;'><br>");
+                "<br><a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
 
                 //    - list item -> <li>list item</li>
                 content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
 
                 // if content starts with <br>, remove it
+                if (content.startsWith("<br>")) {
+                    content = content.slice(4);
+                }
                 if (content.startsWith("<br>")) {
                     content = content.slice(4);
                 }
@@ -591,160 +588,3 @@
 
     });
 </script>
-
-<!--<script>
-    $(document).ready(function() {
-        var sendMessageForm = $("#sendMessageForm");
-        var chatMessages = $(".chat-messages");
-        var messageInput = $("#messageInput");
-        var submitButton = $("#submitButton");
-        var loadingAnimation = $("#loadingAnimation");
-
-        // Remove pictures from messages via REGEX and add url to images
-        var regex = /\[.*?\]\(.*?\)/g;
-        var messages = $(".message");
-        for (var i = 0; i < messages.length; i++) {
-            var message = messages[i];
-            if (message.innerHTML.includes("https://www.gruettecloud.com/static/")) {
-
-                var url = message.innerHTML.match(/(https?:\/\/[^\s]+)/g)[0];
-                url = url.toString().replace(")", "");
-                if (url.endsWith(".")) {
-                    url = url.slice(0, -1);
-                }
-                
-                // find image element within message
-                var img = message.getElementsByTagName("img")[0];
-                img.src = url;
-
-                console.log(i);
-                console.log(url);
-            }
-
-            message.innerHTML = message.innerHTML.replace(regex, "");
-        }
-    
-        function appendMessage(message) {
-            var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
-
-            // if link in message, add image
-            if (message.content.includes("https://www.gruettecloud.com/static/")) {
-
-                var url = message.content.match(/(https?:\/\/[^\s]+)/g)[0];
-                url = url.toString().replace(")", "");
-                if (url.endsWith(".")) {
-                    url = url.slice(0, -1);
-                }
-
-                // Remove [...](...) as REGEX
-                var regex = /\[.*?\]\(.*?\)/g;
-                var msg_without_img = message.content.replace(regex, "");
-
-                chatMessages.prepend('<div class="message ' + messageClass + '" style="display: flex; flex-direction: column; width: 400px;">' 
-                    + '<img src="' + url + '" style="max-width: 100%; border-radius: 10px; padding: 0px; margin-bottom: 10px">'
-                    + msg_without_img + '</div>');
-
-            } else {
-                chatMessages.prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
-            }
-        }
-    
-        function sendMessage(message) {
-            // Add the user's message to the top of the chat instantly
-            if (message !== "#!# Requesting Welcome Message #!#") {
-                appendMessage({ role: "user", content: message });
-            }
-    
-            $.ajax({
-                type: "POST",
-                url: "/ai/chat",
-                data: { message: message },
-                dataType: "json",
-                success: function(response) {
-                    // Clear all old messages
-                    chatMessages.empty();
-    
-                    // Append all new AI responses to the chat
-                    for (var i = 0; i < response.chat_history.length; i++) {
-                        appendMessage(response.chat_history[i]);
-                    }
-    
-                    // Enable input and button
-                    messageInput.prop("disabled", false);
-                    submitButton.prop("disabled", false);
-    
-                    // Scroll to the bottom of the chat
-                    chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
-    
-                    // Hide the loading animation
-                    loadingAnimation.hide();
-
-                    // Focus on the input
-                    messageInput.focus();
-                },
-                error: function(error) {
-                    console.error(error);
-                    // Handle error here if needed
-                }
-            });
-        }
-    
-        function sendMessageEvent() {
-    
-            var message = messageInput.val(); // Get the message text
-    
-            // Disable input and button
-            messageInput.prop("disabled", true);
-            submitButton.prop("disabled", true);
-            loadingAnimation.show();
-
-            // Send the message
-            sendMessage(message);
-
-            // Send typing indicator
-            appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
-    
-            // Clear the input
-            messageInput.val("");
-        }
-    
-        // Function to check if chat is empty and request welcome message if needed
-        function checkAndRequestWelcomeMessage() {
-            if (chatMessages.children().length === 0) {
-                sendMessage("#!# Requesting Welcome Message #!#");
-                // Send typing indicator
-                appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
-            }
-        }
-    
-        // Call the checkAndRequestWelcomeMessage function when the page loads
-        checkAndRequestWelcomeMessage();
-    
-
-
-        function toggleAiPreferences() {
-            var aiPreferences = document.getElementById("ai-preferences");
-            if (aiPreferences.style.display === "none") {
-                aiPreferences.style.display = "block";
-                aiPreferences.classList.remove("animate__slideOutDown");
-                aiPreferences.classList.add("animate__slideInUp");
-            } else {
-                aiPreferences.classList.remove("animate__slideInUp");
-                aiPreferences.classList.add("animate__slideOutDown");
-                setTimeout(function() {
-                    aiPreferences.style.display = 'none';
-                    aiPreferences.classList.remove('animate__slideOutDown');
-                }, 750);
-
-            }
-        }
-
-
-        if (!localStorage.getItem("aiChatDismissed")) {
-            localStorage.setItem("aiChatDismissed", true);
-        }
-
-    });
-    
-        
-</script>-->
