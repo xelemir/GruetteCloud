@@ -542,7 +542,7 @@
 
                 // ![link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\!\[(.*?)\]\((.*?)\)/g,
-                "<br><img src=\"$2\" style='margin: 10px 0; border-radius: 15px; max-width: 45vw;'><br>");
+                "<br><img src=\"$2\" style='margin: 10px 0; border-radius: 10px; max-height: 300px; max-width: 100%;'><br>");
 
                 //    - list item -> <li>list item</li>
                 content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
