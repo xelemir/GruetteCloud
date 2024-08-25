@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Paste Example</title>
+</head>
+<body>
+    <form>
+        <!-- Text input field -->
+        <label for="textInput">Text Input:</label>
+        <input type="text" id="textInput" name="textInput" placeholder="Type here or paste image with Ctrl + V">
+        <br><br>
+
+        <!-- Hidden file input field for image -->
+        <input type="file" id="imageInput" name="imageInput" accept="image/*" style="display: none;">
+        
+        <!-- Image preview -->
+        <div id="imagePreview" style="display: none;">
+            <p>Image preview:</p>
+            <img id="previewImage" style="max-width: 100%; height: auto;">
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('textInput').addEventListener('paste', function (event) {
+            const items = event.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") !== -1) {
+                    const blob = items[i].getAsFile();
+                    const imageInput = document.getElementById('imageInput');
+                    
+                    // Create a File object to set as the value of the file input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(blob);
+                    imageInput.files = dataTransfer.files;
+
+                    // Display the image preview
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('previewImage').src = e.target.result;
+                        document.getElementById('imagePreview').style.display = 'block';
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

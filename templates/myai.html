@@ -175,18 +175,25 @@
         {% endfor %}
     </div>
     
-    <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
+    
+    <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px; justify-content: end; align-items: end;">
         <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
-        <div id="fileLabel" style="width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+        <div id="fileLabel" style="bottom: 0; width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
             <span class="material-symbols-outlined">add</span>
         </div>
-        <div id="removeDiv" style="width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+        <div id="removeDiv" style="bottom: 0; width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
             <span class="material-symbols-outlined">close</span>
         </div>
-        <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; padding-left: 20px; padding-right: 55px; height: 55px; background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin: 0; width: calc(100% - 65px);">
-        <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-            <span class="material-symbols-outlined">arrow_upward</span>
-        </button>
+        <div id="messageInputDiv" style="width: 100%; border: 2px solid var(--box-shadow-color); border-radius: 30px;">
+            <div id="image-preview" style="display: none; padding: 5px; width: 300px; max-width: 50vw;">
+                <img id="previewImage" style="width: 100%; max-width: 200px; max-height: 20svh; border-radius: 23px; object-fit: cover;">
+            </div>
+            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 55px; background-color: transparent; margin: 0; width: 100%;">
+            <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 40px; height: 40px; position: absolute; right: 8px; bottom: -10px; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined">arrow_upward</span>
+            </button>
+        <div>
+        
     </div>
     <div id="cookie-banner"></div>
 
@@ -335,10 +342,10 @@
             document.getElementById('free-model').classList.add('dreamy-button');
             document.getElementById('fileLabel').style.display = 'none';
             document.getElementById('removeDiv').style.display = 'none';
-            document.getElementById('messageInput').style.width = '100%';
+            document.getElementById('messageInputDiv').style.width = '100%';
         {% else %}
             document.getElementById('premium-model').classList.add('dreamy-button');
-            document.getElementById('messageInput').style.width = 'calc(100% - 65px)';
+            document.getElementById('messageInputDiv').style.width = 'calc(100% - 65px)';
         {% endif %}
 
     };
@@ -354,26 +361,45 @@
         const removeDiv = document.getElementById("removeDiv");
         const messageInput = document.getElementById("messageInput");
 
+        // Replace empty messages by user with "*You sent an image.*"
+        for (let i = 0; i < document.getElementsByClassName("message").length; i++) {
+            if (document.getElementsByClassName("message")[i].textContent.trim() === "" && document.getElementsByClassName("message")[i].classList.contains("right-bubble")) {
+                document.getElementsByClassName("message")[i].textContent = "*You sent an image.*";
+            }
+            
+        }
+
         fileInput.addEventListener("change", function() {
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
-                messageInput.value = selectedFile.name;
                 fileLabel.style.display = "none";
                 removeDiv.style.display = "flex";
                 document.getElementById('sendButton').style.backgroundColor = 'transparent';
                 document.getElementById('sendButton').classList.add('dreamy-button');
+
+                // Display the image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(selectedFile);
+
             } else {
                 messageInput.value = '';
                 fileLabel.style.display = "flex";
                 removeDiv.style.display = "none";
-                
-
+                document.getElementById('previewImage').src = '';
+                document.getElementById('image-preview').style.display = 'none';
             }
         });
 
         removeDiv.addEventListener("click", function() {
             fileInput.value = ''; // Clear the selected file
             messageInput.value = ''; // Clear the message
+            document.getElementById('previewImage').src = ''; // Clear the image preview
+            document.getElementById('image-preview').style.display = 'none'; // Hide the image preview
+
             fileLabel.style.display = "flex";
             removeDiv.style.display = "none";
 
@@ -388,6 +414,34 @@
             } else {
                 document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
                 document.getElementById('sendButton').classList.remove('dreamy-button');
+            }
+        });
+
+        messageInput.addEventListener("paste", function() {
+            const items = event.clipboardData.items;
+            console.log("paste");
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") !== -1) {
+                    const blob = items[i].getAsFile();
+                    
+                    // Create a File object to set as the value of the file input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(blob);
+                    fileInput.files = dataTransfer.files;
+
+                    document.getElementById('fileLabel').style.display = 'none';
+                    document.getElementById('removeDiv').style.display = 'flex';
+                    
+                    // Display the image preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('previewImage').src = e.target.result;
+                        document.getElementById('image-preview').style.display = 'block';
+                        document.getElementById('sendButton').style.backgroundColor = 'transparent';
+                        document.getElementById('sendButton').classList.add('dreamy-button');
+                    };
+                    reader.readAsDataURL(blob);
+                }
             }
         });
 
@@ -431,11 +485,11 @@
         if (model === "premium") {
             document.getElementById('free-model').classList.remove('dreamy-button');
             document.getElementById('premium-model').classList.add('dreamy-button');
-            document.getElementById('messageInput').style.width = 'calc(100% - 65px)';
+            document.getElementById('messageInputDiv').style.width = 'calc(100% - 65px)';
         } else {
             document.getElementById('premium-model').classList.remove('dreamy-button');
             document.getElementById('free-model').classList.add('dreamy-button');
-            document.getElementById('messageInput').style.width = '100%';
+            document.getElementById('messageInputDiv').style.width = '100%';
         }
         document.getElementById("model-help").style.display = "none";
         $.ajax({
@@ -476,11 +530,11 @@
                 if (model === "premium") {
                     document.getElementById('premium-model').classList.remove('dreamy-button');
                     document.getElementById('free-model').classList.add('dreamy-button');
-                    document.getElementById('messageInput').style.width = '100%';
+                    document.getElementById('messageInputDiv').style.width = '100%';
                 } else {
                     document.getElementById('free-model').classList.remove('dreamy-button');
                     document.getElementById('premium-model').classList.add('dreamy-button');
-                    document.getElementById('messageInput').style.width = 'calc(100% - 65px)';
+                    document.getElementById('messageInputDiv').style.width = 'calc(100% - 65px)';
                 }
             }
         });
@@ -516,7 +570,7 @@
             } else if (message === '' && fileInput.files.length === 0) {
                 return;
             } else {
-                appendMessage({ role: "user", content: message });
+                appendMessage({ role: "user", content: "*You sent an image.*    " + message });
                 
 
             }
@@ -547,6 +601,8 @@
 
             document.getElementById('sendButton').classList.remove('dreamy-button');
             document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+            document.getElementById('previewImage').src = '';
+            document.getElementById('image-preview').style.display = 'none';
 
             
             $.ajax({
@@ -629,11 +685,13 @@
 
         findAndReplaceMarkdown();
 
-        //searchAndReplaceImages();
-
         function appendMessage(message) {
             var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
-            $(".chat-messages").prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+            if (message.content === "") {
+                $(".chat-messages").prepend('<div class="message ' + messageClass + '">*You sent an image.*</div>');
+            } else {
+                $(".chat-messages").prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
+            }
             findAndReplaceMarkdown();
         }
 
@@ -650,8 +708,5 @@
     
         // Call the checkAndRequestWelcomeMessage function when the page loads
         checkAndRequestWelcomeMessage();
-
-        
-
     });
 </script>

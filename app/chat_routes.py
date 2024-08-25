@@ -272,7 +272,6 @@ def myai():
     else:
         
         if "user_id" in session:
-            print(session["user_id"])
             user = sql.readSQL(f"SELECT ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")[0]
         else:
             selected_ai_personality = session.get("ai_personality", "Default")
