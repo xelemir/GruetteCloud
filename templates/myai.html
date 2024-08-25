@@ -582,7 +582,7 @@
             } else if (message === '' && fileInput.files.length === 0) {
                 return;
             } else if (fileInput.files.length > 0) {
-                appendMessage({ role: "user", content: '*Sending image...*\n\n' + message });
+                appendMessage({ role: "user", content: '*Sending image...*\n' + message });
             } else {
                 appendMessage({ role: "user", content: message });
             }
