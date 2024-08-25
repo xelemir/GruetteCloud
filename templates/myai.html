@@ -432,7 +432,6 @@
 
         messageInput.addEventListener("paste", function() {
             const items = event.clipboardData.items;
-            console.log("paste");
             for (let i = 0; i < items.length; i++) {
                 if (items[i].type.indexOf("image") !== -1) {
                     const blob = items[i].getAsFile();
@@ -581,13 +580,17 @@
             if (optionalMessage !== null) {
                 message = optionalMessage;
             } else if (message === '' && fileInput.files.length === 0) {
-                console.log("No message or file to send.");
                 return;
+            } else if (fileInput.files.length > 0) {
+                appendMessage({ role: "user", content: '*Sending image...*\n\n' + message });
             } else {
                 appendMessage({ role: "user", content: message });
-                
-
             }
+            
+            
+            //else {
+                //appendMessage({ role: "user", content: message });
+            //}
 
             $('#loadingAnimation').show();
             

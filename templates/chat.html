@@ -433,7 +433,6 @@
 
         messageInput.addEventListener("paste", function() {
             const items = event.clipboardData.items;
-            console.log("paste");
             for (let i = 0; i < items.length; i++) {
                 if (items[i].type.indexOf("image") !== -1) {
                     const blob = items[i].getAsFile();
