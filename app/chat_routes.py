@@ -228,7 +228,11 @@ def chat_file(filename):
     if file == []:
         return abort(404)
     else:
-        return send_file(f"{gruettedrive_path}/chat_images/{filename}")
+        try:
+            return send_file(f"{gruettedrive_path}/chat_images/{filename}")
+        except Exception as e:
+            print(e)
+            return abort(404)
         
 @chat_route.route("/myai", methods=["POST", "GET"])
 def myai():
