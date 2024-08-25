@@ -172,9 +172,18 @@
                     {{ message.content }}
                 </div>
             {% else %}
-                <div class="message right-bubble">
-                    {{ message.content }}
-                </div>
+                {% if message.image %}
+                    <div class="message right-bubble">
+                        {{ message.content }}
+                    </div>
+                    <div class="message right-bubble">
+                        []({{ message.image }})
+                    </div>
+                {% else %}
+                    <div class="message right-bubble">
+                        {{ message.content }}
+                    </div>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>
@@ -365,10 +374,10 @@
         const removeDiv = document.getElementById("removeDiv");
         const messageInput = document.getElementById("messageInput");
 
-        // Replace empty messages by user with "*You sent an image.*"
         for (let i = 0; i < document.getElementsByClassName("message").length; i++) {
             if (document.getElementsByClassName("message")[i].textContent.trim() === "" && document.getElementsByClassName("message")[i].classList.contains("right-bubble")) {
-                document.getElementsByClassName("message")[i].textContent = "*You sent an image.*";
+                // remove empty messages
+                document.getElementsByClassName("message")[i].remove();
             }
             
         }
@@ -574,7 +583,7 @@
             } else if (message === '' && fileInput.files.length === 0) {
                 return;
             } else {
-                appendMessage({ role: "user", content: "*You sent an image.*    " + message });
+                appendMessage({ role: "user", content: message });
                 
 
             }

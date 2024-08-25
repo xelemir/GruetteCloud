@@ -258,10 +258,9 @@ def myai():
             if file and ai_model in ["gpt-4o"]:
                 chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/myai-file/{filename}")
                 if chat_history[-1]["content"] == "I'm having some trouble processing your request. Please try again later.":
-                    #os.remove(os.path.join(gruettedrive_path, 'myai', filename))
-                    pass
+                    os.remove(os.path.join(gruettedrive_path, 'myai', filename))
                 else:
-                    chat_history[-1]["image"] = f"https://www.gruettecloud.com/myai-file/{filename}"
+                    chat_history[-2]["image"] = f"https://www.gruettecloud.com/myai-file/{filename}"
                 
                 #os.remove(os.path.join(gruettedrive_path, 'myai', filename))
             else:
@@ -273,6 +272,7 @@ def myai():
 
         session["chat_history"] = chat_history
         chat_response = [{"role": message["role"], "content": message["content"], "image": message.get("image")} for message in chat_history]
+                
         return jsonify({"chat_history": chat_response})
 
     else:
