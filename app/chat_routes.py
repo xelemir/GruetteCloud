@@ -226,8 +226,15 @@ def myai():
         
         if file:
             file_extension = file.filename.split(".")[-1]
-            filename = hex(random.getrandbits(128))[2:] + "_" + str(session["user_id"]) + "." + file_extension
-            file.save(os.path.join(gruettedrive_path, 'myai', filename))
+            
+            for _ in range(50):
+                if _ == 49: file, filename = None, None
+                filename = hex(random.getrandbits(128))[2:] + "." + file_extension
+                if not os.path.exists(os.path.join(gruettedrive_path, 'myai', filename)):
+                    file.save(os.path.join(gruettedrive_path, 'myai', filename))
+                    break
+            
+            
                         
         if message == "#!# Requesting Welcome Message #!#":
             chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})

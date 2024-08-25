@@ -675,11 +675,11 @@
 
                 // ![link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\!\[(.*?)\]\((.*?)\)/g,
-                "<br><a href=\"$2\"><img src=\"$2\" class='chat-image' style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
+                "<a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px; onerror='this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';'></a>");
 
                 // [link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g,
-                "<br><a href=\"$2\"><img src=\"$2\" class='chat-image' style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
+                "<a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px; onerror='this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';'></a>");
 
                 //    - list item -> <li>list item</li>
                 content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
@@ -691,15 +691,6 @@
                 
                 message.innerHTML = content;
             }
-
-            var images = document.getElementsByClassName("chat-image");
-            // check if the images are Available
-            for (var i = 0; i < images.length; i++) {
-                images[i].onerror = function() {
-                    this.style.src = "https://www.gruettecloud.com/static/icons/folder-error.svg";
-                };
-            }
-
         }
 
         findAndReplaceMarkdown();
