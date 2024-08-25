@@ -1,5 +1,6 @@
 import os
 import random
+import time
 from flask import abort, render_template, request, redirect, send_file, session, jsonify, Blueprint, url_for
 import logging
 from werkzeug.utils import secure_filename
@@ -166,50 +167,68 @@ def chat_with(recipient_id):
     if request.method == 'POST':
         
         if blocked != "none":
-            return redirect(f'/chat/{recipient}')
+            return jsonify({"error": "You are blocked from sending messages to this user."}), 400
         
-        if 'file' in request.files and request.files['file'].filename != '':
+        if 'file' in request.files:
 
             file = request.files['file']
             
-            filename = secure_filename(file.filename)
-
-            file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+            file_extension = file.filename.split(".")[-1]
             
-            encypted_message = str(eh.encrypt_message(f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat"))
-            sql.writeSQL(f"INSERT INTO chats (author_id, recipient_id, message_content, is_read) VALUES ('{user_id}', '{recipient}', '{encypted_message}' , {False})")
-            return redirect(f'/chat/{recipient}')
+            for _ in range(50):
+                if _ == 49: file, filename = None, None
+                filename = hex(random.getrandbits(128))[2:] + "_" + str(session["user_id"]) + "_" + str(recipient) + "." + file_extension
+                if not os.path.exists(os.path.join(gruettedrive_path, 'chat_images', filename)):
+                    file.save(os.path.join(gruettedrive_path, 'chat_images', filename))
+                    encypted_message = str(eh.encrypt_message(f"[](/chat-file/{filename})\n{request.form['message']}"))
+                    sql.writeSQL(f"INSERT INTO chats (author_id, recipient_id, message_content, is_read) VALUES ('{user_id}', '{recipient}', '{encypted_message}', {False})")
+                    message_id = sql.readSQL(f"SELECT id FROM chats WHERE author_id = '{user_id}' AND recipient_id = '{recipient}' AND message_content = '{encypted_message}'")[0]["id"]
+                    sql.writeSQL(f"INSERT INTO chat_images (filename, author_id, recipient_id, chat_message_id) VALUES ('{filename}', '{user_id}', '{recipient}', '{message_id}')")
+                    break
             
         # Check if the message is empty or too long
-        if request.form['message'] == '' or len(request.form['message']) > 1000:
+        elif request.form['message'] == '':
             print(f"Invalid message: {request.form['message']}")
             
-            return redirect(f'/chat/{recipient}')
+            return jsonify({"error": "Invalid message"}), 400
 
         # If the message is valid, encrypt it and send it to the database 
-        else:
+        elif request.form['message'] != '':
             encypted_message = str(eh.encrypt_message(request.form['message']))
             sql.writeSQL(f"INSERT INTO chats (author_id, recipient_id, message_content, is_read) VALUES ('{user_id}', '{recipient}', '{encypted_message}', {False})")
-            return redirect(f'/chat/{recipient}')
-
-    # Get is used to load the chat
-    get_messages = sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{user_id}' AND recipient_id = '{recipient}' OR author_id = '{recipient}' AND recipient_id = '{user_id}' ORDER BY created_at DESC")
-
-    for message in get_messages:
-        # Decrypt the message
-        try:
-            decrypted_message = str(eh.decrypt_message(message["message_content"]))
-        except:
-            decrypted_message = "Decryption Error!"
-
-        # Check if the message was sent by the user or the recipient and add it to the list
-        if message["author_id"] == user_id:
-            messages_list.append(["You", decrypted_message])
-        else:
-            messages_list.append([recipient, decrypted_message])
             
-    # Render the template
-    return render_template('chat.html', user_id=user_id, recipient=search_recipient[0]["username"], messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session), recipient_id=recipient)
+        return jsonify({"success": "Message sent!"}), 200
+
+    else: # GET request
+        get_messages = sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{user_id}' AND recipient_id = '{recipient}' OR author_id = '{recipient}' AND recipient_id = '{user_id}' ORDER BY created_at DESC")
+
+        for message in get_messages:
+            # Decrypt the message
+            try:
+                decrypted_message = str(eh.decrypt_message(message["message_content"]))
+            except:
+                decrypted_message = "Decryption Error!"
+
+            # Check if the message was sent by the user or the recipient and add it to the list
+            if message["author_id"] == user_id:
+                messages_list.append(["You", decrypted_message])
+            else:
+                messages_list.append([recipient, decrypted_message])
+                
+        # Render the template
+        return render_template('chat.html', user_id=user_id, recipient=search_recipient[0]["username"], messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session), recipient_id=recipient)
+    
+@chat_route.route("/chat-file/<path:filename>", methods=["GET"])
+def chat_file(filename):
+    if "user_id" not in session:
+        return abort(401)
+    sql = SQLHelper.SQLHelper()
+    user_id = session["user_id"]
+    file = sql.readSQL(f"SELECT * FROM chat_images WHERE filename = '{filename}' AND author_id = '{user_id}' OR filename = '{filename}' AND recipient_id = '{user_id}'")
+    if file == []:
+        return abort(404)
+    else:
+        return send_file(f"{gruettedrive_path}/chat_images/{filename}")
         
 @chat_route.route("/myai", methods=["POST", "GET"])
 def myai():
@@ -224,18 +243,17 @@ def myai():
         file = request.files.get("file")
         filename = None
         
-        if file:
+        if file and "user_id" in session:
+            
             file_extension = file.filename.split(".")[-1]
             
             for _ in range(50):
                 if _ == 49: file, filename = None, None
-                filename = hex(random.getrandbits(128))[2:] + "." + file_extension
+                filename = hex(random.getrandbits(128))[2:] + "_" + str(session["user_id"]) + "." + file_extension
                 if not os.path.exists(os.path.join(gruettedrive_path, 'myai', filename)):
                     file.save(os.path.join(gruettedrive_path, 'myai', filename))
                     break
             
-            
-                        
         if message == "#!# Requesting Welcome Message #!#":
             chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
         elif message == "#!# Requesting Welcome Message DE #!#":

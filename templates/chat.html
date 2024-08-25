@@ -32,6 +32,10 @@
 
         }
 
+        .message-input:focus {
+            outline: none;
+        }
+
         .right-bubble.image-read-receipt {
             flex-direction: column;
         }
@@ -48,6 +52,60 @@
         }
     </style>
     <script>
+        function findAndReplaceMarkdown() {
+            var messages = $(".message");
+
+            for (var i = 0; i < messages.length; i++) {
+                var message = messages[i];
+                var content = message.innerHTML;
+                // **bold** -> <b>bold</b>
+                content = content.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+                // *italic* -> <i>italic</i>
+                content = content.replace(/\*(.*?)\*/g, "<i>$1</i>");
+                // ~~strikethrough~~ -> <s>strikethrough</s>
+                content = content.replace(/~~(.*?)~~/g, "<s>$1</s>");
+
+                // Remove coding language from code block
+                content = content.replace(/```(.*?)\n/g, "```");
+
+                // ```code``` -> <span style='background-color: var(--box-shadow-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>any lines of anything</code></span>
+                content = content.replace(/```([\s\S]*?)```/g, "<span style='background-color: var(--box-shadow-color); border-radius: 10px; padding: 10px; display: inline-block; margin-bottom: 10px;'><code>$1</code></span>");
+                
+                const codeBlockRegex = /<code>((?:.|\n)*?)<\/code>/g;
+                content = content.replace(codeBlockRegex, (match, code) => {
+                    const indentedCode = code.replace(/(    )/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    return `<code>${indentedCode}</code>`;
+                });
+
+                // `code` -> <span style='background-color: var(--box-shadow-color); border-radius: 10px; padding: 5px; display: inline-block;'><code>code</code></span>
+                content = content.replace(/`([^`]+)`/g, "<span style='background-color: var(--box-shadow-color); border-radius: 5px; padding: 5px; display: inline-block;'><code>$1</code></span>");
+                
+                // blank line -> <br>
+                content = content.replace(/\n/g, "<br>");
+
+                // ![link](url) -> <a href="url"><img src="url"></a>
+                content = content.replace(/\!\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
+                    return `<img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';">`;
+                });
+                
+                // [link](url) -> <a href="url"><img src="url"></a>
+                content = content.replace(/\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
+                    return `<img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';">`;
+                });
+                
+
+                //    - list item -> <li>list item</li>
+                content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
+
+                // if content starts with <br>, remove it
+                if (content.startsWith("<br>")) {
+                    content = content.slice(4);
+                }
+                
+                message.innerHTML = content;
+            }
+        }
+
         $(document).ready(function() {
             var user_id = "{{ user_id }}";
             var recipient_id = "{{ recipient_id }}";
@@ -86,38 +144,29 @@
                                 var read_receipt_sent = $('<span>').addClass('material-symbols-outlined read-receipt').text('done');
                                 var read_receipt_read = $('<span>').addClass('material-symbols-outlined read-receipt').text('done_all');
                                         
-                                if (message.content.startsWith('https://www.gruettecloud.com/open/GruetteCloud') && (message.content.endsWith('/chat'))) {
-                                    var imageElement = $('<img>').attr('src', message.content).addClass('message-image');
-                                    imageElement.css({
-                                        'max-width': '100%',
-                                        'max-height': '300px',
-                                        'border-radius': '10px',
-                                        'padding': '0px',
-                                    });
-                                    messageContainer.append(imageElement);
+                                
+                                var messageContent = $('<div>').addClass('message-content').text(message.content);
+                                messageContainer.append(messageContent);
 
-                                    if (messageSender == 'You') {
-                                        if (message.is_read) {
-                                            messageContainer.append(read_receipt_read);
-                                        } else {
-                                            messageContainer.append(read_receipt_sent);
-                                        }
-                                    }
-                                } else {
-                                    var messageContent = $('<div>').addClass('message-content').text(message.content);
-                                    messageContainer.append(messageContent);
-
-                                    if (messageSender == 'You') {
-                                        if (message.is_read) {
-                                            messageContainer.append(read_receipt_read);
-                                        } else {
-                                            messageContainer.append(read_receipt_sent);
-                                        }
+                                if (messageSender == 'You') {
+                                    if (message.is_read) {
+                                        messageContainer.append(read_receipt_read);
+                                    } else {
+                                        messageContainer.append(read_receipt_sent);
                                     }
                                 }
                                 
                                 $('#chat-messages').append(messageContainer);
+                                findAndReplaceMarkdown();
+
+                                // Scroll to the bottom of the chat
+                                var chatMessages = document.getElementById('chat-messages');
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+
                             });
+
+                           
+                            
                         }
                     },
                     complete: function() {
@@ -159,6 +208,8 @@
                         $('#message-details-bubble').addClass('left-bubble');
                         $('.message-delete').css('display', 'none');
                     }
+
+                    findAndReplaceMarkdown();
                 },
             });
         }
@@ -283,18 +334,23 @@
             {% endif %}
         </div>
     {% else %}
-        <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px;">
-            <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
-            <div id="fileLabel" style="width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+    <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px; justify-content: end; align-items: end;">
+        <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
+            <div id="fileLabel" style="bottom: 0; width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
                 <span class="material-symbols-outlined">add</span>
             </div>
-            <div id="removeDiv" style="width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+            <div id="removeDiv" style="bottom: 0; width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
                 <span class="material-symbols-outlined">close</span>
             </div>
-            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="font-size: 1em; padding-left: 20px; padding-right: 55px; height: 55px; width: calc(100% - 65px); background-color: var(--background-color); border-style: solid; border-color: var(--box-shadow-color); border-radius: 30px; border-width: 2px; margin-right: 0;">
-            <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 40px; height: 40px; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-outlined">arrow_upward</span>
-            </button>
+            <div id="messageInputDiv" style="width: 100%; border: 2px solid var(--box-shadow-color); border-radius: 30px;">
+                <div id="image-preview" style="display: none; padding: 5px; width: 300px; max-width: 50vw;">
+                    <img id="previewImage" style="width: 100%; max-width: 200px; max-height: 20svh; border-radius: 23px; object-fit: cover;">
+                </div>
+                <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 55px; max-height: 55px; background-color: transparent; margin: 0; width: 100%;">
+                <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 40px; height: 40px; position: absolute; right: 8px; bottom: -10px; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                    <span class="material-symbols-outlined">arrow_upward</span>
+                </button>
+            </div>
         </div>
     {% endif %}
 
@@ -333,31 +389,72 @@
         fileInput.addEventListener("change", function() {
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
-                messageInput.value = selectedFile.name;
                 fileLabel.style.display = "none";
                 removeDiv.style.display = "flex";
                 document.getElementById('sendButton').style.backgroundColor = 'var(--primary-color)';
+
+                // Display image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').style.display = 'flex';
+                    document.getElementById('previewImage').src = e.target.result;
+                }
+                reader.readAsDataURL(selectedFile);
+
             } else {
                 messageInput.value = '';
                 fileLabel.style.display = "flex";
                 removeDiv.style.display = "none";
                 document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+                document.getElementById('previewImage').src = '';
+                document.getElementById('image-preview').style.display = 'none';
             }
         });
 
         removeDiv.addEventListener("click", function() {
             fileInput.value = ''; // Clear the selected file
-            messageInput.value = ''; // Clear the message
             fileLabel.style.display = "flex";
             removeDiv.style.display = "none";
-            document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+            document.getElementById('previewImage').src = '';
+            document.getElementById('image-preview').style.display = 'none';
+
+            if (messageInput.value === '') {
+                document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+            }
         });
 
         messageInput.addEventListener("input", function() {
             if (messageInput.value !== '') {
                 document.getElementById('sendButton').style.backgroundColor = 'var(--primary-color)';
-            } else {
+            } else if (fileInput.files.length === 0) {
                 document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+            }
+        });
+
+        messageInput.addEventListener("paste", function() {
+            const items = event.clipboardData.items;
+            console.log("paste");
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") !== -1) {
+                    const blob = items[i].getAsFile();
+                    
+                    // Create a File object to set as the value of the file input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(blob);
+                    fileInput.files = dataTransfer.files;
+
+                    document.getElementById('fileLabel').style.display = 'none';
+                    document.getElementById('removeDiv').style.display = 'flex';
+                    
+                    // Display the image preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('previewImage').src = e.target.result;
+                        document.getElementById('image-preview').style.display = 'block';
+                        document.getElementById('sendButton').style.backgroundColor = 'var(--primary-color)';
+                    };
+                    reader.readAsDataURL(blob);
+                }
             }
         });
     });
@@ -365,6 +462,7 @@
 
 <script>
     $(document).ready(function() {
+        findAndReplaceMarkdown();
         // Trigger file input when the fileLabel is clicked
         $('#fileLabel').click(function() {
             $('#fileInput').click();
@@ -400,11 +498,21 @@
 
             // Add temporary message to chat
             var messageContainer = $('<div>').addClass('message right-bubble');
-            var messageContent = $('<div>').addClass('message-content').text(message);
+            if (fileInput.files.length > 0 && message === '') {
+                var messageContent = $('<div>').addClass('message-content').text('*Sending image...*');
+            } else if (fileInput.files.length > 0 && message !== '') {
+                var messageContent = $('<div>').addClass('message-content').text('*Sending image...*\n\n' + message);
+            } else {
+                var messageContent = $('<div>').addClass('message-content').text(message);
+            }
             var read_receipt_wait = $('<span>').addClass('material-symbols-outlined read-receipt').text('schedule');
             messageContainer.append(messageContent);
             messageContainer.append(read_receipt_wait);
             $('#chat-messages').prepend(messageContainer);
+
+            // Scroll to the bottom of the chat
+            var chatMessages = document.getElementById('chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
 
             $('#messageInput').val('');
             $('#fileInput').val('');
@@ -412,6 +520,8 @@
             document.getElementById('removeDiv').style.display = 'none';
 
             document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+            document.getElementById('previewImage').src = '';
+            document.getElementById('image-preview').style.display = 'none';
 
 
             $.ajax({
@@ -420,9 +530,15 @@
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function(response) {},
+                success: function(response) {
+                    if (response.success) {
+                        findAndReplaceMarkdown();
+                    } else {
+                        errorFs("Error", "An error occurred while sending the message. Please try again.");
+                    }
+                },
                 error: function(xhr, status, error) {
-                    errorFs("Couldn't send message.", "An error occurred while sending the message. Please try again.");
+                    errorFs("Error", "An error occurred while sending the message. Please try again.");
                 }
             });
         }

@@ -206,7 +206,6 @@
                 <span class="material-symbols-outlined">arrow_upward</span>
             </button>
         <div>
-        
     </div>
     <div id="cookie-banner"></div>
 
@@ -409,22 +408,23 @@
 
         removeDiv.addEventListener("click", function() {
             fileInput.value = ''; // Clear the selected file
-            messageInput.value = ''; // Clear the message
             document.getElementById('previewImage').src = ''; // Clear the image preview
             document.getElementById('image-preview').style.display = 'none'; // Hide the image preview
 
             fileLabel.style.display = "flex";
             removeDiv.style.display = "none";
 
-            document.getElementById('sendButton').classList.remove('dreamy-button');
-            document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+            if (messageInput.value === '') {
+                document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+                document.getElementById('sendButton').classList.remove('dreamy-button');
+            }
         });
 
         messageInput.addEventListener("input", function() {
             if (messageInput.value !== '') {
                 document.getElementById('sendButton').style.backgroundColor = 'transparent';
                 document.getElementById('sendButton').classList.add('dreamy-button');
-            } else {
+            } else if (fileInput.files.length === 0) {
                 document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
                 document.getElementById('sendButton').classList.remove('dreamy-button');
             }
@@ -677,7 +677,7 @@
                 content = content.replace(/\!\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
                     return `<a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a>`;
                 });
-                
+
                 // [link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
                     return `<a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a>`;
