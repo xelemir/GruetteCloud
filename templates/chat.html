@@ -500,7 +500,7 @@
             if (fileInput.files.length > 0 && message === '') {
                 var messageContent = $('<div>').addClass('message-content').text('*Sending image...*');
             } else if (fileInput.files.length > 0 && message !== '') {
-                var messageContent = $('<div>').addClass('message-content').text('*Sending image...*\n\n' + message);
+                var messageContent = $('<div>').addClass('message-content').text('*Sending image...*\n' + message);
             } else {
                 var messageContent = $('<div>').addClass('message-content').text(message);
             }
