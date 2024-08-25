@@ -523,6 +523,8 @@
             document.getElementById('previewImage').src = '';
             document.getElementById('image-preview').style.display = 'none';
 
+            findAndReplaceMarkdown();
+
 
             $.ajax({
                 url: '/chat/' + recipient,
