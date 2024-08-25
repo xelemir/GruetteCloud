@@ -112,15 +112,20 @@ def delete_message(message_id):
     sql = SQLHelper.SQLHelper()
     message_id = str(message_id)
     
-    get_message = sql.readSQL(f"SELECT * FROM chats WHERE id = '{message_id}'")
+    image = sql.readSQL(f"SELECT * FROM chat_images WHERE chat_message_id = '{message_id}' AND author_id = '{session['user_id']}'")
+    
+    get_message = sql.readSQL(f"SELECT * FROM chats WHERE id = '{message_id}' AND author_id = '{session['user_id']}'")
     
     if get_message == []:
         return redirect("/")
     
-    if get_message[0]["author_id"] != session["user_id"]:
-        return redirect("/")
-    
     sql.writeSQL(f"DELETE FROM chats WHERE id = '{message_id}'")
+    
+    if image != []:
+        try:
+            os.remove(f"{gruettedrive_path}/chat_images/{image[0]['filename']}")
+        except Exception as e:
+            print(e)
     
     return redirect(f"/chat/{get_message[0]['recipient_id']}")
 
