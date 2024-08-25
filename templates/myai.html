@@ -674,12 +674,15 @@
                 content = content.replace(/\n/g, "<br>");
 
                 // ![link](url) -> <a href="url"><img src="url"></a>
-                content = content.replace(/\!\[(.*?)\]\((.*?)\)/g,
-                "<a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px; onerror='this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';'></a>");
-
+                content = content.replace(/\!\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
+                    return `<a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a>`;
+                });
+                
                 // [link](url) -> <a href="url"><img src="url"></a>
-                content = content.replace(/\[(.*?)\]\((.*?)\)/g,
-                "<a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px; onerror='this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';'></a>");
+                content = content.replace(/\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
+                    return `<a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a>`;
+                });
+                
 
                 //    - list item -> <li>list item</li>
                 content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
