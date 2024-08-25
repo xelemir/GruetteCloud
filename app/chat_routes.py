@@ -1,6 +1,6 @@
 import os
 import random
-from flask import abort, render_template, request, redirect, session, jsonify, Blueprint, url_for
+from flask import abort, render_template, request, redirect, send_file, session, jsonify, Blueprint, url_for
 import logging
 from werkzeug.utils import secure_filename
 
@@ -227,7 +227,7 @@ def myai():
         if file:
             file_extension = file.filename.split(".")[-1]
             filename = hex(random.getrandbits(128))[2:] + "." + file_extension
-            file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+            file.save(os.path.join(gruettedrive_path, 'myai', filename))
                         
         if message == "#!# Requesting Welcome Message #!#":
             chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
@@ -256,17 +256,23 @@ def myai():
         
         try:
             if file and ai_model in ["gpt-4o"]:
-                chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
-                os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/myai-file/{filename}")
+                if chat_history[-1]["content"] == "I'm having some trouble processing your request. Please try again later.":
+                    #os.remove(os.path.join(gruettedrive_path, 'myai', filename))
+                    pass
+                else:
+                    chat_history[-1]["image"] = f"https://www.gruettecloud.com/myai-file/{filename}"
+                
+                #os.remove(os.path.join(gruettedrive_path, 'myai', filename))
             else:
                 chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
         except Exception as e:
             logging.error(e)
             if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-            chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
+            chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later.", "image": None})
 
         session["chat_history"] = chat_history
-        chat_response = [{"role": message["role"], "content": message["content"]} for message in chat_history]
+        chat_response = [{"role": message["role"], "content": message["content"], "image": message.get("image")} for message in chat_history]
         return jsonify({"chat_history": chat_response})
 
     else:
@@ -278,7 +284,15 @@ def myai():
             user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt-4o-mini"}
             
         return render_template("myai.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
-    
+
+@chat_route.route("/myai-file/<path:filename>", methods=["GET"])
+def myai_file(filename):
+    try:
+        return send_file(f"{gruettedrive_path}/myai/{filename}")
+    except Exception as e:
+        print(e)
+        return abort(404)
+
 @chat_route.route("/restart-myai", methods=["GET"])
 def restart_myai():
     session["chat_history"] = []

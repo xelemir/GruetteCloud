@@ -22,6 +22,10 @@
         .ticontainer .tidot {
             background-color: var(--text-color);
         }
+
+        .message-input:focus {
+            outline: none;
+        }
         
         .tidot {
             -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
@@ -687,8 +691,12 @@
 
         function appendMessage(message) {
             var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
+            if (message.image) {
+                $(".chat-messages").prepend('<div class="message ' + messageClass + '"><img src="' + message.image + '" style="width: 100%; max-width: 500px; border-radius: 10px;"></div>');
+            }
+
             if (message.content === "") {
-                $(".chat-messages").prepend('<div class="message ' + messageClass + '">*You sent an image.*</div>');
+                return//$(".chat-messages").prepend('<div class="message ' + messageClass + '">*You sent an image.*</div>');
             } else {
                 $(".chat-messages").prepend('<div class="message ' + messageClass + '">' + message.content + '</div>');
             }
