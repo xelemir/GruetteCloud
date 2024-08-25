@@ -116,7 +116,7 @@
 </head>
 <body style="padding: 10px;">
     <div class="header" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-        <div style="padding-top: 10px; padding-bottom: 10px;">
+        <div style="padding-top: 10px; padding-left: 10px;">
             <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <a href="
@@ -155,7 +155,7 @@
                 </span>
             </h1>
         </a>
-        <div onclick="toggleAiPreferences()" title="AI Preferences" style="cursor: pointer; margin-right: 10px;">
+        <div onclick="toggleAiPreferences()" title="AI Preferences" style="cursor: pointer; margin-right: 10px; padding-top: 10px;">
             <span class="material-symbols-outlined dreamy-text">temp_preferences_custom</span>
         </div>
     </div>
@@ -312,12 +312,13 @@
             <div class="unselected-button" style="text-decoration: none; border-radius: 50%; width: 50px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center;">
                 <span id="darkModeToggle" class="material-symbols-outlined" title="Darkmode" style="margin: 0;">sunny</span>
             </div>
-            <a href="/ai/restart" class="unselected-button" style="gap: 10px; text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
+            <a href="/restart-myai" class="unselected-button" style="gap: 10px; text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
                 <span class="material-symbols-outlined" title="Restart" style="margin: 0;">sync</span>
                 Restart MyAI
             </a>
         </div>
     </div>
+    {% include "components/error.html" %}
 </body>
 </html>
 
@@ -334,8 +335,10 @@
             document.getElementById('free-model').classList.add('dreamy-button');
             document.getElementById('fileLabel').style.display = 'none';
             document.getElementById('removeDiv').style.display = 'none';
+            document.getElementById('messageInput').style.width = '100%';
         {% else %}
             document.getElementById('premium-model').classList.add('dreamy-button');
+            document.getElementById('messageInput').style.width = 'calc(100% - 65px)';
         {% endif %}
 
     };
@@ -428,9 +431,11 @@
         if (model === "premium") {
             document.getElementById('free-model').classList.remove('dreamy-button');
             document.getElementById('premium-model').classList.add('dreamy-button');
+            document.getElementById('messageInput').style.width = 'calc(100% - 65px)';
         } else {
             document.getElementById('premium-model').classList.remove('dreamy-button');
             document.getElementById('free-model').classList.add('dreamy-button');
+            document.getElementById('messageInput').style.width = '100%';
         }
         document.getElementById("model-help").style.display = "none";
         $.ajax({
@@ -471,9 +476,11 @@
                 if (model === "premium") {
                     document.getElementById('premium-model').classList.remove('dreamy-button');
                     document.getElementById('free-model').classList.add('dreamy-button');
+                    document.getElementById('messageInput').style.width = '100%';
                 } else {
                     document.getElementById('free-model').classList.remove('dreamy-button');
                     document.getElementById('premium-model').classList.add('dreamy-button');
+                    document.getElementById('messageInput').style.width = 'calc(100% - 65px)';
                 }
             }
         });
@@ -540,7 +547,7 @@
 
             
             $.ajax({
-                url: '/ai/chat',
+                url: '/myai',
                 type: 'POST',
                 data: formData,
                 contentType: false,

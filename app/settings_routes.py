@@ -319,12 +319,12 @@ def change_ai_personality(ai_personality):
     if "user_id" not in session:
         session["ai_personality"] = ai_personality
         session.pop("chat_history", None)
-        return redirect("/ai/chat")
+        return redirect("/myai")
     
     sql = SQLHelper.SQLHelper()
     sql.writeSQL(f"UPDATE users SET ai_personality = '{str(ai_personality)}' WHERE id = '{str(session['user_id'])}'")
     session.pop("chat_history", None)
-    return redirect("/ai/chat")
+    return redirect("/myai")
     
 @settings_route.route("/changeAiModel", methods=["POST"])
 def change_ai_model():

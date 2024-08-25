@@ -210,108 +210,80 @@ def chat_with(recipient_id):
             
     # Render the template
     return render_template('chat.html', user_id=user_id, recipient=search_recipient[0]["username"], messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session), recipient_id=recipient)
-
-@chat_route.route("/ai/<action>", methods=["POST", "GET"])
-def ai_chat(action):
-    """ Route to chat with the AI
-
-    Returns:
-        HTML: Rendered HTML page
-    """
-
-    if "user_id" not in session:
         
-        # TODO Currently not in use, MyAI can be used by anyone
-        #return redirect("/")
-        
-        #session["ai_personality"] = "Default"
-        pass
+@chat_route.route("/myai", methods=["POST", "GET"])
+def myai():
+    from pythonHelper import openai_https
+    ai = openai_https.OpenAIWrapper()
+    sql = SQLHelper.SQLHelper()
     
-    if action == "restart":
-        session["chat_history"] = []
-        return redirect("/ai/chat")
+    chat_history = session.get("chat_history", [])
+    
+    if request.method == "POST":
+        message = request.form.get("message")
+        file = request.files.get("file")
+        filename = None
+        
+        if file:
+            file_extension = file.filename.split(".")[-1]
+            filename = hex(random.getrandbits(128))[2:] + "." + file_extension
+            file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                        
+        if message == "#!# Requesting Welcome Message #!#":
+            chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
+        elif message == "#!# Requesting Welcome Message DE #!#":
+            chat_history.append({"role": "user", "content": "Hallo, bitte gib mir eine nette Willkommensnachricht für GrütteChat. Antworte nur noch auf Deutsch."})
+        else:
+            chat_history.append({"role": "user", "content": message})
 
-    elif action == "chat":
-        # Get AI instance and SQL helper
-        from pythonHelper import openai_https
-        ai = openai_https.OpenAIWrapper()
-        sql = SQLHelper.SQLHelper()
-
-        # Get or initialize the chat history from the session
-        chat_history = session.get("chat_history", [])
-
-        if request.method == "POST":
-            message = request.form.get("message")
-            file = request.files.get("file")
-            filename = None
+        if "user_id" in session:
+            user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")
             
-            if file:
-                file_extension = file.filename.split(".")[-1]
-                filename = hex(random.getrandbits(128))[2:] + "." + file_extension
-                file.save(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-                            
-            if message == "#!# Requesting Welcome Message #!#":
-                chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
-            elif message == "#!# Requesting Welcome Message DE #!#":
-                chat_history.append({"role": "user", "content": "Hallo, bitte gib mir eine nette Willkommensnachricht für GrütteChat. Antworte nur noch auf Deutsch."})
-            else:
-                # Append the user's message to chat history
-                chat_history.append({"role": "user", "content": message})
-    
-
-            if "user_id" in session:
-                # Retrieve user's selected AI personality and premium status
-                user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")
-            else:
-                ai_personality = session.get("ai_personality", "Default")
-                user = [{"ai_personality": ai_personality, "has_premium": False, "username": "Guest", "ai_model": "gpt-4o-mini"}]
-
             if not user:
                 return redirect("/logout")
             else:
                 selected_ai_personality = user[0]["ai_personality"]
                 has_premium = bool(user[0]["has_premium"])
                 ai_model = user[0]["ai_model"]
-
-            try:
-                # Get AI response and append it to chat history
-                if file and ai_model in ["gpt-4o"]:
-                    chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
-                    os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-                else:
-                    chat_history = ai.get_openai_response(chat_history, username=user[0]["username"], ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
-
-            except Exception as e:
-                logging.error(e)
-                if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-                chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
-
-            # Save chat history to session
-            session["chat_history"] = chat_history
-
-            # Prepare the chat response as JSON
-            chat_response = [{"role": message["role"], "content": message["content"]} for message in chat_history]
-
-            return jsonify({"chat_history": chat_response})
-
-        if "user_id" in session:
-            # Retrieve user's selected AI personality and premium status
-            user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
-        else:
-            if "ai_personality" in session:
-
-                selected_ai_personality = session["ai_personality"]
-            else:
-                selected_ai_personality = "Default"
-            
-            user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt-4o-mini"}
+                username = user[0]["username"]
                 
-        # Reverse chat history to show most recent messages first and render template
-        return render_template("aichat.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
-    
+        else:
+            selected_ai_personality = session.get("ai_personality", "Default")
+            has_premium = False
+            ai_model = "gpt-4o-mini"
+            username = "Guest user"
+            
+        
+        try:
+            if file and ai_model in ["gpt-4o"]:
+                chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/open/GruetteCloud{filename}/chat")
+                os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+            else:
+                chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
+        except Exception as e:
+            logging.error(e)
+            if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+            chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later."})
+
+        session["chat_history"] = chat_history
+        chat_response = [{"role": message["role"], "content": message["content"]} for message in chat_history]
+        return jsonify({"chat_history": chat_response})
+
     else:
-        abort(404)
+        
+        if "user_id" in session:
+            print(session["user_id"])
+            user = sql.readSQL(f"SELECT ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")[0]
+        else:
+            selected_ai_personality = session.get("ai_personality", "Default")
+            user = {"ai_personality": selected_ai_personality, "has_premium": False, "ai_model": "gpt-4o-mini"}
+            
+        return render_template("myai.html", chat_history=chat_history[::-1], selected_personality=user["ai_personality"], ai_model=user["ai_model"], has_premium=user["has_premium"])
     
+@chat_route.route("/restart-myai", methods=["GET"])
+def restart_myai():
+    session["chat_history"] = []
+    return redirect("/myai") 
     
 @chat_route.route('/chat/delete/<recipient_id>')
 def delete_chat(recipient_id): 
