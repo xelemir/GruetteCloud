@@ -581,6 +581,7 @@
             if (optionalMessage !== null) {
                 message = optionalMessage;
             } else if (message === '' && fileInput.files.length === 0) {
+                console.log("No message or file to send.");
                 return;
             } else {
                 appendMessage({ role: "user", content: message });
