@@ -222,11 +222,6 @@ def download(file_path):
     Returns:
         File: File to download
     """
-    
-    if "GruetteCloud" in file_path:
-        filename = file_path.split("/")[-2]
-        filename = filename.replace("GruetteCloud", "")
-        return send_file(os.path.join(gruettedrive_path, "GruetteCloud",filename), as_attachment=False)
 
     if "user_id" not in session:
         return redirect("/")
