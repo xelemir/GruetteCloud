@@ -411,6 +411,8 @@
             document.getElementById('fileLabel').style.display = 'flex';
             document.getElementById('removeDiv').style.display = 'none';
 
+            document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+
 
             $.ajax({
                 url: '/chat/' + recipient,

@@ -545,6 +545,9 @@
                 document.getElementById('removeDiv').style.display = 'none';
             }
 
+            document.getElementById('sendButton').classList.remove('dreamy-button');
+            document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
+
             
             $.ajax({
                 url: '/myai',
