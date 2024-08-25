@@ -201,7 +201,7 @@
             <div id="image-preview" style="display: none; padding: 5px; width: 300px; max-width: 50vw;">
                 <img id="previewImage" style="width: 100%; max-width: 200px; max-height: 20svh; border-radius: 23px; object-fit: cover;">
             </div>
-            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 55px; background-color: transparent; margin: 0; width: 100%;">
+            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 55px; max-height: 55px; background-color: transparent; margin: 0; width: 100%;">
             <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 40px; height: 40px; position: absolute; right: 8px; bottom: -10px; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">arrow_upward</span>
             </button>
@@ -675,11 +675,11 @@
 
                 // ![link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\!\[(.*?)\]\((.*?)\)/g,
-                "<br><a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
+                "<br><a href=\"$2\"><img src=\"$2\" class='chat-image' style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
 
                 // [link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g,
-                "<br><a href=\"$2\"><img src=\"$2\" style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
+                "<br><a href=\"$2\"><img src=\"$2\" class='chat-image' style='margin: 0; border-radius: 10px; width: 100%; max-width: 500px;'></a><br>");
 
                 //    - list item -> <li>list item</li>
                 content = content.replace(/(  )-/g, "&nbsp;&nbsp;-");
@@ -690,10 +690,16 @@
                 }
                 
                 message.innerHTML = content;
-
-
-                
             }
+
+            var images = document.getElementsByClassName("chat-image");
+            // check if the images are Available
+            for (var i = 0; i < images.length; i++) {
+                images[i].onerror = function() {
+                    this.style.src = "https://www.gruettecloud.com/static/icons/folder-error.svg";
+                };
+            }
+
         }
 
         findAndReplaceMarkdown();
@@ -701,7 +707,7 @@
         function appendMessage(message) {
             var messageClass = message.role === "assistant" ? "left-bubble" : "right-bubble";
             if (message.image) {
-                $(".chat-messages").prepend('<div class="message ' + messageClass + '"><img src="' + message.image + '" style="width: 100%; max-width: 500px; border-radius: 10px;"></div>');
+                $(".chat-messages").prepend('<div class="message ' + messageClass + '"><img class="chat-image" src="' + message.image + '" style="width: 100%; max-width: 500px; border-radius: 10px;"></div>');
             }
 
             if (message.content === "") {

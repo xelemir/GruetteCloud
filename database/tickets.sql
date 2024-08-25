@@ -9,4 +9,4 @@ CREATE TABLE
     `status` varchar(255) DEFAULT 'opened',
     `assigned_to` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-  ) ENGINE = InnoDB AUTO_INCREMENT = 200 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci
+  )

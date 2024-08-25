@@ -8,4 +8,4 @@ CREATE TABLE
     `link` varchar(1000) DEFAULT NULL,
     `decorator` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-  ) ENGINE = InnoDB AUTO_INCREMENT = 74 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci
+  )

@@ -226,7 +226,7 @@ def myai():
         
         if file:
             file_extension = file.filename.split(".")[-1]
-            filename = hex(random.getrandbits(128))[2:] + "." + file_extension
+            filename = hex(random.getrandbits(128))[2:] + "_" + str(session["user_id"]) + "." + file_extension
             file.save(os.path.join(gruettedrive_path, 'myai', filename))
                         
         if message == "#!# Requesting Welcome Message #!#":
@@ -255,14 +255,16 @@ def myai():
             
         
         try:
-            if file and ai_model in ["gpt-4o"]:
+            if file and has_premium:
                 chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/myai-file/{filename}")
                 if chat_history[-1]["content"] == "I'm having some trouble processing your request. Please try again later.":
                     os.remove(os.path.join(gruettedrive_path, 'myai', filename))
                 else:
-                    chat_history[-2]["image"] = f"https://www.gruettecloud.com/myai-file/{filename}"
+                    chat_history[-2]["image"] = f"/myai-file/{filename}"
                 
-                #os.remove(os.path.join(gruettedrive_path, 'myai', filename))
+            elif file:
+                os.remove(os.path.join(gruettedrive_path, 'myai', filename))
+                
             else:
                 chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
         except Exception as e:
@@ -272,6 +274,8 @@ def myai():
 
         session["chat_history"] = chat_history
         chat_response = [{"role": message["role"], "content": message["content"], "image": message.get("image")} for message in chat_history]
+        
+        print(chat_response)
                 
         return jsonify({"chat_history": chat_response})
 
@@ -296,7 +300,21 @@ def myai_file(filename):
 @chat_route.route("/restart-myai", methods=["GET"])
 def restart_myai():
     session["chat_history"] = []
-    return redirect("/myai") 
+    return redirect("/myai")
+
+    """
+    path = os.path.join(gruettedrive_path, 'myai', 'a010fe1b1268f3d634053a8eed655b73_1.png')
+
+    time = os.path.getctime(path)
+
+    # Convert the time to a readable format
+
+    from datetime import datetime
+
+    date = datetime.fromtimestamp(time)
+
+    print(date)
+    """
     
 @chat_route.route('/chat/delete/<recipient_id>')
 def delete_chat(recipient_id): 

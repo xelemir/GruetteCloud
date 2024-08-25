@@ -23,4 +23,4 @@ CREATE TABLE
     `finance_budget` int(11) DEFAULT 0,
     `ai_model` varchar(255) DEFAULT 'gpt-4o-mini',
     PRIMARY KEY (`id`)
-  ) ENGINE = InnoDB AUTO_INCREMENT = 43 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci
+  )

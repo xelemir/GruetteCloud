@@ -60,7 +60,7 @@ class SQLHelper:
     
 if __name__ == "__main__":
     sql = SQLHelper()
-    #print(sql.readSQL("SELECT * FROM gruttechat_users"))
+    print(sql.readSQL("SELECT * FROM users"))
     #sql.writeSQL("INSERT INTO chat (userSend, userReceive, message) VALUES ('user1', 'user2', 'Test')")
     #sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, is_email_verified, has_premium, ai_personality) VALUES ('user2', 'password', 'email', {True}, {False}, 'ai_personality')")
     #sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('user1', 'user2', 'Test')")

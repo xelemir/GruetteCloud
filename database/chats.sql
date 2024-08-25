@@ -9,4 +9,4 @@ CREATE TABLE
     PRIMARY KEY (`id`),
     FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-  ) ENGINE = InnoDB AUTO_INCREMENT = 272 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci
+  )
