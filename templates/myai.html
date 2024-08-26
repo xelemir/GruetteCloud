@@ -679,7 +679,7 @@
 
                 // [link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
-                    return `<a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a>`;
+                    return `<br><a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a><br>`;
                 });
                 
 
@@ -689,6 +689,11 @@
                 // if content starts with <br>, remove it
                 if (content.startsWith("<br>")) {
                     content = content.slice(4);
+                }
+
+                // if content ends with <br>, remove it
+                if (content.endsWith("<br>")) {
+                    content = content.slice(0, -4);
                 }
                 
                 message.innerHTML = content;
