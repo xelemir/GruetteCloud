@@ -335,20 +335,6 @@ def myai_file(filename):
 def restart_myai():
     session["chat_history"] = []
     return redirect("/myai")
-
-    """
-    path = os.path.join(gruettedrive_path, 'myai', 'a010fe1b1268f3d634053a8eed655b73_1.png')
-
-    time = os.path.getctime(path)
-
-    # Convert the time to a readable format
-
-    from datetime import datetime
-
-    date = datetime.fromtimestamp(time)
-
-    print(date)
-    """
     
 @chat_route.route('/chat/delete/<recipient_id>')
 def delete_chat(recipient_id): 

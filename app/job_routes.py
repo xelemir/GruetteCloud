@@ -15,23 +15,24 @@ def run_job():
     if request.headers.get("secret") != job_secret:
         return jsonify({"status": "error", "message": "Invalid secret"}), 401
         
-    path = os.path.join(gruettedrive_path, 'myai')
-    
-    files = os.listdir(path)
-    
     errors = []
     
+    myai_path = os.path.join("/home/jan/wwwroot/gruettecloud/gruetteDrive/", 'myai')
+
+    files = os.listdir(myai_path)
+
     for file in files:
         # Delete files older than 14 days
         try:
-            path = os.path.join(path, file)
+            path = os.path.join(myai_path, file)
             time_created = os.path.getctime(path)
             date = datetime.fromtimestamp(time_created)
             if (datetime.now() - date).days > 14:
                 os.remove(path)
                 
         except Exception as e:
-            errors.append({"file": file, "error": str(e)})    
+            errors.append({"file": file, "error": str(e)})
+            print(e)
     
     mail = MailHelper.MailHelper()
     sql = SQLHelper.SQLHelper()
