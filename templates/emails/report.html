@@ -35,19 +35,17 @@
                     <p style="text-align: left;">Status: OK</p>
                 </div>
             {% else %}
+                <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                    <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128308;</span>
+                    <p style="text-align: left;">Status: Error</p>
+                </div>
                 <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
-                    <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
-                        <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128308;</span>
-                        <p style="text-align: left;">Status: Error</p>
-                    </div>
-                    <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
-                        <p style="text-align: left;">
-                            The following file(s) could not be deleted:<br><br>
-                            {% for error in errors %}
-                                {{ error.file }}
-                            {% endfor %}
-                        </p>
-                    </div>
+                    <p style="text-align: left;">
+                        The following file(s) could not be deleted:<br><br>
+                        {% for error in errors %}
+                            {{ error.file }}
+                        {% endfor %}
+                    </p>
                 </div>
             {% endif %}
             <p style="color: #000000; font-size: 1.1em; margin-top: 50px; text-align: left;">

@@ -15,7 +15,7 @@ def run_job():
     if request.headers.get("secret") != job_secret:
         return jsonify({"status": "error", "message": "Invalid secret"}), 401
         
-    errors = []
+    errors = [{"file": "a010fe1b1268f3d634053a8eed655b73_1.png", "error": "str(e)"},{"file": "a010fe1b1268f3d634053a8eed655b73_1.png", "error": "str(e)"}]
     
     myai_path = os.path.join("/home/jan/wwwroot/gruettecloud/gruetteDrive/", 'myai')
 
