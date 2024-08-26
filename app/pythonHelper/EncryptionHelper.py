@@ -1,12 +1,12 @@
 import json
-from config import flask_app_path
+from config import flask_app_path, encryption_key
 from cryptography.fernet import Fernet
 
 
 class EncryptionHelper:
     def __init__(self):
         #self.key = self.get_key()
-        self.key = "Cj9NLQh9-00f7DFVRnjVWBPZSoRqI5dHfRLQEegjdL0="
+        self.key = encryption_key
 
     def create_new_key(self):
         key = Fernet.generate_key()

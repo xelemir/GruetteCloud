@@ -430,6 +430,7 @@
             }
         });
 
+        {% if has_premium %}
         messageInput.addEventListener("paste", function() {
             const items = event.clipboardData.items;
             for (let i = 0; i < items.length; i++) {
@@ -456,6 +457,7 @@
                 }
             }
         });
+        {% endif %}
 
 
     });

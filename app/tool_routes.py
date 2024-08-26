@@ -340,8 +340,6 @@ def mapsRoute():
 @tool_route.route("/maps", methods=["GET", "POST"])
 def maps():
     return render_template("maps.html", menu=th.user(session))
-    
-
 
 # Nelly Routes
 

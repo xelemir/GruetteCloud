@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
+    </head>
+    <body style="color: #F2F2F2; font-family: 'Nunito', sans-serif; font-size: 1em; background-color: #FFFFFF; ">
+        <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: auto; height: auto; border-radius: 20px; padding: 20px;">
+            <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 64px; margin-top: 0px;">
+            <p style="color: #000000; font-size: 1.2em; margin-top: 10px; text-align: left;">
+                Hi {{ username }},
+            </p>
+            <p style="color: #000000; font-size: 1em; margin-top: 10px; text-align: left;">
+                the following job has been completed:
+            </p>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left; margin-top: 30px;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128204;</span>
+                <p style="text-align: left;">{{ job_name }}</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128197;</span>
+                <p style="text-align: left;">{{ date }}</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#9200;</span>
+                <p style="text-align: left;">{{ time }}</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128187;</span>
+                <p style="text-align: left;">Google Cloud Scheduler</p>
+            </div>
+            {{ if not errors }}
+                <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                    <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128994;</span>
+                    <p style="text-align: left;">Status: OK</p>
+                </div>
+            {{ else }}
+                <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
+                    <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                        <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128308;</span>
+                        <p style="text-align: left;">Status: Error</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
+                        <p style="text-align: left;">
+                            The following file(s) could not be deleted:<br><br>
+                            {% for error in errors %}
+                                {{ error.file }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            {{ endif }}
+            <p style="color: #000000; font-size: 1.1em; margin-top: 50px; text-align: left;">
+                Kind regards,<br><br>
+                GrütteCloud
+            </p>
+            <p style="color: #000000; font-size: 0.8em; margin-top: 30px; text-align: left;">
+                <a href="mailto:info@gruettecloud.com" style="color: #000000;">info@gruettecloud.com</a><br>
+                <a href="https://www.gruettecloud.com" style="color: #000000;">www.gruettecloud.com</a><br><br>
+                This is an automated message.<br>
+                Please do not reply to this email.
+            </p>
+        </div>
+    </body>
+</html>

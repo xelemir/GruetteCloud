@@ -159,21 +159,68 @@ if __name__ == "__main__":
     
     
     text = """
-    We are excited to announce GrütteCloud's newest feature:
-    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/drive">
-        <h1 style="color: #007AFF;">GrütteDrive</h1>
-    </a>
-    Your Cloud-Storage Service by GrütteCloud.<br>Upload and download your files from anywhere.
-    <div>
-        <img src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteDrive Render 1" style="max-width: 350px; margin-top: 40px; margin-bottom: 40px;">
-    </div>
-    You can even share files via links with non GrütteCloud users.<br>
-    <div>
-        <img src="https://www.gruettecloud.com/static/renders/light/drive2.png" alt="GrütteDrive Render 2" style="max-width: 250px; margin-top: 40px; margin-bottom: 40px;">
-    </div>
-    <a style="color: #007AFF; text-decoration: none;" href="https://www.gruettecloud.com/drive">
-        <button style="background-color: #AF52DE; border: none; border-radius: 10px; padding: 20px; color: #F2F2F2; font-size: 1em; margin-bottom: 40px;"><b>Check Out GrütteDrive<b></button>
-    </a>
+    <html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    </head>
+    <body style=" font-family: 'Nunito', sans-serif; font-size: 1em; background-color: #FFFFFF; display: flex; justify-content: center;">  
+        <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: 100%; height: auto; border-radius: 25px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 400px;">
+            <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="max-width: 64px; margin-top: 0px;">
+            <p style="color: #000000; font-size: 1.2em; margin-top: 10px; text-align: left;">
+                Hi Jan,
+            </p>
+            <p style="color: #000000; font-size: 1em; margin-top: 10px; text-align: left;">
+                the following job has been completed:
+            </p>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left; margin-top: 30px;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128204;</span>
+                <p style="text-align: left;">Deletion of old MyAI files</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128197;</span>
+                <p style="text-align: left;">26.08.2024</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#9200;</span>
+                <p style="text-align: left;">04:00 AM</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128994;</span>
+                <p style="text-align: left;">Status: OK</p>
+            </div>
+            <span class="material-symbols-outlined">
+                home
+                </span>
+            
+            <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
+                <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                    <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128308;</span>
+                    <p style="text-align: left;">Status: Error</p>
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                    <p style="text-align: left;">
+                        a010fe1b1268f3d634053a8eed655b73_1.png
+                        a010fe1b1268f3d63z453a8eed655b73_1.png
+                        a010fe1b126824d63z453a8eed655b73_1.png
+                    </p>
+                </div>
+            </div>
+            <p style="color: #000000; font-size: 1.1em; margin-top: 50px; text-align: left;">
+                Kind regards,<br><br>
+                GrütteCloud
+            </p>
+            <p style="color: #000000; font-size: 0.8em; margin-top: 30px; text-align: left;">
+                <a href="mailto:info@gruettecloud.com" style="color: #000000;">info@gruettecloud.com</a><br>
+                <a href="https://www.gruettecloud.com" style="color: #000000;">www.gruettecloud.com</a><br><br>
+                This is an automated message.<br>
+                Please do not reply to this email.
+            </p>
+        </div>
+    </body>
+</html>
     """
     
-    mail.send_email("email@gmail.com", "jan", "Introducing: GrütteDrive - A Cloud-Storage Service by GrütteCloud",  text)
+    mail.send_email("gruttefien@gmail.com", "Jan", "GrütteCloud Daily Report", text)
