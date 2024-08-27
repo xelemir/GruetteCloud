@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, jsonify, send_from_directory, url_for
+from flask import Flask, abort, render_template, request, session, redirect, jsonify, send_from_directory, url_for
 import logging
 from threading import Thread
 from flask_cors import CORS
@@ -70,7 +70,7 @@ def index():
     
 @app.errorhandler(404)
 def error404(error):
-    return render_template("errors/404.html", menu=th.user(session))
+    return render_template("errors/404.html", menu=th.user(session)), 404
 
 def errorToTicket(error, user_id=None):
     sql = SQLHelper.SQLHelper()
@@ -81,11 +81,11 @@ def errorToTicket(error, user_id=None):
 
 @app.route("/404")
 def error404page():
-    return render_template("errors/404.html", menu=th.user(session))
+    return abort(404)
 
 @app.errorhandler(401)
 def error401(error):
-    return render_template("errors/401.html", menu=th.user(session))
+    return render_template("errors/401.html", menu=th.user(session)), 401
 
 @app.errorhandler(500)
 def error500(error):
@@ -96,15 +96,15 @@ def error500(error):
         user_id = None
 
     Thread(target=errorToTicket, args=(f"{str(error)} Route: {str(request.path)}", user_id)).start()
-    return render_template("errors/500.html", menu=th.user(session))
+    return render_template("errors/500.html", menu=th.user(session)), 500
 
 @app.route("/500")
 def error500page():
-    return render_template("errors/500.html", menu=th.user(session))
+    return abort(500)
 
 @app.route("/401")
 def error401page():
-    return render_template("errors/401.html", menu=th.user(session))
+    return abort(401)
 
 @app.route("/maintenance")
 def maintenance():
