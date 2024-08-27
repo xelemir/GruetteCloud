@@ -496,25 +496,28 @@
                         <div id="available-databases" class="file-list" style="font-size: 0.7em; display: flex; max-height: calc(100% - 80px); flex-direction: column; overflow: auto;">
                         </div>
                         <script>
-                            fetch("/dashboard/get_available_dbs", {
+                            fetch("/dashboard/executesql", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
-                                }
+                                },
+                                body: JSON.stringify({query: "SHOW TABLES"})
                             })
                             .then(response => response.json())
                             .then(data => {
                                 const availableDatabases = document.getElementById("available-databases");
                                 availableDatabases.innerHTML = "";
+                                key = Object.keys(data[0])[0];
+
                                 for (database of data) {
                                     const databaseElement = document.createElement("div");
                                     databaseElement.classList.add("navigation-button");
                                     databaseElement.style.gap = "10px";
                                     databaseElement.style.width = "100%";
-                                    databaseElement.setAttribute("onclick", "get_db('" + database + "')");
+                                    databaseElement.setAttribute("onclick", "get_db('" + database[key] + "')");
                                     databaseElement.innerHTML = `
                                         <span class="material-symbols-outlined">table_chart</span>
-                                        <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">${database}</p>
+                                        <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">${database[key]}</p>
                                     `;
                                     availableDatabases.appendChild(databaseElement);
                                 }
@@ -524,11 +527,12 @@
                             });
 
                             function get_db(db_name) {
-                                fetch("/dashboard/get_db/" + db_name, {
+                                fetch("/dashboard/executesql", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
                                     },
+                                    body: JSON.stringify({query: "SELECT * FROM " + db_name})
                                 })
                                 .then(response => response.json())
                                 .then(data => {

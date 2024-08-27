@@ -383,41 +383,6 @@ def get_status_message():
     
     return platform_message
 
-@dashboard_route.route("/dashboard/get_available_dbs", methods=["POST"])
-def get_available_dbs():
-    if "user_id" not in session:
-        return redirect("/")
-    
-    sql = SQLHelper.SQLHelper()
-    
-    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
-    if not bool(user["is_admin"]):
-        return abort(401)
-    
-    dbs = []
-    response = sql.readSQL("SHOW TABLES")
-        
-    for entry in response:
-        key, db = entry.popitem()
-        dbs.append(db)
-    
-    return jsonify(dbs)
-
-@dashboard_route.route("/dashboard/get_db/<db_name>", methods=["POST"])
-def get_db_name(db_name):
-    if "user_id" not in session:
-        return redirect("/")
-    
-    sql = SQLHelper.SQLHelper()
-    
-    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
-    if not bool(user["is_admin"]):
-        return abort(401)
-    
-    response = sql.readSQL(f"SELECT * FROM {db_name}")
-    
-    return jsonify(response)
-
 @dashboard_route.route("/dashboard/edit_db_entry", methods=["POST"])
 def edit_db_entry():
     if "user_id" not in session:
@@ -451,7 +416,7 @@ def execute_sql():
     
     query = request.json["query"]
     
-    if query.lower().startswith("select"):
+    if query.lower().startswith("select") or query.lower().startswith("show"):
         response, success = sql.readSQL(query , return_is_successful=True)
         if success: return jsonify(response), 200
         else: return jsonify({"error": "An error occurred"}), 400
