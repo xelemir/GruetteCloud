@@ -623,17 +623,127 @@
                         </script>
                     </div>
                 </div>
-                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 20px;">
                 <div style="display: flex; flex-direction: row; width: 100%; height: 50%;">
-                    <div style="width: 100%; padding-top: 20px; padding-left: 20px;">
-                        <h2 align="center" style="margin-bottom: 20px; text-align: left;">Results <span id="db-name"></span></h2>
-                        <div id="query-results" class="file-list" style="font-size: 0.7em; display: flex; max-height: calc(100% - 40px); min-height: calc(100% - 40px); flex-direction: column; overflow: auto;">
+                    <div style="width: 100%; padding-top: 20px; padding-left: 20px; padding-right: 20px;">
+                        <div style="margin-bottom: 20px; width: 100; display: flex; justify-content: space-between;">
+                            <h2 style="text-align: left;">Results <span id="db-name"></span></h2>
+                            <div style="display: flex; flex-direction: row; gap: 10px;">
+                                <div id="filter-options" style="display: none; flex-direction: row; gap: 10px;">
+                                    <select id="filter-column" class="login-input" style="-webkit-appearance: none; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color); font-size: 1em; padding: 10px; padding-left: 20px; ">
+                                        <option>Select Column</option>
+                                    </select>
+                                    <select id="filter-operator" class="login-input" style="-webkit-appearance: none; border-radius: 30px; background-color: var(--background-tile-color); margin: 0; border: 2px solid var(--box-shadow-color); font-size: 1em; padding: 10px; padding-left: 20px; ">
+                                        <option value="LIKE">Like</option>
+                                        <option value="=">Equals</option>
+                                        <option value="!=">Not Equals</option>
+                                        <option value=">">Greater Than</option>
+                                        <option value="<">Less Than</option>
+                                    </select>
+                                    <input type="text" id="filter-input" placeholder="Enter Value" class="login-input" style="width: 100%; margin: 0px; height: 40px; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 40px;">
+                                    <script>
+                                        let filterInput = document.getElementById("filter-input");
+
+                                        filterInput.addEventListener("input", function(event) {
+                                            if (document.getElementById("filter-column").value === "Select Column") {
+                                                return;
+                                            } else if (filterInput.value === "") {
+                                                const rows = document.getElementById("query-results").children;
+
+                                                for (let i = 1; i < rows.length; i++) {
+                                                    const row = rows[i];
+                                                    row.style.display = "flex";
+                                                }
+                                                return;
+                                            }
+
+                                            const filterColumn = document.getElementById("filter-column").value;
+                                            const filterValue = filterInput.value;
+                                            const filterOperator = document.getElementById("filter-operator").value;
+
+                                            // Display only the rows that match the filter
+                                            const rows = document.getElementById("query-results").children;
+
+                                            for (let i = 1; i < rows.length; i++) {
+                                                const row = rows[i];
+                                                const entries = row.children;
+
+                                                for (column of entries) {
+
+                                                    if (filterOperator === "LIKE" && column.children[0].getAttribute("key") === filterColumn) {
+                                                        if (column.children[0].textContent.toLowerCase().includes(filterValue.toLowerCase())) {
+                                                            row.style.display = "flex";
+                                                            break;
+                                                        } else {
+                                                            row.style.display = "none";
+                                                        }
+                                                    } else if (filterOperator === "=" && column.children[0].getAttribute("key") === filterColumn) {
+                                                        if (column.children[0].textContent.toLowerCase() === filterValue.toLowerCase()) {
+                                                            row.style.display = "flex";
+                                                            break;
+                                                        } else {
+                                                            row.style.display = "none";
+                                                        }
+                                                    } else if (filterOperator === "!=" && column.children[0].getAttribute("key") === filterColumn) {
+                                                        if (column.children[0].textContent.toLowerCase() !== filterValue.toLowerCase()) {
+                                                            row.style.display = "flex";
+                                                            break;
+                                                        } else {
+                                                            row.style.display = "none";
+                                                        }
+                                                    } else if (filterOperator === ">" && column.children[0].getAttribute("key") === filterColumn) {
+                                                        if (column.children[0].textContent.toLowerCase() > filterValue.toLowerCase()) {
+                                                            row.style.display = "flex";
+                                                            break;
+                                                        } else {
+                                                            row.style.display = "none";
+                                                        }
+                                                    } else if (filterOperator === "<" && column.children[0].getAttribute("key") === filterColumn) {
+                                                        if (column.children[0].textContent.toLowerCase() < filterValue.toLowerCase()) {
+                                                            row.style.display = "flex";
+                                                            break;
+                                                        } else {
+                                                            row.style.display = "none";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                    </script>
+                                </div>
+                                <div class="send-button" style="width: 40px; height: 40px; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="toggleFilterView()">
+                                    <span class="material-symbols-outlined">filter_alt</span>
+                                    <script>
+                                        function toggleFilterView() {
+                                            const filterOptions = document.getElementById("filter-options");
+                                            if (filterOptions.style.display === "flex") {
+                                                filterOptions.style.display = "none";
+                                            } else {
+                                                filterOptions.style.display = "flex";
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                            </div>
                         </div>
+                        <div id="query-results" class="file-list" style="font-size: 0.7em; display: flex; max-height: calc(100% - 50px); min-height: calc(100% - 50px); flex-direction: column; overflow: auto;">
+                        </div>
+
                         <script>
                             function displayQueryResults(results, db_name) {
                                 const queryResults = document.getElementById("query-results");
                                 document.getElementById("db-name").innerHTML = db_name;
                                 queryResults.innerHTML = "";
+
+                                // Reset the filter options
+                                document.getElementById("filter-column").innerHTML = "";
+                                const defaultOption = document.createElement("option");
+                                defaultOption.value = "Select Column";
+                                defaultOption.innerHTML = "Select Column";
+                                document.getElementById("filter-input").value = "";
+                                document.getElementById("filter-column").appendChild(defaultOption);
+
                                 
 
                                 // Check if there are any results
@@ -666,6 +776,13 @@
                                     keyElement.style.textDecoration = "none";
                                     keyElement.innerHTML = `${key}`;
                                     headerRow.appendChild(keyElement);
+
+                                    // Add the key to the filter options
+                                    const filterOption = document.createElement("option");
+                                    filterOption.value = key;
+                                    filterOption.innerHTML = key;
+                                    document.getElementById("filter-column").appendChild(filterOption);
+
                                 }
 
                                 // Append the header row to the queryResults container
@@ -733,6 +850,7 @@
                                         textElement.style.fontSize = "18px";
                                         textElement.style.textDecoration = "none";
                                         textElement.innerHTML = `${value}`;
+                                        textElement.setAttribute("key", key);
                                         entryElement.appendChild(textElement);
                             
                                         // Append the entry to the row
@@ -840,6 +958,7 @@
 
         document.getElementById("split-view").style.display = "none";
     }
+    toggleDatabaseView()
 
     const previewToggle = document.getElementById('preview-toggle');
     const previewContent = document.getElementById('preview-content');
