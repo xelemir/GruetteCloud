@@ -113,20 +113,9 @@
             .title {
                 display: none;
             }
-
-            .mobile-view {
-                display: flex;
-            }
-
-            .desktop-view {
-                display: none;
-            }
         }
 
         @media only screen and (min-width: 1200px) {
-            .mobile-view {
-                display: none;
-            }
 
             .desktop-view {
                 display: flex;
@@ -151,7 +140,7 @@
         </div>
 
 
-        <div class="desktop-view" style="flex-direction: row; width: 100%; height: 100%; gap: 20px;">
+        <div style="flex-direction: row; width: 100%; height: 100%; gap: 20px; display: flex; ">
             <div style="width: 200px; background-color: transparent;">
                 <a href="/" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding-bottom: 10px;">
                     <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
@@ -178,6 +167,10 @@
                     <div class="navigation-button" id="toggleAccountsView" onclick="toggleAccountsView()">
                         <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Users">manage_accounts</span>
                         <p style="padding-left: 15px;">Manage Users</p>
+                    </div>
+                    <div class="navigation-button" id="toggleDatabaseView" onclick="toggleDatabaseView()">
+                        <span class="material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;" title="Manage Users">database</span>
+                        <p style="padding-left: 15px;">Database</p>
                     </div>
                     
                 </div>
@@ -221,7 +214,7 @@
                 </div>
             </div>
 
-            <div style="background-color: var(--background-tile-color); display: flex; flex-direction: row; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
+            <div id="split-view" style="background-color: var(--background-tile-color); display: flex; flex-direction: row; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
                 <div style="width: 40%;">
                     <div id="promoEmailView" style="display: none;">
                         <h2 align="center" style="margin-bottom: 20px;">Create Email Campaign</h2>
@@ -495,48 +488,258 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mobile-view" style="display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
-            <div class="header">
-                <h1 style="display: flex; width: 100%; align-items: center; justify-content: center; margin-top: 5px; padding: 0px;">
-                    <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud Logo" style="width: 40px; height: 40px; margin-right: 15px;">
-                    Dashboard
-                </h1>
-                {% include "components/nav-element.html" %}
-            </div>
-            <div style="display: flex; flex-direction: column; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
-                <div id="mobile-tickets" style="display: flex; flex-direction: column; width: 100%; height: 100%; overflow: auto;">
-                    <h2 align="center" style="margin-bottom: 20px;">Support Tickets</h2>
-                    <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; height: 300px; background-color: var(--background-tile-color);">
-                        {% for ticket in tickets %}
-                            <div class="ticket{% if ticket["status"] == "closed" %} closed-ticket{% endif %}" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 30px; padding: 10px;">
-                                    <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; padding-bottom: 0px; text-align: center; align-items: center; justify-content: center;">
-                                        <b>{{ ticket["created_at"] }}</b>
-                                    </div>
-                                    <div style="display: flex; flex-direction: row; width: 100%; padding: 10px;">
-                                        <div style="flex: 1; overflow: none; white-space: wrap; text-overflow: ellipsis;">
-                                            <b>Status: </b>
-                                            {% if ticket["status"] == "opened" %}
-                                                <span style="color: var(--green);">Opened</span><br>
-                                            {% elif ticket["status"] == "closed" %}
-                                                <span style="color: var(--red);">Closed</span><br>
-                                                <b>Completed by: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
-                                            {% else %}
-                                                <span style="color: var(--yellow);">In Progress</span><br>
-                                                <b>Assigned to: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
-                                            {% endif %}
-                                            <b>Name: </b>{{ ticket["name"] }}<br>
-                                            <b>Username: </b>{{ ticket["username"] }}<br>
-                                            <span class="email-container">
-                                            <b>Email: </b><span class="email blurred-email">{{ ticket["email"] }}</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
+            <div id="databaseView" style="background-color: var(--background-tile-color); display: none; flex-direction: column; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
+                <div style="display: flex; flex-direction: row; width: 100%; height: 50%;">
+                    <div style="width: 30%;">
+                        <h2 align="center" style="margin-bottom: 20px;">Database Tables</h2>
+                        <div id="available-databases" class="file-list" style="font-size: 0.7em; display: flex; max-height: calc(100% - 80px); flex-direction: column; overflow: auto;">
+                        </div>
+                        <script>
+                            fetch("/dashboard/get_available_dbs", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                const availableDatabases = document.getElementById("available-databases");
+                                availableDatabases.innerHTML = "";
+                                for (database of data) {
+                                    const databaseElement = document.createElement("div");
+                                    databaseElement.classList.add("navigation-button");
+                                    databaseElement.style.gap = "10px";
+                                    databaseElement.style.width = "100%";
+                                    databaseElement.setAttribute("onclick", "get_db('" + database + "')");
+                                    databaseElement.innerHTML = `
+                                        <span class="material-symbols-outlined">table_chart</span>
+                                        <p class="username text-offcutter" style="color: var(--text-color); font-size: 18px; text-decoration: none;">${database}</p>
+                                    `;
+                                    availableDatabases.appendChild(databaseElement);
+                                }
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+
+                            function get_db(db_name) {
+                                fetch("/dashboard/get_db/" + db_name, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    displayQueryResults(data, db_name);
+                                })
+                                .catch(error => {
+                                    console.error(error);
+                                });
+                            }
+                        </script>
+
+                    </div>
+                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                    <div style="width: 70%; display: flex; flex-direction: column; align-items: center;">
+                        <h2 align="center" style="margin-bottom: 20px;">Execute Query</h2>
+                        <div id="query-successful"style="display: none; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
+                            <p style="color: var(--green);">Query executed successfully.</p>
+                        </div>
+                        <div id="query-failed" style="display: none; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
+                            <p style="color: var(--red);">Failed to execute query.</p>
+                        </div>
+                        <textarea id="query" class="login-input" autocomplete="off" placeholder="Enter SQL query" style="width: calc(100% - 40px); border-radius: 20px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 150px; resize: none;" required></textarea>
+                        <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
+                            <button onclick="runQuery()" class="send-button" style="width: calc(100% - 40px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                <p>Execute Query</p>
+                            </button>
+                        </div>
+                        <div style="display: flex; flex-direction: row; width: calc(100% - 40px); justify-content: left; gap: 10px; margin-top: 30px;">
+                            <p style="text-align: left;">Quick Queries:</p>
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
+                            <button class="send-button" onclick="document.getElementById('query').value = 'SELECT first_name, last_name, phone, email FROM users WHERE username = &quot;jan&quot;;'" style="background-color: var(--box-shadow-color); color: var(--text-color); width: calc(50% - 20px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <span class="material-symbols-outlined">badge</span>
+                                <p>Get Jan's info</p>
+                            </button>
+                            <button class="send-button" onclick="document.getElementById('query').value = 'SELECT * FROM users WHERE has_premium = &quot;1&quot;;'" style="background-color: var(--box-shadow-color); color: var(--text-color); width: calc(50% - 20px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <span class="material-symbols-outlined">workspace_premium</span>
+                                <p>Get all PLUS users</p>
+                            </button>
+                        </div>
+                        <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
+                            <button class="send-button" onclick="document.getElementById('query').value = 'SELECT username, ai_model, ai_personality FROM users WHERE ai_model = &quot;gpt-4o&quot;;'" style="background-color: var(--box-shadow-color); color: var(--text-color); width: calc(50% - 20px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <span class="material-symbols-outlined">temp_preferences_custom</span>
+                                <p>Get GPT-4o users</p>
+                            </button>
+                            <button class="send-button" onclick="document.getElementById('query').value = 'SELECT author.id AS author_id, author.username AS author_username, recipient.id AS recipient_id, recipient.username AS recipient_username, chats.message_content FROM chats JOIN users AS author ON chats.author_id = author.id JOIN users AS recipient ON chats.recipient_id = recipient.id WHERE author.username = &quot;jan&quot; OR recipient.username = &quot;jan&quot;;'" style="background-color: var(--box-shadow-color); color: var(--text-color); width: calc(50% - 20px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <span class="material-symbols-outlined">forum</span>
+                                <p>Get Jan's chats</p>
+                            </button>
+                        </div>
+                        <script>
+                            function runQuery() {
+                                const query = document.getElementById("query").value;
+                                document.getElementById("query").value = "";
+
+                                fetch("/dashboard/executesql", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({ query: query })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data["error"]) {
+                                        document.getElementById("query-failed").style.display = "flex";
+                                        setTimeout(() => {
+                                            document.getElementById("query-failed").style.display = "none";
+                                        }, 3000);
+                                        return;
+                                    }
+
+                                    document.getElementById("query-successful").style.display = "flex";
+                                    setTimeout(() => {
+                                        document.getElementById("query-successful").style.display = "none";
+                                    }, 3000);
+                                    displayQueryResults(data, "Query");
+                                })
+                                .catch(error => {
+                                    document.getElementById("query-failed").style.display = "flex";
+                                    setTimeout(() => {
+                                        document.getElementById("query-failed").style.display = "none";
+                                    }, 3000);
+                                });
+                            }
+                        </script>
+                    </div>
+                </div>
+                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                <div style="display: flex; flex-direction: row; width: 100%; height: 50%;">
+                    <div style="width: 100%; padding-top: 20px; padding-left: 20px;">
+                        <h2 align="center" style="margin-bottom: 20px; text-align: left;">Results <span id="db-name"></span></h2>
+                        <div id="query-results" class="file-list" style="font-size: 0.7em; display: flex; max-height: calc(100% - 40px); min-height: calc(100% - 40px); flex-direction: column; overflow: auto;">
+                        </div>
+                        <script>
+                            function displayQueryResults(results, db_name) {
+                                const queryResults = document.getElementById("query-results");
+                                document.getElementById("db-name").innerHTML = db_name;
+                                queryResults.innerHTML = "";
+                                
+
+                                // Check if there are any results
+                                if (results.length === 0) return;
+
+                                // Display the keys in the first row
+                                const headerRow = document.createElement("div");
+                                headerRow.style.gap = "10px";
+                                headerRow.style.minWidth = "100%";
+                                headerRow.style.textAlign = "left";
+                                headerRow.style.display = "flex";
+                                headerRow.style.alignItems = "center";
+                                headerRow.style.padding = "10px";
+                                headerRow.style.paddingLeft = "20px";
+                                headerRow.style.borderRadius = "30px";
+
+                                // Get the keys from the first dictionary
+                                const keys = Object.keys(results[0]);
+
+                                // Iterate over each key in the list
+
+                                for (const key of keys) {
+                                    // Create an element for each key
+                                    const keyElement = document.createElement("p");
+                                    keyElement.classList.add("text-offcutter");
+                                    keyElement.style.color = "var(--text-color)";
+                                    keyElement.style.fontSize = "18px";
+                                    keyElement.style.minWidth = "200px";
+                                    keyElement.style.maxWidth = "200px";
+                                    keyElement.style.textDecoration = "none";
+                                    keyElement.innerHTML = `${key}`;
+                                    headerRow.appendChild(keyElement);
+                                }
+
+                                // Append the header row to the queryResults container
+                                queryResults.appendChild(headerRow);
+                            
+                                // Iterate over each dictionary (row) in the list
+                                for (const row of results) {
+                                    // Create a row element for each dictionary
+                                    const rowElement = document.createElement("div");
+                                    rowElement.style.gap = "10px";
+                                    rowElement.style.width = "100%";
+                                    rowElement.style.display = "flex";
+                                    rowElement.style.alignItems = "center";
+                                    rowElement.style.cursor = "pointer";
+                                    rowElement.style.padding = "10px";
+                                    rowElement.style.paddingLeft = "20px";
+                                    rowElement.style.borderRadius = "30px";
+
+                            
+                                    // Iterate over each key-value pair in the dictionary
+                                    for (const [key, value] of Object.entries(row)) {
+                                        // Create an element for each key-value pair
+                                        const entryElement = document.createElement("div");
+                                        entryElement.style.display = "flex";
+                                        entryElement.style.alignItems = "center";
+                                        entryElement.style.gap = "10px";
+                                        entryElement.style.minWidth = "200px";
+                                        entryElement.style.maxWidth = "200px";
+                            
+                                        // Add the key and value
+                                        const textElement = document.createElement("p");
+                                        textElement.classList.add("text-offcutter");
+                                        entryElement.onclick = function() {
+                                            if (db_name === "Query") {
+                                                alert("Cannot edit query results. Please select the database you want to edit directly.");
+                                                return;
+                                            }
+
+                                            const id = row["id"];
+                                            const newValue = prompt("UPDATE " + db_name + " SET " + key + " = ? WHERE id = " + id + ";", value);
+
+                                            if (newValue !== null) {
+                                                fetch("/dashboard/edit_db_entry", {
+                                                    method: "POST",
+                                                    headers: {
+                                                        "Content-Type": "application/json"
+                                                    },
+                                                    body: JSON.stringify({ id: id, key: key, value: newValue, db_name: db_name })
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data["success"]) {
+                                                        textElement.innerHTML = `${newValue}`;
+                                                    } else {
+                                                        alert("Failed to edit value.");
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error(error);
+                                                });
+                                            }
+
+                                        };
+                                        textElement.style.color = "var(--text-color)";
+                                        textElement.style.fontSize = "18px";
+                                        textElement.style.textDecoration = "none";
+                                        textElement.innerHTML = `${value}`;
+                                        entryElement.appendChild(textElement);
+                            
+                                        // Append the entry to the row
+                                        rowElement.appendChild(entryElement);
+                                    }
+                            
+                                    // Append the row element to the queryResults container
+                                    queryResults.appendChild(rowElement);
+                                }
+                            }      
+                        </script>
                     </div>
                 </div>
             </div>
@@ -582,31 +785,59 @@
         document.getElementById("promoEmailView").style.display = "block";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "none";
+        document.getElementById("databaseView").style.display = "none";
 
         document.getElementById("togglePromoEmailView").classList.add("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("toggleDatabaseView").classList.remove("hover-color");
+        
+        document.getElementById("split-view").style.display = "flex";
     }
 
     function toggleAccountsView() {
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "block";
         document.getElementById("supportView").style.display = "none";
+        document.getElementById("databaseView").style.display = "none";
 
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.add("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("toggleDatabaseView").classList.remove("hover-color");
+
+        document.getElementById("split-view").style.display = "flex";
     }
 
     function toggleSupportView() {
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "block";
+        document.getElementById("databaseView").style.display = "none";
 
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.add("hover-color");
+        document.getElementById("toggleDatabaseView").classList.remove("hover-color");
+
+        document.getElementById("split-view").style.display = "flex";
     }
+
+    function toggleDatabaseView() {
+        document.getElementById("promoEmailView").style.display = "none";
+        document.getElementById("accountsView").style.display = "none";
+        document.getElementById("supportView").style.display = "none";
+        document.getElementById("databaseView").style.display = "flex";
+
+        document.getElementById("togglePromoEmailView").classList.remove("hover-color");
+        document.getElementById("toggleAccountsView").classList.remove("hover-color");
+        document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("toggleDatabaseView").classList.add("hover-color");
+
+        document.getElementById("split-view").style.display = "none";
+    }
+
+    toggleDatabaseView();
 
     const previewToggle = document.getElementById('preview-toggle');
     const previewContent = document.getElementById('preview-content');

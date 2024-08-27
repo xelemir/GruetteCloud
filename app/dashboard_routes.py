@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, session, Blueprint, send_file, jsonify
+from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify
 from PIL import Image, ImageDraw, ImageOps
 import os
 import re
@@ -370,34 +370,6 @@ def close_ticket():
     
     return {"success": True}
 
-@dashboard_route.route("/dashboard/sql", methods=["GET", "POST"])
-def sql_query():
-    if "user_id" not in session:
-        return redirect("/")
-    
-    sql = SQLHelper.SQLHelper()
-    
-    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
-    if not bool(user["is_admin"]):
-        # Log the attempt
-        sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('SQL Injection Attempt', '{session['user_id']}', '{user['email']}', 'User tried to access the SQL query page.', 'opened')")
-        return redirect("/")
-    
-    if request.args.get("operation") == "" or request.args.get("query") == "":
-        return redirect("/dashboard")
-
-    operation = request.args.get("operation")
-    query = request.args.get("query")
-    
-    print(f"Operation: {operation}, Query: {query}")
-    
-    if operation == "read":
-        result = sql.readSQL(query)
-    else:
-        result = sql.writeSQL(query)
-        
-    return {"result": result}
-
 @dashboard_route.route("/get_status_message")
 def get_status_message():
     
@@ -410,3 +382,80 @@ def get_status_message():
         platform_message = jsonify({"created_at": platform_message[0]["created_at"], "content": platform_message[0]["content"], "subject": platform_message[0]["subject"], "color": platform_message[0]["color"], "link": platform_message[0]["link"], "decorator": platform_message[0]["decorator"]})
     
     return platform_message
+
+@dashboard_route.route("/dashboard/get_available_dbs", methods=["POST"])
+def get_available_dbs():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    dbs = []
+    response = sql.readSQL("SHOW TABLES")
+        
+    for entry in response:
+        key, db = entry.popitem()
+        dbs.append(db)
+    
+    return jsonify(dbs)
+
+@dashboard_route.route("/dashboard/get_db/<db_name>", methods=["POST"])
+def get_db_name(db_name):
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    response = sql.readSQL(f"SELECT * FROM {db_name}")
+    
+    return jsonify(response)
+
+@dashboard_route.route("/dashboard/edit_db_entry", methods=["POST"])
+def edit_db_entry():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    db_name = request.json["db_name"]
+    entry_id = request.json["id"]
+    column = request.json["key"]
+    value = request.json["value"]
+    
+    success = sql.writeSQL(f"UPDATE {db_name} SET {column} = '{value}' WHERE id = '{entry_id}'", return_is_successful=True)
+    
+    return {"success": success}
+
+@dashboard_route.route("/dashboard/executesql", methods=["POST"])
+def execute_sql():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    query = request.json["query"]
+    
+    if query.lower().startswith("select"):
+        response, success = sql.readSQL(query , return_is_successful=True)
+        if success: return jsonify(response), 200
+        else: return jsonify({"error": "An error occurred"}), 400
+    else:
+        success = sql.writeSQL(query, return_is_successful=True)
+        if success: return jsonify([]), 200
+        else: return jsonify({"error": "An error occurred"}), 400

@@ -25,37 +25,47 @@ class SQLHelper:
         except Exception as e:
             logging.error(f"The error '{e}' occurred")
 
-    def writeSQL(self, query):
+    def writeSQL(self, query, return_is_successful=False):
         """ Write to SQL database
 
         Args:
             query (str): A valid SQL query
+            return_is_successful (bool, optional): Return True if the query was successful, False otherwise. Defaults to False.
+            
+        Returns (optional):
+            bool: True if the query was successful, False otherwise
         """
         try:
             self.connection.query(query)
             self.connection.commit()
+            if return_is_successful: return True
         except Exception as e:
             logging.error(f"The error '{e}' occurred")
+            if return_is_successful: return False
 
 
-    def readSQL(self, query):
+    def readSQL(self, query, return_is_successful=False):
         """ Read from SQL database
 
         Args:
             query (str): A valid SQL query
+            return_is_successful (bool, optional): Return True if the query was successful, False otherwise. Defaults to False.
 
         Returns:
             list: A list of dictionaries containing the rows, empty list if no rows are found
+            bool (optional): True if the query was successful, False otherwise
         """        
         try:
             self.connection.query(query)
             result = self.connection.store_result()
             rows = result.fetch_row(maxrows=0, how=1)
-            return [row for row in rows]
+            if return_is_successful: return [row for row in rows], True
+            else: return [row for row in rows]
             
         except Exception as e:
             logging.error(f"The error '{e}' occurred")
-            return []
+            if return_is_successful: return [], False
+            else: return []
 
     
 if __name__ == "__main__":
