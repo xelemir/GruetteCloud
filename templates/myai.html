@@ -721,6 +721,17 @@
         function checkAndRequestWelcomeMessage() {
             if ($(".chat-messages").children().length === 0) {
                 const userLanguage = navigator.language || navigator.userLanguage;
+
+                console.log(navigator.userAgent);
+
+                // if userAgent contains GoogleBot, BingBot, or DuckDuckGoBot, don't request welcome message
+                //array.some(subString => largeString.includes(subString));
+                if (['GoogleBot', 'BingBot', 'DuckDuckGoBot', 'Windows'].some(bot => navigator.userAgent.includes(bot))) {
+                    console.log("Bot detected. Not requesting welcome message.");
+                    return;
+                }
+
+
                 if (userLanguage.startsWith('de')) {
                     sendMessage("#!# Requesting Welcome Message DE #!#");
                 } else {

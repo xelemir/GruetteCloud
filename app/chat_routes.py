@@ -308,9 +308,7 @@ def myai():
 
         session["chat_history"] = chat_history
         chat_response = [{"role": message["role"], "content": message["content"], "image": message.get("image")} for message in chat_history]
-        
-        print(chat_response)
-                
+                        
         return jsonify({"chat_history": chat_response})
 
     else:

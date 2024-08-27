@@ -101,7 +101,7 @@ class OpenAIWrapper:
         conversation_log.pop(0)
         
         # Remove welcome request from the conversation log
-        if len(conversation_log) == 2:
+        if len(conversation_log) == 2 and (conversation_log[0]["content"] == "Hi, please give me a welcome to GrütteChat message." or conversation_log[0]["content"] == "Hallo, bitte gib mir eine nette Willkommensnachricht für GrütteChat. Antworte nur noch auf Deutsch."):
             conversation_log.pop(0)
 
         # Remove the oldest messages from the conversation log if more than 11 user messages have been sent
