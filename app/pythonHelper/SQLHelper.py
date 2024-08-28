@@ -2,7 +2,7 @@ import logging
 import socket
 
 import pymysql
-from config import gcpConfig, jamailliaConfig, macBookProConfig, londonConfig
+from config import jamailliaConfig, macBookProConfig, londonConfig, prodServerConfig
 
 class SQLHelper: 
     
@@ -11,8 +11,8 @@ class SQLHelper:
     def __init__(self):
         try:
             host_local = socket.gethostname()
-            if host_local in ["gruttechat-webserver", "dauntless-1"]:
-                self.connection = pymysql.connect(**gcpConfig)
+            if "gruettecloud" in host_local.lower():
+                self.connection = pymysql.connect(**prodServerConfig)
             elif "mac" in host_local.lower() or "mbp" in host_local.lower() or "uni-stuttgart" in host_local.lower():
                 self.connection = pymysql.connect(**macBookProConfig)
             elif "london" in host_local.lower():

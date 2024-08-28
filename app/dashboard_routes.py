@@ -6,7 +6,7 @@ import pyotp
 import requests
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, IconHelper, TemplateHelper
-from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip, render_path
+from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
