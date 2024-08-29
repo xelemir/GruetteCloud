@@ -176,7 +176,7 @@ def profile_picture(filename):
         File: The profile picture file
     """
     try:
-        return send_file(os.path.join(pfp_path, f"{filename}.png"))
+        return send_file(os.path.join(pfp_path, filename))
     except Exception as e:
         logging.error(e)
         return abort(404)
