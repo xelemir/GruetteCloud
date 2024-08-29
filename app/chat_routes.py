@@ -221,7 +221,7 @@ def chat_with(recipient_id):
                 messages_list.append([recipient, decrypted_message])
                 
         # Render the template
-        return render_template('chat.html', user_id=user_id, recipient=search_recipient[0]["username"], messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=search_recipient[0]["profile_picture"], blocked=blocked, menu=th.user(session), recipient_id=recipient)
+        return render_template('chat.html', user_id=user_id, recipient=search_recipient[0]["username"], messages=messages_list, verified=search_recipient[0]["is_verified"], pfp=f'{search_recipient[0]["profile_picture"]}.png', blocked=blocked, menu=th.user(session), recipient_id=recipient)
     
 @chat_route.route("/chat-file/<path:filename>", methods=["GET"])
 def chat_file(filename):
