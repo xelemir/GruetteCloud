@@ -93,14 +93,22 @@ def dashboard():
             if str(local_ip) not in entry:
                 if "python-requests" in entry or "79.222.232.209" in entry or "/static/" in entry:
                     continue
+                
+                # Match both IPv4 and IPv6 addresses
                 date_regex = re.search(r'\[([^\]]+)\]', entry)
-                ip_regex = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry)
-                if date_regex is not None:
-                    filtered_log_lines.append({"date": date_regex.group(1), "ip": ip_regex.group(0), "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")})
+                ip_regex = re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}\b|\b(?:[a-fA-F0-9:]+:+)+[a-fA-F0-9]+\b', entry)
+                
+                if date_regex is not None and ip_regex is not None:
+                    filtered_log_lines.append({
+                        "date": date_regex.group(1),
+                        "ip": ip_regex.group(0),
+                        "entry": entry.replace(f"[{date_regex.group(1)}]", "").replace(ip_regex.group(0), "")
+                    })
                     
         with open(f"{logfiles_path}error.log", 'r') as file:
             error_log_lines = file.read().splitlines()
         error_log_lines.reverse()
+
     except Exception as e:
         logging.error(e)
     
