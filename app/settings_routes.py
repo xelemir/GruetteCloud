@@ -125,18 +125,11 @@ def change_pfp():
         return redirect(f"/profile/{user_id}")
     
     file = request.files["profilePicture"]
-    filename = file.filename
     file_extension = filename.split(".")[-1]
-    
-    id_not_found = False
-    while not id_not_found:
-        potential_id = str(random.randint(10000000, 99999999))
-        if not os.path.exists(os.path.join(pfp_path, f"{potential_id}.png")):
-            filename = potential_id
-            sql.writeSQL(f"UPDATE users SET profile_picture = '{filename}' WHERE id = '{str(session['user_id'])}'")
-            id_not_found = True
             
+    filename = "pfp_" + user_id
     file.save(os.path.join(pfp_path, f"{filename}.{file_extension}"))
+    sql.writeSQL(f"UPDATE users SET profile_picture = '{filename}' WHERE id = '{str(session['user_id'])}'")
     
     try:
         # Open the input image
