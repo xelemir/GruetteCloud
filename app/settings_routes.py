@@ -133,7 +133,7 @@ def change_pfp():
         potential_id = str(random.randint(10000000, 99999999))
         if not os.path.exists(os.path.join(pfp_path, f"{potential_id}.png")):
             filename = potential_id
-            sql.writeSQL(f"UPDATE user SET profile_picture = '{filename}' WHERE id = '{str(session['user_id'])}'")
+            sql.writeSQL(f"UPDATE users SET profile_picture = '{filename}' WHERE id = '{str(session['user_id'])}'")
             id_not_found = True
             
     file.save(os.path.join(pfp_path, f"{filename}.{file_extension}"))
