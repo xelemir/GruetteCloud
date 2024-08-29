@@ -125,6 +125,7 @@ def change_pfp():
         return redirect(f"/profile/{user_id}")
     
     file = request.files["profilePicture"]
+    fileame = file.filename
     file_extension = filename.split(".")[-1]
             
     filename = "pfp_" + user_id
