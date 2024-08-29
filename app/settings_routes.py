@@ -147,22 +147,24 @@ def change_pfp():
                 img = img.crop((0, crop_start, img.width, crop_start + img.width))
 
             # Resize the cropped image to the target size
-            img = img.resize((540, 540), Image.ANTIALIAS)
+            img = img.resize((540, 540), Image.Resampling.LANCZOS)
 
             # Ensure the output image is in JPG format
             if img.mode != 'RGB':
                 img = img.convert('RGB')
 
-            # Save the converted image
-            img.save(os.path.join(pfp_path, f"{filename}.png"), "png")
-            # Remove the original image
-            if file_extension != "png":
+            # Save the converted image as PNG
+            img.save(os.path.join(pfp_path, f"{filename}.png"), "PNG")
+
+            # Remove the original image if it's not a PNG
+            if file_extension.lower() != "png":
                 img.close()
                 os.remove(os.path.join(pfp_path, f"{filename}.{file_extension}"))
-            
+
     except Exception as e:
         logging.error(e)
-        return redirect(f"/settings")
+        # Return redirect or any other response as required by your application logic
+        return redirect("/settings")
                 
     return redirect(f"/settings")
 
