@@ -1,3 +1,4 @@
+import logging
 from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify
 from PIL import Image, ImageDraw, ImageOps
 import os
@@ -100,8 +101,8 @@ def dashboard():
         with open(f"{logfiles_path}error.log", 'r') as file:
             error_log_lines = file.read().splitlines()
         error_log_lines.reverse()
-    except:
-        pass
+    except Exception as e:
+        logging.error(e)
     
     support_tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at ASC")
     my_tickets = []
