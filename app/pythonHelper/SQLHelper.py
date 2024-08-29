@@ -81,7 +81,8 @@ class SQLHelper:
     
 if __name__ == "__main__":
     sql = SQLHelper()
-    print(sql.readSQL("SELECT * FROM platform_notifications", return_is_successful=True))
+    x = sql.readSQL("SELECT * FROM platform_notifications")
+    print(x == [])
     #print(sql.readSQL("SELECT * FROM users WHERE id = 1;"))
     #print(sql.writeSQL("UPDATE users SET is_verified = 1 WHERE id = 1", return_is_successful=True))
     #sql.writeSQL("INSERT INTO chat (userSend, userReceive, message) VALUES ('user1', 'user2', 'Test')")
