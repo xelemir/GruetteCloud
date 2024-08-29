@@ -5,7 +5,7 @@ import platform
 import random
 import secrets
 import pyotp
-from flask import jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
+from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image
 
@@ -175,8 +175,11 @@ def profile_picture(filename):
     Returns:
         File: The profile picture file
     """
-
-    return send_file(os.path.join(pfp_path, f"{filename}.png"))
+    try:
+        return send_file(os.path.join(pfp_path, f"{filename}.png"))
+    except Exception as e:
+        logging.error(e)
+        return abort(404)
 
 @settings_route.route("/remove_pfp")
 def remove_pfp():
