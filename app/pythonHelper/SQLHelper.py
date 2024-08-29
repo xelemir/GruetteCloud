@@ -63,8 +63,10 @@ class SQLHelper:
                 
                 
             if return_is_successful: 
+                if rows == (): return [], False
                 return list(rows), True
             else:
+                if rows == (): return []
                 return list(rows)
                 
             
