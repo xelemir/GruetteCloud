@@ -180,9 +180,12 @@ def profile_picture(filename):
     """
     try:
         return send_file(os.path.join(pfp_path, filename))
-    except Exception as e:
-        logging.error(e)
-        return abort(404)
+    except:
+        try:
+            return send_file(os.path.join(pfp_path, f"{filename}.png"))
+        except Exception as e:
+        
+            return abort(404)
 
 @settings_route.route("/remove_pfp")
 def remove_pfp():
