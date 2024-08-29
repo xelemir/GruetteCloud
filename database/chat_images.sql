@@ -12,4 +12,4 @@ create table
     FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`chat_message_id`) REFERENCES `chats` (`id`) ON DELETE CASCADE
-  );
+  )

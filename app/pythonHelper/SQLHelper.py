@@ -60,10 +60,13 @@ class SQLHelper:
             with self.connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 cursor.execute(query)
                 rows = cursor.fetchall()
+                
+                
             if return_is_successful: 
-                return rows, True
-            else: 
-                return rows
+                return list(rows), True
+            else:
+                return list(rows)
+                
             
         except Exception as e:
             logging.error(f"The error '{e}' occurred")
@@ -76,7 +79,8 @@ class SQLHelper:
     
 if __name__ == "__main__":
     sql = SQLHelper()
-    print(sql.readSQL("SELECT username FROM users WHERE id = 1", return_is_successful=True))
+    print(sql.readSQL("SELECT * FROM platform_notifications", return_is_successful=True))
+    #print(sql.readSQL("SELECT * FROM users WHERE id = 1;"))
     #print(sql.writeSQL("UPDATE users SET is_verified = 1 WHERE id = 1", return_is_successful=True))
     #sql.writeSQL("INSERT INTO chat (userSend, userReceive, message) VALUES ('user1', 'user2', 'Test')")
     #sql.writeSQL(f"INSERT INTO gruttechat_users (username, password, email, is_email_verified, has_premium, ai_personality) VALUES ('user2', 'password', 'email', {True}, {False}, 'ai_personality')")

@@ -24,3 +24,4 @@ CREATE TABLE
     `ai_model` varchar(255) DEFAULT 'gpt-4o-mini',
     PRIMARY KEY (`id`)
   )
+
