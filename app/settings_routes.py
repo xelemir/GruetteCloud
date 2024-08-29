@@ -165,6 +165,19 @@ def change_pfp():
                 
     return redirect(f"/settings")
 
+@settings_route.route("/profile_picture/<filename>")
+def profile_picture(filename):
+    """ Route to serve the user's profile picture
+
+    Args:
+        filename (str): The filename of the profile picture
+
+    Returns:
+        File: The profile picture file
+    """
+
+    return send_file(os.path.join(pfp_path, f"{filename}.png"))
+
 @settings_route.route("/remove_pfp")
 def remove_pfp():
     """ Route to remove the user's profile picture
