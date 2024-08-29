@@ -348,58 +348,66 @@ def nelly():
     if "user_id" not in session:
         return redirect("/")
     elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41": # Only Jan and Nele can access this page
-        return abort(401)
-    else:
-        return render_template("nelly.html", menu=th.user(session))
+        sql = SQLHelper.SQLHelper()
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'"))
+        if not is_admin:
+            return abort(401)
+    return render_template("nelly.html", menu=th.user(session))
     
 @tool_route.route("/nelly_media/<path:filename>", methods=["GET"])
 def nelly_media(filename):
         if "user_id" not in session:
             return abort(401)
         elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
-            return abort(401)
-        else:
-            try:
-                return send_file(f"{gruettedrive_path}/nelly/{filename}")
-            except Exception as e:
-                print(e)
-                return abort(404)
+            sql = SQLHelper.SQLHelper()
+            is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'"))
+            if not is_admin:
+                return abort(401)
+        
+        try:
+            return send_file(f"{gruettedrive_path}/nelly/{filename}")
+        except Exception as e:
+            print(e)
+            return abort(404)
     
 @tool_route.route("/send-date-emails", methods=["POST"])
 def send_date_emails():
     if "user_id" not in session:
         return abort(401)
     elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
-        return abort(401)
-    else:
-        try:
-            title = request.json['title']
-            date = request.json['date']
-            time = request.json['time']
-            description = request.json['description']
-            prod_mode = request.json['prod_mode']
-        except Exception as e:
-            print(e)
-            return jsonify({"message": "Missing parameters"}), 400
-        
-        if title == "" or date == "" or time == "" or description == "" or prod_mode == "":
-            return jsonify({"message": "Missing parameters"}), 400
-        
-        data = {
-            "title": title,
-            "date": date,
-            "time": time,
-            "description": description,
-            "authentication": nelly_auth_key,
-            "prod_mode": prod_mode
-        }
+        sql = SQLHelper.SQLHelper()
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'"))
+        if not is_admin:
+            return abort(401)
+    
+    try:
+        title = request.json['title']
+        date = request.json['date']
+        time = request.json['time']
+        description = request.json['description']
+        prod_mode = request.json['prod_mode']
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Missing parameters"}), 400
+    
+    if title == "" or date == "" or time == "" or description == "" or prod_mode == "":
+        return jsonify({"message": "Missing parameters"}), 400
+    
+    data = {
+        "title": title,
+        "date": date,
+        "time": time,
+        "description": description,
+        "authentication": nelly_auth_key,
+        "prod_mode": prod_mode
+    }
 
-        response = requests.post("https://api.gruettecloud.com/v1/send-date-email", json=data)
-        
-        if response.status_code == 200:
-            return jsonify({"message": "Emails sent"}), 200
-        else:
-            return jsonify({"message": response.text}), response.status_code
+    response = requests.post("https://api.gruettecloud.com/v1/send-date-email", json=data)
+    
+    if response.status_code == 200:
+        return jsonify({"message": "Emails sent"}), 200
+    else:
+        return jsonify({"message": response.text}), response.status_code
         
     
 
