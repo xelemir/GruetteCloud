@@ -1,4 +1,5 @@
 import logging
+import re
 import socket
 
 import pymysql
@@ -33,12 +34,13 @@ class SQLHelper:
         Returns (optional):
             bool: True if the query was successful, False otherwise
         """
-        try:
+        try:    
             with self.connection.cursor() as cursor:
                 cursor.execute(query)
             self.connection.commit()
             if return_is_successful: 
                 return True
+            
         except Exception as e:
             logging.error(f"The error '{e}' occurred")
             if return_is_successful: 
@@ -81,8 +83,8 @@ class SQLHelper:
     
 if __name__ == "__main__":
     sql = SQLHelper()
-    x = sql.readSQL("SELECT * FROM platform_notifications")
-    print(x == [])
+    #x = sql.readSQL("SELECT * FROM platform_notifications")
+    #print(x == [])
     #print(sql.readSQL("SELECT * FROM users WHERE id = 1;"))
     #print(sql.writeSQL("UPDATE users SET is_verified = 1 WHERE id = 1", return_is_successful=True))
     #sql.writeSQL("INSERT INTO chat (userSend, userReceive, message) VALUES ('user1', 'user2', 'Test')")
@@ -90,3 +92,5 @@ if __name__ == "__main__":
     #sql.writeSQL(f"INSERT INTO gruttechat_messages (username_send, username_receive, message_content) VALUES ('user1', 'user2', 'Test')")
     #response = sql.readSQL("SELECT * FROM gruttechat_users WHERE username = 'user1'")
     #print(response[0]["username"])
+    
+    sql.writeSQL('INSERT INTO promo_codes (code, type) VALUES (";test", "test")')

@@ -349,7 +349,7 @@ def nelly():
         return redirect("/")
     elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41": # Only Jan and Nele can access this page
         sql = SQLHelper.SQLHelper()
-        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'"))
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
         if not is_admin:
             return abort(401)
     return render_template("nelly.html", menu=th.user(session))
@@ -360,7 +360,7 @@ def nelly_media(filename):
             return abort(401)
         elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
             sql = SQLHelper.SQLHelper()
-            is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'"))
+            is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
             if not is_admin:
                 return abort(401)
         
@@ -376,7 +376,7 @@ def send_date_emails():
         return abort(401)
     elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
         sql = SQLHelper.SQLHelper()
-        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'"))
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
         if not is_admin:
             return abort(401)
     

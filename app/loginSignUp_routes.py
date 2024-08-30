@@ -18,6 +18,9 @@ def login():
     Returns:
         HTML: Rendered HTML page
     """
+    
+    if session.get('login_attempts', 0) >= 5:
+        return redirect("/?error=too_many_login_attempts&traceback=login")
 
     if "signup" in request.form:
         return redirect("/signup")
@@ -43,25 +46,25 @@ def login():
             
             # Check if the user has verified their account
             if bool(user[0]["is_email_verified"]) == False:
+                session.pop('login_attempts', None)
                 return redirect(f'/verify/{username}')
             
             # Check if 2FA is enabled
             if bool(user[0]["is_2fa_enabled"]) == True:
                 session['user_id_2fa'] = user[0]["id"]
+                session.pop('login_attempts', None)
                 return redirect(url_for("LoginSignUp.two_fa", target=request.args.get('target')))
             
             # Log the user in
             else:
+                session.pop('login_attempts', None)
                 session['user_id'] = user[0]["id"]
                 session.permanent = True
                 return redirect(url_for("index", target=request.args.get('target')))
 
-        # If password is or username is incorrect
-        else:
-            return redirect("/?error=invalid_credentials&traceback=login")
-        
-    # If user does not exist
+    # If the user does not exist or the password is incorrect
     else:
+        session['login_attempts'] = session.get('login_attempts', 0) + 1
         return redirect("/?error=invalid_credentials&traceback=login")
     
 @loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
