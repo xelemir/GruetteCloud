@@ -349,7 +349,7 @@ def maps():
 def nelly():
     if "user_id" not in session:
         return redirect("/")
-    elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41": # Only Jan and Nele can access this page
+    elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3": # Only Jan and Nele can access this page
         sql = SQLHelper.SQLHelper()
         is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
         if not is_admin:
@@ -360,7 +360,7 @@ def nelly():
 def nelly_media(filename):
         if "user_id" not in session:
             return abort(401)
-        elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
+        elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3":
             sql = SQLHelper.SQLHelper()
             is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
             if not is_admin:
@@ -376,7 +376,7 @@ def nelly_media(filename):
 def send_date_emails():
     if "user_id" not in session:
         return abort(401)
-    elif str(session["user_id"]) != "14" and str(session["user_id"]) != "41":
+    elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3":
         sql = SQLHelper.SQLHelper()
         is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
         if not is_admin:
