@@ -63,9 +63,8 @@ def login():
                 return redirect(url_for("index", target=request.args.get('target')))
 
     # If the user does not exist or the password is incorrect
-    else:
-        session['login_attempts'] = session.get('login_attempts', 0) + 1
-        return redirect("/?error=invalid_credentials&traceback=login")
+    session['login_attempts'] = session.get('login_attempts', 0) + 1
+    return redirect("/?error=invalid_credentials&traceback=login")
     
 @loginSignUp_route.route('/2fa', methods=['GET', 'POST'])
 def two_fa():

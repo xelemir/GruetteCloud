@@ -150,7 +150,9 @@ def reset_password():
             else:
                 generate_token = secrets.token_hex(15)
                 
-                sql.writeSQL(f"INSERT INTO password_resets (username, token) VALUES ('{username}', '{generate_token}')")
+                user_id = user[0]["id"]
+                
+                sql.writeSQL(f"INSERT INTO password_resets (user_id, token) VALUES ('{user_id}', '{generate_token}')")
                 
                 text = f"""
                     You have requested to reset your password.<br>
@@ -191,9 +193,9 @@ def reset_password():
             if bool(token_db[0]["is_used"]):
                 return redirect("/reset_password")
             
-            username = token_db[0]["username"]
-            sql.writeSQL(f"UPDATE users SET password = '{generate_password_hash(password)}', is_2fa_enabled = {False} WHERE username = '{username}'")
-            sql.writeSQL(f"UPDATE password_resets SET is_used = {True} WHERE token = '{token}'")
+            user_id = token_db[0]["user_id"]
+            sql.writeSQL(f"UPDATE users SET password = '{generate_password_hash(password)}', is_2fa_enabled = {False} WHERE id = '{user_id}'")
+            sql.writeSQL(f"UPDATE password_resets SET is_used = {True} WHERE user_id = '{user_id}'")
             
             return render_template("reset_password.html", menu=th.user(session), action="password_reset")
         
