@@ -27,24 +27,37 @@
             </div>
             <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
                 <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128187;</span>
-                <p style="text-align: left;">Google Cloud Scheduler Job</p>
+                <p style="text-align: left;">Google Cloud Scheduler</p>
             </div>
-            {%  if not errors %}
+            {% if not log_error %}
                 <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
                     <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128994;</span>
-                    <p style="text-align: left;">Status: OK</p>
+                    <p style="text-align: left;">Log Files Status: OK</p>
                 </div>
             {% else %}
                 <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
                     <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128308;</span>
-                    <p style="text-align: left;">Status: Error</p>
+                    <p style="text-align: left;">Log Files Status: Error</p>
                 </div>
                 <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
                     <p style="text-align: left;">
-                        The following file(s) could not be deleted:<br><br>
-                        {% for error in errors %}
-                            {{ error.file }}
-                        {% endfor %}
+                        {{ log_error }}
+                    </p>
+                </div>
+            {% endif %}
+            {% if not myai_error %}
+                <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                    <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128994;</span>
+                    <p style="text-align: left;">MyAI Files Status: OK</p>
+                </div>
+            {% else %}
+                <div style="display: flex; flex-direction: row; justify-content: left; align-items: left;">
+                    <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128308;</span>
+                    <p style="text-align: left;">MyAI Files Status: Error</p>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: left; align-items: left;">
+                    <p style="text-align: left;">
+                        {{ myai_error }}
                     </p>
                 </div>
             {% endif %}
