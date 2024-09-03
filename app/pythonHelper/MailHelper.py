@@ -164,7 +164,6 @@ if __name__ == "__main__":
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     </head>
     <body style=" font-family: 'Nunito', sans-serif; font-size: 1em; background-color: #FFFFFF; display: flex; justify-content: center;">  
         <div style="background-color: #F2F2F2; text-align: center; color: #000000; width: 100%; height: auto; border-radius: 25px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 400px;">
