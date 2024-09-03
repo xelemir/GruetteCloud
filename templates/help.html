@@ -36,7 +36,19 @@
 			padding: 20px;
 			border: 1px solid var(--primary-color);
 			border-radius: 5px;
+			gap: 20px;
 		}
+
+		.dreamy-text {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
 	</style>
 </head>
 <body>
@@ -54,145 +66,250 @@
 	</div>
 
 
-	<div class="wrapping-tile" style="font-size: 13px; padding: 20px;">
+	<div style="font-size: 13px; padding: 20px;">
 		<div class="spaced-tile"></div>
 
         <h1>Help Center</h1>
 
-		<input type="text" id="search-input" placeholder="Search help center" style="width: 100%; padding: 10px; margin-bottom: 20px;"/>
+		<input type="text" id="search-input" placeholder="Search Help Center" autocomplete="off" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 30px; padding-left: 20px;"/>
 
 		<div id="help-menu">
 			<div class="help-item">
-			  	<div class="headline">How to get started</div>
-			  	<div class="content">
-					<p>Firstly, you need to create your GrütteCloud Account.</p>
-					<p>You can do this by clicking on the "Sign Up" button on the landing page or simply click <a href="/signup">here</a>.</p>
-					<p>You'll then be asked to enter a username, your email address, and a password.</p>
-					<p>After reviewing the Terms of Service and Privacy Policy, you can click on the "Sign Up" button.</p>
-					<p>You are then going to receive a six digit verification code via email. You'll need to enter this code on the next page.</p>
-					<p>Once you've done that, you'll be able to log in and use GrütteCloud services.</p>
-			  	</div>
-			</div>
-		
-			<div class="help-item">
-				<div class="headline">What is GrütteChat</div>
-				<div class="content">
-					<p>GrütteChat is a free, open-source, chat application. It is built with Python and Flask, AJAX and SQL.</p>
-					<p>Chat messages as well as user information is stored in a MySQL database.</p>
-					<p>The message content and the user passwords are encrypted before being stored in the database.</p>
-					<p>GrütteChat also has a state of the art chat-bot called MyAI built in.</p>
-					<p>You can check out the source code on <a href="https://github.com/xelemir/GruetteChat">GitHub</a>.</p>
-					<p>You may also take a look at some <a href="https://www.gruettecloud.com/">GrütteChat promo material</a>.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">What is GrütteDrive</div>
-				<div class="content">
-					<p>GrütteDrive is a cloud storage application.</p>
-					<p>Files are stored securely on our servers.</p>
-					<p>You can choose to share files directly with others via a link. You do not need to have a GrütteCloud Account to view shared files</p>
-					<p>If you do not have GrütteCloud PLUS, you can still upload up to 3 files to GrütteDrive.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">What is MyAI</div>
-				<div class="content">
-					<p>MyAI is a chat-bot that is built into GrütteChat.</p>
-					<p>The bot is built using the openai API.</p>
-					<p>MyAI is equipped with conversational awareness, meaning previous messages are taken into account when generating a reply.</p>
-					<p>As a GrütteCloud PLUS member, you get access to all MyAI personalities as well as longer conversations and replies.</p>
-					<p>MyAI is powered by GPT-4o mini for free users and GPT-4o for GrütteCloud PLUS members.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">What is GrütteCloud PLUS</div>
-				<div class="content">
-					<p>GrütteCloud PLUS gives you access to the following:</p>
-					<p>• Unlock all MyAI personalities</p>
-					<p>• GPT-4o powered MyAI</p>
-					<p>• 4x longer MyAI conversations</p>
-					<p>• Up to 10x longer MyAI replies</p>
-					<p>• Upload unlimited files GrütteDrive</p>
-					<p>• Access to all upcoming features</p>
-					<!--<p>For only 2.99 € you get lifetime* access to GrütteCloud.</p>
-					<p>currently, only PayPal is supported as a payment method</p>
-					<p>You may request a refund within 14 days of purchase.</p><br>-->
-					<p>*Lifetime means as long as the service is available. Please refer to the <a href="/terms">Terms of Service</a> for more information.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">How can I obtain GrütteCloud PLUS</div>
-				<div class="content">
-					<p>We got you covered!</p>
-					<p>Simply click <a href="/premium">here</a> to unlock GrütteCloud PLUS.</p>
-					<!--<p>Note: We currently only support PayPal as a payment method.</p>-->
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">How can I contact you</div>
-				<div class="content">
-					<p>You can contact us by clicking <a href="/support">here</a>.</p>
-					<p>Alternatively, you can send us an email at <a href="mailto:info@gruettecloud.com">info@gruettecloud.com</a>.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">How can I delete my GrütteCloud Account</div>
-				<div class="content">
-					<p>To delete your GrütteCloud Account and all data associated with it, please head over to your GrütteCloud Account settings or click <a href="/settings">here</a>.</p>
-					<p> You will be asked to enter your username, password and email to confirm the deletion.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">How can I change my GrütteCloud Account email</div>
-				<div class="content">
-					<p>To change your GrütteCloud Account email, please head over to your GrütteCloud Account settings or click <a href="/settings">here</a>.</p>
-					<p> You will be asked to enter your new email and your password to confirm the action.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">How can I change my GrütteCloud Account password</div>
-				<div class="content">
-					<p>To change your GrütteCloud Account password, please head over to your GrütteCloud Account settings or click <a href="/settings">here</a>.</p>
-					<p> You will be asked to enter your old password and the new password to confirm the action.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">I can't login using my GrütteCloud Account</div>
-				<div class="content">
-					<p>Please <a href="/support">contact us</a> and we are going to help you as soon as possible.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">I forgot my password</div>
-				<div class="content">
-					<p>Please <a href="/support">contact us</a> and we are going to help you as soon as possible.</p>
-					<p>Automatic password recovery is going to be added soon.</p>
-				</div>
-			</div>
-
-			<div class="help-item">
-				<div class="headline">Who is behind GrütteCloud</div>
-				<div class="content">
-					<p>GrütteChat is developed by Jan Grüttefien, a Computer Science student from Stuttgart, Germany.</p>
-					<p>You can check out Jan's <a href="https://github.com/xelemir">GitHub</a>, <a href="https://www.instagram.com/jan.gtm">Instagram</a> or <a href="https://open.spotify.com/user/n0c39jatc5pksdv4rhxizx2xy?si=dae086e6ce4c4723">Spotify</a>.</p>
-					<p>You can also <a href="/chat/jan">text me on GrütteChat</a>. My username is jan. Thanks for checking out my project :)</p>
+			  	<div class="headline">How to get started <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+			  	<div class="content" style="display: none;">
+					<p>To get started with GrütteCloud, we suggest you create an account first.</p>
+					<p>You can do this by clicking <span class="align-icons-center" style="background-color: var(--primary-color); color: var(--white-color); padding: 4px 12px; border-radius: 30px;"><span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">rocket_launch</span> Get Started!</span> on the  <a href="/discover" style="text-decoration: none; color: var(--primary-color);">start page</a>.</p>
+					<p>After entering some basic information, you will get an email to verify your account.</p>
+					<p>Once you have verified your account, you can start using GrütteCloud.</p>
 				</div>
 			</div>
 		</div>
-        <div align="center">
-            <div class="spaced-tile"></div>
-            <a href="/support" style="text-decoration: none; color: var(--white-color);"><button class="button-blue" style="min-width: 0px;">Contact us</button></a>
-        </div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">What is GrütteCloud <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>GrütteCloud is a web application that allows you to chat, share files, explore routes, track budgets, and much more.</p>
+					<p>It is designed to be a one-stop solution for all your needs.</p>
+					<p>GrütteCloud is built with privacy in mind, so you can be sure that your data is safe.</p>
+					<p>GrütteCloud is also <a href="https://github.com/xelemir/gruettecloud" style="text-decoration: none; color: var(--primary-color);">open-source</a>, so you can review the code yourself.</p>
+					<p>The following core products are available in GrütteCloud:</p>
+					<ul style="margin-left: 20px;">
+						<li>GrütteChat</li>
+						<li>GrütteDrive</li>
+						<li>GrütteMaps</li>
+						<li>GrütteFinance</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How to use GrütteChat <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>GrütteChat is a chat application that allows you to communicate with other users.</p>
+					<p>To start a new chat, go to the <a href="/chat" style="text-decoration: none; color: var(--primary-color);">chat page</a> and click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">search</span> icon.</p>
+					<p>Enter the name of the user you want to chat with and click on the user's name to start a chat.</p>
+					<p>You can also search by email address, phone number, or name.</p>
+					<p>For that, you have to enter "email:", "phone:", or "name:" followed by the search term.</p>
+					<br>
+					<p>When you are in a chat, you can send text messages and images.</p>
+					<p>Click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">attach_file</span> icon or use <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">keyboard_command_key</span> + V to add an image to your message.</p>
+					<p>Press <span class="material-symbols-rounded align-icons-center" style="color: var(--white-color); padding 5px; border-radius: 50%; font-size: 1.2em; background-color: var(--primary-color);">arrow_upward_alt</span> or ENTER to send the message.</p>
+					<p>The freshly sent message will appear at the bottom of the chat with a <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">schedule</span> icon. This indicates that the message is being sent.</p>
+					<p>Once the message has been received by the server, the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">done</span> icon will appear.</p>
+					<p>When the message has been read by the recipient, the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">done_all</span> icon will appear.</p>
+					<p>To report the chat in case of abuse, click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">flag</span> icon.</p>
+					<p>To delete a message you have sent, click on the respective message and then on <span class="align-icons-center" style="background-color: var(--secondary-color); padding: 4px 12px; border-radius: 30px;"><span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">delete</span> Delete Message</span>.</p>
+					<p>To block a user, go to the chat with the user and click on their name at the top. Once you're on their profile, click on the "Block User" button.</p>
+					<br>
+					<p>To delete a chat, go to the <a href="/chat" style="text-decoration: none; color: var(--primary-color);">chat page</a>, click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">delete</span> icon next to the chat you want to delete.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How to use MyAI <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>MyAI is a chatbot that can help you with various tasks.</p>
+					<p>To start a chat with MyAI, go to the <a href="/chat" style="text-decoration: none; color: var(--primary-color);">chat page</a> and select the first chat.</p>
+					<p>You cannot delete the chat with MyAI, it will always be the first chat.</p>
+					<p>When opening the chat with MyAI, you will see a welcome message.</p>
+					<p>Tap the <span class="material-symbols-rounded align-icons-center dreamy-text" style="font-size: 1.2em;">temp_preferences_custom</span> icon in the top right corner to access the AI preferences menu.</p>
+					<p>Here you can change the personality of MyAI, select the AI Model or restart the chat.</p>
+					<p>MyAI currently offers the following personalities:</p>
+					<ul style="margin-left: 20px;">
+						<li>Default</li>
+						<li>Uwu Gamer Girl (NSFW)</li>
+						<li>Backus (BNF inventor)</li>
+						<li>Lorde</li>
+						<li>Taylor Swift</li>
+						<li>Taco the otter</li>
+						<li>Anakin Skywalker</li>
+						<li>B1 Battle Droid</li>
+					</ul>
+					<br>
+					<p>You can choose between the following AI models:</p>
+					<ul style="margin-left: 20px;">
+						<li>GPT-4o mini</li>
+						<li>GPT-4o</li>
+					</ul>
+					<br>
+					<p>Please note:<br>The GPT-4o model is more powerful and can generate more complex responses. Additionally, it is capable of processing images you send to it (See How to use GrütteChat for more information). However GPT-4o is only available for <span class="dreamy-text">GrütteCloud PLUS</span> users.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How to use GrütteDrive <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>GrütteDrive is a file storage application that allows you to store and share files.</p>
+					<p>To upload a file, go to the <a href="/drive" style="text-decoration: none; color: var(--primary-color);">drive page</a> and click on upload area. You can also drag and drop files into the upload area.</p>
+					<p>Once the file has been uploaded, you can share it with other users by clicking on the file name and then on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">ios_share</span> icon next to the file.</p>
+					<p>Free users can upload up to 3 files.</p>
+					<p>A link will be generated that you can share with other users.</p>
+					<p>To delete a file, click on the file name and then on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">delete</span> icon.</p>
+					<p>To create a new folder, click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">create_new_folder</span> icon.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How to use GrütteMaps <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>GrütteMaps is a route planning application that allows you find the best route for your journey.</p>
+					<p>More information coming soon...</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How to use GrütteFinance <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>GrütteFinance is a budget tracking application that allows you to keep track of your expenses.</p>
+					<p>More information coming soon...</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">GrütteCloud PLUS <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p><span class="dreamy-text">GrütteCloud PLUS</span> is a premium subscription that gives you access to additional features.</p>
+					<p>With <span class="dreamy-text">GrütteCloud PLUS</span>, you get access to the following features:</p>
+					<ul style="margin-left: 20px;">
+						<li>GPT-4o powered MyAI</li>
+						<li>MyAI responds to uploaded images</li>
+						<li>4x longer MyAI conversations</li>
+						<li>Up to 10x longer MyAI replies</li>
+						<li>Upload unlimited files GrütteDrive</li>
+						<li>Access to all upcoming features</li>
+						<li>Your support helps us to improve GrütteCloud</li>
+					</ul>
+					<br>
+					<p><span class="dreamy-text">GrütteCloud PLUS</span> is available for 2.99 € once - no subscription required.</p>
+					<br>
+					<a href="/premium" style="text-decoration: none; color: var(--primary-color);">Learn more</a>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">I forgot my password <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>If you have forgotten your password, you can reset it on our <a href="/reset_password" style="text-decoration: none; color: var(--primary-color);">password recovery page</a>.</p>
+					<p>You just need your username and the email address you used to sign up.</p>
+					<p>After that you will receive an email with a link to reset your password.</p>
+					<p>But be careful, the link is only valid for 15 minutes.</p>
+					<br>
+					<p>If you have any problems, please contact us <a href="/support" style="text-decoration: none; color: var(--primary-color);">here</a>.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How do I change my password <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>To change your password, go to the <a href="/settings" style="text-decoration: none; color: var(--primary-color);">settings page</a> and click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">key</span> icon.</p>
+					<p>Enter your current password and then your new password.</p>
+					<p>Click on <span class="align-icons-center" style="background-color: var(--primary-color); color: var(--white-color); padding: 4px 12px; border-radius: 30px;">Change Password</span> to save your new password.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How do I change my email <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>To change your email, go to the <a href="/settings" style="text-decoration: none; color: var(--primary-color);">settings page</a> and click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">email</span> icon.</p>
+					<p>Enter your new email and your password.</p>
+					<p>Click on <span class="align-icons-center" style="background-color: var(--primary-color); color: var(--white-color); padding: 4px 12px; border-radius: 30px;">Change Email</span> to save your new email.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How do I delete my account <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>If you want to delete your account, go to the <a href="/settings" style="text-decoration: none; color: var(--primary-color);">settings page</a> and click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">delete</span> icon.</p>
+					<p>Enter your username, password, email and the reason for deletion and click on <span class="align-icons-center" style="background-color: var(--red); color: var(--white-color); padding: 4px 12px; border-radius: 30px;">Delete account forever</span> to delete your account.</p>
+					<p>Please note that this action is irreversible and all your data will be lost.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How do I delete my data <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>If you want to delete your data, the best way is to delete your account</p>
+					<p> For that, go to the <a href="/settings" style="text-decoration: none; color: var(--primary-color);">settings page</a> and click on the <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em;">delete</span> icon.</p>
+					<p>Enter your username, password, email and the reason for deletion and click on <span class="align-icons-center" style="background-color: var(--red); color: var(--white-color); padding: 4px 12px; border-radius: 30px;">Delete account forever</span> to delete your account.</p>
+					<p>However we may still store some data for legal reasons.</p>
+					<p>If you want to delete your data without deleting your account, please contact us <a href="/support" style="text-decoration: none; color: var(--primary-color);">here</a>.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">I have a question <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>If you have a question, you can contact us <a href="/support" style="text-decoration: none; color: var(--primary-color);">here</a>.</p>
+					<p>We will get back to you as soon as possible.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">I want a copy of my data <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>If you want a copy of your data, please contact us <a href="/support" style="text-decoration: none; color: var(--primary-color);">here</a>.</p>
+					<p>We will provide you with a copy of your data as soon as possible.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">I want to report a bug <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>If you want to report a bug, please contact us <a href="/support" style="text-decoration: none; color: var(--primary-color);">here</a>.</p>
+					<p>Please provide as much information as possible so we can fix the bug as soon as possible.</p>
+					<p>You might receive a reward for reporting a bug.</p>
+				</div>
+			</div>
+		</div>
+		<div id="help-menu">
+			<div class="help-item">
+				<div class="headline">How is my data stored <span class="expand-icon material-symbols-rounded align-icons-center">expand_more</span></div>
+				<div class="content" style="display: none;">
+					<p>Your data is stored on servers in Germany.</p>
+					<p>We take privacy very seriously and make sure that your data is safe.</p>
+					<p>Chat text messages are stored encrypted.</p>
+					<p>Chat images are also stored in a way that only authorized users can access them and their URLs.</p>
+					<p>MyAI conversations are stored on your device and we do not have access to them.</p>
+					<p>However MyAI image files are stored on our servers for a 14 days and then deleted.</p>
+					<p>If you have any questions about data storage, please contact us <a href="/support" style="text-decoration: none; color: var(--primary-color);">here</a>.</p>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div id="cookie-banner"></div>
 	{% include "components/footer.html" %}
@@ -200,34 +317,44 @@
 </html>
 
 <script>
-	// Function to handle search functionality
-    function handleSearch() {
-		const searchInput = document.getElementById('search-input');
-		const searchTerm = searchInput.value.toLowerCase();
-		const helpItems = document.getElementsByClassName('help-item');
-  
-		for (let item of helpItems) {
-		  const headline = item.querySelector('.headline').textContent.toLowerCase();
-		  const content = item.querySelector('.content').textContent.toLowerCase();
-		  const isMatch = headline.includes(searchTerm) || content.includes(searchTerm);
-		  item.style.display = isMatch ? 'block' : 'none';
+	// Search functionality, searches the headlines and the content of the help items
+	document.getElementById("search-input").addEventListener("input", function() {
+		var searchValue = this.value.toLowerCase();
+		var helpItems = document.getElementsByClassName("help-item");
+
+		for (var i = 0; i < helpItems.length; i++) {
+			var headline = helpItems[i].getElementsByClassName("headline")[0].innerText.toLowerCase();
+			var content = helpItems[i].getElementsByClassName("content")[0].innerText.toLowerCase();
+
+			if (headline.includes(searchValue) || content.includes(searchValue)) {
+				helpItems[i].style.display = "block";
+			} else {
+				helpItems[i].style.display = "none";
+			}
 		}
-	  }
-  
-	  // Function to toggle the visibility of content
-	  function toggleContent(event) {
-		const content = event.target.nextElementSibling;
-		content.style.display = content.style.display === 'none' ? 'block' : 'none';
-	  }
-  
-	  // Add event listeners
-	  const searchInput = document.getElementById('search-input');
-	  searchInput.addEventListener('input', handleSearch);
-  
-	  const headlines = document.getElementsByClassName('headline');
-	  for (let headline of headlines) {
-		headline.addEventListener('click', toggleContent);
-	  }
+
+		// If no help items are found, display a message
+		if (document.querySelectorAll(".help-item[style='display: block;']").length === 0) {
+			document.getElementById("help-menu").innerHTML = "<p>No results found. Click <a href='/support' style='text-decoration: none; color: var(--primary-color);'>here</a> to contact us.</p>";
+		}
+	});
+
+	// Add click event listener to all headlines
+	var headlines = document.getElementsByClassName("headline");
+	for (var i = 0; i < headlines.length; i++) {
+		headlines[i].addEventListener("click", function() {
+			var content = this.parentElement.getElementsByClassName("content")[0];
+			var expandIcon = this.getElementsByClassName("expand-icon")[0];
+			if (content.style.display === "none") {
+				content.style.display = "block";
+				expandIcon.innerText = "expand_less";
+			} else {
+				content.style.display = "none";
+				expandIcon.innerText = "expand_more";
+			}
+		});
+	}
+
 </script>
 
 <script src="https://www.gruettecloud.com/static/cookies.js"></script>

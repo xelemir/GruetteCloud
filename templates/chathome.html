@@ -545,13 +545,13 @@
                             }
                         }
                 });
-            }, 1000); // Delay the search by 1 second
+            }, 0); // Delay the search by 1 second
         }
     
         // Trigger the search when the input field changes
         $('#searchFormInput').on('input', function() {
             clearTimeout(debounceTimer); // Clear any existing timer
-            debounceTimer = setTimeout(updateSearchResults, 1000); // Set a new timer to trigger the search
+            debounceTimer = setTimeout(updateSearchResults, 500); // Set a new timer to trigger the search
         });
     });    
 </script>
