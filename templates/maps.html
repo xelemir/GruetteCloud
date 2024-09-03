@@ -134,45 +134,45 @@
     <div id="toggle-view" style="background-color: var(--background-color); max-height: 80svh; border-radius: 30px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-direction: column; justify-content: space-between;">
         <h1>GrütteMaps</h1>
         <div id="darkModeToggleDiv" style="display: flex; background-color: transparent; border: none; cursor: pointer; position: absolute; top: 25px; left: 22px; color: var(--text-color);">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover align-icons-center" title="Darkmode">dark_mode</span>
         </div>
         <button id="restart-button" onclick="reset('all')" style="background-color: transparent; border: none; cursor: pointer; position: absolute; top: 25px; right: 22px; display: none; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">refresh</span>
+            <span class="material-symbols-rounded align-icons-center">refresh</span>
         </button>
         <!--<button id="toggleChangeTransportationModeButton" onclick="toggleChangeTransportationMode()" style="background-color: transparent; border: none; cursor: pointer; position: absolute; top: 25px; right: 22px; display: none; color: var(--text-color);">
-            <span class="material-symbols-outlined align-icons-center">tune</span>
+            <span class="material-symbols-rounded align-icons-center">tune</span>
         </button>-->
         <div style="width: 100%; flex-direction: column; gap: 5px; margin-top: 25px;">
             <div id="start" style="width: 100%; display: none; flex-direction: row; gap: 20px;">
                 <div style="display: flex; justify-content: left; align-items: center; cursor: pointer;">
-                    <span id="transport-mode-icon" onclick="toggleChangeTransportationMode()" style="margin-right: 5px; font-size: 1.8em;" class="material-symbols-outlined align-icons-center">directions_car</span>
+                    <span id="transport-mode-icon" onclick="toggleChangeTransportationMode()" style="margin-right: 5px; font-size: 1.8em;" class="material-symbols-rounded align-icons-center">directions_car</span>
                 </div>
                 <input id="start-input" type="text" class="login-input" autocomplete="off" placeholder="Choose start or use" style="display: flex; flex: 1; font-size: 1em; height: 40px; margin: 0; border-radius: 20px; padding-left: 15px; padding-right: 50px; color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
                 <div id="my-location" onclick="requestLocation()" style="position: absolute; right: 26px; margin-top: 5px; display: flex; justify-content: right; align-items: center; flex: 1; cursor: pointer; color: var(--white-color); background-color: var(--primary-color); border-radius: 25px; height: 30px; padding: 0px 10px;">
                 My Location
                 </div>
                 <div id="start-search-icon" style="position: absolute; right: 26px; margin-top: 5px; display: none; justify-content: center; align-items: center; flex: 1; cursor: pointer; color: var(--white-color); background-color: var(--primary-color); border-radius: 25px; height: 30px; width: 30px; padding: 0px 10px;" onmouseover="showInputReset('start')" onmouseleave="showInputReset('start-hide')">
-                    <span style="color: var(--white-color); font-size: 1.3em;" class="material-symbols-outlined align-icons-center">search</span>
+                    <span style="color: var(--white-color); font-size: 1.3em;" class="material-symbols-rounded align-icons-center">search</span>
                 </div>
                 <div id="reset-start-input" onclick="reset('start')" style="position: absolute; right: 26px; margin-top: 5px; display: none; justify-content: center; align-items: center; flex: 1; cursor: pointer; color: var(--white-color); background-color: var(--red); border-radius: 25px; height: 30px; width: 30px; padding: 0px 10px;" onmouseover="showInputReset('start')" onmouseleave="showInputReset('start-hide')">
-                    <span style="color: var(--white-color);" class="material-symbols-outlined align-icons-center">close</span>
+                    <span style="color: var(--white-color);" class="material-symbols-rounded align-icons-center">close</span>
                 </div>
                 <div id="start-coordinates" style="display: none; flex: 1; font-size: 1em; height: 40px; margin: 0; border-radius: 30px; padding-left: 15px; padding-right: 50px; background-color: var(--secondary-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); justify-content: left; align-items: center;" onmouseover="showInputReset('start')" onmouseleave="showInputReset('start-hide')"></div>
             </div>
             <div id="start-results" style="background-color: var(--secondary-color); border-radius: 20px; padding: 10px 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: none; flex-direction: column; justify-content: space-between; margin-top: 20px; margin-bottom: 20px;"></div>
             <div id="route-decorator" style="display: none; justify-content: left; align-items: center;">
-                <span style="margin: 0px 0; margin-right: 5px; font-size: 1.8em;" class="material-symbols-outlined align-icons-center">more_vert</span>
+                <span style="margin: 0px 0; margin-right: 5px; font-size: 1.8em;" class="material-symbols-rounded align-icons-center">more_vert</span>
             </div>
             <div id="destination" style="width: 100%; display: flex; flex-direction: row; gap: 20px;">
                 <div style="display: flex; justify-content: left; align-items: center;">
-                    <span style="margin-right: 5px; font-size: 1.8em" class="material-symbols-outlined align-icons-center">location_on</span>
+                    <span style="margin-right: 5px; font-size: 1.8em" class="material-symbols-rounded align-icons-center">location_on</span>
                 </div>
                 <input id="destination-input" type="text" class="login-input" autocomplete="off" placeholder="Search destination or click map" style="display: flex; flex: 1; font-size: 1em; height: 40px; margin: 0; border-radius: 30px; padding-left: 15px; padding-right: 50px; color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);" required>
                 <div id="destination-search-icon" style="position: absolute; right: 26px; margin-top: 5px; display: none; justify-content: center; align-items: center; flex: 1; cursor: pointer; color: var(--white-color); background-color: var(--primary-color); border-radius: 25px; height: 30px; width: 30px; padding: 0px 10px;" onmouseover="showInputReset('start')" onmouseleave="showInputReset('start-hide')">
-                    <span style="color: var(--white-color); font-size: 1.3em;" class="material-symbols-outlined align-icons-center">search</span>
+                    <span style="color: var(--white-color); font-size: 1.3em;" class="material-symbols-rounded align-icons-center">search</span>
                 </div>
                 <div id="reset-destination-input" onclick="reset('destination')" style="position: absolute; right: 26px; margin-top: 5px; display: none; justify-content: center; align-items: center; flex: 1; cursor: pointer; color: var(--white-color); background-color: var(--red); border-radius: 25px; height: 30px; width: 30px; padding: 0px 10px;" onmouseover="showInputReset('destination')" onmouseleave="showInputReset('destination-hide')">
-                    <span style="color: var(--white-color);" class="material-symbols-outlined align-icons-center">close</span>
+                    <span style="color: var(--white-color);" class="material-symbols-rounded align-icons-center">close</span>
                 </div>
                 <div id="destination-coordinates" style="display: none; flex: 1; font-size: 1em; height: 40px; margin: 0; border-radius: 30px; padding-left: 15px; padding-right: 15px; background-color: var(--secondary-color); color: var(--text-color); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); justify-content: left; align-items: center;" onmouseover="showInputReset('destination')" onmouseleave="showInputReset('destination-hide')"></div>
             </div>
@@ -181,43 +181,43 @@
             <hr id="line" style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin: 20px 0px; display: none;">
             <div id="route-details" style="width: 100%; display: none; flex-direction: row; gap: 10px; margin: 10px 0;">
                 <div style="display: flex; justify-content: left; align-items: center;">
-                    <span style="margin-right: 10px;" class="material-symbols-outlined align-icons-center">flag</span>
+                    <span style="margin-right: 10px;" class="material-symbols-rounded align-icons-center">flag</span>
                     <p id="distance"></p>
                 </div>
                 <div style="display: flex; justify-content: right; align-items: center; flex: 1;">
-                    <span style="margin-right: 10px;" class="material-symbols-outlined align-icons-center">schedule</span>
+                    <span style="margin-right: 10px;" class="material-symbols-rounded align-icons-center">schedule</span>
                     <p id="time"></p>
                 </div>
             </div>
 
             <div id="changeTransportationMode" style="display: none; justify-content: center; align-items: center; gap: 20px; flex: 1; height: 40px; margin-top: 10px;">
                 <div id="driving" class="transportation-mode transportation-mode-selected" onclick="changeTransportationMode('driving')">
-                    <span class="material-symbols-outlined align-icons-center">directions_car</span>
+                    <span class="material-symbols-rounded align-icons-center">directions_car</span>
                 </div>
                 <div id="walking" class="transportation-mode" onclick="changeTransportationMode('walking')">
-                    <span class="material-symbols-outlined align-icons-center">directions_walk</span>
+                    <span class="material-symbols-rounded align-icons-center">directions_walk</span>
                 </div>
                 <div id="cycling" class="transportation-mode" onclick="changeTransportationMode('cycling')">
-                    <span class="material-symbols-outlined align-icons-center">directions_bike</span>
+                    <span class="material-symbols-rounded align-icons-center">directions_bike</span>
                 </div>
                 <div id="wheelchair" class="transportation-mode" onclick="changeTransportationMode('wheelchair')">
-                    <span class="material-symbols-outlined align-icons-center">accessible</span>
+                    <span class="material-symbols-rounded align-icons-center">accessible</span>
                 </div>
                 <div id="public-transport" class="transportation-mode" onclick="changeTransportationMode('publicTransport')">
-                    <span class="material-symbols-outlined align-icons-center">directions_subway</span>
+                    <span class="material-symbols-rounded align-icons-center">directions_subway</span>
                 </div>
             </div>
 
             <div id="buttons" style="display: none; justify-content: left; align-items: center; margin-top: 20px;">
                 <button id="calculate-button" onclick="calculateRoute()" style="background-color: var(--primary-color); color: var(--white-color); border-radius: 30px; padding: 2px 10px; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; flex: 1; height: 40px;">
-                    <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">directions</span> Get Directions
+                    <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-rounded align-icons-center">directions</span> Get Directions
                 </button>
                 <div id="no-route-found" style="display: none; justify-content: center; align-items: center; flex: 1; height: 40px;">
-                    <span style="margin-right: 5px; color: var(--red);" class="material-symbols-outlined align-icons-center">warning</span>
+                    <span style="margin-right: 5px; color: var(--red);" class="material-symbols-rounded align-icons-center">warning</span>
                     <p style="color: var(--red);">No Route Found</p>
                 </div>
                 <button id="view-route-button" onclick="toggleExpandRoute()" style="background-color: var(--primary-color); color: var(--white-color); border-radius: 30px; padding: 2px 10px; border: none; cursor: pointer; display: none; justify-content: center; align-items: center; flex: 1; height: 40px;">
-                    <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">expand_more</span> View Route
+                    <span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-rounded align-icons-center">expand_more</span> View Route
                 </button>
                 <div id="calculating-wheel" style="display: none; justify-content: center; align-items: center; flex: 1; height: 40px;">
                     <i class="fa fa-spinner fa-spin" style="font-size: 1.2em; color: var(--primary-color); margin-right: 5px;"></i>
@@ -313,7 +313,7 @@ function reset(input) {
     document.getElementById("distance").style.display = "none";
     document.getElementById("route-details-scrollable").innerHTML = "";
     document.getElementById("route-details-scrollable").style.display = "none";
-    document.getElementById("view-route-button").innerHTML = '<span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">expand_more</span> View Route';
+    document.getElementById("view-route-button").innerHTML = '<span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-rounded align-icons-center">expand_more</span> View Route';
 
 
     map.eachLayer(function (layer) {
@@ -493,9 +493,9 @@ function calculateRoute() {
                     }
                     
                     if (step["distance"] != "0.0m") {
-                        stepElement.innerHTML = '<div style="display: flex; flex-direction: row; gap: 20px; margin: 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 15px;" class="material-symbols-outlined align-icons-center">' + icon + '</span><p>' + step["instruction"] + '</p></div><div style="display: flex; justify-content: right; align-items: center; flex: 1;">' + step["distance"] + '</div></div>';
+                        stepElement.innerHTML = '<div style="display: flex; flex-direction: row; gap: 20px; margin: 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 15px;" class="material-symbols-rounded align-icons-center">' + icon + '</span><p>' + step["instruction"] + '</p></div><div style="display: flex; justify-content: right; align-items: center; flex: 1;">' + step["distance"] + '</div></div>';
                     } else {
-                        stepElement.innerHTML = '<div style="display: flex; flex-direction: row; gap: 20px; margin: 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 15px;" class="material-symbols-outlined align-icons-center">' + icon + '</span><p>' + step["instruction"] + '</p></div></div>';
+                        stepElement.innerHTML = '<div style="display: flex; flex-direction: row; gap: 20px; margin: 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 15px;" class="material-symbols-rounded align-icons-center">' + icon + '</span><p>' + step["instruction"] + '</p></div></div>';
                     }
                     routeDetails.append(stepElement);
                 }
@@ -518,10 +518,10 @@ function toggleExpandRoute() {
     var routeDetails = document.getElementById("route-details-scrollable");
     if (routeDetails.style.display == "none") {
         routeDetails.style.display = "flex";
-        document.getElementById("view-route-button").innerHTML = '<span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">expand_less</span> Hide Route';
+        document.getElementById("view-route-button").innerHTML = '<span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-rounded align-icons-center">expand_less</span> Hide Route';
     } else {
         routeDetails.style.display = "none";
-        document.getElementById("view-route-button").innerHTML = '<span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-outlined align-icons-center">expand_more</span> View Route';
+        document.getElementById("view-route-button").innerHTML = '<span style="margin-right: 5px; color: var(--white-color);" class="material-symbols-rounded align-icons-center">expand_more</span> View Route';
     }
 }
 
@@ -608,7 +608,7 @@ $(document).ready(function() {
                         var display_name = place["display_name"];
 
                         var placeElement = document.createElement("div");
-                        placeElement.innerHTML =  '<div onclick="setCoordinates(' + lat + ' ,' + lon + ')" style="cursor: pointer; width: 100%; display: flex; flex-direction: row; gap: 10px; margin: 10px 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 5px; font-size: 1.8em;" class="material-symbols-outlined align-icons-center">public</span></div><div style="display: flex; justify-content: right; align-items: center; flex: 1;"><p style="margin: 0;">' + display_name + '</p></div></div>';
+                        placeElement.innerHTML =  '<div onclick="setCoordinates(' + lat + ' ,' + lon + ')" style="cursor: pointer; width: 100%; display: flex; flex-direction: row; gap: 10px; margin: 10px 0;"><div style="display: flex; justify-content: left; align-items: center;"><span style="margin-right: 5px; font-size: 1.8em;" class="material-symbols-rounded align-icons-center">public</span></div><div style="display: flex; justify-content: right; align-items: center; flex: 1;"><p style="margin: 0;">' + display_name + '</p></div></div>';
                         searchResults.append(placeElement);
 
                     }

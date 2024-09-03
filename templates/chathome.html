@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Home | GrütteChat</title>
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
@@ -61,7 +61,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="centered-content">
             <a href="/" class="logo" title="Home">
@@ -80,13 +80,13 @@
         <div class="wrapping-tile" style="text-align: center; padding: 20px; border-radius: 30px; margin: 0;">
             <h2 style="color: var(--{{ status_message["color"] }}); margin-bottom: 20px;">
                 {% if status_message["decorator"] == "warning" %}
-                    <span class="material-symbols-outlined align-icons-center" style="color: var(--{{ status_message["color"] }}); font-size: 1.2em; margin-right: 10px;">warning</span>
+                    <span class="material-symbols-rounded align-icons-center" style="color: var(--{{ status_message["color"] }}); font-size: 1.2em; margin-right: 10px;">warning</span>
                 {% endif %}
 
                 {{ status_message["subject"] }}
 
                 {% if status_message["decorator"] == "warning" %}
-                    <span class="material-symbols-outlined align-icons-center" style="color: var(--{{ status_message["color"] }}); font-size: 1.2em; margin-left: 10px;">warning</span>
+                    <span class="material-symbols-rounded align-icons-center" style="color: var(--{{ status_message["color"] }}); font-size: 1.2em; margin-left: 10px;">warning</span>
                 {% endif %}
                 
                 {% if status_message["decorator"] == "new" %}
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div onclick="closeHelp()" style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-            <span class="material-symbols-outlined" style="color: var(--text-color); font-size: 2em; cursor: pointer;">close</span>
+            <span class="material-symbols-rounded" style="color: var(--text-color); font-size: 2em; cursor: pointer;">close</span>
         </div>
     </div>
 
@@ -135,10 +135,10 @@
             </div>
             
             <button name="send" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 53px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-outlined">search</span>
+                <span class="material-symbols-rounded">search</span>
             </button>
             <div id="close" class="send-button" style="width: 40px; height: 40px; position: absolute; right: 8px; border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: var(--red);">
-                <span class="material-symbols-outlined">close</span>
+                <span class="material-symbols-rounded">close</span>
             </div>
         </form>
         <div id="matching-usernames" class="wrapping-tile" style="display: none; padding-bottom: 5px; border-radius: 30px; margin-top: 20px;">
@@ -169,12 +169,12 @@
             </div>
             <div id="showSearchButton" style="background-color: var(--background-color); z-index: 1;">
                 <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                    <span class="material-symbols-outlined" title="Search">search</span>
+                    <span class="material-symbols-rounded" title="Search">search</span>
                 </div>
             </div>
             <div id="toggleHelpButton" style="display: none; background-color: var(--background-color); z-index: 1;">
                 <div style="width: 40px; height: 40px; position: absolute; right: 52px; margin-top: -47px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                    <span class="material-symbols-outlined" title="Help">help</span>
+                    <span class="material-symbols-rounded" title="Help">help</span>
                 </div>
             </div>
 
@@ -207,8 +207,8 @@
                             {% elif selected_personality == "Anakin" %}Anakin Skywalker
                             {% else %}MyAI{% endif %}
                         </span>
-                        <!--<span class="material-symbols-outlined dreamy-text" style="margin-left: 10px; align-self: center;">temp_preferences_custom</span>-->
-                        <a title="MyAI" style="text-decoration: none; color: white;"><span class="material-symbols-outlined dreamy-text" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">temp_preferences_custom</span></a>
+                        <!--<span class="material-symbols-rounded dreamy-text" style="margin-left: 10px; align-self: center;">temp_preferences_custom</span>-->
+                        <a title="MyAI" style="text-decoration: none; color: white;"><span class="material-symbols-rounded dreamy-text" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">temp_preferences_custom</span></a>
                     </button>
                 </a>
             </div>
@@ -223,8 +223,8 @@
                             <button class="button-chat text-offcutter" style="width: 100%; display: flex; align-items: center; color: var(--text-color); font-size: 1.2em; border-radius: 30px;">
                                 <img src="/profile_picture/{{ chat['pfp'] }}" style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                                 <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
-                                {% if suggested['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                                <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
+                                {% if suggested['is_verified'] %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+                                <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-rounded" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                             </button>
                         </a>
                     </div>
@@ -242,11 +242,11 @@
                                     <span style="margin-left: -20px; margin-top: -30px; background-color: var(--red); border-radius: 30px; width 20px; height: 20px; font-size: 0.6em; display: flex; align-items: center; justify-content: center; color: var(--white-color); padding: 3px;">&nbsp;{{ chat['unread_messages'] }}&nbsp;</span>
                                 {% endif %}
                             {% else %}
-                                <span class="material-symbols-outlined" style="display: flex; justify-content: center; margin-right: 10px; color: var(--red); align-items: center; height: 40px; width: 40px; margin-left: 10px; font-size: 40px;">block</span>
+                                <span class="material-symbols-rounded" style="display: flex; justify-content: center; margin-right: 10px; color: var(--red); align-items: center; height: 40px; width: 40px; margin-left: 10px; font-size: 40px;">block</span>
                             {% endif %}
                             <span class="text-offcutter" style="margin-left: 5px;">{{ chat['username'] }}</span>
-                            {% if chat['is_verified'] %}<span class="material-symbols-outlined" style="margin-left: 10px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
-                            <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-outlined" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
+                            {% if chat['is_verified'] %}<span class="material-symbols-rounded" style="margin-left: 10px; color: var(--primary-color); align-self: center;">verified</span>{% endif %}
+                            <a href="/chat/delete/{{ chat['user_id'] }}" class="logout" title="Delete chat" style="text-decoration: none;"><span class="material-symbols-rounded" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">delete</span></a>
                         </button>
                     </a>
                 </div>
@@ -530,7 +530,7 @@
                                 // Check for 'is_verified' and add the corresponding span
                                 if (chat.is_verified) {
                                     const verifiedSpan = document.createElement("span");
-                                    verifiedSpan.className = "material-symbols-outlined";
+                                    verifiedSpan.className = "material-symbols-rounded";
                                     verifiedSpan.style.marginLeft = "5px";
                                     verifiedSpan.style.color = "var(--primary-color)";
                                     verifiedSpan.style.alignSelf = "center";

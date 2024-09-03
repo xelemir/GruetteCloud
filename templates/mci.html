@@ -4,7 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 	<title>MCI Tests - Powered by GrütteCloud</title>
 	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 	<link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -70,15 +70,15 @@
 <body>
 	<div class="header">
         <div style="position: absolute; top: 20px; left: 0; padding-left: 20px; display: flex; flex-direction: row; gap: 10px;">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>
             <a href="/support" class="white-button-blue-on-hover bug-report-button" style="cursor: pointer; display: flex; background-color: var(--background-color); border: none; margin: 0; padding: 0; text-decoration: none;">
-                <span class="material-symbols-outlined">bug_report</span>
+                <span class="material-symbols-rounded">bug_report</span>
             </a>
             <span id="bug-report-tip" class="bug-report-tip" style="display: none; position: absolute; top: 60px; left: 90px; z-index: 2; background-color: var(--red); padding: 10px; border-radius: 10px; color: var(--white-color); width: 150px;">
                 Melde Fehler bitte direkt hier, damit wir sie schnellstmöglich beheben können.
             </span>
             <span id="bug-report-tip-close" onclick="closeBugReportTip()" style="display: none; cursor: pointer; position: absolute; top: 40px; left: 220px; z-index: 3; background-color: var(--red); padding: 8px; border-radius: 50%; color: var(--white-color);">
-                <span class="material-symbols-outlined align-icons-center">close</span>
+                <span class="material-symbols-rounded align-icons-center">close</span>
             <span>
         </div>
         
@@ -97,7 +97,7 @@
                 <div style="flex-direction: column;" enctype="multipart/form-data">
                     <div id="section1" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
-                        <h1 class="material-symbols-outlined align-icons-center" style="font-size: 6em;">monitoring</h1>
+                        <h1 class="material-symbols-rounded align-icons-center" style="font-size: 6em;">monitoring</h1>
 
                         <h1>MCI Test</h1>
 
@@ -122,12 +122,12 @@
                         <h1 style="color: var(--primary-color); margin-bottom: 40px;">Über Dich</h1>
 
                         <div id="registered-successfully" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 20px;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
                             <span style="font-size: 1.2em;">Erfolgreich registriert.</span>
                             <span id="test-id"></span>
                         </div>
                         <div id="registered-failed" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 20px;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--red);">error</span>
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--red);">error</span>
                             <span style="font-size: 1.2em;">Registrierung fehlgeschlagen.</span>
                         </div>
 
@@ -199,7 +199,7 @@
                         </div>
 
                         <div id="test1-completed" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
                             <span style="font-size: 1.2em;">Erfolgreich abgeschlossen.</span>
                         </div>
 
@@ -226,7 +226,7 @@
                         </div>
 
                         <div id="test2-completed" style="display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--green);">check_circle</span>
                             <span style="font-size: 1.2em;">Erfolgreich abgeschlossen.</span>
                         </div>
 
@@ -254,7 +254,7 @@
                         </div>
 
                         <div id="test3-completed" style="max-width: 500px; display: none; justify-content: center; align-items: center; gap: 10px; flex-direction: column; margin-top: 0; margin-bottom: 60px; text-align: center;">
-                            <span class="material-symbols-outlined align-icons-center" style="font-size: 7em; color: var(--green); margin-bottom: 30px;">check_circle</span>
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 7em; color: var(--green); margin-bottom: 30px;">check_circle</span>
                             <h1 style="font-size: 1.7em; max-width: 350px;">Vielen Dank für deine Teilnahme</h1>
                             <span style="font-size: 1.2em; text-wrap: balance; max-width: 350px;">Deine Ergebnisse wurden erfolgreich an uns übermittelt.</span>
                             
@@ -265,11 +265,11 @@
                             </div>
 
                             <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; flex-direction: row;">
-                                <span id="star1" onclick="rateSurvey(1)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--yellow); cursor: pointer;">star_rate</span>
-                                <span id="star2" onclick="rateSurvey(2)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
-                                <span id="star3" onclick="rateSurvey(3)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
-                                <span id="star4" onclick="rateSurvey(4)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
-                                <span id="star5" onclick="rateSurvey(5)" class="material-symbols-outlined align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star1" onclick="rateSurvey(1)" class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--yellow); cursor: pointer;">star_rate</span>
+                                <span id="star2" onclick="rateSurvey(2)" class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star3" onclick="rateSurvey(3)" class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star4" onclick="rateSurvey(4)" class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
+                                <span id="star5" onclick="rateSurvey(5)" class="material-symbols-rounded align-icons-center" style="font-size: 2em; color: var(--box-shadow-color); cursor: pointer;">star_rate</span>
                             </div>
 
                             <div onclick="sendRating()" class="send-button" style="border-radius: 30px; cursor: pointer; text-align: center; margin-top: 20px; width: auto; padding: 10px 30px;">

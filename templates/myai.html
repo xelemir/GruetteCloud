@@ -6,7 +6,7 @@
     <meta name="description" content="Chat with your own AI assistant. Customize your AI's personality and OpenAI LLM model. Choose between GPT-4o mini and GPT-4o. GPT-4o even supports multimodal inputs. Available personalities include Uwu Gamer Girl, a Pirate, John Backus, Lorde, Taylor Swift, Taco the otter, B1 Battle Droid, and Anakin Skywalker." />
     <meta name="keywords" content="AI, Chat, Assistant, OpenAI, GPT-4o, GPT-4o mini, Multimodal, Chatbot, GrütteChat, MyAI, GrütteCloud MyAI, gruettecloud, Gamer Girl chatbot, Pirate chatbot, John Backus chatbot, Lorde chatbot, Taylor Swift chatbot, Taco chatbot, B1 Battle Droid chatbot, Anakin Skywalker chatbot" />
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -121,7 +121,7 @@
 <body style="padding: 10px;">
     <div class="header" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
         <div style="padding-top: 10px; padding-left: 10px;">
-            <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/chat" class="white-button-blue-on-hover" title="Back to Home"><span class="material-symbols-rounded">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <a href="
             {% if selected_personality == "UwuGirl" %}https://www.gruettecloud.com/static/GamerGirl.jpeg
@@ -160,7 +160,7 @@
             </h1>
         </a>
         <div onclick="toggleAiPreferences()" title="AI Preferences" style="cursor: pointer; margin-right: 10px; padding-top: 10px;">
-            <span class="material-symbols-outlined dreamy-text">temp_preferences_custom</span>
+            <span class="material-symbols-rounded dreamy-text">temp_preferences_custom</span>
         </div>
     </div>
     <div id="cookie-banner"></div>
@@ -192,19 +192,25 @@
     
     <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px; justify-content: end; align-items: end;">
         <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
-        <div id="fileLabel" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
-            <span class="material-symbols-outlined">add</span>
+        <!--<div id="fileLabel" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+            <span class="material-symbols-rounded" style="font-size: 30px;">add</span>
         </div>
         <div id="removeDiv" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
-            <span class="material-symbols-outlined">close</span>
+            <span class="material-symbols-rounded" style="font-size: 30px;">close</span>
+        </div>-->
+        <div id="fileLabel" style="border-radius: 50%; position: absolute; bottom: 5px; left: 5px; cursor: pointer; width: 50px; height: 50px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <span class="material-symbols-rounded" style="font-size: 25px;">attach_file</span>
         </div>
         <div id="messageInputDiv" style="width: 100%; border: 2px solid var(--box-shadow-color); border-radius: 30px;">
-            <div id="image-preview" style="display: none; padding: 5px; width: 300px; max-width: 50vw;">
+            <div id="image-preview" style="display: none; padding: 5px; width: 300px; max-width: 50vw; flex-direction: row; justify-content: left; align-items: left;">
                 <img id="previewImage" style="width: 100%; max-width: 200px; max-height: 20svh; border-radius: 23px; object-fit: cover;">
+                <div id="removeDiv" style="display: none; justify-content: center; align-items: start; gap: 10px; cursor: pointer;">
+                    <span class="material-symbols-rounded" style="font-size: 30px;">close</span>
+                </div>
             </div>
-            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 56px; max-height: 56px; background-color: transparent; margin: 0; width: 100%;">
+            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-right: 65px; padding-left: 55px; height: 56px; max-height: 56px; background-color: transparent; margin: 0; width: 100%;">
             <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-outlined">arrow_upward</span>
+                <span class="material-symbols-rounded" style="font-size: 40px;">arrow_upward_alt</span>
             </button>
         <div>
     </div>
@@ -213,7 +219,7 @@
 
     <div id="ai-preferences" class="animate__animated animate__slideInUp" style="position: fixed; bottom: 0; left: 10px; width: calc(100% - 20px); padding: 20px; background-color: var(--background-color); border: 1px solid var(--box-shadow-color); display: none; justify-content: space-between; align-items: center; border-radius: 20px 20px 0 0;">
         <div onclick="toggleAiPreferences()" style="position: absolute; top: 20px; right: 20px; cursor: pointer;">
-            <span class="material-symbols-outlined">close</span>
+            <span class="material-symbols-rounded">close</span>
         </div>
 
         <h1 style="margin-bottom: 30px;">AI Preferences</h1>
@@ -262,18 +268,18 @@
 
         <div style="display: flex; flex-direction: row; align-items: center; margin-top: 20px; margin-bottom: 10px; gap: 5px;">
             <p style="font-size: 0.9em;">AI Model:</p>
-            <span class="material-symbols-outlined align-icons-center" style="color: var(--text-color); cursor: pointer; font-size: 0.9em;" onclick="toggleModelHelp()">info</span>
+            <span class="material-symbols-rounded align-icons-center" style="color: var(--text-color); cursor: pointer; font-size: 0.9em;" onclick="toggleModelHelp()">info</span>
         </div>
 
         <div id="model-help" style="max-height: 30svh; overflow-y: auto; overflow-x: none; display: none; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; font-size: 0.9em; margin-bottom: 15px;" class="animate__animated animate__fadeIn">
             <b style="padding: 10px 0; display: flex; text-align: center; align-self: center; align-items: center; justify-content: center; font-size: 1em; font-weight: bold; gap: 10px; margin: 0 auto;">What model to choose?</b>
             <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; width: 100%; padding: 10px;">
                 <div style="width: 50%; text-align: left; text-wrap: balance; display: flex; align-items: center; justify-content: center; flex-direction: row; font-size: 1em; font-weight: bold; gap: 10px;">
-                    <span class="material-symbols-outlined dreamy-text" style="cursor: text;">bolt</span>
+                    <span class="material-symbols-rounded dreamy-text" style="cursor: text;">bolt</span>
                     GPT-4o mini
                 </div>
                 <div style="width: 50%; text-align: left; text-wrap: balance; display: flex; align-items: center; justify-content: center; flex-direction: row; font-size: 1em; font-weight: bold; gap: 10px;">
-                    <span class="material-symbols-outlined dreamy-text" style="cursor: text;">temp_preferences_custom</span>
+                    <span class="material-symbols-rounded dreamy-text" style="cursor: text;">temp_preferences_custom</span>
                     GPT-4o
                 </div>
             </div>
@@ -313,11 +319,11 @@
         
         <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; background-color: var(--background-tile-color); border-radius: 30px; border: 2px solid var(--box-shadow-color); width: 100%;">
             <div id="free-model" class="" onclick="changeAiModel('free');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center; gap: 10px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                <span class="material-symbols-outlined align-icons-center" style="margin: 0; font-size: 1.2em;">bolt</span>
+                <span class="material-symbols-rounded align-icons-center" style="margin: 0; font-size: 1.2em;">bolt</span>
                 <p>GPT-4o mini</p>
             </div>
             <div id="premium-model" class="" onclick="changeAiModel('premium');" style="cursor: pointer; padding: 10px; border-radius: 30px; width: 50%; text-align: center; gap: 10px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                <span class="material-symbols-outlined align-icons-center" style="margin: 0; font-size: 1.2em;">temp_preferences_custom</span>
+                <span class="material-symbols-rounded align-icons-center" style="margin: 0; font-size: 1.2em;">temp_preferences_custom</span>
                 <p>GPT-4o</p>
             </div>
             {% if not has_premium %}
@@ -330,10 +336,10 @@
         <p style="margin-bottom: 10px; margin-top: 20px; font-size: 0.9em;">System Controls:</p>
         <div style="display: flex; flex-direction: row; width: 100%; gap: 10px;">
             <div class="unselected-button" style="text-decoration: none; border-radius: 50%; width: 50px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center;">
-                <span id="darkModeToggle" class="material-symbols-outlined" title="Darkmode" style="margin: 0;">sunny</span>
+                <span id="darkModeToggle" class="material-symbols-rounded" title="Darkmode" style="margin: 0;">sunny</span>
             </div>
             <a href="/restart-myai" class="unselected-button" style="gap: 10px; text-decoration: none; padding: 10px; border-radius: 30px; text-align: center; background-color: var(--background-tile-color); border: 2px solid var(--box-shadow-color); display: flex; align-items: center; justify-content: center; width: calc(100% - 60px);">
-                <span class="material-symbols-outlined" title="Restart" style="margin: 0;">sync</span>
+                <span class="material-symbols-rounded" title="Restart" style="margin: 0;">sync</span>
                 Restart MyAI
             </a>
         </div>
@@ -355,10 +361,8 @@
             document.getElementById('free-model').classList.add('dreamy-button');
             document.getElementById('fileLabel').style.display = 'none';
             document.getElementById('removeDiv').style.display = 'none';
-            document.getElementById('messageInputDiv').style.width = '100%';
         {% else %}
             document.getElementById('premium-model').classList.add('dreamy-button');
-            document.getElementById('messageInputDiv').style.width = 'calc(100% - 65px)';
         {% endif %}
 
     };
@@ -389,12 +393,13 @@
                 removeDiv.style.display = "flex";
                 document.getElementById('sendButton').style.backgroundColor = 'transparent';
                 document.getElementById('sendButton').classList.add('dreamy-button');
+                document.getElementById('messageInput').style.paddingLeft = '20px';
 
                 // Display the image preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('previewImage').src = e.target.result;
-                    document.getElementById('image-preview').style.display = 'block';
+                    document.getElementById('image-preview').style.display = 'flex';
                 };
                 reader.readAsDataURL(selectedFile);
 
@@ -404,6 +409,7 @@
                 removeDiv.style.display = "none";
                 document.getElementById('previewImage').src = '';
                 document.getElementById('image-preview').style.display = 'none';
+                document.getElementById('messageInput').style.paddingLeft = '55px';
             }
         });
 
@@ -411,6 +417,7 @@
             fileInput.value = ''; // Clear the selected file
             document.getElementById('previewImage').src = ''; // Clear the image preview
             document.getElementById('image-preview').style.display = 'none'; // Hide the image preview
+            document.getElementById('messageInput').style.paddingLeft = '55px';
 
             fileLabel.style.display = "flex";
             removeDiv.style.display = "none";
@@ -445,12 +452,13 @@
 
                     document.getElementById('fileLabel').style.display = 'none';
                     document.getElementById('removeDiv').style.display = 'flex';
+                    document.getElementById('messageInput').style.paddingLeft = '20px';
                     
                     // Display the image preview
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         document.getElementById('previewImage').src = e.target.result;
-                        document.getElementById('image-preview').style.display = 'block';
+                        document.getElementById('image-preview').style.display = 'flex';
                         document.getElementById('sendButton').style.backgroundColor = 'transparent';
                         document.getElementById('sendButton').classList.add('dreamy-button');
                     };
@@ -618,6 +626,7 @@
             document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
             document.getElementById('previewImage').src = '';
             document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('messageInput').style.paddingLeft = '55px';
 
             
             $.ajax({

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>{{ username }} | GrütteCloud</title>
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/GrütteID.png">
@@ -34,8 +34,8 @@
             -webkit-appearance: none;
         }
           
-        .custom-button .material-symbols-outlined,
-        .custom-button a .material-symbols-outlined {
+        .custom-button .material-symbols-rounded,
+        .custom-button a .material-symbols-rounded {
             margin-right: 10px;
             -webkit-appearance: none;
             text-decoration: none;
@@ -92,8 +92,8 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="/chat{% if not edit %}/{{ profile_user_id }}{% endif %}" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>
+            <a href="/chat{% if not edit %}/{{ profile_user_id }}{% endif %}" class="white-button-blue-on-hover" title=""><span class="material-symbols-rounded">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>
         </div>
         <div class="centered-content">
             <a href="/drive" class="logo" title="Home">
@@ -107,10 +107,10 @@
         <div style="position: absolute; top: 0; right: 0; margin: 20px; display: column;">
             {% if not edit %}
                 <a href="/support" title="Report User" style="text-decoration: none; color: var(--text-color);">
-                    <span class="material-symbols-outlined">flag</span>
+                    <span class="material-symbols-rounded">flag</span>
                 </a>
             {% else %}
-                <span class="material-symbols-outlined" id="editButton" style="cursor: pointer;">edit_square</span>
+                <span class="material-symbols-rounded" id="editButton" style="cursor: pointer;">edit_square</span>
             {% endif %}
         </div>        
         <a href="/profile_picture/{{ pfp }}">
@@ -135,9 +135,9 @@
 
         <h1 style="display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
             {{ username }}
-            {% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color);">verified</span>{% endif %}
-            {% if admin %}<span title="GrütteCloud Admin" class="material-symbols-outlined" style="margin-left: 5px; color: var(--indigo);">code</span>{% endif %}
-            {% if premium %}<span title="GrütteCloud PLUS Member" class="material-symbols-outlined" style="margin-left: 5px; color: var(--purple);">workspace_premium</span>{% endif %}
+            {% if verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color);">verified</span>{% endif %}
+            {% if admin %}<span title="GrütteCloud Admin" class="material-symbols-rounded" style="margin-left: 5px; color: var(--indigo);">code</span>{% endif %}
+            {% if premium %}<span title="GrütteCloud PLUS Member" class="material-symbols-rounded" style="margin-left: 5px; color: var(--purple);">workspace_premium</span>{% endif %}
         </h1>
         <p>Member since {{ joined_on }}</p>
         {% if edit %}
@@ -150,13 +150,13 @@
         
         <!--<div style="justify-content: center; flex-direction: row; display: flex; width: 100%; text-align: center; align-content: center;">
             <div style="display: flex; justify-content: center; background-color: var(--secondary-color); border-radius: 5px; width: 25%; text-align: center; margin-top: 10px; margin-left: 10px; align-content: center; padding-top: 10px; padding-bottom: 10px;">
-                <span class="material-symbols-outlined">forum</span>
+                <span class="material-symbols-rounded">forum</span>
             </div>
             <div style="display: flex; justify-content: center; background-color: var(--secondary-color); border-radius: 5px; width: 25%; text-align: center; margin-top: 10px; margin-left: 10px; align-content: center; padding-top: 10px; padding-bottom: 10px;">
-                <span class="material-symbols-outlined">email</span>
+                <span class="material-symbols-rounded">email</span>
             </div>
             <div style="display: flex; justify-content: center; background-color: var(--secondary-color); border-radius: 5px; width: 25%; text-align: center; margin-top: 10px; margin-left: 10px; align-content: center; padding-top: 10px; padding-bottom: 10px;">
-                <span class="material-symbols-outlined">settings</span>
+                <span class="material-symbols-rounded">settings</span>
             </div>
         </div>-->
         

@@ -5,7 +5,7 @@
     <title>Support | GrütteCloud</title>
     <meta name="description" content="Contact the support team of GrütteCloud. Here you can send us a message if you have any questions or need help." />
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
@@ -70,8 +70,8 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <a href="/" class="white-button-blue-on-hover" title=""><span class="material-symbols-outlined">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>
+            <a href="/" class="white-button-blue-on-hover" title=""><span class="material-symbols-rounded">arrow_back_ios_new</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>
         </div>
         <div class="centered-content">
             <a href="/" class="logo" title="Home">
@@ -91,7 +91,7 @@
             <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
                 <div class="contact-card" onclick="openForm()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">chat</span>
+                        <span class="material-symbols-rounded" style="font-size: 38px; color: var(--primary-color);">chat</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">Contact Form</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><24 h wait</h3>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="contact-card" onclick="{% if menu %}window.location.href='/chat/13'{% else %}openAccountNeeded(){% endif %}">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">forum</span>
+                        <span class="material-symbols-rounded" style="font-size: 38px; color: var(--primary-color);">forum</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">GrütteChat</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;">~12 h wait</h3>
@@ -113,7 +113,7 @@
             <div style="display: flex; flex-direction: row; width: 600px; max-width: 85vw; gap: 20px;">
                 <div class="contact-card" onclick="openEmail()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">email</span>
+                        <span class="material-symbols-rounded" style="font-size: 38px; color: var(--primary-color);">email</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">Email</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><24 h wait</h3>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="contact-card" onclick="openPhone()">
                     <span style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <span class="material-symbols-outlined" style="font-size: 38px; color: var(--primary-color);">phone</span>
+                        <span class="material-symbols-rounded" style="font-size: 38px; color: var(--primary-color);">phone</span>
                     </span>
                     <h3 style="margin-top: 0; text-align: center;">Get a call</h3>
                     <h3 style="font-size: 1em; text-align: center; margin-top: 5px;"><2 h wait</h3>
@@ -140,7 +140,7 @@
             </div>
         </div>
         <form id="contact-form" action="/support" method="POST" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw;">
-            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('contact-form').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <span class="material-symbols-rounded" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('contact-form').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
             <h2 style="margin-top: 0; color: var(--text-color);">Contact Form</h2>
             <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;" required>
             <input type="mail" id="mail" name="mail" class="login-input" autocomplete="off" placeholder="Email" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;">
@@ -158,19 +158,19 @@
             </div>
         </form>
         <div id="account-needed" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw; align-items: center; justify-content: center;">
-            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('account-needed').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <span class="material-symbols-rounded" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('account-needed').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
             <h2 style="margin-top: 0; color: var(--text-color);">Account needed</h2>
             <p style="margin-top: 10px; text-wrap: balance;">You need to have a GrütteCloud Account to use this feature. Please <a href="/" style="color: var(--primary-color);">register</a> or <a href="/" style="color: var(--primary-color);">login</a> to continue.</p>
             <p style="margin-top: 10px; text-wrap: balance;">Please use the contact form or one of the other options if you don't have an account.</p>
         </div>
         <div id="email-info" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw; align-items: center; justify-content: center;">
-            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('email-info').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <span class="material-symbols-rounded" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('email-info').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
             <h2 style="margin-top: 0; color: var(--text-color);">Email</h2>
             <p style="margin-top: 10px; text-wrap: balance;">You can send us an email to the address below. We will get back to you as soon as possible. Please allow up to 24 hours for a response and include your username if you have one.</p>
             <a href="mailto:info@gruettecloud.com" style="color: var(--primary-color); font-size: 1.2em; margin-top: 20px;">info@gruettecloud.com</a>
         </div>
         <form id="phone-info" action="/support" method="POST" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw;">
-            <span class="material-symbols-outlined" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('phone-info').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
+            <span class="material-symbols-rounded" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('phone-info').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
             <h2 style="margin-top: 0; color: var(--text-color);">Request a call</h2>
             <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="width: 300px; margin: 0; border-radius: 30px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); margin-bottom: 10px;" required>
             <input type="hidden" id="mail" name="mail">

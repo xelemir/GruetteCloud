@@ -191,7 +191,7 @@ if __name__ == "__main__":
                 <span style="margin-right: 15px; font-size: 1.5em; display: flex; justify-content: center; align-items: center;">&#128994;</span>
                 <p style="text-align: left;">Status: OK</p>
             </div>
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-rounded">
                 home
                 </span>
             

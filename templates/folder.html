@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>{{ folder }} | GrütteDrive</title>
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
@@ -34,8 +34,8 @@
             -webkit-appearance: none;
         }
           
-        .custom-button .material-symbols-outlined,
-        .custom-button a .material-symbols-outlined {
+        .custom-button .material-symbols-rounded,
+        .custom-button a .material-symbols-rounded {
             margin-right: 10px;
             -webkit-appearance: none;
             text-decoration: none;
@@ -83,7 +83,7 @@
 <body>
     <div class="header">
         <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>
         </div>
         <div class="centered-content">
             <a href="/drive" class="logo" title="Home">
@@ -96,7 +96,7 @@
     <div id="createNewFolder" class="animate__animated animate__zoomIn" style="display: none; justify-content: center; align-items: center; height: 100%; padding: 20px; box-sizing: border-box;">
         <div class="wrapping-tile centered-div" style="z-index: 1; text-align: center; padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
         <div onclick="toggleCreateNewFolder()" style="position: absolute; top: 20px; right: 20px; cursor: pointer;">
-            <span class="material-symbols-outlined" title="Close">close</span>
+            <span class="material-symbols-rounded" title="Close">close</span>
         </div>
         <div style="flex-grow: 1; text-align: center;">
             <p align="center" style="margin-bottom: 20px;">Create New Folder</p>
@@ -122,17 +122,17 @@
         <div class="wrapping-tile centered-div" style="z-index: 1; text-align: center; padding: 20px; border-radius: 30px; box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);">
         <div style="position: absolute; top: 20px; left: 0; padding-left: 20px;">
             <a href="{% if back %}/file/{{ back }}{% else %}/drive{% endif %}" title="Back" style="text-decoration: none; color: var(--text-color);">
-                <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                <span class="material-symbols-rounded">arrow_back_ios_new</span>
             </a>
         </div>
         <div style="position: absolute; top: 20px; right: 0; padding-right: 20px;">
             <div onclick="toggleCreateNewFolder()" title="Create new folder" style="text-decoration: none; color: var(--text-color); cursor: pointer;">
-                <span class="material-symbols-outlined">create_new_folder</span>
+                <span class="material-symbols-rounded">create_new_folder</span>
             </div>
         </div>
         <img id="folder-icon" class="resize-logo" src="https://www.gruettecloud.com/static/icons/folder-{{ color }}.svg" style="margin-bottom: 10px;" ondrop="drop(event, '{{ back }}')" ondragover="allowDrop(event)">
         <div id="move-up" style="display: none; align-items: center; justify-content: center; margin-bottom: 10px; border-radius: 5px; border-style: dotted; margin-left: 40px; margin-right: 40px; border-radius: 30px; height: 100px; border-color: var(--box-shadow-color); cursor: pointer;" ondrop="drop(event, '{{ back }}')" ondragover="allowDrop(event)">
-            <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--green);">keyboard_backspace</span>
+            <span class="material-symbols-rounded" style="font-size: 3em; margin-right: 20px; color: var(--green);">keyboard_backspace</span>
             <p style="font-size: 1.1em; color: var(--text-color); margin-bottom: 0px;">Drag file here<br>to move back to parent folder</p>
         </div>
 
@@ -141,7 +141,7 @@
             <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
             <div class="no-files">
                 <div style="display: flex; align-items: center; justify-content: center;">
-                    <span class="material-symbols-outlined" style="font-size: 3em; margin-right: 20px; color: var(--red);">scan_delete</span>
+                    <span class="material-symbols-rounded" style="font-size: 3em; margin-right: 20px; color: var(--red);">scan_delete</span>
                     This folder is empty.
                 </div>
             </div>
@@ -159,9 +159,9 @@
                 <div class="desktop-only" style="margin-left: 20px; width: 110px; text-align: right; margin-right: 20px;">
                     <p style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-color); font-size: 1.1em; text-decoration: none; display: flex; align-items: center; justify-content: right;">{{ file["size"] }}</p>
                 </div>
-                <a class="desktop-only" href="/open/{{ folder }}/{{ file["filename"] }}?action=download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">download</span></a>
-                <a class="desktop-only" href="/open/{{ folder }}/{{ file["filename"] }}?action=preview" title="Preview" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
-                <a href="/delete/{{ folder }}/{{ file["filename"] }}" title="Delete" style="cursor: pointer; background-color: transparent; border: none; width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-outlined" style="display: flex; align-items: center; justify-content: center;">delete</span></a>
+                <a class="desktop-only" href="/open/{{ folder }}/{{ file["filename"] }}?action=download" title="Download" style="width: 30px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">download</span></a>
+                <a class="desktop-only" href="/open/{{ folder }}/{{ file["filename"] }}?action=preview" title="Preview" style="width: 30px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="white-button-blue-on-hover material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">visibility</span></a>
+                <a href="/delete/{{ folder }}/{{ file["filename"] }}" title="Delete" style="cursor: pointer; background-color: transparent; border: none; width: 30px; margin-right: 0px; margin-left: 20px; text-decoration: none; color: var(--text-color);"><span class="logout material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">delete</span></a>
             </div>
         {% endfor %}
     </div>
@@ -252,9 +252,9 @@
         document.body.removeChild(tempInput);
       
         const copyButton = document.getElementById("copy-button");
-        copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">done</span>Copied!';
+        copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-rounded">done</span>Copied!';
         setTimeout(function() {
-          copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">link</span>Copy Link';
+          copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-rounded">link</span>Copy Link';
         }, 1000);
       }
 
@@ -267,9 +267,9 @@
         document.body.removeChild(tempInput);
       
         const copyButton = document.getElementById("mobile-copy-button");
-        copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">done</span>Copied!';
+        copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-rounded">done</span>Copied!';
         setTimeout(function() {
-          copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-outlined">link</span>Copy Link';
+          copyButton.innerHTML = '<span style="margin-right: 8px;" class="material-symbols-rounded">link</span>Copy Link';
         }, 1000);
       }
 

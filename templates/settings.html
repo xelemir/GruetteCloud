@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>GrütteCloud Account | GrütteCloud</title>
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" href="https://www.gruettecloud.com/static/GrütteID.png">
@@ -115,7 +115,7 @@
 
     <div class="header">
         <div class="dark-mode-toggle">
-            <span id="darkModeToggle" class="material-symbols-outlined white-button-blue-on-hover" title="Darkmode">sunny</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="centered-content">
             <a href="/settings" class="logo" title="Home">
@@ -142,7 +142,7 @@
             <!--<div id="changeUsername" class="animate__animated animate__zoomIn wrapping-tile" style="padding: 20px; border-radius: 30px; display: none; margin-bottom: 20px;">
                 <div style="position: absolute; top: 15px; right: 20px;">
                     <button onclick="toggleChangeUsername()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent; color: var(--text-color);">
-                        <span class="material-symbols-outlined" title="Close">close</span>
+                        <span class="material-symbols-rounded" title="Close">close</span>
                     </button>
                 </div>
                 <h1>Change username</h1>
@@ -156,7 +156,7 @@
             <div id="changeEmail" class="animate__animated animate__zoomIn wrapping-tile" style="padding: 20px; border-radius: 30px; display: none; margin-bottom: 20px;">
                 <div style="position: absolute; top: 15px; right: 20px;">
                     <button onclick="toggleChangeEmail()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent; color: var(--text-color);">
-                        <span class="material-symbols-outlined" title="Close">close</span>
+                        <span class="material-symbols-rounded" title="Close">close</span>
                     </button>
                 </div>
                 <h1>Change email</h1>
@@ -170,7 +170,7 @@
             <div id="changePassword" class="animate__animated animate__zoomIn wrapping-tile" style="padding: 20px; border-radius: 30px; display: none; margin-bottom: 20px;">
                 <div style="position: absolute; top: 15px; right: 20px;">
                     <button onclick="toggleChangePassword()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent; color: var(--text-color);">
-                        <span class="material-symbols-outlined" title="Close">close</span>
+                        <span class="material-symbols-rounded" title="Close">close</span>
                     </button>
                 </div>
                 <h1>Change password</h1>
@@ -184,7 +184,7 @@
             <div id="deleteAccount" class="animate__animated animate__zoomIn wrapping-tile" style="padding: 20px; border-radius: 30px; display: none; margin-bottom: 20px;">
                 <div style="position: absolute; top: 15px; right: 20px;">
                     <button onclick="toggleDeleteAccount()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent; color: var(--text-color);">
-                        <span class="material-symbols-outlined" title="Close">close</span>
+                        <span class="material-symbols-rounded" title="Close">close</span>
                     </button>
                 </div>
                 <h1>Delete account</h1>
@@ -211,20 +211,20 @@
             <div id="changeProfilePicture" class="animate__animated animate__zoomIn wrapping-tile" style="padding: 20px; border-radius: 30px; display: none; margin-bottom: 20px;">
                 <div style="position: absolute; top: 15px; right: 20px;">
                     <button onclick="toggleChangeProfilePicture()" class="send-button" style="width: 40px; height: 40px; border-radius: 20px; text-align: center; display: flex; align-items: center; justify-content: center; background-color: transparent; color: var(--text-color);">
-                        <span class="material-symbols-outlined" title="Close">close</span>
+                        <span class="material-symbols-rounded" title="Close">close</span>
                     </button>
                 </div>
                 <h1>Edit profile picture</h1>
                 <div style="display: flex; gap: 20px; width: 100%;">
                     <div style="text-align: center; width: 50%;">
                         <a href="/remove_pfp" title="Remove profile picture" style="text-decoration: none; color: var(--white-color);">
-                            <button class="settings-button" style="margin: 0; min-width: 100%; height: 45px; font-size: 17px; background-color: var(--red); text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">no_photography</span>Remove</button>
+                            <button class="settings-button" style="margin: 0; min-width: 100%; height: 45px; font-size: 17px; background-color: var(--red); text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-rounded" style="margin-right: 10px;">no_photography</span>Remove</button>
                         </a>
                     </div>
                     <div style="text-align: center; width: 50%;">
                         <form action="/change_pfp" method="post" enctype="multipart/form-data" id="uploadForm">
                             <input type="file" name="profilePicture" accept="image/*" style="display: none;" id="profilePictureInput">
-                            <label title="Upload new image" class="settings-button" for="profilePictureInput" style="margin: 0; min-width: 100%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;"><span class="material-symbols-outlined" style="margin-right: 10px;">add_a_photo</span>Upload</button>
+                            <label title="Upload new image" class="settings-button" for="profilePictureInput" style="margin: 0; min-width: 100%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;"><span class="material-symbols-rounded" style="margin-right: 10px;">add_a_photo</span>Upload</button>
                         </form>
                     </div>
                 </div>
@@ -238,9 +238,9 @@
                             <img src="/profile_picture/{{ menu["pfp"] }}" style="width: auto; max-height: 172px; margin-bottom: 20px; border-radius: 50%;">
                             <h2 style="margin: 0; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
                                 {{ menu["username"] }}
-                                {% if verified %}<span class="material-symbols-outlined" style="margin-left: 5px; color: var(--primary-color);">verified</span>{% endif %}
-                                {% if admin %}<span title="GrütteCloud Admin" class="material-symbols-outlined" style="margin-left: 5px; color: var(--indigo);">code</span>{% endif %}
-                                {% if has_premium %}<span title="GrütteCloud PLUS Member" class="material-symbols-outlined" style="margin-left: 5px; color: var(--purple);">workspace_premium</span>{% endif %}
+                                {% if verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color);">verified</span>{% endif %}
+                                {% if admin %}<span title="GrütteCloud Admin" class="material-symbols-rounded" style="margin-left: 5px; color: var(--indigo);">code</span>{% endif %}
+                                {% if has_premium %}<span title="GrütteCloud PLUS Member" class="material-symbols-rounded" style="margin-left: 5px; color: var(--purple);">workspace_premium</span>{% endif %}
                             </h2>
 
                             <p style="margin-bottom: 10px;">{{ first_name }}{% if last_name != "0" %} {{ last_name }}{% endif %}</p>
@@ -251,11 +251,11 @@
                     </div>
                     <div class="box right">
                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <button class="hover-blue" style="margin: 0; min-width: 50%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeProfilePicture()"><span class="material-symbols-outlined" style="margin-right: 10px;">add_a_photo</span>Change profile picture</button>
-                            <!--<button class="hover-blue" style="min-width: 50%; margin-top: 20px;text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeUsername()"><span class="material-symbols-outlined" style="margin-right: 10px;">edit</span>Change username</button>-->
-                            <button class="hover-blue" style="min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeEmail()"><span class="material-symbols-outlined" style="margin-right: 10px;">mail</span>Change email</button>
-                            <button class="hover-blue" style="min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangePassword()"><span class="material-symbols-outlined" style="margin-right: 10px;">key</span>Change password</button>
-                            <button class="settings-button" style="background-color: var(--red); min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleDeleteAccount()"><span class="material-symbols-outlined" style="margin-right: 10px;">person_cancel</span>Delete account</button>
+                            <button class="hover-blue" style="margin: 0; min-width: 50%; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeProfilePicture()"><span class="material-symbols-rounded" style="margin-right: 10px;">add_a_photo</span>Change profile picture</button>
+                            <!--<button class="hover-blue" style="min-width: 50%; margin-top: 20px;text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeUsername()"><span class="material-symbols-rounded" style="margin-right: 10px;">edit</span>Change username</button>-->
+                            <button class="hover-blue" style="min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangeEmail()"><span class="material-symbols-rounded" style="margin-right: 10px;">mail</span>Change email</button>
+                            <button class="hover-blue" style="min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleChangePassword()"><span class="material-symbols-rounded" style="margin-right: 10px;">key</span>Change password</button>
+                            <button class="settings-button" style="background-color: var(--red); min-width: 50%; margin-top: 20px; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;" onclick="toggleDeleteAccount()"><span class="material-symbols-rounded" style="margin-right: 10px;">person_cancel</span>Delete account</button>
                         </div>
                     </div>
                 </div>
@@ -319,13 +319,13 @@
                         {% if is_two_fa_enabled %}
                             <p style="text-wrap: balance;">You have enabled 2FA.</p><br><p style="text-wrap: balance;">Please scan this code with your authenticator app. If you want to disable it, click the button below. You can also generate a new code.</p>
                             <div style="display: flex; flex-direction: inline-flex; align-items: center; justify-content: center; margin-top: 20px;">
-                                <a href="/2fa/refresh" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">refresh</span>Refresh</a>
-                                <a href="/2fa/disable" class="settings-button" style="background-color: var(--red); margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 10px;">remove_moderator</span>Disable</a>
+                                <a href="/2fa/refresh" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-rounded" style="margin-right: 10px;">refresh</span>Refresh</a>
+                                <a href="/2fa/disable" class="settings-button" style="background-color: var(--red); margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-rounded" style="margin-right: 10px;">remove_moderator</span>Disable</a>
                             </div>
                         {% else %}
                             <div style="display: flex; flex-direction: column; align-items: center;">
                                 <div class="spaced-tile hidedesktop"></div>
-                                <a href="/2fa/enable" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="margin-right: 5px;">encrypted</span>Enable 2FA</a>
+                                <a href="/2fa/enable" class="settings-button" style="margin-top: 0; text-decoration: none; border-radius: 30px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-rounded" style="margin-right: 5px;">encrypted</span>Enable 2FA</a>
                             </div>
                         {% endif %}
                     </div>
