@@ -147,26 +147,52 @@ def chat(error=None):
             # User exists
             return redirect(f'/chat/{recipient_id}')
 
-    # Fetch active chats from the database
-    active_chats_database = sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{int(user_id)}' OR recipient_id = '{int(user_id)}'")
-                
-    # Add all active chats to a list
-    for chat in active_chats_database:
-        if chat["author_id"] == int(user_id):
-            if chat["recipient_id"] not in [x["user_id"] for x in active_chats]:
-                unread_messages = len(sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{chat['recipient_id']}' AND recipient_id = '{user_id}' AND is_read = '{False}'"))
-                user_db = sql.readSQL(f"SELECT * FROM users WHERE id = '{chat['recipient_id']}'")
-                blocked = bool(sql.readSQL(f"SELECT * FROM blocked_users WHERE user_id = '{chat['recipient_id']}' AND blocked_user_id = '{user_id}' OR user_id = '{user_id}' AND blocked_user_id = '{chat['recipient_id']}'"))
-                if user_db != []:
-                    active_chats.append({"user_id": chat["recipient_id"], "username": user_db[0]["username"], "pfp": user_db[0]["profile_picture"], "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
-        else:
-            if chat["author_id"] not in [x["user_id"] for x in active_chats]:
-                unread_messages = len(sql.readSQL(f"SELECT * FROM chats WHERE author_id = '{chat['author_id']}' AND recipient_id = '{user_id}' AND is_read = '{False}'"))
-                user_db = sql.readSQL(f"SELECT * FROM users WHERE id = '{chat['author_id']}'")
-                blocked = bool(sql.readSQL(f"SELECT * FROM blocked_users WHERE user_id = '{chat['author_id']}' AND blocked_user_id = '{user_id}' OR user_id = '{user_id}' AND blocked_user_id = '{chat['author_id']}'"))
-                if user_db != []:    
-                    active_chats.append({"user_id": chat["author_id"], "username": user_db[0]["username"], "pfp": user_db[0]["profile_picture"], "is_verified": user_db[0]["is_verified"], "blocked": blocked, "unread_messages": unread_messages})
-    
+    # Fetch active chats and related user information in one query using SQL JOINs
+    active_chats_query = f"""
+        SELECT
+            u.id AS user_id,
+            u.username,
+            u.profile_picture AS pfp,
+            u.is_verified,
+            IFNULL(b.blocked_user_id IS NOT NULL, 0) AS blocked,
+            COUNT(DISTINCT unread.id) AS unread_messages,
+            MAX(c.created_at) AS last_message_time
+        FROM 
+            chats c
+        JOIN 
+            users u ON (c.author_id = u.id AND c.recipient_id = '{int(user_id)}') OR (c.recipient_id = u.id AND c.author_id = '{int(user_id)}')
+        LEFT JOIN 
+            blocked_users b ON (b.user_id = u.id AND b.blocked_user_id = '{int(user_id)}') OR (b.user_id = '{int(user_id)}' AND b.blocked_user_id = u.id)
+        LEFT JOIN 
+            chats unread ON unread.author_id = u.id 
+                    AND unread.recipient_id = '{int(user_id)}' 
+                    AND unread.is_read = 0 
+
+        WHERE 
+            (c.author_id = '{int(user_id)}' AND c.recipient_id = u.id)
+            OR (c.recipient_id = '{int(user_id)}' AND c.author_id = u.id)
+        GROUP BY 
+            u.id, u.username, u.profile_picture, u.is_verified, blocked
+        ORDER BY 
+            last_message_time DESC
+    """
+
+    # Execute the SQL query to get all active chats
+    active_chats_database = sql.readSQL(active_chats_query)
+
+    # Prepare the active chats list
+    active_chats = [
+        {
+            "user_id": chat["user_id"],
+            "username": chat["username"],
+            "pfp": chat["pfp"],
+            "is_verified": chat["is_verified"],
+            "blocked": bool(chat["blocked"]),
+            "unread_messages": chat["unread_messages"],
+        }
+        for chat in active_chats_database
+    ]
+
     # Get user's premium status
     user = sql.readSQL(f"SELECT * FROM users WHERE id = '{user_id}'")
     
