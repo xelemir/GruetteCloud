@@ -192,18 +192,18 @@
     
     <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px; justify-content: end; align-items: end;">
         <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
-        <div id="fileLabel" style="bottom: 0; width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+        <div id="fileLabel" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
             <span class="material-symbols-outlined">add</span>
         </div>
-        <div id="removeDiv" style="bottom: 0; width: 55px; height: 55px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
+        <div id="removeDiv" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
             <span class="material-symbols-outlined">close</span>
         </div>
         <div id="messageInputDiv" style="width: 100%; border: 2px solid var(--box-shadow-color); border-radius: 30px;">
             <div id="image-preview" style="display: none; padding: 5px; width: 300px; max-width: 50vw;">
                 <img id="previewImage" style="width: 100%; max-width: 200px; max-height: 20svh; border-radius: 23px; object-fit: cover;">
             </div>
-            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 55px; max-height: 55px; background-color: transparent; margin: 0; width: 100%;">
-            <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 40px; height: 40px; position: absolute; right: 8px; bottom: -10px; transform: translateY(-50%); border-radius: 20px; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <input id="messageInput" class="message-input" type="text" name="message" placeholder="Type your message..." autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-left: 20px; padding-right: 30px; height: 56px; max-height: 56px; background-color: transparent; margin: 0; width: 100%;">
+            <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-outlined">arrow_upward</span>
             </button>
         <div>
