@@ -370,6 +370,7 @@
             document.getElementById('free-model').classList.add('dreamy-button');
             document.getElementById('fileLabel').style.display = 'none';
             document.getElementById('removeDiv').style.display = 'none';
+            document.getElementById('messageInput').style.paddingLeft = '20px';
         {% else %}
             document.getElementById('premium-model').classList.add('dreamy-button');
         {% endif %}
@@ -517,11 +518,11 @@
         if (model === "premium") {
             document.getElementById('free-model').classList.remove('dreamy-button');
             document.getElementById('premium-model').classList.add('dreamy-button');
-            document.getElementById('messageInputDiv').style.width = 'calc(100% - 65px)';
+            document.getElementById('messageInput').style.paddingLeft = '55px';
         } else {
             document.getElementById('premium-model').classList.remove('dreamy-button');
             document.getElementById('free-model').classList.add('dreamy-button');
-            document.getElementById('messageInputDiv').style.width = '100%';
+            document.getElementById('messageInput').style.paddingLeft = '20px';
         }
         document.getElementById("model-help").style.display = "none";
         $.ajax({
@@ -562,11 +563,11 @@
                 if (model === "premium") {
                     document.getElementById('premium-model').classList.remove('dreamy-button');
                     document.getElementById('free-model').classList.add('dreamy-button');
-                    document.getElementById('messageInputDiv').style.width = '100%';
+                    document.getElementById('messageInput').style.paddingLeft = '55px';
                 } else {
                     document.getElementById('free-model').classList.remove('dreamy-button');
                     document.getElementById('premium-model').classList.add('dreamy-button');
-                    document.getElementById('messageInputDiv').style.width = 'calc(100% - 65px)';
+                    document.getElementById('messageInput').style.paddingLeft = '20px';
                 }
             }
         });
@@ -635,7 +636,18 @@
             document.getElementById('sendButton').style.backgroundColor = 'var(--box-shadow-color)';
             document.getElementById('previewImage').src = '';
             document.getElementById('image-preview').style.display = 'none';
-            document.getElementById('messageInput').style.paddingLeft = '55px';
+
+            // get ai model
+            var aiModel = document.getElementById('premium-model').classList.contains('dreamy-button') ? 'gpt-4o' : 'gpt-4o-mini';
+            if (aiModel === 'gpt-4o') {
+                document.getElementById('fileLabel').style.display = 'flex';
+                document.getElementById('removeDiv').style.display = 'none';
+                document.getElementById('messageInput').style.paddingLeft = '55px';
+            } else {
+                document.getElementById('fileLabel').style.display = 'none';
+                document.getElementById('removeDiv').style.display = 'none';
+                document.getElementById('messageInput').style.paddingLeft = '20px';
+            }
 
             
             $.ajax({
