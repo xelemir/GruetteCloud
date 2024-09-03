@@ -366,6 +366,8 @@
         const userAgent = navigator.userAgent;
         input.focus();
 
+        localStorage.setItem('aiChatDismissed', 'true');
+
         {% if ai_model == "gpt-4o-mini" %}
             document.getElementById('free-model').classList.add('dreamy-button');
             document.getElementById('fileLabel').style.display = 'none';
@@ -373,6 +375,8 @@
             document.getElementById('messageInput').style.paddingLeft = '20px';
         {% else %}
             document.getElementById('premium-model').classList.add('dreamy-button');
+            document.getElementById('messageInput').style.paddingLeft = '55px';
+            document.getElementById('fileLabel').style.display = 'flex';
         {% endif %}
 
     };
@@ -766,6 +770,8 @@
                 } else {
                     sendMessage("#!# Requesting Welcome Message #!#");
                 }
+
+          
             }
         }
     
