@@ -242,12 +242,12 @@
                 {% if not menu %}
                     <div onclick="openLogin()" style="position: absolute; top: 15px; right: 55px; cursor: pointer; background-color: var(--primary-color); color: var(--white-color); height: 35px; padding: 0 15px; border-radius: 30px; display: flex; align-items: center; gap: 10px;">
                         <span class="material-symbols-rounded align-icons-center">login</span>
-                        <p style="color: var(--white-color);">Login</p>
+                        <p style="color: var(--white-color); font-size: 1em;">Login</p>
                     </div>
                 {% else %}
                     <a href="/" style="text-decoration: none; position: absolute; top: 15px; right: 55px; cursor: pointer; background-color: var(--primary-color); color: var(--white-color); height: 35px; padding: 0 15px; border-radius: 30px; display: flex; align-items: center; gap: 10px;">
                         <span class="material-symbols-rounded align-icons-center">account_circle</span>
-                        <p style="color: var(--white-color);">{{ menu["username"] }}</p>
+                        <p style="color: var(--white-color); font-size: 1em;">{{ menu["username"] }}</p>
                     </a>
                 {% endif %}
                 {% include "components/nav-element.html" %}
