@@ -1,0 +1,30 @@
+<div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">{{ title }}</h1></div>
+<div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
+    <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
+        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
+            <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
+                <img src="/nelly_media/{{ image0 }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
+            </div>
+            <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
+                <p style="font-size: 1.5em; color: {{ tile_title_color }}; font-weight: bold;">{{ title0 }}</p>
+                {% if subtitle0 %}
+                <p style="font-size: 1em; color: #000000;">{{ subtitle0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
+            <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
+                <p style="font-size: 1.5em; color: {{ tile_title_color }}; font-weight: bold;">{{ title1 }}</p>
+                {% if subtitle1 %}
+                <p style="font-size: 1em; color: #000000;">{{ subtitle1 }}</p>
+                {% endif %}
+            </div>
+            <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
+                <img src="/nelly_media/{{ image1 }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
+            </div>
+        </div>
+    </div>
+    <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <img src="/nelly_media/{{ image2 }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 620px;">
+    </div>
+</div>

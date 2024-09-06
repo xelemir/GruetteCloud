@@ -67,6 +67,25 @@
             width: 50%;
             transition: width 0.3s;
         }
+
+        label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff8fa3;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .tile-content::placeholder {
+            color: #000000;
+            opacity: 1; /* Firefox */
+          }
     </style>
 </head>
 <body style="font-size: 1em; background-color: #ffffff; display: flex; align-items: center; padding: 0;">
@@ -132,6 +151,10 @@
 
     <div class="default-view" style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px; z-index: 100;">
         <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
+            <div onclick="openStoryEditorMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
+                <p style="font-size: 16px; margin: 0; color: #000000;">Edit our story</p>
+                <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #000000;">brush</span>
+            </div>
             <div onclick="openDateMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
                 <p style="font-size: 16px; margin: 0; color: #000000;">Plan a date</p>
                 <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #000000;">heart_plus</span>
@@ -144,7 +167,7 @@
         </div>
     </div>
 
-    <div id="dateMenu" style="width: 400px; max-width: 80vw; text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 30px);">
+    <div id="dateMenu" style="width: 400px; max-width: 80vw; text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 80px);">
         <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
             <h1>Plan a date</h1>
             <p id="date-notification" style="color: var(--yellow); display: none;">Please fill out all fields.</p>
@@ -173,6 +196,395 @@
             </div>
         </div>
     </div>
+
+    <div id="storyEditorMenu" style="width: 400px; text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 80px);">
+        <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <h1>Edit our story</h1>
+            <p style="text-align: left;">Choose a layout:</p>
+
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; margin-top: 20px ;">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 60px;">
+                    <p style="font-size: 12px;"><span class="material-symbols-rounded align-icons-center">computer</span> Desktop</p>
+                    <p style="font-size: 12px; padding-left: 40px;"><span class="material-symbols-rounded align-icons-center">phone_iphone</span> Phone</p>
+                </div>
+
+                <!-- Layout 0 -->
+                <div class="layout-option" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 25px; border: 1px solid #ff8fa3; border-radius: 15px; padding: 10px; cursor: pointer;" onclick="selectLayout(0);">
+                    <!-- Desktop View -->
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                    <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                    <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                                </div>
+                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                    <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                                    <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="background-color: transparent; width: 50px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile View -->
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                                    <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                    <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                                </div>
+                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                    <div style="background-color: transparent; width: 50px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layout 1 -->
+                <div class="layout-option" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 25px; border: 1px solid transparent; border-radius: 15px; padding: 10px; cursor: pointer; margin-top: 20px;" onclick="selectLayout(1);">
+                    <!-- Desktop View -->
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                            <div style="display: flex; flex-direction: row; gap: 5px;">
+                                <div style="background-color: transparent; width: 100px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
+                                    <span class="material-symbols-rounded align-icons-center">image</span>
+                                </div>
+                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
+                                    Text
+                                </div>
+                            </div>
+                        
+                            <div style="display: flex; flex-direction: row; gap: 5px;">
+                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
+                                    <span class="material-symbols-rounded align-icons-center">image</span>
+                                </div>
+                                <div style="background-color: transparent; width: 100px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
+                                    <span class="material-symbols-rounded align-icons-center">image</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile View -->
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                            <div style="background-color: transparent; width: 105px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                            </div>
+                            <div style="background-color: transparent; width: 105px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Layout 2 -->
+                <div class="layout-option" style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 25px; border: 1px solid transparent; border-radius: 15px; padding: 10px; cursor: pointer; margin-top: 20px;" onclick="selectLayout(2);">
+                    <!-- Desktop View -->
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                            </div>
+                            <div style="background-color: transparent; width: 105px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                        </div>
+                    </div>
+                    <!-- Mobile View -->
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
+                            <div style="background-color: transparent; width: 105px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
+                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
+                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 30px;">
+                    <div onclick="closeStoryEditorMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
+                        <p style="margin: 0; color: #000000;">Cancel</p>
+                    </div>
+                    <div onclick="editChosenLayout();" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
+                        <p style="margin: 0; color: #ffffff;">Next</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="story-editor" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px; min-height: calc(100svh - 80px);">
+        <!--<input type="file" id="image0" accept="image/*" style="display: none;">
+        <label for="image0">Upload Image</label>-->
+        <input type="text" id="story-title" placeholder="Story title..." style="font-size: 3em; border-radius: 10px; text-align: left; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+        
+        <div id="layout0" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                        <input class="image-upload" type="file" id="image00" accept="image/*" style="display: none;">
+                        <label for="image00" style="background-color: transparent; width: 300px; height: 300px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label>
+                        <div style="background-color: #fff0f6; width: 300px; height: 300px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <input id="text000" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 2em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                            <input id="text001" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1.3em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                        <div style="background-color: #fff0f6; width: 300px; height: 300px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <input id="text010" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 2em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                            <input id="text011" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1.3em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                        </div>
+                        <input class="image-upload" type="file" id="image01" accept="image/*" style="display: none;">
+                        <label for="image01" style="background-color: transparent; width: 300px; height: 300px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label> 
+                    </div>
+                </div>
+                <div>
+                    <input class="image-upload" type="file" id="image02" accept="image/*" style="display: none;">
+                    <label for="image02" style="background-color: transparent; width: 300px; height: 620px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                        <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                        <p>Choose Image</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="layout1" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                        <input class="image-upload" type="file" id="image10" accept="image/*" style="display: none;">
+                        <label for="image10" style="background-color: transparent; width: 620px; height: 300px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label>
+                        <div style="background-color: #fff0f6; width: 300px; height: 300px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <input id="text100" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 2em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                            <input id="text101" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1.3em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                        <input class="image-upload" type="file" id="image11" accept="image/*" style="display: none;">
+                        <label for="image11" style="background-color: transparent; width: 300px; height: 300px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label>
+                        <input class="image-upload" type="file" id="image12" accept="image/*" style="display: none;">
+                        <label for="image12" style="background-color: transparent; width: 620px; height: 300px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="layout2" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
+                        <input class="image-upload" type="file" id="image20" accept="image/*" style="display: none;">
+                        <label for="image20" style="background-color: transparent; width: 300px; height: 300px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label>
+                        <div style="background-color: #fff0f6; width: 300px; height: 300px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <input id="text200" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 2em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                            <input id="text201" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1.3em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
+                        <input class="image-upload" type="file" id="image21" accept="image/*" style="display: none;">
+                        <label for="image21" style="background-color: transparent; width: 620px; height: 620px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
+                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
+                            <p>Choose Image</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 10px;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
+                <p style="font-size: 1.5em; color: #000000; padding: 0; margin: 0;">Title Color:</p>
+
+                <input type="radio" id="colorTitle0" name="color" value="#000000" style="margin-right: 10px; display: none;" checked>
+                <label for="colorTitle0" style="background-color: #000000; width: 20px; height: 20px; border-radius: 50%; padding: 0; display: flex; justify-content: center; align-items: center;"></label>
+            
+                <input type="radio" id="colorTitle1" name="color" value="#ff8fa3" style="margin-right: 10px; display: none;">
+                <label for="colorTitle1" style="background-color: #ff8fa3; width: 20px; height: 20px; border-radius: 50%; padding: 0; display: flex; justify-content: center; align-items: center;"></label>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
+                <div onclick="closeStoryEditorMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
+                    <p style="margin: 0; color: #000000;">Cancel</p>
+                </div>
+                <div id="save-story-button" onclick="saveNewStory();" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
+                    <p style="margin: 0; color: #ffffff;">Save</p>
+                </div>
+            </div>
+        </div>
+        <script>
+            const radios = document.querySelectorAll('input[name="color"]');
+            let tileTiles = document.getElementsByClassName('tile-title');
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    for (let i = 0; i < tileTiles.length; i++) {
+                        tileTiles[i].style.color = this.value;
+                    }
+                });
+            });
+        </script>
+    </div>
+
+    <script>
+        let chosenLayout = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            //openStoryEditorMenu();
+            //editChosenLayout();
+        });
+
+        function selectLayout(layout) {
+            let layoutOptions = document.getElementsByClassName('layout-option');
+            chosenLayout = layout;
+            for (let i = 0; i < layoutOptions.length; i++) {
+                if (i === layout) {
+                    layoutOptions[i].style.border = '1px solid #ff8fa3';
+                } else {
+                    layoutOptions[i].style.border = '1px solid transparent';
+                }
+            }
+        }
+
+        function editChosenLayout() {
+            if (chosenLayout === -1) {
+                alert('Please select a layout first.');
+                return;
+            }
+
+            let layoutOptions = document.getElementsByClassName('layout-option');
+            for (let i = 0; i < layoutOptions.length; i++) {
+                if (i === 0) {
+                    layoutOptions[i].style.border = '1px solid #ff8fa3';
+                } else {
+                    layoutOptions[i].style.border = '1px solid transparent';
+                }
+            }
+            
+            document.getElementById('storyEditorMenu').style.display = 'none';
+
+            let storyEditor = document.getElementById('story-editor');
+            storyEditor.style.display = 'flex';
+            document.getElementById('story-title').focus();
+
+            let layout0 = document.getElementById('layout0');
+            let layout1 = document.getElementById('layout1');
+            let layout2 = document.getElementById('layout2');
+
+            let layoutList = [layout0, layout1, layout2];
+
+            for (let i = 0; i < layoutList.length; i++) {
+                if (i === chosenLayout) {
+                    layoutList[i].style.display = 'flex';
+                } else {
+                    layoutList[i].style.display = 'none';
+                }
+            }
+
+        }
+
+        function saveNewStory() {
+            document.getElementById('save-story-button').onclick = null;
+            document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Sending</p>';
+
+
+            let storyTitle = document.getElementById('story-title').value;
+            let tileTitles = document.getElementsByClassName('tile-title');
+            let tileSubtitles = document.getElementsByClassName('tile-subtitle');
+            let tileImages = document.getElementsByClassName('image-upload');
+
+            let story = {
+                title: storyTitle,
+                layout: chosenLayout,
+                tileTitleColor: document.querySelector('input[name="color"]:checked').value,
+                tiles: []
+            };
+
+            for (let i = 0; i < tileTitles.length; i++) {
+                if (tileTitles[i].id.startsWith('text' + chosenLayout)) {
+                    let tile = {
+                        title: tileTitles[i].value,
+                        subtitle: tileSubtitles[i].value
+                    };
+                    story.tiles.push(tile);
+                }
+            }
+
+            // Create a FormData object
+            let formData = new FormData();
+            
+            // Append story data
+            formData.append('story', JSON.stringify(story));
+            
+            // Append images
+            for (let i = 0; i < tileImages.length; i++) {
+                if (tileImages[i].id.startsWith('image' + chosenLayout)) {
+                    formData.append('images', tileImages[i].files[0]);
+                }
+            }
+            
+            // Send story to server
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/nelly_save_story', true);
+            xhr.send(formData);
+            
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    console.log('Story saved successfully');
+                    document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Saved</p>';
+                    setTimeout(() => {
+                        closeStoryEditorMenu();
+                        document.getElementById('save-story-button').onclick = saveNewStory;
+                        document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Save</p>';
+                    }, 1000);
+                } else {
+                    console.log('Error: ' + xhr.status);
+                }
+            };
+        }
+
+        // add event listener to all input fields
+        let inputs = document.getElementsByClassName('image-upload');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('change', (event) => {
+                let label = event.target.nextElementSibling;
+                let image = event.target.files[0];
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    label.style.backgroundImage = `url(${e.target.result})`;
+                    label.style.backgroundSize = 'cover';
+                    label.style.backgroundPosition = 'center';
+                    label.style.color = 'transparent';
+                }
+                reader.readAsDataURL(image);
+            });
+        }
+
+
+        
+    </script>
 
     <div class="desktop-only">
         <div class="default-view" style="width: 900px; max-width: 90vw; text-align: center; display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: calc(100svh - 50px); gap: 20px;">
@@ -408,6 +820,12 @@
                     <p style="font-size: 2em; color: #000000;">Love youuu &#129782;&#129782;&#129782;</p>
                 </div>
             </div>
+
+
+            {% for story in custom_stories %}
+                <div style="height: 30svh;"></div>
+                {{ story | safe }}
+            {% endfor %}
         </div>
 
         <div style="height: 30svh;"></div>
@@ -656,6 +1074,12 @@
                 </div>
 
             </div>
+
+            {% for story in custom_stories_mobile %}
+                <div style="height: 30svh;"></div>
+                {{ story | safe }}
+            {% endfor %}
+
             <div style="height: 20svh;"></div>
         </div>
     </div>
@@ -749,6 +1173,27 @@
             defaultViews[i].style.display = 'none';
         }
     }
+
+    function closeStoryEditorMenu() {
+        //document.getElementById('story-title').value = '';
+        //document.getElementById('story-content').value = '';
+        //document.getElementById('story-notification').style.display = 'none';
+        document.getElementById('storyEditorMenu').style.display = 'none';
+        var defaultViews = document.getElementsByClassName('default-view');
+        for (var i = 0; i < defaultViews.length; i++) {
+            defaultViews[i].style.display = 'flex';
+        }
+        document.getElementById('story-editor').style.display = 'none';
+
+    }
+    function openStoryEditorMenu() {
+        document.getElementById('storyEditorMenu').style.display = 'flex';
+        var defaultViews = document.getElementsByClassName('default-view');
+        for (var i = 0; i < defaultViews.length; i++) {
+            defaultViews[i].style.display = 'none';
+        }
+    }
+
     function sendDateMail() {
         if (document.getElementById('date-notification').style.display === 'block' && document.getElementById('date-notification').innerHTML === 'Sending emails...') {
             return;

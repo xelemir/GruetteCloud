@@ -1,0 +1,33 @@
+<div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">{{ title }}</h1></div>
+<div style="display: flex; height: 340px; flex-direction: row; width: 100%; gap: 20px;">
+    <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
+        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+            <img src="/nelly_media/{{ image0 }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
+        </div>
+        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  height: 160px;">
+            <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
+                <p style="font-size: 1.5em; color: {{ tile_title_color }}; font-weight: bold;">{{ title0 }}</p>
+                {% if subtitle0 %}
+                <p style="font-size: 1em; color: #000000;">{{ subtitle0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <img src="/nelly_media/{{ image1 }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 340px;">
+    </div>
+</div>
+<div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
+    <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <img src="/nelly_media/{{ image2 }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
+    </div>
+    <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: row; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
+            <p style="font-size: 1.5em; color: {{ tile_title_color }}; font-weight: bold;">{{ title1 }}</p>
+            {% if subtitle0 %}
+            <p style="font-size: 1em; color: #000000;">{{ subtitle0 }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

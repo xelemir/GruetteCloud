@@ -354,7 +354,39 @@ def nelly():
         is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
         if not is_admin:
             return abort(401)
-    return render_template("nelly.html", menu=th.user(session))
+        
+    sql = SQLHelper.SQLHelper()
+    stories = sql.readSQL("SELECT * FROM nelly_stories JOIN nelly_tiles ON nelly_stories.id = nelly_tiles.story_id")
+    stories_dict = {}
+    for story in stories:
+        print(story)
+        if story["id"] not in stories_dict:
+            stories_dict[story["id"]] = {"title": story["title"], "tile_title_color": story["tile_title_color"], "layout": story["layout"], "tiles": []}
+        if story["type"] == "text":
+            stories_dict[story["id"]]["tiles"].append({"title": story["nelly_tiles.title"], "subtitle": story["subtitle"], "type": "text", "order_on_page": story["order_on_page"]})
+        else:
+            stories_dict[story["id"]]["tiles"].append({"filename": story["filename"], "type": "image", "order_on_page": story["order_on_page"]})
+
+    #print(stories_dict)
+    
+    custom_stories = []
+    custom_stories_mobile = []
+    # iterate over stories_dict and sort the tiles by order_on_page
+    for story in stories_dict.values():
+        if story["layout"] == 0:
+            #custom_stories.append("nelly_templates/template_0_desktop.html")
+            custom_stories.append(render_template("nelly_templates/template_0_desktop.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], title1=story["tiles"][1]["title"], subtitle1=story["tiles"][1]["subtitle"], image0=story["tiles"][2]["filename"], image1=story["tiles"][3]["filename"], image2=story["tiles"][4]["filename"]))
+            custom_stories_mobile.append(render_template("nelly_templates/template_0_mobile.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], title1=story["tiles"][1]["title"], subtitle1=story["tiles"][1]["subtitle"], image0=story["tiles"][2]["filename"], image1=story["tiles"][3]["filename"], image2=story["tiles"][4]["filename"]))
+        elif story["layout"] == 1:
+            #custom_stories.append("nelly_templates/template_1_desktop.html")
+            custom_stories.append(render_template("nelly_templates/template_1_desktop.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], image0=story["tiles"][1]["filename"], image1=story["tiles"][2]["filename"], image2=story["tiles"][3]["filename"]))
+            custom_stories_mobile.append(render_template("nelly_templates/template_1_mobile.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], image0=story["tiles"][1]["filename"], image1=story["tiles"][2]["filename"], image2=story["tiles"][3]["filename"]))
+        elif story["layout"] == 2:
+            #custom_stories.append("nelly_templates/template_2_desktop.html")
+            custom_stories.append(render_template("nelly_templates/template_2_desktop.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], image0=story["tiles"][1]["filename"], image1=story["tiles"][2]["filename"]))
+            custom_stories_mobile.append(render_template("nelly_templates/template_2_mobile.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], image0=story["tiles"][1]["filename"], image1=story["tiles"][2]["filename"]))    
+        
+    return render_template("nelly.html", menu=th.user(session), custom_stories=custom_stories, custom_stories_mobile=custom_stories_mobile)
     
 @tool_route.route("/nelly_media/<path:filename>", methods=["GET"])
 def nelly_media(filename):
@@ -411,8 +443,52 @@ def send_date_emails():
     else:
         return jsonify({"message": response.text}), response.status_code
         
-    
+from flask import request, jsonify
 
+@tool_route.route("/nelly_save_story", methods=["POST"])
+def nelly_save_story():
+    if "user_id" not in session:
+        return abort(401)
+    elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3":
+        sql = SQLHelper.SQLHelper()
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+        if not is_admin:
+            return abort(401)
+
+    try:
+        # Extract the 'story' JSON data from the FormData
+        story = request.form.get('story')
+        
+        if not story:
+            return jsonify({"message": "Missing story data"}), 400
+        
+        # Convert the story string back to a dictionary (JSON)
+        story = json.loads(story)
+
+        # Handle uploaded files (images)
+        images = request.files.getlist('images')
+        print("Story:", story)
+        print("Images:", [image.filename for image in images])
+
+        # Save the story to the database
+        sql = SQLHelper.SQLHelper()
+        sql.writeSQL(f"INSERT INTO nelly_stories (title, tile_title_color, layout) VALUES ('{story['title']}', '{story['tileTitleColor']}', '{story['layout']}')")
+        story_id = sql.readSQL(f"SELECT id FROM nelly_stories WHERE title = '{story['title']}' AND layout = '{story['layout']}' AND tile_title_color = '{story['tileTitleColor']}'")[0]["id"]
+        
+        for i in range(len(story["tiles"])):
+            sql.writeSQL(f"INSERT INTO nelly_tiles (story_id, title, subtitle, type, order_on_page) VALUES ('{story_id}', '{story['tiles'][i]['title']}', '{story['tiles'][i]['subtitle']}', 'text', '{i}')")
+            
+            
+        for  i in range(len(images)):
+            file_extension = images[i].filename.split(".")[-1]
+            filename = f"{story_id}_{i}.{file_extension}"
+            images[i].save(f"{gruettedrive_path}/nelly/{filename}")
+            sql.writeSQL(f"INSERT INTO nelly_tiles (story_id, type, order_on_page, filename) VALUES ('{story_id}', 'image', '{i}', '{filename}')")
+
+        return jsonify({"message": "Story saved"}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Error processing request"}), 400
 # Endpoints for Flutter App
 
 import jwt
