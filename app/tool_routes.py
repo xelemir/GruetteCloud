@@ -359,7 +359,6 @@ def nelly():
     stories = sql.readSQL("SELECT * FROM nelly_stories JOIN nelly_tiles ON nelly_stories.id = nelly_tiles.story_id")
     stories_dict = {}
     for story in stories:
-        print(story)
         if story["id"] not in stories_dict:
             stories_dict[story["id"]] = {"title": story["title"], "tile_title_color": story["tile_title_color"], "layout": story["layout"], "tiles": []}
         if story["type"] == "text":

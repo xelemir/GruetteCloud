@@ -24,6 +24,10 @@
             margin-left: 0;
         }
 
+        .desktop-only-flex {
+            display: flex;
+        }
+
         input[type="date"], input[type="time"], input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -46,6 +50,10 @@
 
             #app-bar p {
                 margin-left: 5px;
+            }
+
+            .desktop-only-flex {
+                display: none;
             }
         }
 
@@ -151,10 +159,14 @@
 
     <div class="default-view" style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px; z-index: 100;">
         <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
-            <div onclick="openStoryEditorMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
+            <span class="desktop-only" style="position: absolute; top: -20px; right: -10px; cursor: pointer; padding: 3px 10px; border-radius: 30px; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
+                <p style="font-size: 12px; margin: 0; color: #ffffff;">Beta</p>
+            </span>
+            <div class="desktop-only-flex" onclick="openStoryEditorMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
                 <p style="font-size: 16px; margin: 0; color: #000000;">Edit our story</p>
                 <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #000000;">brush</span>
             </div>
+            
             <div onclick="openDateMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
                 <p style="font-size: 16px; margin: 0; color: #000000;">Plan a date</p>
                 <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #000000;">heart_plus</span>
