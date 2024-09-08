@@ -744,6 +744,8 @@
                     label.style.color = 'transparent';
                 }
                 reader.readAsDataURL(image);
+                // remove border
+                label.style.border = 'none';
             });
         }
 
