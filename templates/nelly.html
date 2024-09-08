@@ -1013,17 +1013,7 @@
             <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); margin-top: 20px; width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 280px;"></div>
 
             <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                <p id="together-for"style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
-                <div class="container">
-                    <div class="preloader">
-                       <span></span>
-                       <span></span>
-                       <span></span>
-                       
-                    </div>
-                    
-                    <div class="shadow"></div>
-                 </div>
+                <p style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
                 <p id="together-big" class="blur-until-loaded" style="font-size: 2.5em; color: #ff8fa3; filter: blur(8px);"></p>
                 <p id="together-small" class="blur-until-loaded" style="font-size: 1.2em; color: #000000; font-weight: bold;"></p>
             </div>
@@ -1114,11 +1104,8 @@
                         containers[i].style.display = "none";
                     }
                 } else {
-                    togetherBig.style.display = "none";
-                    togetherSmall.style.display = "none";
                     togetherBigDesktop.style.display = "none";
                     togetherSmallDesktop.style.display = "none";
-                    document.getElementById("together-for").style.display = "none";
                     document.getElementById("together-for-desktop").style.display = "none";
 
                     // timeout to show the heart animation
@@ -1128,18 +1115,12 @@
                             setTimeout(() => {
                                 for (let i = 0; i < containers.length; i++) {
                                     containers[i].style.display = "none";
-                                    togetherBig.classList.add("animate__animated", "animate__fadeIn");
-                                    togetherSmall.classList.add("animate__animated", "animate__fadeIn");
                                     togetherBigDesktop.classList.add("animate__animated", "animate__fadeIn");
                                     togetherSmallDesktop.classList.add("animate__animated", "animate__fadeIn");
-                                    document.getElementById("together-for").classList.add("animate__animated", "animate__fadeIn");
                                     document.getElementById("together-for-desktop").classList.add("animate__animated", "animate__fadeIn");
 
-                                    togetherBig.style.display = "block";
-                                    togetherSmall.style.display = "block";
                                     togetherBigDesktop.style.display = "block";
                                     togetherSmallDesktop.style.display = "block";
-                                    document.getElementById("together-for").style.display = "block";
                                     document.getElementById("together-for-desktop").style.display = "block";
                                 }
                             }, 650);
