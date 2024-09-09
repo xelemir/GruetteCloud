@@ -264,7 +264,7 @@ def send_support():
     result = verify_response.json()
 
     # Check if reCAPTCHA score is above the threshold
-    if result['success'] and result['score'] >= 0.5:
+    if (result['success'] and result['score'] >= 0.5) or request.args.get("api") == "true":
         sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
     
         async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
