@@ -1,10 +1,11 @@
 from flask import render_template, request, redirect, session, Blueprint, Flask, url_for
 import random
 import pyotp
+import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
-from config import templates_path
+from config import templates_path, recaptcha_secret_key
     
 loginSignUp_route = Blueprint("LoginSignUp", "LoginSignUp", template_folder=templates_path)
 
@@ -111,6 +112,24 @@ def signup():
     
     # If Method is POST
     if request.method == 'POST':
+        
+        # Check if reCAPTCHA response is valid
+        recaptcha_response = request.form.get('g-recaptcha-response')
+        
+        # Verify the reCAPTCHA response with Google's API
+        data = {
+            'secret': recaptcha_secret_key,
+            'response': recaptcha_response
+        }
+        
+        # Make a POST request to Google reCAPTCHA API
+        verify_response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = verify_response.json()
+
+        # Check if reCAPTCHA score is above the threshold
+        if result['success'] and result['score'] < 0.5:
+            return redirect("/?error=recaptcha_failed")
+            
         
         mail = MailHelper.MailHelper()
         sql = SQLHelper.SQLHelper()

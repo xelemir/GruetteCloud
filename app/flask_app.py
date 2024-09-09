@@ -66,6 +66,7 @@ def index():
         elif error == "invalid_email": error = "Please enter a valid email address."
         elif error == "username_already_exists": error = "This username is already taken."
         elif error == "too_many_login_attempts": error = "Too many login attempts. Contact support or use a different device."
+        elif error == "recaptcha_failed": error = "reCAPTCHA failed. Please try again."
 
         return render_template("discover.html", menu=th.user(session), error=error, traceback=request.args.get("traceback"))
     
