@@ -153,10 +153,20 @@
                     Fields with * are required.
                 </span>
             </span>
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
             <div style="display: inline-flex; margin-top: 20px;">
                 <input type="submit" value="Send Message" name="login" style="width: 300px; border-radius: 30px;" class="send-button">
             </div>
         </form>
+        <script>
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'submit'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response').value = token;
+                });
+            });
+        </script>
+
         <div id="account-needed" style="flex-direction: column; display: none; border: 2px solid var(--box-shadow-color); box-shadow: 0 0 10px var(--box-shadow-color); padding: 20px; border-radius: 20px; width: 600px; max-width: 85vw; align-items: center; justify-content: center;">
             <span class="material-symbols-rounded" style="position: relative; left: 50%; transform: translateX(-50%); cursor: pointer;" onclick="document.getElementById('account-needed').style.display = 'none'; document.getElementById('contact-options').style.display = 'flex';" title="Close">close</span>
             <h2 style="margin-top: 0; color: var(--text-color);">Account needed</h2>

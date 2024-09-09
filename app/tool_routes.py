@@ -15,7 +15,7 @@ from tgtg import TgtgClient
 
 
 from pythonHelper import SQLHelper, MailHelper, TemplateHelper
-from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail, mindee_api_key, nelly_auth_key
+from config import templates_path, openrouteservice_api_key, gruettedrive_path, gmail_mail, mindee_api_key, nelly_auth_key, recaptcha_secret_key, secret_key
 
     
 tool_route = Blueprint("Tools", "Tools", template_folder=templates_path)
@@ -250,13 +250,32 @@ def send_support():
     email = str(request.form["mail"])
     message = str(request.form["message"])
     
-    sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
+    # Check if reCAPTCHA response is valid
+    recaptcha_response = request.form.get('g-recaptcha-response')
+    
+    # Verify the reCAPTCHA response with Google's API
+    data = {
+        'secret': recaptcha_secret_key,
+        'response': recaptcha_response
+    }
+    
+     # Make a POST request to Google reCAPTCHA API
+    verify_response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+    result = verify_response.json()
+
+    # Check if reCAPTCHA score is above the threshold
+    if result['success'] and result['score'] >= 0.5:
+        return result
+    else:
+        return result
+    
+    """sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
     
     async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
     async_mail.start()
     
     if request.args.get("api") == "true":
-        return jsonify({"success": True})
+        return jsonify({"success": True})"""
     
     return render_template("support.html", menu=th.user(session), error="success")
 
