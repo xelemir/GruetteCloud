@@ -265,19 +265,21 @@ def send_support():
 
     # Check if reCAPTCHA score is above the threshold
     if result['success'] and result['score'] >= 0.5:
-        return result
+        sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
+    
+        async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
+        async_mail.start()
+        
+        if request.args.get("api") == "true":
+            return jsonify({"success": True})
+        
+        return render_template("support.html", menu=th.user(session), error="success")
+    
     else:
-        return result
-    
-    """sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
-    
-    async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
-    async_mail.start()
-    
-    if request.args.get("api") == "true":
-        return jsonify({"success": True})"""
-    
-    return render_template("support.html", menu=th.user(session), error="success")
+        if request.args.get("api") == "true":
+            return jsonify({"success": False, "message": "reCAPTCHA failed"})
+        
+        return render_template("support.html", menu=th.user(session), error="recaptcha_failed")
 
 # API Endpoints for GrütteMaps
 @tool_route.route("/search_place", methods=["GET"])
