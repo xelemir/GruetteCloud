@@ -198,8 +198,11 @@
             </div>
         </form>
 
-        {% else %}
+        {% elif error == 'success' %}
             <h2 style="color: var(--green); margin-bottom: 30px;">Your Message has been sent!</h2>
+            <a href="/" class="white-button-blue-on-hover" style="margin-top: 20px;">Homepage</a>
+        {% else %}
+            <h2 style="color: var(--red); margin-bottom: 30px;">An error occurred. Please try again later.</h2>
             <a href="/" class="white-button-blue-on-hover" style="margin-top: 20px;">Homepage</a>
         {% endif %}
     </div>
