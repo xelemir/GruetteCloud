@@ -108,13 +108,13 @@
         <p>{{ filesize }} • {{ created_at }}</p>
         {% if is_author %}
             {% if is_shared %}
-                <p style="display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
-                <p style="color: var(--green); margin-bottom: 20px;">Sharing is on</p>
+                <p style="display: flex; justify-content: center;">Uploaded by {{ menu["username"] }}{% if is_author_verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
+                <p style="color: var(--green); margin-bottom: 20px;">Sharing enabled</p>
             {% else %}
-                <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
+                <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ menu["username"] }}{% if is_author_verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
             {% endif %}
         {% else %}
-            <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ username }}{% if is_author_verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
+            <p style="margin-bottom: 20px; display: flex; justify-content: center;">Uploaded by {{ menu["username"] }}{% if is_author_verified %}<span class="material-symbols-rounded" style="margin-left: 5px; color: var(--primary-color); align-self: center; font-size: 1em;" title="{{ username }} is a GrütteCloud admin">verified</span>{% endif %}</p>
         {% endif %}
 
         <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px;">

@@ -127,59 +127,63 @@ def signup():
         result = verify_response.json()
 
         # Check if reCAPTCHA score is above the threshold
-        if result['success'] and result['score'] < 0.5:
-            return redirect("/?error=recaptcha_failed")
+        if result['success'] and result['score'] >= 0.5:
+            mail = MailHelper.MailHelper()
+            sql = SQLHelper.SQLHelper()
+            first_name = str(request.form['first_name'])
+            last_name = str(request.form['last_name'])
+            if last_name == "": last_name = "0"
+            username = str(request.form['username']).lower()
+            email = str(request.form['email']).lower()
+            phone = str(request.form['phone'])
+            if phone == "": phone = "0"
+            password = str(request.form['password'])
+            password_confirm = str(request.form['password2'])
+                    
+            # Check if input is valid
+            if password != password_confirm:
+                return redirect("/?error=passwords_not_matching")
+            elif username == '' or password == '':
+                return redirect("/?error=username_or_password_empty")
+            elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', ' ', '?', '/']] != []:
+                return redirect("/?error=forbidden_characters")
+            elif len(username) >= 40:
+                return redirect("/?error=username_less_40")
+            elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete', 'administrator', 'moderator', 'mod', 'gruettecloudrenders', 'gruettecloud', 'grüttecloud', 'gruettechat', 'grüttechat', 'nelly'] if blocked_phrase in username] != []:
+                return redirect("/?error=forbidden_words")
+            elif len(password) > 40 or len(password) < 8:
+                return redirect("/?error=password_between_8_40")
+            elif '@' not in email or '.' not in email:
+                return redirect("?error=invalid_email")
             
-        
-        mail = MailHelper.MailHelper()
-        sql = SQLHelper.SQLHelper()
-        first_name = str(request.form['first_name'])
-        last_name = str(request.form['last_name'])
-        if last_name == "": last_name = "0"
-        username = str(request.form['username']).lower()
-        email = str(request.form['email']).lower()
-        phone = str(request.form['phone'])
-        if phone == "": phone = "0"
-        password = str(request.form['password'])
-        password_confirm = str(request.form['password2'])
+            # Check if the username already exists
+            search_username = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
+            if search_username != []:
+                return redirect("/?error=username_already_exists")
+            
+            # Else create new user
+            else:
+                hashed_password = generate_password_hash(password)
+                verification_code = str(random.randint(100000, 999999))
+
+                # Insert the user into the database
+                sql.writeSQL(f"INSERT INTO users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name, finance_budget, ai_model) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}', 350, 'gpt-4o-mini')")
                 
-        # Check if input is valid
-        if password != password_confirm:
-            return redirect("/?error=passwords_not_matching")
-        elif username == '' or password == '':
-            return redirect("/?error=username_or_password_empty")
-        elif [char for char in username if char in ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', ' ', '?', '/']] != []:
-            return redirect("/?error=forbidden_characters")
-        elif len(username) >= 40:
-            return redirect("/?error=username_less_40")
-        elif [blocked_phrase for blocked_phrase in ['gruette', 'grütte', 'grutte', 'admin', 'support', 'delete', 'administrator', 'moderator', 'mod', 'gruettecloudrenders', 'gruettecloud', 'grüttecloud', 'gruettechat', 'grüttechat', 'nelly'] if blocked_phrase in username] != []:
-            return redirect("/?error=forbidden_words")
-        elif len(password) > 40 or len(password) < 8:
-            return redirect("/?error=password_between_8_40")
-        elif '@' not in email or '.' not in email:
-            return redirect("?error=invalid_email")
-        
-        # Check if the username already exists
-        search_username = sql.readSQL(f"SELECT * FROM users WHERE username = '{username}'")
-        if search_username != []:
-            return redirect("/?error=username_already_exists")
-        
-        # Else create new user
-        else:
-            hashed_password = generate_password_hash(password)
-            verification_code = str(random.randint(100000, 999999))
+                # Send the email
+                mail.send_verification_email(email, username, verification_code)
+                
+                # Redirect to verification page
+                return redirect(f"/verify/{username}")
 
-            # Insert the user into the database
-            sql.writeSQL(f"INSERT INTO users (username, password, email, verification_code, is_email_verified, has_premium, ai_personality, is_2fa_enabled, 2fa_secret_key, profile_picture, default_app, phone, first_name, last_name, finance_budget, ai_model) VALUES ('{username}', '{hashed_password}', '{email}', '{verification_code}', {False}, {False}, 'Default', {False}, 0, '{random.choice(['blue', 'green', 'purple', 'red', 'yellow'])}', 'chat', '{phone}', '{first_name}', '{last_name}', 350, 'gpt-4o-mini')")
+        # If Method is GET, render the signup page, deprecated, simply used as people might have the old url saved TODO remove
+        return redirect("/")
+    
+    # Recaptcha failed
+    else:
+        return redirect("/?error=recaptcha_failed")
             
-            # Send the email
-            mail.send_verification_email(email, username, verification_code)
-            
-            # Redirect to verification page
-            return redirect(f"/verify/{username}")
-
-    # If Method is GET, render the signup page, deprecated, simply used as people might have the old url saved TODO remove
-    return redirect("/")
+        
+        
 
 @loginSignUp_route.route("/username_available/<username>")
 def username_available(username):

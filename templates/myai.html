@@ -163,8 +163,7 @@
             <span class="material-symbols-rounded dreamy-text">temp_preferences_custom</span>
         </div>
     </div>
-    <div id="cookie-banner"></div>
-    
+    <div id="cookie-banner"></div>    
 
     <div class="chat-messages">
         {% for message in chat_history %}
@@ -189,15 +188,14 @@
         {% endfor %}
     </div>
     
-    
-    <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px; justify-content: end; align-items: end;">
-        <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
-        <!--<div id="fileLabel" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
-            <span class="material-symbols-rounded" style="font-size: 30px;">add</span>
+    <div id="error" style="display: none; align-items: center; justify-content: center; border-radius: 30px; border: 2px solid var(--red); margin-bottom: 20px; height: 100px; ">
+        <div style="padding: 20px; border-radius: 28px; background-color: var(--red); color: var(--white-color); opacity: 0.5; width: 100%; height: 100%; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <p style="">Couldn't connect to MyAI. Please try again later.</p>
         </div>
-        <div id="removeDiv" style="bottom: 0; min-width: 60px; min-height: 60px; padding: 0; margin: 0; text-align: center; display: none; align-items: center; justify-content: center; border-style: solid; border-color: var(--box-shadow-color); border-radius: 50%; border-width: 2px; margin: 0; cursor: pointer;">
-            <span class="material-symbols-rounded" style="font-size: 30px;">close</span>
-        </div>-->
+    </div>
+    <div id="user-input" style="position: sticky; bottom: 0px; margin: 0; width: 100%; display: flex; gap: 10px; justify-content: end; align-items: end;">
+        
+        <input type="file" name="file" accept="image/*" id="fileInput" style="display: none;">
         <div id="fileLabel" style="border-radius: 50%; position: absolute; bottom: 5px; left: 5px; cursor: pointer; width: 50px; height: 50px; text-align: center; display: flex; align-items: center; justify-content: center;">
             <span class="material-symbols-rounded" style="font-size: 25px;">attach_file</span>
         </div>
@@ -218,6 +216,15 @@
                 {% elif selected_personality == "Anakin" %}Anakin Skywalker
                 {% else %}MyAI{% endif %}" autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-right: 65px; padding-left: 55px; height: 56px; max-height: 56px; background-color: transparent; margin: 0; width: 100%;">
             
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
+            <script>
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'submit'}).then(function(token) {
+                        document.getElementById('g-recaptcha-response').value = token;
+                    });
+                });
+            </script>
             <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-rounded" style="font-size: 40px;">arrow_upward_alt</span>
             </button>
@@ -353,7 +360,7 @@
             </a>
         </div>
     </div>
-    {% include "components/error.html" %}
+   
 </body>
 </html>
 
@@ -610,16 +617,14 @@
                 appendMessage({ role: "user", content: '*Sending image...*\n' + message });
             } else {
                 appendMessage({ role: "user", content: message });
-            }
-            
-            $('#loadingAnimation').show();
-            
+            }            
 
             
             var file = fileInput.files[0]; // Get selected file
             var formData = new FormData();
             formData.append('message', message); // Append text message
             formData.append('file', file); // Append file
+            formData.append('g-recaptcha-response', document.getElementById('g-recaptcha-response').value); // Append recaptcha token
 
 
             appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});
@@ -661,7 +666,6 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    $('#loadingAnimation').hide();
                     var chatMessages = $(".chat-messages");
                     chatMessages.empty();
                     for (var i = 0; i < response.chat_history.length; i++) {
@@ -672,9 +676,10 @@
 
                 },
                 error: function(xhr, status, error) {
-                    $('#loadingAnimation').hide();
-                    errorFs("Couldn't send message.", "An error occurred while sending the message. Please try again.");
+                    document.getElementById('error').style.display = 'flex';
                     $('#messageInput').focus();
+                    var messages = $(".message");
+                    messages[0].remove();
                 }
             });
         }

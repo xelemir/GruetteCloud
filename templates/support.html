@@ -153,7 +153,7 @@
                     Fields with * are required.
                 </span>
             </span>
-            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <input type="hidden" id="g-recaptcha-response0" name="g-recaptcha-response">
             <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
             <div style="display: inline-flex; margin-top: 20px;">
                 <input type="submit" value="Send Message" name="login" style="width: 300px; border-radius: 30px;" class="send-button">
@@ -162,7 +162,8 @@
         <script>
             grecaptcha.ready(function() {
                 grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'submit'}).then(function(token) {
-                    document.getElementById('g-recaptcha-response').value = token;
+                    document.getElementById('g-recaptcha-response0').value = token;
+                    document.getElementById('g-recaptcha-response1').value = token;
                 });
             });
         </script>
@@ -193,6 +194,7 @@
                     Fields with * are required.
                 </span>
             </span>
+            <input type="hidden" id="g-recaptcha-response1" name="g-recaptcha-response">
             <div style="display: inline-flex; margin-top: 20px;">
                 <input type="submit" value="Request Call" name="login" style="width: 300px; border-radius: 30px;" class="send-button">
             </div>

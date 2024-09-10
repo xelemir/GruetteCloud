@@ -3,10 +3,11 @@ import random
 import time
 from flask import abort, render_template, request, redirect, send_file, session, jsonify, Blueprint, url_for
 import logging
+import requests
 from werkzeug.utils import secure_filename
 
-from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper#, OpenAIWrapper 
-from config import templates_path, gruettedrive_path
+from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper, openai_https#, OpenAIWrapper 
+from config import templates_path, gruettedrive_path, recaptcha_secret_key
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
 
@@ -241,76 +242,101 @@ def chat_file(filename):
         
 @chat_route.route("/myai", methods=["POST", "GET"])
 def myai():
-    from pythonHelper import openai_https
+    
+        
+    
+    
+    
     ai = openai_https.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()
     
     chat_history = session.get("chat_history", [])
     
     if request.method == "POST":
-        message = request.form.get("message")
-        file = request.files.get("file")
-        filename = None
+        # Check if reCAPTCHA response is valid
+        recaptcha_response = request.form.get('g-recaptcha-response')
         
-        if file and "user_id" in session:
-            
-            file_extension = file.filename.split(".")[-1]
-            
-            for _ in range(50):
-                if _ == 49: file, filename = None, None
-                filename = hex(random.getrandbits(128))[2:] + "_" + str(session["user_id"]) + "." + file_extension
-                if not os.path.exists(os.path.join(gruettedrive_path, 'myai', filename)):
-                    file.save(os.path.join(gruettedrive_path, 'myai', filename))
-                    break
-            
-        if message == "#!# Requesting Welcome Message #!#":
-            chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
-        elif message == "#!# Requesting Welcome Message DE #!#":
-            chat_history.append({"role": "user", "content": "Hallo, bitte gib mir eine nette Willkommensnachricht für GrütteChat. Antworte nur noch auf Deutsch."})
-        else:
-            chat_history.append({"role": "user", "content": message})
-
-        if "user_id" in session:
-            user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")
-            
-            if not user:
-                return redirect("/logout")
-            else:
-                selected_ai_personality = user[0]["ai_personality"]
-                has_premium = bool(user[0]["has_premium"])
-                ai_model = user[0]["ai_model"]
-                username = user[0]["username"]
+        # Verify the reCAPTCHA response with Google's API
+        data = {
+            'secret': recaptcha_secret_key,
+            'response': recaptcha_response
+        }
                 
-        else:
-            selected_ai_personality = session.get("ai_personality", "Default")
-            has_premium = False
-            ai_model = "gpt-4o-mini"
-            username = "Guest user"
+        # Make a POST request to Google reCAPTCHA API
+        verify_response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = verify_response.json()
+
+        # Check if reCAPTCHA score is above the threshold
+        if result['success'] and result['score'] >= 0.5:
             
-        
-        try:
-            if file and has_premium:
-                chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/myai-file/{filename}")
-                if chat_history[-1]["content"] == "I'm having some trouble processing your request. Please try again later.":
-                    os.remove(os.path.join(gruettedrive_path, 'myai', filename))
+            
+            message = request.form.get("message")
+            file = request.files.get("file")
+            filename = None
+            
+            if file and "user_id" in session:
+                
+                file_extension = file.filename.split(".")[-1]
+                
+                for _ in range(50):
+                    if _ == 49: file, filename = None, None
+                    filename = hex(random.getrandbits(128))[2:] + "_" + str(session["user_id"]) + "." + file_extension
+                    if not os.path.exists(os.path.join(gruettedrive_path, 'myai', filename)):
+                        file.save(os.path.join(gruettedrive_path, 'myai', filename))
+                        break
+                
+            if message == "#!# Requesting Welcome Message #!#":
+                chat_history.append({"role": "user", "content": "Hi, please give me a welcome to GrütteChat message."})
+            elif message == "#!# Requesting Welcome Message DE #!#":
+                chat_history.append({"role": "user", "content": "Hallo, bitte gib mir eine nette Willkommensnachricht für GrütteChat. Antworte nur noch auf Deutsch."})
+            else:
+                chat_history.append({"role": "user", "content": message})
+
+            if "user_id" in session:
+                user = sql.readSQL(f"SELECT username, ai_personality, has_premium, ai_model FROM users WHERE id = '{session['user_id']}'")
+                
+                if not user:
+                    return redirect("/logout")
                 else:
-                    chat_history[-2]["image"] = f"/myai-file/{filename}"
-                
-            elif file:
-                os.remove(os.path.join(gruettedrive_path, 'myai', filename))
-                
+                    selected_ai_personality = user[0]["ai_personality"]
+                    has_premium = bool(user[0]["has_premium"])
+                    ai_model = user[0]["ai_model"]
+                    username = user[0]["username"]
+                    
             else:
-                chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
-        except Exception as e:
-            logging.error(e)
-            if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
-            chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later.", "image": None})
+                selected_ai_personality = session.get("ai_personality", "Default")
+                has_premium = False
+                ai_model = "gpt-4o-mini"
+                username = "Guest user"
+                
+            
+            try:
+                if file and has_premium:
+                    chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model, url=f"https://www.gruettecloud.com/myai-file/{filename}")
+                    if chat_history[-1]["content"] == "I'm having some trouble processing your request. Please try again later.":
+                        os.remove(os.path.join(gruettedrive_path, 'myai', filename))
+                    else:
+                        chat_history[-2]["image"] = f"/myai-file/{filename}"
+                    
+                elif file:
+                    os.remove(os.path.join(gruettedrive_path, 'myai', filename))
+                    
+                else:
+                    chat_history = ai.get_openai_response(chat_history, username=username, ai_personality=selected_ai_personality, has_premium=has_premium, ai_model=ai_model)
+            except Exception as e:
+                logging.error(e)
+                if filename is not None: os.remove(os.path.join(gruettedrive_path, 'GruetteCloud', filename))
+                chat_history.append({"role": "assistant", "content": "I am having trouble connecting... Please try again later.", "image": None})
 
-        session["chat_history"] = chat_history
-        chat_response = [{"role": message["role"], "content": message["content"], "image": message.get("image")} for message in chat_history]
-                        
-        return jsonify({"chat_history": chat_response})
+            session["chat_history"] = chat_history
+            chat_response = [{"role": message["role"], "content": message["content"], "image": message.get("image")} for message in chat_history]
+                            
+            return jsonify({"chat_history": chat_response})
+        
+        else:
+            return jsonify({"error": "reCAPTCHA failed. Please try again."}), 400
 
+    # GET request
     else:
         
         if "user_id" in session:
