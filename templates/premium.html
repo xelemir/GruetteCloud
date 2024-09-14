@@ -9,11 +9,6 @@
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
-		@media (min-width: 768px) {
-			.wrapping-tile {
-				max-width: 500px;
-			}
-		}	
 
 		.dreamy-button {
             background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
@@ -117,43 +112,43 @@
 	</div>
 
 	<div style="display: flex; justify-content: center; align-items: center; width: 100%; height: calc(90svh - 100px); padding: 20px;">
-	<div style="border-radius: 30px; text-align: center;">
-		<div class="spaced-tile"></div>
-		<h1 class="dreamy-text" style="margin-bottom: 30px;">GrütteCloud PLUS</h1>
-		<div style="width: 100%; display: flex; justify-content: center;">
-			<div style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px;">
-				<p style="padding-bottom: 1em;">Enhance your GrütteCloud experience:</p> 
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">GPT-4o powered MyAI</p></p></div>
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">MyAI responds to uploaded images</p></div>
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">4x longer MyAI conversations</p></div>
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Up to 10x longer MyAI replies</p></div>
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Upload unlimited files GrütteDrive</p></div>
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Access to all upcoming features</p></div>
-				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Your support helps us to improve GrütteCloud</p></div>
-				<p style="margin-top: 10px; cursor: pointer;" onclick="toggleCodeSection()">Got a code?
-					<span id="toggle-button" class="material-symbols-rounded align-icons-center" style="font-size: 1.5em;">expand_more</span>
-					<span id="code-error" style="display: none; margin-left: 5px;"></span>
-				</p>
+		<div style="border-radius: 30px; text-align: center;">
+			<div class="spaced-tile"></div>
+			<h1 class="dreamy-text" style="margin-bottom: 30px;">GrütteCloud PLUS</h1>
+			<div style="width: 100%; display: flex; justify-content: center;">
+				<div style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px;">
+					<p style="padding-bottom: 1em;">Enhance your GrütteCloud experience:</p> 
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">GPT-4o powered MyAI</p></p></div>
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">MyAI responds to uploaded images</p></div>
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">4x longer MyAI conversations</p></div>
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Up to 10x longer MyAI replies</p></div>
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Upload unlimited files GrütteDrive</p></div>
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Access to all upcoming features</p></div>
+					<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="dreamy-text material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Your support helps us to improve GrütteCloud</p></div>
+					<p style="margin-top: 10px; cursor: pointer;" onclick="toggleCodeSection()">Got a code?
+						<span id="toggle-button" class="material-symbols-rounded align-icons-center" style="font-size: 1.5em;">expand_more</span>
+						<span id="code-error" style="display: none; margin-left: 5px;"></span>
+					</p>
 
-				<div id="enter-code-section" style="display: none; text-align: center; justify-content: center; align-items: center; flex-direction: column;">
-					<div id="enter-code-section-inputs" style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 10px; gap: 20px;">
-						<input id="code" type="text" name="code" placeholder="Enter your code" style="background-color: transparent; border-radius: 0; flex: 1;" autocomplete="off">
-						<p class="dreamy-text" onclick="addCode()" style="cursor: pointer; font-size: 1em; text-decoration: underline; font-weight: bold;">Apply</p>
-					</div>
-					<div id="enter-code-section-applied-code" style="display: none; justify-content: start; align-items: center; width: 100%; margin-top: 10px; gap: 10px;">
-						<div onclick="removeCode()" style="cursor: pointer; gap: 5px; display: flex; justify-content: start; align-items: center; background-color: var(--secondary-color); padding: 5px 20px; border-radius: 30px;"><p class="align-icons-center">-2.99 €</p><span class="material-symbols-rounded align-icons-center">close</span></div>
+					<div id="enter-code-section" style="display: none; text-align: center; justify-content: center; align-items: center; flex-direction: column;">
+						<div id="enter-code-section-inputs" style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 10px; gap: 20px;">
+							<input id="code" type="text" name="code" placeholder="Enter your code" style="background-color: transparent; border-radius: 0; flex: 1;" autocomplete="off">
+							<p class="dreamy-text" onclick="addCode()" style="cursor: pointer; font-size: 1em; text-decoration: underline; font-weight: bold;">Apply</p>
+						</div>
+						<div id="enter-code-section-applied-code" style="display: none; justify-content: start; align-items: center; width: 100%; margin-top: 10px; gap: 10px;">
+							<div onclick="removeCode()" style="cursor: pointer; gap: 5px; display: flex; justify-content: start; align-items: center; background-color: var(--secondary-color); padding: 5px 20px; border-radius: 30px;"><p class="align-icons-center">-2.99 €</p><span class="material-symbols-rounded align-icons-center">close</span></div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<form action="/payment" method="POST" style="margin-bottom: 20px;">
+				<input id="code-form" type="hidden" name="promo_code" value="">
+				<input id="unlock-button" onclick="fullscreenAnimation()" type="submit" class="dreamy-button" style="border-radius: 30px; padding: 15px; font-size: 1.1em; width: 100%; margin-top: 0px;" value="Unlock for 2.99 €*">
+			</form>
+			<div style="text-align: center; font-size: 0.6em; margin-bottom: 20px;">
+				<p>*Payment is handled by PayPal.<br>By clicking the button you agree to our <a href="/terms" class="dreamy-text">Terms of Service</a>.</p>
+			</div>
 		</div>
-		<form action="/payment" method="POST" style="margin-bottom: 20px;">
-			<input id="code-form" type="hidden" name="promo_code" value="">
-			<input id="unlock-button" onclick="fullscreenAnimation()" type="submit" class="dreamy-button" style="border-radius: 30px; padding: 15px; font-size: 1.1em; width: 75%; margin-top: 0px;" value="Unlock for 2.99 €*">
-		</form>
-		<div style="text-align: center; font-size: 0.6em; margin-bottom: 20px;">
-			<p>*Payment is handled by PayPal.<br>By clicking the button you agree to our <a href="/terms" class="dreamy-text">Terms of Service</a>.</p>
-		</div>
-	</div>
 	</div>
 	<div id="cookie-banner"></div>
 	<div id="expand-to-fullscreen" style="display: flex; justify-content: center; align-items: center; padding-top: 30svh;">

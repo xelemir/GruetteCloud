@@ -9,12 +9,6 @@
     <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
-		@media (min-width: 768px) {
-			.wrapping-tile {
-				max-width: 500px;
-			}
-		}	
-
 		.dreamy-button {
             background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
             background-size: 200% 200%;
@@ -86,22 +80,24 @@
 		<div class="dark-mode-toggle">
 			<span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>
 		</div>
-		<div class="centered-content">
+		<div class="centered-content desktop-only">
 			<a href="/" class="logo" title="Home">
 				<img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" style="width: 40px; height: 40px;" title="GrütteCloud">
 			</a>
 		</div>
 	</div>
 
-	<div class="wrapping-tile" style="border-radius: 30px; text-align: center; margin-top: 20vh; padding: 20px;">
-		<div class="spaced-tile"></div>
-        <h1 style="text-align: center; margin-bottom: 40px; color: var(--green);"><span class="material-symbols-rounded" style="font-size: 4em; ">check_circle</span></h1>
-		<h1 style="font-size: 2em; text-align: center; margin-bottom: 30px;">Thank you!</h1>
-		<div style="display: flex; justify-content: center; align-items: center;">
-		<p style="font-size: 1.2em; text-align: center; margin-bottom: 50px; width: 80%">You have unlocked GrütteCloud PLUS. Enjoy the premium features!</p>
+	<div style="display: flex; justify-content: center; align-items: center; width: 100%; height: calc(90svh - 100px); padding: 20px;">
+		<div style="border-radius: 30px; text-align: center;">
+			<div class="spaced-tile"></div>
+			<h1 style="text-align: center; margin-bottom: 40px; color: var(--green);"><span class="material-symbols-rounded" style="font-size: 4em; ">check_circle</span></h1>
+			<h1 style="font-size: 2em; text-align: center; margin-bottom: 30px;">Thank you!</h1>
+			<div style="display: flex; justify-content: center; align-items: center;">
+			<p style="font-size: 1.2em; text-align: center; margin-bottom: 50px; width: 80%">You have unlocked GrütteCloud PLUS. Enjoy the premium features!</p>
+			</div>
+			<a href="/" class="dreamy-button" style="font-size: 1.1em; width: 100%; margin-top: 0px; text-decoration: none; padding: 15px 45px; border-radius: 30px;">Go to GrütteCloud</a>
+			<div class="spaced-tile"></div>
 		</div>
-		<a href="/" class="dreamy-button" style="text-decoration: none; padding: 10px 30px; border-radius: 30px;">Go to GrütteCloud</a>
-		<div class="spaced-tile"></div>
 	</div>
 	<div id="cookie-banner"></div>
 </body>
