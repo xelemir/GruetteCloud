@@ -92,6 +92,10 @@
 		.expand-animation {
 			animation: expandToFullscreen 0.5s ease forwards;
 		}
+
+		input:focus {
+			outline: none;
+		}
 	</style>
 		
 </head>
@@ -112,18 +116,20 @@
 		<h1 class="dreamy-text" style="margin-bottom: 30px;">GrütteCloud PLUS</h1>
 		<div style="width: 100%; display: flex; justify-content: center;">
 			<div style="text-align: left; border-radius: 20px; padding: 20px; font-size: 0.8em; margin: 0; margin-bottom: 20px; width: 80%;">
-				<p style="padding-bottom: 1em;">• GPT-4o powered MyAI</p>
-				<p style="padding-bottom: 1em;">• MyAI responds to uploaded images</p>
-				<p style="padding-bottom: 1em;">• 4x longer MyAI conversations</p>
-				<p style="padding-bottom: 1em;">• Up to 10x longer MyAI replies</p>
-				<p style="padding-bottom: 1em;">• Upload unlimited files GrütteDrive</p>
-				<p style="padding-bottom: 1em;">• Access to all upcoming features</p>
-				<p style="padding-bottom: 1em;">• Your support helps us to improve GrütteCloud</p>
-				<p style="margin-top: 10px;">Got a code? <span id="toggle-button" onclick="toggleCodeSection()" class="material-symbols-rounded align-icons-center" style="cursor: pointer; font-size: 1.5em;">expand_more</span><span id="code-error" style="display: none; margin-left: 5px;"></span></p>
+				<p style="padding-bottom: 1em;">Unlock the following features:</p>
+
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">GPT-4o powered MyAI</p></p></div>
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">MyAI responds to uploaded images</p></div>
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">4x longer MyAI conversations</p></div>
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Up to 10x longer MyAI replies</p></div>
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Upload unlimited files GrütteDrive</p></div>
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Access to all upcoming features</p></div>
+				<div style="padding-bottom: 8px; gap: 10px; display: flex; justify-content: start; align-items: center;"><span class="material-symbols-rounded align-icons-center">check</span><p class="align-icons-center">Your support helps us to improve GrütteCloud</p></div>
+				<p style="margin-top: 10px; cursor: pointer;" onclick="toggleCodeSection()">Got a code? <span id="toggle-button" class="material-symbols-rounded align-icons-center" style="font-size: 1.5em;">expand_more</span><span id="code-error" style="display: none; margin-left: 5px;"></span></p>
 
 				<div id="enter-code-section" style="display: none; text-align: center; justify-content: center; align-items: center; flex-direction: column;">
 					<div id="enter-code-section-inputs" style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 10px;">
-						<input id="code" type="text" name="code" placeholder="Enter your code" style="border-radius: 30px; padding: 15px; font-size: 1.1em; width: 70%; text-align: center; background-color: transparent; border: 2px solid var(--box-shadow-color);"><br>
+						<input id="code" type="text" name="code" placeholder="Enter your code" style="width: 70%; text-align: center; background-color: transparent; border: none;">
 						<button onclick="addCode()" type="submit" class="dreamy-button" style="border-radius: 30px; padding: 15px; font-size: 1.1em; width: 30%;">Add code</button>
 					</div>
 					<div onclick="removeCode()" id="enter-code-section-applied-code" style="display: none; margin-top: 10px; justify-content: center; align-items: center; flex-direction: column; background-color: var(--red); border-radius: 30px; padding: 10px 25px; cursor: pointer;">
