@@ -1014,8 +1014,8 @@
             <img class="hide-until-loaded" src="/nelly_media/neleUndJan.jpg" style="display: none; width: 100%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
             <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); margin-top: 20px; width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 280px;"></div>
 
-            <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                <p style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
+            <!--<div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 450px;">
+                <p id="together-for" style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
                 <div class="container">
                     <div class="preloader">
                        <span></span>
@@ -1026,6 +1026,20 @@
                  </div>
                 <p id="together-big" class="blur-until-loaded" style="font-size: 2.5em; color: #ff8fa3; filter: blur(8px);"></p>
                 <p id="together-small" class="blur-until-loaded" style="font-size: 1.2em; color: #000000; font-weight: bold; filter: blur(8px);"></p>
+            </div>-->
+
+            <div style="background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px;">
+                <p id="together-for" style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
+                <div class="container">
+                    <div class="preloader">
+                       <span></span>
+                       <span></span>
+                       <span></span>
+                    </div>
+                    <div class="shadow"></div>
+                 </div>
+                <p class="blur-until-loaded" id="together-big" style="font-size: 2.5em; color: #ff8fa3; filter: blur(8px);"></p>
+                <p class="blur-until-loaded" id="together-small" style="font-size: 1.2em; color: #000000; font-weight: bold; filter: blur(8px);"></p>
             </div>
 
             <script>
@@ -1107,40 +1121,44 @@
                     }
                 }
 
-                // Hide the heart animation if the date is not a monthiversary
+                // Show heart animation
                 let containers = document.getElementsByClassName("container");
-                if (diffDate !== 0) {
+                
+                togetherBigDesktop.style.display = "none";
+                togetherSmallDesktop.style.display = "none";
+                document.getElementById("together-for-desktop").style.display = "none";
+
+                togetherBig.style.display = "none";
+                togetherSmall.style.display = "none";
+                document.getElementById("together-for").style.display = "none";
+
+                // timeout to show the heart animation
+                setTimeout(() => {
                     for (let i = 0; i < containers.length; i++) {
-                        containers[i].style.display = "none";
+                        containers[i].classList.add("animate__animated", "animate__fadeOut");
+                        setTimeout(() => {
+                            for (let i = 0; i < containers.length; i++) {
+                                containers[i].style.display = "none";
+                                togetherBigDesktop.classList.add("animate__animated", "animate__fadeIn");
+                                togetherSmallDesktop.classList.add("animate__animated", "animate__fadeIn");
+                                document.getElementById("together-for-desktop").classList.add("animate__animated", "animate__fadeIn");
+
+                                togetherBig.classList.add("animate__animated", "animate__fadeIn");
+                                togetherSmall.classList.add("animate__animated", "animate__fadeIn");
+                                document.getElementById("together-for").classList.add("animate__animated", "animate__fadeIn");
+
+                                togetherBigDesktop.style.display = "block";
+                                togetherSmallDesktop.style.display = "block";
+                                document.getElementById("together-for-desktop").style.display = "block";
+
+                                togetherBig.style.display = "block";
+                                togetherSmall.style.display = "block";
+                                document.getElementById("together-for").style.display = "block";
+                            }
+                        }, 650);
                     }
-                } else {
-                    togetherBigDesktop.style.display = "none";
-                    togetherSmallDesktop.style.display = "none";
-                    document.getElementById("together-for-desktop").style.display = "none";
-
-                    // timeout to show the heart animation
-                    setTimeout(() => {
-                        for (let i = 0; i < containers.length; i++) {
-                            containers[i].classList.add("animate__animated", "animate__fadeOut");
-                            setTimeout(() => {
-                                for (let i = 0; i < containers.length; i++) {
-                                    containers[i].style.display = "none";
-                                    togetherBigDesktop.classList.add("animate__animated", "animate__fadeIn");
-                                    togetherSmallDesktop.classList.add("animate__animated", "animate__fadeIn");
-                                    document.getElementById("together-for-desktop").classList.add("animate__animated", "animate__fadeIn");
-
-                                    togetherBigDesktop.style.display = "block";
-                                    togetherSmallDesktop.style.display = "block";
-                                    document.getElementById("together-for-desktop").style.display = "block";
-                                }
-                            }, 650);
-                        }
-                    }, 2400);
-                }
+                }, 2400);
                     
-
-
-
             </script>
         </div>
         
