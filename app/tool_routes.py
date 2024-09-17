@@ -234,7 +234,7 @@ def terms():
 
 @tool_route.route("/support", methods=["GET", "POST"])
 def send_support():
-    """ Post route to send a support message to the GrütteCloud team
+    """ POST route to send a support message to the GrütteCloud team
 
     Returns:
         HTML: Rendered HTML page
@@ -264,7 +264,7 @@ def send_support():
     result = verify_response.json()
 
     # Check if reCAPTCHA score is above the threshold
-    if (result['success'] and result['score'] >= 0.5) or request.args.get("api") == "true":
+    if result['success'] and result['score'] >= 0.5:
         sql.writeSQL(f"INSERT INTO tickets (name, username, email, message, status) VALUES ('{name}', '{username}', '{email}', '{message}', 'opened')")
     
         async_mail = Thread(target=MailHelper.MailHelper().send_support_mail, args=(name, username, email, message))
@@ -276,9 +276,6 @@ def send_support():
         return render_template("support.html", menu=th.user(session), error="success")
     
     else:
-        if request.args.get("api") == "true":
-            return jsonify({"success": False, "message": "reCAPTCHA failed"})
-        
         return render_template("support.html", menu=th.user(session), error="recaptcha_failed")
 
 # API Endpoints for GrütteMaps
