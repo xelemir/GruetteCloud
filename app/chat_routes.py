@@ -256,6 +256,8 @@ def myai():
         # Check if reCAPTCHA response is valid
         recaptcha_response = request.form.get('g-recaptcha-response')
         
+        print(recaptcha_response)
+        
         # Verify the reCAPTCHA response with Google's API
         data = {
             'secret': recaptcha_secret_key,

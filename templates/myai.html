@@ -677,7 +677,9 @@
                 },
                 error: function(xhr, status, error) {
                     document.getElementById('error').style.display = 'flex';
-                    $('#messageInput').focus();
+                    // update error message , jsonify the response
+                    let error_msg = JSON.parse(xhr.responseText).error;
+                    document.getElementById('error').innerHTML = '<div style="padding: 20px; border-radius: 28px; background-color: var(--red); color: var(--white-color); opacity: 0.5; width: 100%; height: 100%; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;"><p>' + error_msg + '</p></div>';
                     var messages = $(".message");
                     messages[0].remove();
                 }
