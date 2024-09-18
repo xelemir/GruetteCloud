@@ -619,7 +619,17 @@
                 appendMessage({ role: "user", content: '*Sending image...*\n' + message });
             } else {
                 appendMessage({ role: "user", content: message });
-            }            
+            }
+
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'direct'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response').value = token;
+                });
+            });
+            
+
+            console.log(document.getElementById('g-recaptcha-response').value)
+
 
             
             var file = fileInput.files[0]; // Get selected file
@@ -659,6 +669,8 @@
                 document.getElementById('removeDiv').style.display = 'none';
                 document.getElementById('messageInput').style.paddingLeft = '20px';
             }
+
+            
 
             
             $.ajax({
