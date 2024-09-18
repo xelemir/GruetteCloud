@@ -242,11 +242,6 @@ def chat_file(filename):
         
 @chat_route.route("/myai", methods=["POST", "GET"])
 def myai():
-    
-        
-    
-    
-    
     ai = openai_https.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()
     
