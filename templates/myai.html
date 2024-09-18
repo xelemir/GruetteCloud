@@ -219,7 +219,12 @@
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
             <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
             <script>
-                
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K').then(function(token) {
+                        console.log("Got token: ");
+                        document.getElementById('g-recaptcha-response').value = token;
+                    });
+                });
             </script>
             <button id="sendButton" action="sendButtonPressed" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-rounded" style="font-size: 40px;">arrow_upward_alt</span>
@@ -617,14 +622,9 @@
                 appendMessage({ role: "user", content: message });
             }
 
-            grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K').then(function(token) {
-                console.log("Got token: ");
-                document.getElementById('g-recaptcha-response').value = token;
-            });
-
             console.log("recaptcha token: " + document.getElementById('g-recaptcha-response').value);
 
-            return;
+            
             
             var file = fileInput.files[0]; // Get selected file
             var formData = new FormData();
@@ -791,6 +791,9 @@
         }
     
         // Call the checkAndRequestWelcomeMessage function when the page loads
-        checkAndRequestWelcomeMessage();
+        grecaptcha.ready(function() {
+            checkAndRequestWelcomeMessage();
+        });
+
     });
 </script>
