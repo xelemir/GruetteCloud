@@ -219,17 +219,17 @@
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
             <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
             <script>
-                document.getElementById('sendButton').addEventListener('click', function() {
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'click'}).then(function(token) {
-                            document.getElementById('g-recaptcha-response').value = token;
-                        });
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'sendButtonPressed'}).then(function(token) {
+                        document.getElementById('g-recaptcha-response').value = token;
                     });
-                });                
+                });
             </script>
-            <button id="sendButton" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <button id="sendButton" action="sendButtonPressed" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-rounded" style="font-size: 40px;">arrow_upward_alt</span>
             </button>
+            <script>
+            </script>
         <div>
     </div>
     
@@ -620,13 +620,6 @@
             } else {
                 appendMessage({ role: "user", content: message });
             }
-
-            grecaptcha.ready(function() {
-                grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'direct'}).then(function(token) {
-                    document.getElementById('g-recaptcha-response').value = token;
-                });
-            });
-            
 
             console.log(document.getElementById('g-recaptcha-response').value)
 
