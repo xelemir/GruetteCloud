@@ -223,6 +223,8 @@
                     grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K').then(function(token) {
                         console.log("Got token: ");
                         document.getElementById('g-recaptcha-response').value = token;
+                    }).catch(function(error) {
+                        console.error("Error getting token: " + error);
                     });
                 });
             </script>
