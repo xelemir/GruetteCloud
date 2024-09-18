@@ -255,8 +255,7 @@ def myai():
     if request.method == "POST":
         # Check if reCAPTCHA response is valid
         recaptcha_response = request.form.get('g-recaptcha-response')
-        
-        print(recaptcha_response)
+        logging.error("Recaptcha response: " + recaptcha_response)
         
         # Verify the reCAPTCHA response with Google's API
         data = {
@@ -268,10 +267,7 @@ def myai():
         verify_response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
         
         result = verify_response.json()
-        logging.error("Result: " + str(result))
         
-        #logging.error("Score: " + result['score'])
-
         # Check if reCAPTCHA score is above the threshold
         if result['success'] and result['score'] >= 0.5:
             
