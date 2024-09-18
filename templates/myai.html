@@ -223,8 +223,6 @@
                     grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K').then(function(token) {
                         console.log("Got token: ");
                         document.getElementById('g-recaptcha-response').value = token;
-                    }).catch(function(error) {
-                        console.error("Error getting token: " + error);
                     });
                 });
             </script>
@@ -624,9 +622,6 @@
                 appendMessage({ role: "user", content: message });
             }
 
-            console.log("recaptcha token: " + document.getElementById('g-recaptcha-response').value);
-
-            
             
             var file = fileInput.files[0]; // Get selected file
             var formData = new FormData();
@@ -731,9 +726,9 @@
                     return `<a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a>`;
                 });
 
-                // [link](url) -> <a href="url"><img src="url"></a>
+                // [link](url) -> <a href="url">url</a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
-                    return `<br><a href="${p2}"><img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';"></a><br>`;
+                    return `<br><a href="${p2}">${p1}</a>`;
                 });
                 
 
@@ -773,8 +768,6 @@
         function checkAndRequestWelcomeMessage() {
             if ($(".chat-messages").children().length === 0) {
                 const userLanguage = navigator.language || navigator.userLanguage;
-
-                console.log(navigator.userAgent);
 
                 if (['Googlebot', 'Bytespider', 'bingbot'].some(bot => navigator.userAgent.includes(bot))) {
                     console.log("Bot detected. Not requesting welcome message.");

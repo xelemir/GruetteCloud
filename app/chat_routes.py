@@ -269,7 +269,7 @@ def myai():
         result = verify_response.json()
         
         # Check if reCAPTCHA score is above the threshold
-        if result['success'] and result['score'] >= 0.5:
+        if (result['success'] and result['score'] >= 0.5) or str(request.form.get("message")) == "#!# Requesting Welcome Message #!#" or str(request.form.get("message")) == "#!# Requesting Welcome Message DE #!#":
             
             
             message = request.form.get("message")
