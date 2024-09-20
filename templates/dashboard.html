@@ -375,100 +375,6 @@
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px; margin-top: 30px;">
                         <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Tickets</h2>
                         <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; max-height: calc(100svh - 350px);">
-                            
-                            
-                            <!--{% for ticket in tickets %}
-                                <div class="ticket{% if ticket["status"] == "closed" %} closed-ticket{% endif %}" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 30px; padding: 10px;">
-                                        <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; padding-bottom: 0px; text-align: center; align-items: center; justify-content: center;">
-                                            <b>{{ ticket["created_at"] }}</b>
-                                        </div>
-                                        <div style="display: flex; flex-direction: row; width: 100%; padding: 10px;">
-                                            <div style="flex: 1; overflow: none; white-space: wrap; text-overflow: ellipsis;">
-                                                <b>Status: </b>
-                                                {% if ticket["status"] == "opened" %}
-                                                    <span style="color: var(--green);">Opened</span><br>
-                                                {% elif ticket["status"] == "closed" %}
-                                                    <span style="color: var(--red);">Closed</span><br>
-                                                    <b>Completed by: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
-                                                {% else %}
-                                                    <span style="color: var(--yellow);">In Progress</span><br>
-                                                    <b>Assigned to: </b><a href="/chat/{{ ticket["assigned_to"] }}" style="text-decoration: underline;">{{ ticket["assigned_to"] }}</a><br>
-                                                {% endif %}
-                                                <b>Name: </b>{{ ticket["name"] }}<br>
-                                                <b>Username: </b>{{ ticket["username"] }}<br>
-                                                <span class="email-container">
-                                                <b>Email: </b><span class="email blurred-email">{{ ticket["email"] }}</span>
-                                                </span>
-                                            </div>
-                                            <div style="width: 70%;">
-                                                <b>Message:</b><br>
-                                                {{ ticket["message"] }}
-                                            </div>
-                                        </div>
-                                        <div style="width: 100%; overflow: auto; white-space: wrap; text-overflow: ellipsis; display: flex; flex-direction: row; justify-content: center; gap: 10px; padding: 0px; padding-bottom: 0px;">
-                                            {% if ticket["status"] == "opened" %}
-                                                <div class="ticket-action-button" style="background-color: var(--primary-color);" onclick="assignTicket('{{ ticket["id"] }}')">
-                                                    <span class="material-symbols-rounded">done</span><p>Start Ticket</p>
-                                                </div>
-                                            {% elif ticket["status"] == "closed" %}
-                                                <div class="ticket-action-button" style="background-color: var(--red);" onclick="reopenTicket('{{ ticket["id"] }}')">
-                                                    <span class="material-symbols-rounded">history</span><p>Reopen</p>
-                                                </div>
-                                            {% elif ticket["status"] == "in_progress" and ticket["assigned_to"]|string == menu["user_id"]|string %}
-                                                {% if ticket["username"] %}
-                                                    <a href="/dashboard/giftplus/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
-                                                        <span class="material-symbols-rounded" style="color: var(--white-color);">workspace_premium</span><p>Gift G+</p>
-                                                    </a>
-                                                    <a href="/chat/{{ ticket["username"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
-                                                        <span class="material-symbols-rounded" style="color: var(--white-color);">forum</span><p>Open Chat</p>
-                                                    </a>
-                                                {% endif %}
-                                                {% if ticket["email"] %}
-                                                    <a href="mailto:{{ ticket["email"] }}" class="ticket-action-button" style="background-color: var(--primary-color);">
-                                                        <span class="material-symbols-rounded" style="color: var(--white-color);">mail</span><p>Send Email</p>
-                                                    </a>
-                                                {% endif %}
-                                                <div class="ticket-action-button" style="background-color: var(--red);" onclick="reopenTicket('{{ ticket["id"] }}')">
-                                                    <span class="material-symbols-rounded">history</span><p>Reopen</p>
-                                                </div>
-                                                <div class="ticket-action-button" style="background-color: var(--green);" onclick="closeTicket('{{ ticket["id"] }}')">
-                                                    <span class="material-symbols-rounded">done_all</span><p>Close Ticket</p>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            <div id="toggleClosedTicketsButton" style="display: flex; flex-direction: row; justify-content: center; padding: 10px; padding-bottom: 0px; margin-top: 80px; cursor: pointer;" onclick="toggleClosedTickets()">
-                                Show Closed Tickets
-                            </div>-->
-
-
-
-                            <!--fetch("/dashboard/edit_db_entry", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify({ id: id, key: key, value: newValue, db_name: db_name })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data["success"]) {
-                                    textElement.innerHTML = `${newValue}`;
-                                } else {
-                                    alert("Failed to edit value.");
-                                }
-                            })
-                            .catch(error => {
-                                console.error(error);
-                            });-->
-
-
-
-
-
 
                         </div>
                     </div>
@@ -584,12 +490,15 @@
                                 <div id="ticket-action-button-email" class="ticket-action-button" style="background-color: var(--primary-color);">
                                     <span class="material-symbols-rounded">mail</span><p>Email</p>
                                 </div>
-                                <div id="ticket-action-button-delete" class="ticket-action-button" style="background-color: var(--red);">
+                                <div id="ticket-action-button-delete-user" class="ticket-action-button" style="background-color: var(--red);">
                                     <span class="material-symbols-rounded">person_remove</span><p>Delete User</p>
                                 </div>
                                 <div id="ticket-action-button-assign" class="ticket-action-button" style="background-color: var(--green);">
                                     <span class="material-symbols-rounded">done</span><p>Assign to myself</p>
                                 </div>
+                            </div>
+                            <div id="ticket-action-button-delete-ticket" class="ticket-action-button" style="background-color: var(--red); margin-top: 20px;">
+                                <span class="material-symbols-rounded">delete</span><p>Delete Ticket</p>
                             </div>
                         </span>
                     </div>
@@ -689,7 +598,8 @@
                             document.getElementById("ticket-action-button-plus").setAttribute("onclick", "giftPremium('" + data["username"] + "')");
                             document.getElementById("ticket-action-button-chat").setAttribute("onclick", "window.location.href='/chat/" + data["username"] + "'");
                             document.getElementById("ticket-action-button-email").setAttribute("onclick", "window.location.href='mailto:" + data["email"] + "'");
-                            document.getElementById("ticket-action-button-delete").setAttribute("onclick", "deleteUser('" + data["username"] + "')");
+                            document.getElementById("ticket-action-button-delete-user").setAttribute("onclick", "deleteUser('" + data["username"] + "')");
+                            document.getElementById("ticket-action-button-delete-ticket").setAttribute("onclick", "deleteTicket('" + data["id"] + "')");
                             document.getElementById("ticket-action-button-assign").setAttribute("onclick", "assignTicket('" + data["id"] + "')");
 
                             if (data["assigned_to"] == null || data["assigned_to"] == "") {
@@ -709,9 +619,11 @@
                             if (data["assigned_to"] == {{ menu["user_id"] }} && data["status"] == "in_progress" && data["username"] != null) {
                                 document.getElementById("ticket-action-button-plus").style.display = "flex";
                                 document.getElementById("ticket-action-button-chat").style.display = "flex";
+                                document.getElementById("ticket-action-button-delete-user").style.display = "flex";
                             } else {
                                 document.getElementById("ticket-action-button-plus").style.display = "none";
                                 document.getElementById("ticket-action-button-chat").style.display = "none";
+                                document.getElementById("ticket-action-button-delete-user").style.display = "none";
                             }
 
                             if (data["assigned_to"] == {{ menu["user_id"] }} && data["status"] == "in_progress" && data["email"] != null) {
@@ -723,6 +635,9 @@
                             if (data["status"] == "closed") {
                                 document.getElementById("ticket-action-button-close").style.display = "none";
                                 document.getElementById("ticket-action-button-reopen").style.display = "flex";
+                                document.getElementById("ticket-action-button-delete-ticket").style.display = "flex";
+                            } else {
+                                document.getElementById("ticket-action-button-delete-ticket").style.display = "none";
                             }
 
                         })
@@ -811,6 +726,51 @@
                                 alert("GrütteCloud PLUS gifted successfully.");
                             } else {
                                 alert("Failed to gift GrütteCloud PLUS.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+
+                    function deleteUser(username) {
+                        fetch("/dashboard/deleteuser", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ user_id: username })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data["success"]) {
+                                
+                                alert("User deleted successfully.");
+                            } else {
+                                alert("Failed to delete user.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+
+                    function deleteTicket(ticket_id) {
+                        fetch("/dashboard/deleteticket", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ ticket_id: ticket_id })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data["success"]) {
+                                updateTickets();
+                                document.getElementById("noTicketSelected").style.display = "flex";
+                                document.getElementById("ticketDetails").style.display = "none";
+                            } else {
+                                alert("Failed to delete ticket.");
                             }
                         })
                         .catch(error => {

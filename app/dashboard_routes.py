@@ -454,6 +454,40 @@ def get_tickets():
     
     return jsonify(tickets)
 
+@dashboard_route.route("/dashboard/deleteticket", methods=["POST"])
+def delete_ticket():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    ticket_id = request.json["ticket_id"]
+    
+    sql.writeSQL(f"DELETE FROM tickets WHERE id = '{ticket_id}'")
+    
+    return jsonify({"success": True})
+
+@dashboard_route.route("/dashboard/deleteuser", methods=["POST"])
+def deleteuserNew():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    user_id = request.json["user_id"]
+    
+    sql.writeSQL(f"DELETE FROM users WHERE id = '{user_id}'")
+    
+    return jsonify({"success": True})
+
 @dashboard_route.route("/dashboard/getTicketDetails", methods=["POST"])
 def get_ticket_details():
     if "user_id" not in session:
