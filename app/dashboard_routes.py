@@ -113,25 +113,8 @@ def dashboard():
         logging.error(e)
     
     support_tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at ASC")
-    my_tickets = []
-    opened_tickets = []
-    in_progress_tickets = []
-    closed_tickets = []
     
-    
-    for ticket in support_tickets:
-        if ticket["assigned_to"] == session["user_id"]:
-            my_tickets.append(ticket)
-        elif ticket["status"] == "opened":
-            opened_tickets.append(ticket)
-        elif ticket["status"] == "in_progress":
-            in_progress_tickets.append(ticket)
-        elif ticket["status"] == "closed":
-            closed_tickets.append(ticket)
-            
-    support_tickets = my_tickets + opened_tickets + in_progress_tickets + closed_tickets
-    
-    return render_template('dashboard.html', user_id=session['user_id'], menu=th.user(session), platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, tickets=support_tickets, errors=error_log_lines)
+    return render_template('dashboard.html', user_id=session['user_id'], menu=th.user(session), platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, errors=error_log_lines)
 
 @dashboard_route.route('/dashboard/iplookup', methods=['POST'])
 def iplookup():
@@ -334,50 +317,66 @@ def send_mail():
 @dashboard_route.route("/dashboard/assignticket", methods=["POST"])
 def assign_ticket():
     if "user_id" not in session:
-        return redirect("/")
+        abort(401)
     
     sql = SQLHelper.SQLHelper()
     
     user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
-        return redirect("/")
+        abort(401)
     
     ticket_id = request.json["ticket_id"]
     sql.writeSQL(f"UPDATE tickets SET assigned_to = '{session['user_id']}', status = 'in_progress' WHERE id = '{ticket_id}'")
     
-    return {"success": True}
+    return {"success": True}, 200
 
 @dashboard_route.route("/dashboard/reopenticket", methods=["POST"])
 def reopen_ticket():
     if "user_id" not in session:
-        return redirect("/")
+        abort(401)
     
     sql = SQLHelper.SQLHelper()
     
     user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
-        return redirect("/")
+        abort(401)
     
     ticket_id = request.json["ticket_id"]
     sql.writeSQL(f"UPDATE tickets SET status = 'opened', assigned_to = NULL WHERE id = '{ticket_id}'")
     
-    return {"success": True}
+    return {"success": True}, 200
 
 @dashboard_route.route("/dashboard/closeticket", methods=["POST"])
 def close_ticket():
     if "user_id" not in session:
-        return redirect("/")
+        abort(401)
     
     sql = SQLHelper.SQLHelper()
     
     user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
     if not bool(user["is_admin"]):
-        return redirect("/")
+        abort(401)
     
     ticket_id = request.json["ticket_id"]
     sql.writeSQL(f"UPDATE tickets SET status = 'closed', assigned_to = '{session['user_id']}' WHERE id = '{ticket_id}'")
     
-    return {"success": True}
+    return {"success": True}, 200
+
+@dashboard_route.route("/dashboard/giftpremium", methods=["POST"])
+def gift_premium():
+    if "user_id" not in session:
+        abort(401)
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        abort(401)
+    
+    user_id = request.json["user_id"]
+    sql.writeSQL(f"UPDATE users SET has_premium = {True} WHERE id = '{user_id}'")
+    
+    return {"success": True}, 200
 
 @dashboard_route.route("/get_status_message")
 def get_status_message():
@@ -433,3 +432,58 @@ def execute_sql():
         success = sql.writeSQL(query, return_is_successful=True)
         if success: return jsonify([]), 200
         else: return jsonify({"error": "An error occurred"}), 400
+        
+@dashboard_route.route("/dashboard/getTickets", methods=["POST"])
+def get_tickets():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at ASC")
+    
+    # stream tickets and format the created_at column
+    for ticket in tickets:
+        ticket["created_at"] = ticket["created_at"].strftime("%d.%m.%Y %H:%M:%S")
+    
+    print(tickets)
+    
+    return jsonify(tickets)
+
+@dashboard_route.route("/dashboard/getTicketDetails", methods=["POST"])
+def get_ticket_details():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    ticket_id = request.json["ticket_id"]
+    
+    ticket = sql.readSQL(f"SELECT * FROM tickets WHERE id = '{ticket_id}'")[0]
+    
+    if (ticket["username"] is None or ticket["username"] == "") and (ticket["assigned_to"] is None or ticket["assigned_to"] == ""):
+        ticket = sql.readSQL(f"SELECT * FROM tickets WHERE id = '{ticket_id}'")
+    elif ticket["username"] is None or ticket["username"] == "":
+        ticket = sql.readSQL(f"SELECT * FROM tickets JOIN users AS assigned ON tickets.assigned_to = assigned.id WHERE tickets.id = '{ticket_id}'")
+    elif ticket["assigned_to"] is None or ticket["assigned_to"] == "":
+        ticket = sql.readSQL(f"SELECT * FROM tickets JOIN users AS author ON tickets.username = author.id WHERE tickets.id = '{ticket_id}'")
+        if ticket == []:
+            ticket = sql.readSQL(f"SELECT * FROM tickets WHERE id = '{ticket_id}'")
+            ticket[0]["author.username"] = ticket[0]["username"] + " (invalid)"
+    else:
+        ticket = sql.readSQL(f"SELECT * FROM tickets JOIN users AS author ON tickets.username = author.id JOIN users AS assigned ON tickets.assigned_to = assigned.id WHERE tickets.id = '{ticket_id}'")
+        if ticket == []:
+            ticket = sql.readSQL(f"SELECT * FROM tickets JOIN users AS assigned ON tickets.assigned_to = assigned.id WHERE tickets.id = '{ticket_id}'")
+            ticket[0]["author.username"] = ticket[0]["username"] + " (invalid)"
+    
+    ticket[0]["created_at"] = ticket[0]["created_at"].strftime("%d.%m.%Y %H:%M:%S")
+    
+    return jsonify(ticket[0])

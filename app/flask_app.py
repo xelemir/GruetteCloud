@@ -77,9 +77,9 @@ def error404(error):
 def errorToTicket(error, user_id=None):
     sql = SQLHelper.SQLHelper()
     if user_id:
-        sql.writeSQL(f"INSERT INTO tickets (username, message, status) VALUES ('{user_id}', '{error}', 'opened')")
+        sql.writeSQL(f"INSERT INTO tickets (name, username, message, status) VALUES ('Error: 500', '{user_id}', '{error}', 'opened')")
     else:
-        sql.writeSQL(f"INSERT INTO tickets (message, status) VALUES ('{error}', 'opened')")
+        sql.writeSQL(f"INSERT INTO tickets (name, message, status) VALUES ('Error: 500', '{error}', 'opened')")
 
 @app.route("/404")
 def error404page():

@@ -51,7 +51,7 @@
             width: 100%;
             cursor: pointer;
             color: var(--white-color);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             text-decoration: none;
@@ -122,6 +122,26 @@
             }
         }
 
+        .dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
 
     </style>
 </head>
@@ -134,10 +154,14 @@
         {% include "components/nav-element.html" %}
     </div>-->
 
+    {% include "components/nav-element.html" %}
+
     <div style="height: 100%;">
         <div id="status-message" class="wrapping-tile" style="display: none; padding: 20px; margin-bottom: 20px; text-align: center; color: var(--yellow); width: 100% margin: 20px; justify-content: center; align-items: center;">
             {{ status }}
         </div>
+
+        
 
 
         <div style="flex-direction: row; width: 100%; height: 100%; gap: 20px; display: flex; ">
@@ -168,30 +192,15 @@
                         <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="Manage Users">manage_accounts</span>
                         <p style="padding-left: 15px;">Manage Users</p>
                     </div>
+                    <div class="navigation-button" id="toggleTicketView" onclick="toggleTicketView()">
+                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="Support Tickets">support</span>
+                        <p style="padding-left: 15px;">Tickets</p>
+                    </div>
                     <div class="navigation-button" id="toggleDatabaseView" onclick="toggleDatabaseView()">
                         <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="Manage Users">database</span>
                         <p style="padding-left: 15px;">Database</p>
                     </div>
                     
-                </div>
-                <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
-                <div style="text-align: left; padding-bottom: 10px; padding-top: 10px;">
-                    <a href="/chat" class="navigation-button">
-                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="GrütteChat">forum</span>
-                        <p style="padding-left: 15px;">GrütteChat</p>
-                    </a>
-                    <a href="/drive" class="navigation-button">
-                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="GrütteDrive">cloud_upload</span>
-                        <p style="padding-left: 15px;">GrütteDrive</p>
-                    </a>
-                    <a href="/maps" class="navigation-button">
-                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="GrütteDrive">map</span>
-                        <p style="padding-left: 15px;">GrütteMaps</p>
-                    </a>
-                    <a href="/finance" class="navigation-button">
-                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="GrütteDrive">payments</span>
-                        <p style="padding-left: 15px;">GrütteFinance</p>
-                    </a>
                 </div>
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                 <div style="text-align: left; padding-top: 10px;">
@@ -364,14 +373,11 @@
                         </div>
                         {% endif %}
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px; margin-top: 30px;">
-                        <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Support Tickets</h2>
+                        <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Tickets</h2>
                         <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; max-height: calc(100svh - 350px);">
-                            <div id="no-tickets" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; border-radius: 30px; padding: 10px; margin-bottom: 20px; margin-top: 80px;">
-                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center; font-size: 3em; margin-bottom: 20px; color: var(--primary-color);">mark_email_read</span>
-                                <p style="text-align: center;">Hoorayy! There are no open tickets at the moment.</p>
-                            </div>
                             
-                            {% for ticket in tickets %}
+                            
+                            <!--{% for ticket in tickets %}
                                 <div class="ticket{% if ticket["status"] == "closed" %} closed-ticket{% endif %}" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
                                     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--secondary-color); border-radius: 30px; padding: 10px;">
                                         <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; padding-bottom: 0px; text-align: center; align-items: center; justify-content: center;">
@@ -436,7 +442,34 @@
                             {% endfor %}
                             <div id="toggleClosedTicketsButton" style="display: flex; flex-direction: row; justify-content: center; padding: 10px; padding-bottom: 0px; margin-top: 80px; cursor: pointer;" onclick="toggleClosedTickets()">
                                 Show Closed Tickets
-                            </div>
+                            </div>-->
+
+
+
+                            <!--fetch("/dashboard/edit_db_entry", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({ id: id, key: key, value: newValue, db_name: db_name })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data["success"]) {
+                                    textElement.innerHTML = `${newValue}`;
+                                } else {
+                                    alert("Failed to edit value.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });-->
+
+
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -488,6 +521,309 @@
                     </div>
                 </div>
             </div>
+
+            <div id="ticketView" style="background-color: var(--background-tile-color); display: none; flex-direction: column; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
+                <div style="display: flex; flex-direction: row; width: 100%; height: calc(100% - 50px); overflow: auto; gap: 20px;">
+                    <div style="width: 50%;">
+                        <h2 align="center" style="margin-bottom: 20px;">Ticket Overview</h2>
+                        <div id="no-tickets" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; border-radius: 30px; padding: 10px; margin-bottom: 20px; margin-top: calc(50% + 100px);">
+                            <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center; font-size: 3em; margin-bottom: 20px; color: var(--primary-color);">mark_email_read</span>
+                            <p style="text-align: center;">Hoorayy! There are no open tickets at the moment.</p>
+                        </div>
+                        <div id="tickets" class="file-list" style="font-size: 0.7em; display: flex; flex-direction: column; max-height: calc(100% - 80px); overflow: auto;">
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 20px; margin-right: 10px;">
+                    <div style="width: 50%;">
+                        <h2 align="center" style="margin-bottom: 20px;">Ticket Details</h2>
+                        <div id="noTicketSelected" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; border-radius: 30px; padding: 10px; margin-bottom: 20px; margin-top: calc(50% + 100px);">
+                            <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center; font-size: 3em; margin-bottom: 20px; color: var(--primary-color);">mark_email_unread</span>
+                            <p style="text-align: center;">Select a ticket to view details.</p>
+                        </div>
+                        <span id="ticketDetails" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; border-radius: 30px; padding: 10px; margin-bottom: 20px;">
+                            <div style="padding: 5px; display: flex; flex-direction: row; align-items: center; justify-content: start; gap: 10px;">
+                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">tag</span>
+                                <p id="ticket-id"></p>
+                            </div>
+                            <div style="padding: 5px; display: flex; flex-direction: row; align-items: center; justify-content: start; gap: 10px;">
+                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">traffic</span>
+                                <p id="ticket-status"></p>
+                            </div>
+                            <div style="padding: 5px; display: flex; flex-direction: row; align-items: center; justify-content: start; gap: 10px;">
+                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">person</span>
+                                <p id="ticket-username"></p>
+                            </div>
+                            <div style="padding: 5px; display: flex; flex-direction: row; align-items: center; justify-content: start; gap: 10px;">
+                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">alternate_email</span>
+                                <p id="ticket-email"></p>
+                            </div>
+                            <div style="padding: 5px; display: flex; flex-direction: row; align-items: center; justify-content: start; gap: 10px;">
+                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">date_range</span>
+                                <p id="ticket-created_at"></p>
+                            </div>
+                            <div style="padding: 5px; display: flex; flex-direction: row; align-items: center; justify-content: start; gap: 10px;">
+                                <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;">support_agent</span>
+                                <p id="ticket-assigned_to"></p>
+                            </div>
+                            <div style="align-items: center; justify-content: start; background-color: var(--secondary-color); border-radius: 20px; padding: 20px; margin-top: 20px; text-wrap: wrap; text-overflow: ellipsis;">
+                                <p id="ticket-message"></p>
+                            </div>
+                            <div style="display: flex; flex-direction: row; justify-content: center; gap: 10px; margin-top: 20px;">
+                                <div id="ticket-action-button-close" class="ticket-action-button" style="background-color: var(--green);">
+                                    <span class="material-symbols-rounded">done_all</span><p>Close</p>
+                                </div>
+                                <div id="ticket-action-button-reopen" class="ticket-action-button" style="background-color: var(--yellow);">
+                                    <span class="material-symbols-rounded">history</span><p>Reopen</p>
+                                </div>
+                                <div id="ticket-action-button-plus" class="ticket-action-button" style="background-color: var(--primary-color);">
+                                    <span class="material-symbols-rounded">workspace_premium</span><p>Gift G+</p>
+                                </div>
+                                <div id="ticket-action-button-chat" class="ticket-action-button" style="background-color: var(--primary-color);">
+                                    <span class="material-symbols-rounded">forum</span><p>GrütteChat</p>
+                                </div>
+                                <div id="ticket-action-button-email" class="ticket-action-button" style="background-color: var(--primary-color);">
+                                    <span class="material-symbols-rounded">mail</span><p>Email</p>
+                                </div>
+                                <div id="ticket-action-button-delete" class="ticket-action-button" style="background-color: var(--red);">
+                                    <span class="material-symbols-rounded">person_remove</span><p>Delete User</p>
+                                </div>
+                                <div id="ticket-action-button-assign" class="ticket-action-button" style="background-color: var(--green);">
+                                    <span class="material-symbols-rounded">done</span><p>Assign to myself</p>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <script>
+                    function updateTickets() {
+                        console.error("Updating Tickets");
+                        fetch("/dashboard/getTickets", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            
+                            if (data.length == 0) {
+                                document.getElementById("no-tickets").style.display = "flex";
+                            } else {
+                                const tickets = document.getElementById("tickets");
+                                tickets.innerHTML = "";
+                                for (ticket of data) {
+                                    const ticketElement = document.createElement("div");
+                                    ticketElement.classList.add("navigation-button");
+                                    ticketElement.style.gap = "10px";
+                                    ticketElement.style.width = "100%";
+                                    if (ticket["status"] == "opened") {
+                                        var ticket_icon = "mark_email_unread";
+                                        var ticket_status = "<span style='background-color: var(--red); color: var(--white-color); padding: 0 8px; border-radius: 30px;'>New</span>";
+                                    } else if (ticket["status"] == "closed") {
+                                        var ticket_icon = "mark_email_read";
+                                        var ticket_status = "<span style='background-color: var(--green); color: var(--white-color); padding: 0 8px; border-radius: 30px;'>Closed</span>";
+                                    } else {
+                                        // in_progress
+                                        var ticket_icon = "mail_lock";
+                                        var ticket_status = "<span style='background-color: var(--yellow); color: var(--white-color); padding: 0 8px; border-radius: 30px;'>In Progress</span>";
+                                    }
+                                    ticketElement.setAttribute("onclick", "openTicketDetails('" + ticket["id"] + "')");
+
+                                    ticketElement.innerHTML = `
+                                        <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 15px;">
+                                            <span class="material-symbols-rounded align-align-icons-center" style="font-size: 32px;">${ticket_icon}</span>
+                                            <div>
+                                                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px;">
+                                                    <p class="text-offcutter align-align-icons-center" style="color: var(--text-color); font-size: 18px; text-decoration: none;">${ticket["name"]}</p>
+                                                    <p class="text-offcutter align-align-icons-center" style="color: var(--text-color); font-size: 12px; text-decoration: none;">${ticket_status}</p>
+                                                </div>
+                                                <p class="text-offcutter" style="color: var(--text-color); font-size: 12px; text-decoration: none;">${ticket["created_at"]}</p>
+                                            </div>
+                                        </div>
+                                    `;
+                                    tickets.appendChild(ticketElement);
+                                }
+                            }
+                                    
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+
+                    // call update tickets every 2 minutes
+                    updateTickets();
+                    setInterval(updateTickets, 120000);
+
+                    function openTicketDetails(ticket_id) {
+                        fetch("/dashboard/getTicketDetails", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ ticket_id: ticket_id })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("noTicketSelected").style.display = "none";
+                            document.getElementById("ticketDetails").style.display = "block";
+
+                            document.getElementById("ticket-id").innerHTML = data["id"];
+                            if (data["status"] == "opened") {
+                                document.getElementById("ticket-status").innerHTML = "<span style='background-color: var(--red); color: var(--white-color); padding: 4px 12px; border-radius: 30px;'>Open</span>";
+                            } else if (data["status"] == "closed") {
+                                document.getElementById("ticket-status").innerHTML = "<span style='background-color: var(--green); color: var(--white-color); padding: 4px 12px; border-radius: 30px;'>Closed</span>";
+                            } else {
+                                document.getElementById("ticket-status").innerHTML = "<span style='background-color: var(--yellow); color: var(--white-color); padding: 4px 12px; border-radius: 30px;'>In Progress</span>";
+                            }
+
+                            document.getElementById("ticket-username").innerHTML = data["author.username"];
+                            document.getElementById("ticket-email").innerHTML = data["email"];
+                            document.getElementById("ticket-created_at").innerHTML = data["created_at"];
+                            document.getElementById("ticket-assigned_to").innerHTML = data["assigned.username"];
+                            document.getElementById("ticket-message").innerHTML = data["message"];
+
+                            document.getElementById("ticket-action-button-close").setAttribute("onclick", "closeTicket('" + data["id"] + "')");
+                            document.getElementById("ticket-action-button-reopen").setAttribute("onclick", "reopenTicket('" + data["id"] + "')");
+                            document.getElementById("ticket-action-button-plus").setAttribute("onclick", "giftPremium('" + data["username"] + "')");
+                            document.getElementById("ticket-action-button-chat").setAttribute("onclick", "window.location.href='/chat/" + data["username"] + "'");
+                            document.getElementById("ticket-action-button-email").setAttribute("onclick", "window.location.href='mailto:" + data["email"] + "'");
+                            document.getElementById("ticket-action-button-delete").setAttribute("onclick", "deleteUser('" + data["username"] + "')");
+                            document.getElementById("ticket-action-button-assign").setAttribute("onclick", "assignTicket('" + data["id"] + "')");
+
+                            if (data["assigned_to"] == null || data["assigned_to"] == "") {
+                                document.getElementById("ticket-action-button-assign").style.display = "flex";
+                            } else {
+                                document.getElementById("ticket-action-button-assign").style.display = "none";
+                            }
+
+                            if (data["assigned_to"] == {{ menu["user_id"] }}) {
+                                document.getElementById("ticket-action-button-close").style.display = "flex";
+                                document.getElementById("ticket-action-button-reopen").style.display = "flex";
+                            } else {
+                                document.getElementById("ticket-action-button-close").style.display = "none";
+                                document.getElementById("ticket-action-button-reopen").style.display = "none";
+                            }
+
+                            if (data["assigned_to"] == {{ menu["user_id"] }} && data["status"] == "in_progress" && data["username"] != null) {
+                                document.getElementById("ticket-action-button-plus").style.display = "flex";
+                                document.getElementById("ticket-action-button-chat").style.display = "flex";
+                            } else {
+                                document.getElementById("ticket-action-button-plus").style.display = "none";
+                                document.getElementById("ticket-action-button-chat").style.display = "none";
+                            }
+
+                            if (data["assigned_to"] == {{ menu["user_id"] }} && data["status"] == "in_progress" && data["email"] != null) {
+                                document.getElementById("ticket-action-button-email").style.display = "flex";
+                            } else {
+                                document.getElementById("ticket-action-button-email").style.display = "none";
+                            }
+
+                            if (data["status"] == "closed") {
+                                document.getElementById("ticket-action-button-close").style.display = "none";
+                                document.getElementById("ticket-action-button-reopen").style.display = "flex";
+                            }
+
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+
+                    function assignTicket(ticket_id) {
+                        fetch("/dashboard/assignticket", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ ticket_id: ticket_id })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data["success"]) {
+                                updateTickets();
+                                openTicketDetails(ticket_id);
+                            } else {
+                                alert("Failed to assign ticket.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+                
+                    function reopenTicket(ticket_id) {
+                        fetch("/dashboard/reopenticket", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ ticket_id: ticket_id })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data["success"]) {
+                                updateTickets();
+                                openTicketDetails(ticket_id);
+                            } else {
+                                alert("Failed to assign ticket.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+                
+                    function closeTicket(ticket_id) {
+                        fetch("/dashboard/closeticket", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ ticket_id: ticket_id })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data["success"]) {
+                                updateTickets();
+                                openTicketDetails(ticket_id);
+                            } else {
+                                alert("Failed to assign ticket.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+
+                    function giftPremium(username) {
+                        fetch("/dashboard/giftpremium", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ user_id: username })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data["success"]) {
+                                alert("GrütteCloud PLUS gifted successfully.");
+                            } else {
+                                alert("Failed to gift GrütteCloud PLUS.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    }
+                    
+                </script>
+               
+                
+            </div>
+
+
 
             <div id="databaseView" style="background-color: var(--background-tile-color); display: none; flex-direction: column; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
                 <div style="display: flex; flex-direction: row; width: 100%; height: 50%;">
@@ -554,7 +890,7 @@
                         <div id="query-failed" style="display: none; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
                             <p style="color: var(--red);">Failed to execute query.</p>
                         </div>
-                        <textarea id="query" class="login-input" autocomplete="off" placeholder="Enter SQL query" style="width: calc(100% - 40px); border-radius: 20px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 150px; resize: none;" required></textarea>
+                        <textarea id="query" class="login-input" autocomplete="off" placeholder="Enter SQL query" style="width: calc(100% - 40px); border-radius: 20px; padding-left: 20px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color); height: 100%; resize: none; flex: 1;" required></textarea>
                         <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
                             <button onclick="runQuery()" class="send-button" style="width: calc(100% - 40px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 <span class="material-symbols-rounded">play_arrow</span>
@@ -575,7 +911,7 @@
                                 <p>Get all PLUS users</p>
                             </button>
                         </div>
-                        <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 40px;">
                             <button class="send-button" onclick="document.getElementById('query').value = 'SELECT username, ai_model, ai_personality FROM users WHERE ai_model = &quot;gpt-4o&quot;;'" style="background-color: var(--box-shadow-color); color: var(--text-color); width: calc(50% - 20px); margin: 0; border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; padding-left: 10px; padding-right: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 <span class="material-symbols-rounded">temp_preferences_custom</span>
                                 <p>Get GPT-4o users</p>
@@ -907,11 +1243,13 @@
         document.getElementById("promoEmailView").style.display = "block";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "none";
+        document.getElementById("ticketView").style.display = "none";
         document.getElementById("databaseView").style.display = "none";
 
         document.getElementById("togglePromoEmailView").classList.add("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("ticketView").classList.remove("hover-color");
         document.getElementById("toggleDatabaseView").classList.remove("hover-color");
         
         document.getElementById("split-view").style.display = "flex";
@@ -921,11 +1259,13 @@
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "block";
         document.getElementById("supportView").style.display = "none";
+        document.getElementById("ticketView").style.display = "none";
         document.getElementById("databaseView").style.display = "none";
 
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.add("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("ticketView").classList.remove("hover-color");
         document.getElementById("toggleDatabaseView").classList.remove("hover-color");
 
         document.getElementById("split-view").style.display = "flex";
@@ -935,29 +1275,52 @@
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "block";
+        document.getElementById("ticketView").style.display = "none";
         document.getElementById("databaseView").style.display = "none";
 
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.add("hover-color");
+        document.getElementById("ticketView").classList.remove("hover-color");
         document.getElementById("toggleDatabaseView").classList.remove("hover-color");
 
         document.getElementById("split-view").style.display = "flex";
     }
 
-    function toggleDatabaseView() {
+    function toggleTicketView() {
         document.getElementById("promoEmailView").style.display = "none";
         document.getElementById("accountsView").style.display = "none";
         document.getElementById("supportView").style.display = "none";
+        document.getElementById("ticketView").style.display = "block";
+        document.getElementById("databaseView").style.display = "none";
+
+        document.getElementById("togglePromoEmailView").classList.remove("hover-color");
+        document.getElementById("toggleAccountsView").classList.remove("hover-color");
+        document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("ticketView").classList.add("hover-color");
+        document.getElementById("toggleDatabaseView").classList.remove("hover-color");
+
+        document.getElementById("split-view").style.display = "none";
+    }
+
+    function toggleDatabaseView() {
+        
+        document.getElementById("promoEmailView").style.display = "none";
+        document.getElementById("accountsView").style.display = "none";
+        document.getElementById("supportView").style.display = "none";
+        document.getElementById("ticketView").style.display = "none";
         document.getElementById("databaseView").style.display = "flex";
 
         document.getElementById("togglePromoEmailView").classList.remove("hover-color");
         document.getElementById("toggleAccountsView").classList.remove("hover-color");
         document.getElementById("toggleSupportView").classList.remove("hover-color");
+        document.getElementById("ticketView").classList.remove("hover-color");
         document.getElementById("toggleDatabaseView").classList.add("hover-color");
 
         document.getElementById("split-view").style.display = "none";
     }
+
+    toggleTicketView();
 
     const previewToggle = document.getElementById('preview-toggle');
     const previewContent = document.getElementById('preview-content');
@@ -977,83 +1340,6 @@
         previewToggle.innerHTML = 'Show Preview';
     }
 
-
-    function assignTicket(ticket_id) {
-        fetch("/dashboard/assignticket", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ ticket_id: ticket_id })
-        })
-        .then(response => response.json())
-        .then(data => {
-            window.location.href = "/dashboard";
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    }
-
-    function reopenTicket(ticket_id) {
-        fetch("/dashboard/reopenticket", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ ticket_id: ticket_id })
-        })
-        .then(response => response.json())
-        .then(data => {
-            window.location.href = "/dashboard";
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    }
-
-    function closeTicket(ticket_id) {
-        fetch("/dashboard/closeticket", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ ticket_id: ticket_id })
-        })
-        .then(response => response.json())
-        .then(data => {
-            window.location.href = "/dashboard";
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    }
-
-    var closedTickets = document.getElementsByClassName("closed-ticket");
-    var allTickets = document.getElementsByClassName("ticket");
-    for (let ticket of closedTickets) {
-        ticket.style.display = "none";
-    }
-
-    if (closedTickets.length == allTickets.length) {
-        document.getElementById("no-tickets").style.display = "flex";
-    }
-    if (closedTickets.length == 0) {
-        document.getElementById("toggleClosedTicketsButton").style.display = "none";
-    }
-
-    function toggleClosedTickets() {
-        console.log("{{ menu["username"] }}");
-        for (let ticket of closedTickets) {
-            if (ticket.style.display === "none") {
-                ticket.style.display = "flex";
-                document.getElementById("toggleClosedTicketsButton").innerHTML = "Hide Closed Tickets";
-            } else {
-                ticket.style.display = "none";
-                document.getElementById("toggleClosedTicketsButton").innerHTML = "Show Closed Tickets";
-            }
-        }
-    }
 
     function toggleDevView() {
         if (document.cookie.includes("developerview=true")) {
