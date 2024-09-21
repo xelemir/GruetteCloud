@@ -590,7 +590,11 @@
                             document.getElementById("ticket-username").innerHTML = data["author.username"];
                             document.getElementById("ticket-email").innerHTML = data["email"];
                             document.getElementById("ticket-created_at").innerHTML = data["created_at"];
-                            document.getElementById("ticket-assigned_to").innerHTML = data["assigned.username"];
+                            if (data["assigned.username"] == null) {
+                                document.getElementById("ticket-assigned_to").innerHTML = "Unassigned";
+                            } else {
+                                document.getElementById("ticket-assigned_to").innerHTML = data["assigned.username"];
+                            }
                             document.getElementById("ticket-message").innerHTML = data["message"];
 
                             document.getElementById("ticket-action-button-close").setAttribute("onclick", "closeTicket('" + data["id"] + "')");
