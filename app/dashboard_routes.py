@@ -111,9 +111,7 @@ def dashboard():
 
     except Exception as e:
         logging.error(e)
-    
-    support_tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at DESC")
-    
+        
     return render_template('dashboard.html', user_id=session['user_id'], menu=th.user(session), platform_message=platform_message, all_users=all_users, events=filtered_log_lines, status=status, errors=error_log_lines)
 
 @dashboard_route.route('/dashboard/iplookup', methods=['POST'])
@@ -444,7 +442,7 @@ def get_tickets():
     if not bool(user["is_admin"]):
         return abort(401)
     
-    tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at ASC")
+    tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at DESC")
     
     # stream tickets and format the created_at column
     for ticket in tickets:
