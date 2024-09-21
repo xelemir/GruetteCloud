@@ -31,6 +31,7 @@
                 transform: translateX(-50%);
             }
         }
+
         h2 {
 			color: var(--primary-color);
 			font-weight: bold;
@@ -57,6 +58,10 @@
         .grecaptcha-badge { 
             visibility: hidden !important;
         }
+
+        input:focus, textarea:focus {
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -71,7 +76,69 @@
         </div>
         {% include "components/nav-element.html" %}
     </div>
-    <h1 style="margin-top: 40px;">Impressum</h1>               
+
+    <div style="font-size: 13px; padding: 20px;">
+		<div class="spaced-tile"></div>
+        <h1 class="varLan" lan-de="Impressum">About Us</h1>
+        <p class="varLan" lan-de="GrütteCloud ist ein persönliches Programmier-Projekt von Jan Grüttefien.">GrütteCloud is a personal programming project by Jan Grüttefien.</p>
+        <p class="varLan" lan-de="Hier findest du alle Informationen über den Betreiber der Website.">Here you will find all information about the operator of the website.</p>
+
+        <h2>Jan Grüttefien</h2>
+        <p>Kapellenweg 47a</p>
+        <p>70378, Stuttgart</p>
+        <p class="varLan" lan-de="Deutschland">Germany</p>
+        <p><a href="mailto:jan@gruettecloud.com" style="color: var(--text-color); text-decoration: none;">jan@gruettecloud.com</a></p>
+        <a href="https://jan.gruettefien.com" style="color: var(--text-color);" title="Website">https://jan.gruettefien.com</a>
+        <div style="display: flex; gap: 12px; margin-top: 30px; margin-bottom: 30px;">
+            <a href="https://github.com/xelemir" style="text-decoration: none;" title="GitHub">
+                <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/github/black">
+            </a>
+            <a href="mailto:jan@gruettecloud.com" style="text-decoration: none;" title="Email">
+                <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/gmail/black">
+            </a>
+            <a href="https://www.linkedin.com/in/jan-gruettefien/" style="text-decoration: none;" title="LinkedIn">
+                <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/linkedin/black">
+            </a>
+            <a href="https://www.instagram.com/jan.gtm" style="text-decoration: none;" title="Instagram">
+                <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/instagram/black">
+            </a>
+            <a href="https://open.spotify.com/user/n0c39jatc5pksdv4rhxizx2xy" style="text-decoration: none;" title="Spotify">
+                <img class="brand-logo" height="20px" width="20px" src="https://cdn.simpleicons.org/spotify/black">
+            </a>
+            <a href="https://jan.gruettefien.com" style="text-decoration: none;" title="Personal Website">
+                <span class="material-symbols-rounded" style="font-size: 20px; text-decoration: none; color: var(--text-color);">captive_portal</span>
+            </a>
+        </div>
+
+        <h2 class="varLan" lan-de="Kontaktformular" style="margin-bottom: 0;">Contact Us</h2>
+        <form action="/support" method="POST" style="display: block;">
+            <input type="text" id="name" name="name" class="login-input" autocomplete="off" placeholder="Your name*" style="background-color: transparent; border: none; color: var(--text-color);" required>
+            <input type="hidden" id="mail" name="mail">
+            <input type="hidden" id="username" name="username">
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
+            <script>
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K', {action: 'submit'}).then(function(token) {
+                        document.getElementById('g-recaptcha-response').value = token;
+                    });
+                });
+            </script>
+            <textarea maxlength="5000" id="message" name="message" class="login-input" autocomplete="off" placeholder="Message*" style="height: 75px; background-color: transparent; border: none; color: var(--text-color); resize: none;" required></textarea>
+            <span style="display: flex; align-items: center;">
+                <input type="checkbox" id="termsofservice" name="termsofservice" style="margin-right: 10px;" required>
+                <span style="font-size: 0.8em; text-align: left;">
+                    I have read and accept the <a href="/terms" style="color: var(--text-color);">Terms of Service</a> and <a href="/privacy" style="color: var(--text-color);">Privacy Policy</a>.*<br>
+                    Fields with * are required.
+                </span>
+            </span>
+            <input type="submit" value="Send" class="send-button" style="cursor: pointer; border-radius: 30px; margin-top: 20px;">
+        </form>
+
+    </div>
+
+
+    <!--<h1 style="margin-top: 40px;">Impressum</h1>               
     <div class="main-div" style="padding: 20px; margin: auto; width: 700px; max-width: 90vw; gap: 50px;">
         <div width="300px">
             <h2 style="margin-top: 0;">Jan Grüttefien</h2>
@@ -129,7 +196,7 @@
     </div>
 
     <div id="cookie-banner"></div>
-    {% include "components/footer.html" %}
+    {% include "components/footer.html" %}-->
 </body>
 </html>
 
@@ -185,7 +252,9 @@
 <script>
     let userLanguage = navigator.language || navigator.userLanguage;
     let variableLanguageElements = document.getElementsByClassName('varLan');
+    
     if (userLanguage.startsWith('de')) {
+        console.log(variableLanguageElements.length);
         for (let i = 0; i < variableLanguageElements.length; i++) {
             variableLanguageElements[i].innerHTML = variableLanguageElements[i].getAttribute('lan-de');
         }
