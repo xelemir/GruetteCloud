@@ -5,7 +5,6 @@ import os
 import re
 import pyotp
 import requests
-import psutil
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, IconHelper, TemplateHelper
 from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip
@@ -517,31 +516,3 @@ def get_ticket_details():
     ticket[0]["created_at"] = ticket[0]["created_at"].strftime("%d.%m.%Y %H:%M:%S")
     
     return jsonify(ticket[0])
-
-@dashboard_route.route("/dashboard/getsysteminfo", methods=["POST"])
-def get_system_info():
-    if "user_id" not in session:
-        return redirect("/")
-    
-    sql = SQLHelper.SQLHelper()
-    
-    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
-    if not bool(user["is_admin"]):
-        return abort(401)
-    
-    hdd = psutil.disk_usage('/')
-
-    # in GB
-    system_info = {
-        "cpu": psutil.cpu_percent(interval=1),
-        "cpu_cores": psutil.cpu_count(logical=False),
-        "cpu_threads": psutil.cpu_count(logical=True),
-        "ram_total": psutil.virtual_memory().total / (1024 ** 3),
-        "ram_used": psutil.virtual_memory().used / (1024 ** 3),
-        "ram_free": psutil.virtual_memory().free / (1024 ** 3),
-        "hdd_total": hdd.total / (1024 ** 3),
-        "hdd_used": hdd.used / (1024 ** 3),
-        "hdd_free": hdd.free / (1024 ** 3)
-    }
-    
-    return jsonify(system_info)
