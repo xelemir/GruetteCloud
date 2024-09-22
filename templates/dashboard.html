@@ -197,10 +197,9 @@
                         <p style="padding-left: 15px;">Tickets</p>
                     </div>
                     <div class="navigation-button" id="toggleDatabaseView" onclick="toggleDatabaseView()">
-                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="Manage Users">database</span>
+                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="Database">database</span>
                         <p style="padding-left: 15px;">Database</p>
                     </div>
-                    
                 </div>
                 <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
                 <div style="text-align: left; padding-top: 10px;">
@@ -221,7 +220,31 @@
                         <p style="padding-left: 15px;">Logout</p>
                     </a>
                 </div>
+                <!--<hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px;">
+                <div style="text-align: left; padding-top: 10px;">
+                    <div style="display: flex; align-items: center; padding: 10px; padding-left: 20px;">
+                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="System Info">memory</span>
+                        <p style="padding-left: 15px;">System Info</p>
+                    </div>
+                    <div style="display: flex; align-items: center; padding: 10px; padding-left: 20px;">
+                        <span class="material-symbols-rounded" style="display: flex; align-items: center; justify-content: center;" title="System Info">memory_alt</span>
+                        <p style="padding-left: 15px;">System Info</p>
+                    </div>
+                </div>-->
             </div>
+            <!--<script>
+                function getSystemInfo () {
+                    fetch("/dashboard/getsysteminfo", {
+                        method: "POST"
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => console.error(error));
+                }
+                getSystemInfo();
+            </script>-->
 
             <div id="split-view" style="background-color: var(--background-tile-color); display: flex; flex-direction: row; width: 90%; height: 100%; padding: 20px; border-radius: 30px; overflow: hidden; flex-wrap: nowrap; text-overflow: ellipsis;">
                 <div style="width: 40%;">
@@ -374,7 +397,8 @@
                         {% endif %}
                         <hr style="border: 1px solid var(--box-shadow-color); border-radius: 5px; margin-left: 15px; margin-right: 15px; margin-top: 30px;">
                         <h2 align="center" style="margin-bottom: 20px; margin-top: 30px;">Tickets</h2>
-                        <div class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; max-height: calc(100svh - 350px);">
+                        <div id="ticketsHomeView" class="file-list" style="display: flex; flex-direction: column; width: 100%; overflow: auto; max-height: calc(100svh - 350px);" onclick="toggleTicketView()">
+
 
                         </div>
                     </div>
@@ -520,7 +544,10 @@
                                 document.getElementById("no-tickets").style.display = "flex";
                             } else {
                                 const tickets = document.getElementById("tickets");
+                                const ticketsHomeView = document.getElementById("ticketsHomeView");
                                 tickets.innerHTML = "";
+                                ticketsHomeView.innerHTML = "";
+
                                 for (ticket of data) {
                                     const ticketElement = document.createElement("div");
                                     ticketElement.classList.add("navigation-button");
@@ -538,20 +565,29 @@
                                         var ticket_status = "<span style='background-color: var(--yellow); color: var(--white-color); padding: 0 8px; border-radius: 30px;'>In Progress</span>";
                                     }
                                     ticketElement.setAttribute("onclick", "openTicketDetails('" + ticket["id"] + "')");
+                                    ticketElement.setAttribute("onmouseover", "this.children[0].children[1].style.display = 'flex';");
+                                    ticketElement.setAttribute("onmouseout", "this.children[0].children[1].style.display = 'none';");
 
                                     ticketElement.innerHTML = `
-                                        <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 15px;">
-                                            <span class="material-symbols-rounded align-align-icons-center" style="font-size: 32px;">${ticket_icon}</span>
-                                            <div>
-                                                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px;">
-                                                    <p class="text-offcutter align-align-icons-center" style="color: var(--text-color); font-size: 18px; text-decoration: none;">${ticket["name"]}</p>
-                                                    <p class="text-offcutter align-align-icons-center" style="color: var(--text-color); font-size: 12px; text-decoration: none;">${ticket_status}</p>
+                                        <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between; padding: 0 10px;">
+                                            <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 15px;">
+                                                <span class="material-symbols-rounded align-align-icons-center" style="font-size: 32px;">${ticket_icon}</span>
+                                                <div>
+                                                    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px;">
+                                                        <p class="text-offcutter align-align-icons-center" style="color: var(--text-color); font-size: 18px; text-decoration: none;">${ticket["name"]}</p>
+                                                        <p class="text-offcutter align-align-icons-center" style="color: var(--text-color); font-size: 12px; text-decoration: none;">${ticket_status}</p>
+                                                    </div>
+                                                    <p class="text-offcutter" style="color: var(--text-color); font-size: 12px; text-decoration: none;">${ticket["created_at"]} | # ${ticket["id"]}</p>
                                                 </div>
-                                                <p class="text-offcutter" style="color: var(--text-color); font-size: 12px; text-decoration: none;">${ticket["created_at"]}</p>
+                                            </div>
+                                            <!-- dialog to delete ticket -->
+                                            <div style="display: none; align-items: center; justify-content: center; gap: 10px; align-items: center; flex-direction: row;" onclick="var result = confirm('Do you really want to delete this ticket?'); if (result) { deleteTicket('${ticket["id"]}'); }">
+                                                <span class="material-symbols-rounded">delete</span>
                                             </div>
                                         </div>
                                     `;
                                     tickets.appendChild(ticketElement);
+                                    ticketsHomeView.appendChild(ticketElement.cloneNode(true));
                                 }
                             }
                                     
@@ -1284,7 +1320,6 @@
         document.getElementById("split-view").style.display = "none";
     }
 
-    toggleTicketView();
 
     const previewToggle = document.getElementById('preview-toggle');
     const previewContent = document.getElementById('preview-content');
