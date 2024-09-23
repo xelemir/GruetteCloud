@@ -444,12 +444,9 @@ def get_tickets():
     
     tickets = sql.readSQL(f"SELECT * FROM tickets ORDER BY created_at DESC")
     
-    # stream tickets and format the created_at column
     for ticket in tickets:
         ticket["created_at"] = ticket["created_at"].strftime("%d.%m.%Y %H:%M:%S")
-    
-    print(tickets)
-    
+        
     return jsonify(tickets)
 
 @dashboard_route.route("/dashboard/deleteticket", methods=["POST"])
