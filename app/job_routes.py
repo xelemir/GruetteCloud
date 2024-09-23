@@ -32,19 +32,6 @@ def run_job():
         except Exception as e:
             myai_error = e
             print(e)
-            
-    # Clear log files daily
-    log_error = False
-
-    try:
-        with open(os.path.join("/var/log/apache2", "error.log"), "w") as file:
-            file.write("")
-        with open(os.path.join("/var/log/apache2", "access.log"), "w") as file:
-            file.write("")
-            
-    except Exception as e:
-        log_error = e
-        print(e)
     
     # Send email to admin
         
