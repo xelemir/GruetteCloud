@@ -123,7 +123,8 @@ def chat(error=None):
         HTML: Rendered HTML page
     """    
     if 'user_id' not in session:
-        return redirect('/')
+        
+        return render_template('guest_views/chat.html', menu=th.user(session))
 
     user_id = str(session['user_id'])
     active_chats = []

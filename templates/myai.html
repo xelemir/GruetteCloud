@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>MyAI | GrütteChat</title>
-    <meta name="description" content="Chat with your own AI assistant. Customize your AI's personality and OpenAI LLM model. Choose between GPT-4o mini and GPT-4o. GPT-4o even supports multimodal inputs. Available personalities include Uwu Gamer Girl, a Pirate, John Backus, Lorde, Taylor Swift, Taco the otter, B1 Battle Droid, and Anakin Skywalker." />
+    <meta name="description" content="Chat with your personal, customizable AI assistant. Select your AI's personality and LLM model. Choose between GPT-4o mini and GPT-4o. GPT-4o even supports multimodal inputs. Available personalities include Uwu Gamer Girl, a Pirate, John Backus, Lorde, Taylor Swift, Taco the otter, B1 Battle Droid, and Anakin Skywalker." />
     <meta name="keywords" content="AI, Chat, Assistant, OpenAI, GPT-4o, GPT-4o mini, Multimodal, Chatbot, GrütteChat, MyAI, GrütteCloud MyAI, gruettecloud, Gamer Girl chatbot, Pirate chatbot, John Backus chatbot, Lorde chatbot, Taylor Swift chatbot, Taco chatbot, B1 Battle Droid chatbot, Anakin Skywalker chatbot" />
     <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -115,10 +115,6 @@
             word-break: break-word;
             white-space: normal; 
         }
-
-        .grecaptcha-badge { 
-            visibility: hidden !important;
-        }
     </style>
 
 </head>
@@ -219,17 +215,6 @@
                 {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
                 {% elif selected_personality == "Anakin" %}Anakin Skywalker
                 {% else %}MyAI{% endif %}" autocomplete="off" style="border-radius: 30px; font-size: 1em; padding-right: 65px; padding-left: 55px; height: 56px; max-height: 56px; background-color: transparent; margin: 0; width: 100%;">
-            
-            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
-            <script src="https://www.google.com/recaptcha/api.js?render=6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K"></script>
-            <script>
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('6LeSfDsqAAAAAF5IXrOEc7SxEfrZvgOuv-fZqm-K').then(function(token) {
-                        console.log("Got token: ");
-                        document.getElementById('g-recaptcha-response').value = token;
-                    });
-                });
-            </script>
             <button id="sendButton" action="sendButtonPressed" class="send-button" style="background-color: var(--box-shadow-color); width: 50px; height: 50px; position: absolute; right: 5px; bottom: -20px; transform: translateY(-50%); border-radius: 50%; margin: 0; padding: 5px; text-align: center; display: flex; align-items: center; justify-content: center;">
                 <span class="material-symbols-rounded" style="font-size: 40px;">arrow_upward_alt</span>
             </button>
@@ -631,7 +616,6 @@
             var formData = new FormData();
             formData.append('message', message); // Append text message
             formData.append('file', file); // Append file
-            formData.append('g-recaptcha-response', document.getElementById('g-recaptcha-response').value); // Append recaptcha token
 
 
             appendMessage({role: "assistant", content: '<div class="ticontainer"><div class="tiblock"><div class="tidot"></div><div class="tidot"></div><div class="tidot"></div></div></div>'});

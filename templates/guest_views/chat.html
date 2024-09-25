@@ -1,0 +1,445 @@
+<html>
+<head>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+
+    <title>Discover | GrütteCloud</title>
+    <meta name="description" content="Discover GrütteCloud. Your Digital Life, Simplified. GrütteCloud is a platform that offers a variety of services, such as GrütteChat, GrütteDrive, GrütteMaps, and GrütteFinance to make Your life easier.">
+    <meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/static/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
+    <style>
+        @font-face {
+            font-family: 'Montserrat VariableFont';
+            src: url('/static/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        h1 {
+            font-family: 'Montserrat VariableFont';
+			color: var(--primary-color);
+			font-weight: bold;
+            font-size: 6vh;
+        }
+
+        p {
+            color: var(--text-color);
+            font-size: 2svh;
+        }
+
+        .dynamic-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100svh;
+        }
+    
+        .box {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            height: auto;
+        }
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /*text-align: left;*/
+        }
+
+        .tablet {
+            max-height: 70vh;
+            width: auto;
+        }
+
+        .desktop-only-flex {
+            display: flex;
+        }
+
+        .mobile-only-flex {
+            display: none;
+        }
+
+        .text-box {
+            width: 70%;
+        }
+
+        table {
+            margin: 20px auto;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--background-tile-color);
+            border-radius: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--box-shadow-color);
+        }
+
+        .mobile-center {
+            justify-content: left;
+        }
+
+        .square-render {
+            height: auto;
+            width: 40vw;
+        }
+
+        .box-landingpage {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            height: auto;
+        }
+
+        .hero-image {
+            width: 100%;
+        }
+
+        .move-up-mobile {
+            margin-top: 0;
+        }
+
+        #startpage-dynamic-container {
+            gap: 0;
+        }
+    
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 4svh;
+            }
+
+            .dynamic-container {
+                flex-direction: column; /* Stack boxes on top of each other */
+                align-items: center; /* Horizontally center the stacked boxes */
+            }
+    
+            .box {
+                width: 100%;
+                max-height: 50svh;
+            }
+
+            .tablet {
+                max-width: 50vw;
+                height: auto;
+            }
+
+            .desktop-only-flex {
+                display: none;
+            }
+
+            .mobile-only-flex {
+                display: flex;
+            }
+
+            .text-box {
+                width: 80vw;
+            }
+
+            .mobile-center {
+                justify-content: center;
+            }
+
+            .square-render {
+                height: auto;
+                width: 100%;
+                max-width: 80vw;
+            }
+
+            .box-landingpage {
+                width: 100%;
+                max-height: 30svh;
+            }
+
+            .hero-image {
+                max-height: 25svh;
+                width: auto;
+                max-width: 90vw;
+            }
+
+            .move-up-mobile {
+                margin-top: -45px;
+            }
+
+            #startpage-dynamic-container {
+                gap: 20px;
+            }
+        }
+
+        .pulse {
+            -webkit-animation: pulse 1.5s infinite;
+        }
+
+        .pulse:hover {
+            -webkit-animation: none;
+        }
+
+        @-webkit-keyframes pulse {
+            0% {
+              @include transform(scale(.9));
+            }
+            70% {
+              @include transform(scale(1));
+              box-shadow: 0 0 0 50px rgba(#5a99d4, 0);
+            }
+              100% {
+              @include transform(scale(.9));
+              box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
+            }
+        }
+        
+        .dreamy-button {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .dreamy-button:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dreamy-text {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC, #FFC3A0, #FFD1FF, #B5FFFC, #8BC6EC);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+        
+        .carousel-container {
+            max-width: 100%;
+            height: 90%;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            gap: 10px;
+        }
+
+        /* Main Image */
+        .main-image {
+            width: 50%;
+            aspect-ratio: 1 / 1;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease, transform 1s ease;
+            border-radius: 50%;
+        }
+
+        /* Small side images */
+        .small-image {
+            width: 15%;
+            border-radius: 50%;
+            opacity: 0.6;
+            aspect-ratio: 1 / 1;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        /* Hover effect for side images */
+        .small-image:hover {
+            opacity: 1;
+        }
+
+        /* Fading effect for main image */
+        .fade-in {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <div id="cookie-banner"></div>
+    <div id="fullpage">
+        <div class="section" data-anchor="section1" style="max-height: 100svh;">
+            <div class="header">
+                <div style="position: absolute; top: 20px; left: 0; padding-left: 20px">
+                    <span id="darkModeToggle" class="material-symbols-rounded white-button-blue-on-hover" title="Darkmode">sunny</span>
+                </div>
+                {% include "components/nav-element.html" %}
+            </div>
+            <div class="dynamic-container">
+                <div class="box">
+                    <img class="square-render product-renders" src="https://storage.googleapis.com/gruettecloud/chat1.png" alt="GrütteChat Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Stay Connected. With GrütteChat.</h1>
+                        <p style="text-align: left; margin-bottom: 15px; font-size: 2.5svh;">Your personal messaging service.</p>
+                        <p style="text-align: left;">GrütteChat is providing you with a secure and private messaging platform. Send messages and photos to your friends and family. Your messages are securely encrypted.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section2">
+            <div class="dynamic-container">
+                <div class="box mobile-only">
+                    <img class="square-render product-renders" src="https://storage.googleapis.com/gruettecloud/myai.png" alt="MyAI Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px; cursor: text;">Meet MyAI.</h1>
+                        <p style="text-align: left; margin-bottom: 15px; font-size: 2.5svh;">Choose a personality and start chatting.</p>
+                        <p style="text-align: left; margin-bottom: 25px;">Powered by OpenAI's GPT-4o, MyAI is your personal, multimodal AI assistant. Ask questions, share images, and get answers. You can choose between a variety of personalities to chat with.</p>
+                        <div class="mobile-center" style="display: flex;">
+                            <a href="https://www.gruettecloud.com/myai" class="dreamy-button" style="border-radius: 30px; justify-content: center; align-items: center; padding: 10px 40px; display: flex; align-items: center; text-decoration: none;">
+                                <span class="material-symbols-rounded align-icons-center" style="margin-right: 8px; font-size: 1.2em;">temp_preferences_custom</span>
+                                Try MyAI
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="box desktop-only">
+                    <img class="square-render product-renders" src="https://storage.googleapis.com/gruettecloud/myai.png" alt="MyAI Render">
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section3">
+            <div class="dynamic-container">
+                <div class="box">
+                    <div class="carousel-container">
+                        <!-- Previous Image -->
+                        <img class="small-image" id="prev-image" src="https://www.gruettecloud.com/static/Pirate.jpeg">
+                    
+                        <!-- Main Image -->
+                        <img class="main-image" id="main-image" src="https://www.gruettecloud.com/static/GamerGirl.jpeg">
+                    
+                        <!-- Next Image -->
+                        <img class="small-image" id="next-image" src="https://www.gruettecloud.com/static/Backus.jpeg">                    
+                    </div>
+                    <script>
+                        let slideIndex = 0;
+                        let autoSlide; // for auto mode
+                        let images = [
+                            "https://www.gruettecloud.com/static/GamerGirl.jpeg",
+                            "https://www.gruettecloud.com/static/Pirate.jpeg",
+                            "https://www.gruettecloud.com/static/Backus.jpeg",
+                            "https://www.gruettecloud.com/static/Lorde.jpeg",
+                            "https://www.gruettecloud.com/static/taylorSwift.jpeg",
+                            "https://www.gruettecloud.com/static/Taco.jpg",
+                            "https://www.gruettecloud.com/static/BattleDroid.jpg",
+                            "https://www.gruettecloud.com/static/Anakin.jpg",
+                        ];
+
+                        // Show specific slide with smooth transition
+                        function showSlide(n) {
+                            slideIndex = (n + images.length) % images.length;
+                            const mainImage = document.getElementById('main-image');
+                            const prevImage = document.getElementById('prev-image');
+                            const nextImage = document.getElementById('next-image');
+
+                            // Apply fade-out effect
+                            mainImage.classList.remove('fade-in');
+                            prevImage.classList.remove('fade-in');
+                            nextImage.classList.remove('fade-in');
+                            setTimeout(() => {
+                                mainImage.src = images[slideIndex];
+                                prevImage.src = images[(slideIndex - 1 + images.length) % images.length];
+                                nextImage.src = images[(slideIndex + 1) % images.length];
+
+                                // Apply fade-in effect
+                                mainImage.classList.add('fade-in');
+                                prevImage.classList.add('fade-in');
+                                nextImage.classList.add('fade-in');
+                            }, 500); // Transition duration for smooth effect
+                        }
+
+                        // Move slides by n (for next/previous buttons)
+                        function plusSlides(n) {
+                            showSlide(slideIndex + n);
+                        }
+
+                        // Auto Slide function
+                        function startAutoSlide() {
+                            autoSlide = setInterval(() => {
+                                plusSlides(1);
+                            }, 3000); // 3 seconds for auto transition
+                        }
+
+                        // Initialize the carousel with the first slide
+                        showSlide(slideIndex);
+
+                        // Start auto-slide on page load
+                        startAutoSlide();
+                    </script>
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Your favorite personalities.</h1>
+                        <p style="text-align: left; margin-bottom: 15px; font-size: 2.5svh;">MyAI offers it all.</p>
+                        <p style="text-align: left; margin-bottom: 25px;">From pirates to gamer girls, from singers to actors, from robots to otters. You're sure to find a personality that you like.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" data-anchor="section4">
+            <div class="dynamic-container">
+                <div class="box mobile-only">
+                    <img class="square-render product-renders" src="https://storage.googleapis.com/gruettecloud/chat2.png" alt="GrütteChat Render">
+                </div>
+                <div class="box text" style="text-wrap: balance; display: flex; justify-content: center; align-items: center;">
+                    <div class="text-box" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 30px;">Privacy First.</h1>
+                        <p style="text-align: left; margin-bottom: 15px; font-size: 2.5svh;">Your Messages. Your Privacy.</p>
+                        <p style="text-align: left;">Send messages and even photos to anyone on GrütteChat. No need to worry about privacy. Your messages are securely encrypted.</p>
+                    </div>
+                </div>
+                <div class="box desktop-only">
+                    <img class="square-render product-renders" src="https://storage.googleapis.com/gruettecloud/chat2.png" alt="GrütteChat Render">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<!-- Include fullPage.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
+
+<script>
+    // Initialize fullPage.js
+    new fullpage('#fullpage', {
+        // Options
+        sectionsColor: ['transparent', 'var(--background-tile-color)', 'transparent', 'var(--background-tile-color)'],
+        anchors: ['section1', 'section2', 'section3', 'section4'],
+        autoScrolling: true, // Enable auto-scrolling
+        scrollBar: false, // Hide the scrollbar
+        navigation: false, // Show navigation dots
+        navigationPosition: 'right', // Position of navigation dots
+        scrollingSpeed: 700, // Scrolling speed in ms
+
+        afterLoad: function(origin, destination, direction) {
+            // Add any custom code to be executed after each section loads
+        }
+    });
+</script>
+
+
+<script src="https://www.gruettecloud.com/static/darkmode.js"></script>
+<script src="https://www.gruettecloud.com/static/cookies.js"></script>

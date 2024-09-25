@@ -40,7 +40,7 @@ def run_job():
     
     admin = sql.readSQL(f"SELECT first_name, email FROM users WHERE username = 'jan'")[0]
     
-    html = render_template("emails/report.html", myai_error=myai_error, log_error=log_error, username=admin["first_name"], job_name="Daily Data Purge and Optimization Task", date=datetime.now().strftime("%d.%m.%Y"), time=datetime.now().strftime("%H:%M:%S"))
+    html = render_template("emails/report.html", myai_error=myai_error, log_error=False, username=admin["first_name"], job_name="Daily Data Purge and Optimization Task", date=datetime.now().strftime("%d.%m.%Y"), time=datetime.now().strftime("%H:%M:%S"))
     
     mail.send_email_no_template(admin["email"], "GrütteCloud Daily Report", html)
     
