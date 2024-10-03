@@ -1,3 +1,4 @@
+import logging
 from flask import render_template, request, redirect, session, Blueprint, Flask, url_for
 import random
 import pyotp
@@ -86,6 +87,8 @@ def two_fa():
     
         user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id_2fa']}'")
         user_secret_key = user[0]["2fa_secret_key"]
+        
+        logging.error(f"2FA secret: {user_secret_key}")
         
         totp = pyotp.TOTP(user_secret_key)
 
