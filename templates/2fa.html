@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/static/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettecloud_logo.png">
     <style>
         .centered-div {
             max-width: 90vw;
@@ -25,6 +25,10 @@
 
         p {
             font-size: 0.8em;
+        }
+
+        .login-input:focus {
+            outline: none;
         }
 
         @media (min-width: 768px) {
@@ -66,23 +70,25 @@
                     <span class="material-symbols-rounded">help</span>
                 </a>
             </div>
-            <img class="resize-logo" src="https://www.gruettecloud.com/static/GrütteID.png" style="margin-bottom: 10px;">
+            <h1 class="material-symbols-rounded" style="font-size: 4em; color: var(--primary-color);">encrypted</h1>
             <h2 class="text-offcutter" style="margin-bottom: 20px;">Two-Factor Authentication</h2>
-            <p>Enter the 6-digit code from your authenticator app.</p>
+            <p>Enter the code from your authenticator app.</p>
             <form method="POST" style="flex-direction: column;"> 
                 <div id="error-message" style="display: none; margin-top: 20px;">
-                    <p style="color: var(--yellow)">{{ error }}</p>
+                    <p style="color: var(--red)">{{ error }}</p>
                 </div>
-                <div style="display: inline;">
-                    <input type="text" id="code0" maxlength="6" name="code0" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                    <input type="text" id="code1" maxlength="5" name="code1" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                    <input type="text" id="code2" maxlength="4" name="code2" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                    <input type="text" id="code3" maxlength="3" name="code3" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                    <input type="text" id="code4" maxlength="2" name="code4" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                    <input type="text" id="code5" maxlength="1" name="code5" class="login-input" autocomplete="off" style="width: 40px; margin-right: 0px; text-align:center; border-radius: 30px; background-color: transparent; border: 2px solid var(--box-shadow-color); color: var(--text-color);" required>
-                </div>
-                <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px; text-decoration: none; padding: 0;">
-                    <input type="submit" value="Login" name="login" class="settings-button" style="border-radius: 30px; margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; max-width: 100%;">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="display: inline; flex-direction: row; justify-content: center; align-items: center; margin-top: 15px; border: 2px solid var(--box-shadow-color); border-radius: 32px;">
+                        <input type="text" id="code0" maxlength="6" placeholder="-" name="code0" class="login-input" autocomplete="off" style="width: 30px; margin: 0px; text-align:center; border-radius: 30px; background-color: transparent; color: var(--text-color);" required>
+                        <input type="text" id="code1" maxlength="5" placeholder="-" name="code1" class="login-input" autocomplete="off" style="width: 30px; margin: 0px; text-align:center; border-radius: 30px; background-color: transparent; color: var(--text-color);" required>
+                        <input type="text" id="code2" maxlength="4" placeholder="-" name="code2" class="login-input" autocomplete="off" style="width: 30px; margin: 0px; text-align:center; border-radius: 30px; background-color: transparent; color: var(--text-color);" required>
+                        <input type="text" id="code3" maxlength="3" placeholder="-" name="code3" class="login-input" autocomplete="off" style="width: 30px; margin: 0px; text-align:center; border-radius: 30px; background-color: transparent; color: var(--text-color);" required>
+                        <input type="text" id="code4" maxlength="2" placeholder="-" name="code4" class="login-input" autocomplete="off" style="width: 30px; margin: 0px; text-align:center; border-radius: 30px; background-color: transparent; color: var(--text-color);" required>
+                        <input type="text" id="code5" maxlength="1" placeholder="-" name="code5" class="login-input" autocomplete="off" style="width: 30px; margin: 0px; text-align:center; border-radius: 30px; background-color: transparent; color: var(--text-color);" required>
+                    </div>
+                    <div style="flex-direction: row; display: flex; width: 100%; margin-top: 20px; text-decoration: none; padding: 0;">
+                        <input type="submit" value="Login" name="login" class="send-button" style="border-radius: 30px; margin: 0; width: 100%; display: flex; align-items: center; justify-content: center; max-width: 100%;">
+                    </div>
                 </div>
             </form>
         </div>
