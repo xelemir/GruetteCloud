@@ -307,7 +307,7 @@ def check_2fa():
         if totp.verify(entered_code):
             return render_template('check_2fa.html', success=True)
         
-        else:
-            return render_template('check_2fa.html', success=False)
+        else:            
+            return render_template('check_2fa.html', success=False, code=totp.now())
         
     return render_template('check_2fa.html')
