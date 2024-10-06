@@ -87,9 +87,7 @@ def two_fa():
     
         user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id_2fa']}'")
         user_secret_key = user[0]["2fa_secret_key"]
-        
-        logging.error(f"2FA secret: {user_secret_key}")
-        
+                
         totp = pyotp.TOTP(user_secret_key)
 
         # Validate the OTP
@@ -288,4 +286,28 @@ def verify(username):
                 error = "The code you entered is incorrect"
     
     # Render the verification page
-    return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified)
+    return render_template('verify.html', username=username, error=error, email=email, already_verified=already_verified)    
+
+
+@loginSignUp_route.route('/check_2fa', methods=['GET', 'POST'])
+def check_2fa():
+    if "user_id" not in session:
+        return redirect('/')
+
+    if request.method == "POST":
+        sql = SQLHelper.SQLHelper()
+        user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")
+        user_secret_key = user[0]["2fa_secret_key"]
+        
+        entered_code = request.form['code']
+        
+        totp = pyotp.TOTP(user_secret_key)
+
+        # Validate the OTP
+        if totp.verify(entered_code):
+            return render_template('check_2fa.html', success=True)
+        
+        else:
+            return render_template('check_2fa.html', success=False)
+        
+    return render_template('check_2fa.html')

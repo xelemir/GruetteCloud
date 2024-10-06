@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Two-factor authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Two-factor authentication</h1>
+    <p>Enter the code from your authenticator app:</p>
+    <form method="post">
+        <input type="text" name="code" />
+        <input type="submit" value="Submit" />
+    </form>
+
+    {% if success %}
+        <p style="color: green;">Success! 2FA is setup correctly.</p>
+    {% endif %}
+
+    {% if success == false %}
+        <p style="color: red;">Invalid code. Please try again.</p>
+    {% endif %}
+</body>
