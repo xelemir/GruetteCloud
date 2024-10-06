@@ -305,9 +305,9 @@ def check_2fa():
 
         # Validate the OTP
         if totp.verify(entered_code):
-            return render_template('check_2fa.html', success=True)
+            return render_template('check_2fa.html', success=True, menu=th.user(session))
         
         else:            
-            return render_template('check_2fa.html', success=False, code=totp.now())
+            return render_template('check_2fa.html', success=False, menu=th.user(session))
         
-    return render_template('check_2fa.html')
+    return render_template('check_2fa.html', menu=th.user(session))
