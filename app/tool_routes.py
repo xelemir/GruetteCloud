@@ -506,6 +506,27 @@ def nelly_save_story():
     except Exception as e:
         print(e)
         return jsonify({"message": "Error processing request"}), 400
+    
+# Advent Calendar Routes
+
+@tool_route.route("/adventskalender", methods=["GET"])
+def adventskalender():
+    if "user_id" not in session:
+        return redirect("/")
+    elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3":
+        sql = SQLHelper.SQLHelper()
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+        if not is_admin:
+            return abort(401)
+    
+    sql = SQLHelper.SQLHelper()
+    return render_template("advent_calendar.html", menu=th.user(session))
+    
+    
+    
+    
+    
+    
 # Endpoints for Flutter App
 
 import jwt

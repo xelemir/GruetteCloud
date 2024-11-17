@@ -16,7 +16,6 @@ from tool_routes import tool_route
 from expense_tracker_routes import expense_tracker_route
 from job_routes import job_route
 
-
 app = Flask("GrütteCloud")
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.secret_key = secret_key
@@ -35,13 +34,13 @@ eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
 
 
-"""@app.before_request
+#@app.before_request
 def maintenanceMode():
-    if "username" not in session: return render_template('errors/maintenance.html'), 503
+    if "user_id" not in session: return render_template('errors/maintenance.html'), 503
     sql = SQLHelper.SQLHelper()
-    is_admin = bool(sql.readSQL(f"SELECT * FROM gruttechat_users WHERE username = '{session['username']}'")[0]["is_admin"])
+    is_admin = bool(sql.readSQL(f"SELECT * FROM gruttechat_users WHERE id = '{session['user_id']}'")[0]["is_admin"])
     if is_admin: return
-    else: return render_template('errors/maintenance.html'), 503"""
+    else: return render_template('errors/maintenance.html'), 503
 
 @app.route("/")
 def index():

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Nele's Adventskalender</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="icon" href="/nelly_media/icon.png">
+    <style>
+        * {
+            font-family: 'DM Serif Text', serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #001f2e; /* Deep night sky blue */
+            padding: 0;
+            margin: 0;
+            font-size: 1em;
+            color: #f2f2f2; /* Light festive off-white */
+            min-height: 100vh;
+        }
+
+        #error {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #9c2f28;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        #app-container {
+            max-width: 900px;
+            width: 90%;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            background-color: #03302d; /* Dark evergreen */
+            border-radius: 20px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+            border: 3px solid #d4a017; /* Festive gold border */
+        }
+
+        #app-bar {
+            font-size: 2.2em;
+            color: #d4a017; /* Gold text */
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Light shadow for effect */
+        }
+
+        .calendar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .calendar-day {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .door {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff; /* White text */
+            background-color: #9c2f28; /* Red background */
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            position: absolute;
+            transition: transform 0.6s ease;
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        .hidden-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #03302d; /* Dark evergreen */
+            color: #f2f2f2;
+            font-weight: bold;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.9s ease 0.2s;
+            z-index: 0;
+        }
+
+        /* When the door is opened, show the content */
+        .calendar-day.opened .door {
+            transform: rotateY(-100deg); /* Open the door */
+        }
+
+        .calendar-day.opened .hidden-content {
+            opacity: 1; /* Make content visible after the door opens */
+            z-index: 2; /* Bring content on top after the door opens */
+        }
+
+        @media (max-width: 600px) {
+            .calendar-day, .door, .hidden-content {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        .desktop {
+            display: flex;
+        }
+
+        .mobile {
+            display: none;
+        }
+
+        @media (max-width: 1000px) {
+            .desktop {
+                display: none;
+            }
+
+            .mobile {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="error" style="display: none;" class="animate__animated animate__fadeInDown">
+        <p id="error-text" style="color: white; text-align: center;"></p>
+    </div>
+    <div id="app-container">
+        <div id="app-bar">Nele's Adventskalender</div>
+        <div class="desktop calendar ">
+            <!-- Customized individual days with unique content -->
+            <span style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+                <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                    <div class="calendar-day" id="day-1" onclick="openDay(1)">
+                        <div class="door">
+                            <span class="day-number">1</span>
+                        </div>
+                        <div class="hidden-content" id="day-1-content">
+                            <img loading="lazy" src="/open/advent_calendar_1.jpg?action=preview" alt="Gift for Day 1" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+
+                    <div class="calendar-day" id="day-5" onclick="openDay(5)">
+                        <div class="door">
+                            <span class="day-number">5</span>
+                        </div>
+                        <div class="hidden-content" id="day-5-content">
+                            <img loading="lazy" src="/open/advent_calendar_5.jpg?action=preview" alt="Gift for Day 5" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+                </span>
+            
+                <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                    <span style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap: 20px;">
+                        <div class="calendar-day" id="day-23" onclick="openDay(23)">
+                            <div class="door">
+                                <span class="day-number">23</span>
+                            </div>
+                            <div class="hidden-content" id="day-23-content">
+                                <img loading="lazy" src="/open/advent_calendar_23.jpg?action=preview" alt="Gift for Day 23" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+                    
+                        <div class="calendar-day" id="day-3" onclick="openDay(3)">
+                            <div class="door">
+                                <span class="day-number">3</span>
+                            </div>
+                            <div class="hidden-content" id="day-3-content">
+                                <img loading="lazy" src="/open/advent_calendar_3.jpg?action=preview" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+                    </span>
+                    
+                
+                    <div class="calendar-day" id="day-6" onclick="openDay(6)" style="width: 220px;">
+                        <div class="door">
+                            <span class="day-number">6</span>
+                        </div>
+                        <div class="hidden-content" id="day-6-content">
+                            <img loading="lazy" src="/open/advent_calendar_6.jpg?action=preview" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+                </span>
+            
+                <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                    <div class="calendar-day" id="day-4" onclick="openDay(4)" style="height: 220px;">
+                        <div class="door">
+                            <span class="day-number">4</span>
+                        </div>
+                        <div class="hidden-content" id="day-4-content">
+                            <img loading="lazy" src="/open/advent_calendar_4.jpg?action=preview" alt="Gift for Day 4" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+                </span>
+            
+                <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                    <div class="calendar-day" id="day-7" onclick="openDay(7)">
+                        <div class="door">
+                            <span class="day-number">7</span>
+                        </div>
+                        <div class="hidden-content" id="day-7-content">
+                            <img loading="lazy" src="/open/advent_calendar_7.jpg?action=preview" alt="Gift for Day 7" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+                
+                    <div class="calendar-day" id="day-16" onclick="openDay(16)">
+                        <div class="door">
+                            <span class="day-number">16</span>
+                        </div>
+                        <div class="hidden-content" id="day-16-content">
+                            <img loading="lazy" src="/open/advent_calendar_16.jpg?action=preview" alt="Gift for Day 16" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+                </span>
+
+                <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                    <div class="calendar-day" id="day-11" onclick="openDay(11)">
+                        <div class="door">
+                            <span class="day-number">11</span>
+                        </div>
+                        <div class="hidden-content" id="day-11-content">
+                            <img loading="lazy" src="/open/advent_calendar_11.jpg?action=preview" alt="Gift for Day 11" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+
+                    <div class="calendar-day" id="day-18" onclick="openDay(18)">
+                        <div class="door">
+                            <span class="day-number">18</span>
+                        </div>
+                        <div class="hidden-content" id="day-18-content">
+                            <img loading="lazy" src="/open/advent_calendar_18.jpg?action=preview" alt="Gift for Day 18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+                </span>
+
+                <div class="calendar-day" id="day-22" onclick="openDay(22)" style="height: 220px;">
+                    <div class="door">
+                        <span class="day-number">22</span>
+                    </div>
+                    <div class="hidden-content" id="day-22-content">
+                        <img loading="lazy" src="/open/advent_calendar_22.jpg?action=preview" alt="Gift for Day 22" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                    </div>
+                </div>
+            </span>
+            
+            <span style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+                <span style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap: 20px;">
+                    <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+
+                        <div class="calendar-day" id="day-24" onclick="openDay(24)" style="width: 220px; height: 220px;">
+                            <div class="door">
+                                <span class="day-number">24</span>
+                            </div>
+                            <div class="hidden-content" id="day-24-content">
+                                <img loading="lazy" src="/open/advent_calendar_24.jpg?action=preview" alt="Gift for Day 24" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+
+                        <span style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap: 20px;">
+                            <div class="calendar-day" id="day-13" onclick="openDay(13)">
+                                <div class="door">
+                                    <span class="day-number">13</span>
+                                </div>
+                                <div class="hidden-content" id="day-13-content">
+                                    <img loading="lazy" src="/open/advent_calendar_13.jpg?action=preview" alt="Gift for Day 13" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                </div>
+                            </div>
+                        
+                            <div class="calendar-day" id="day-14" onclick="openDay(14)">
+                                <div class="door">
+                                    <span class="day-number">14</span>
+                                </div>
+                                <div class="hidden-content" id="day-14-content">
+                                    <img loading="lazy" src="/open/advent_calendar_14.jpg?action=preview" alt="Gift for Day 14" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                </div>
+                            </div>
+                        </span>
+                    </span>
+
+                    <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                        <div class="calendar-day" id="day-9" onclick="openDay(9)" style="height: 220px;">
+                            <div class="door">
+                                <span class="day-number">9</span>
+                            </div>
+                            <div class="hidden-content" id="day-9-content">
+                                <img loading="lazy" src="/open/advent_calendar_9.jpg?action=preview" alt="Gift for Day 9" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+
+                        <div class="calendar-day" id="day-20" onclick="openDay(20)">
+                            <div class="door">
+                                <span class="day-number">20</span>
+                            </div>
+                            <div class="hidden-content" id="day-20-content">
+                                <img loading="lazy" src="/open/advent_calendar_20.jpg?action=preview" alt="Gift for Day 20" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+                    </span>
+                
+                <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                    <div class="calendar-day" id="day-10" onclick="openDay(10)" style="width: 220px;">
+                        <div class="door">
+                            <span class="day-number">10</span>
+                        </div>
+                        <div class="hidden-content" id="day-10-content">
+                            <img loading="lazy" src="/open/advent_calendar_10.jpg?action=preview" alt="Gift for Day 10" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+
+                    <span style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap: 20px;">
+                        <div class="calendar-day" id="day-12" onclick="openDay(12)" style="height: 220px;">
+                            <div class="door">
+                                <span class="day-number">12</span>
+                            </div>
+                            <div class="hidden-content" id="day-12-content">
+                                <img loading="lazy" src="/open/advent_calendar_12.jpg?action=preview" alt="Gift for Day 12" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+
+                    <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                        <div class="calendar-day" id="day-17" onclick="openDay(17)">
+                            <div class="door">
+                                <span class="day-number">17</span>
+                            </div>
+                            <div class="hidden-content" id="day-17-content">
+                                <img loading="lazy" src="/open/advent_calendar_17.jpg?action=preview" alt="Gift for Day 17" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+                        <div class="calendar-day" id="day-2" onclick="openDay(2)">
+                            <div class="door">
+                                <span class="day-number">2</span>
+                            </div>
+                            <div class="hidden-content" id="day-2-content">
+                                <img loading="lazy" src="/open/advent_calendar_2.jpg?action=preview" alt="Gift for Day 2" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+                    </span>
+                </span>
+            </span>
+
+            <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                <span style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap: 20px;">
+                    <div class="calendar-day" id="day-19" onclick="openDay(19)" style="height: 220px;">
+                        <div class="door">
+                            <span class="day-number">19</span>
+                        </div>
+                        <div class="hidden-content" id="day-19-content">
+                            <img loading="lazy" src="/open/advent_calendar_19.jpg?action=preview" alt="Gift for Day 19" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        </div>
+                    </div>
+
+                    <span style="display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center; gap: 20px;">
+                        <div class="calendar-day" id="day-8" onclick="openDay(8)">
+                            <div class="door">
+                                <span class="day-number">8</span>
+                            </div>
+                            <div class="hidden-content" id="day-8-content">
+                                <img loading="lazy" src="/open/advent_calendar_8.jpg?action=preview" alt="Gift for Day 8" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+
+                        <div class="calendar-day" id="day-15" onclick="openDay(15)">
+                            <div class="door">
+                                <span class="day-number">15</span>
+                            </div>
+                            <div class="hidden-content" id="day-15-content">
+                                <img loading="lazy" src="/open/advent_calendar_15.jpg?action=preview" alt="Gift for Day 15" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            </div>
+                        </div>
+                    </span>
+                </span>
+            
+                <div class="calendar-day" id="day-21" onclick="openDay(21)" style="width: 220px;">
+                    <div class="door">
+                        <span class="day-number">21</span>
+                    </div>
+                    <div class="hidden-content" id="day-21-content">
+                        <img loading="lazy" src="/open/advent_calendar_21.jpg?action=preview" alt="Gift for Day 21" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                    </div>
+                </div>            
+            </span>
+        </div>
+
+
+
+
+        <div class="mobile calendar ">
+            <!-- Customized individual days with unique content -->
+            <div class="calendar-day" id="day-1-mobile" onclick="openDay(1)">
+                <div class="door">
+                    <span class="day-number">1</span>
+                </div>
+                <div class="hidden-content" id="day-1-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_1.jpg?action=preview" alt="Gift for Day 1" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-5-mobile" onclick="openDay(5)">
+                <div class="door">
+                    <span class="day-number">5</span>
+                </div>
+                <div class="hidden-content" id="day-5-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_5.jpg?action=preview" alt="Gift for Day 5" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+    
+            <div class="calendar-day" id="day-23-mobile" onclick="openDay(23)">
+                <div class="door">
+                    <span class="day-number">23</span>
+                </div>
+                <div class="hidden-content" id="day-23-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_23.jpg?action=preview" alt="Gift for Day 23" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+                    
+            <div class="calendar-day" id="day-3-mobile" onclick="openDay(3)">
+                <div class="door">
+                    <span class="day-number">3</span>
+                </div>
+                <div class="hidden-content" id="day-3-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_3.jpg?action=preview" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+                    
+                
+            <div class="calendar-day" id="day-6-mobile" onclick="openDay(6)">
+                <div class="door">
+                    <span class="day-number">6</span>
+                </div>
+                <div class="hidden-content" id="day-6-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_6.jpg?action=preview" alt="Gift for Day 6" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+    
+            <div class="calendar-day" id="day-4-mobile" onclick="openDay(4)">
+                <div class="door">
+                    <span class="day-number">4</span>
+                </div>
+                <div class="hidden-content" id="day-4-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_4.jpg?action=preview" alt="Gift for Day 4" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+    
+            <div class="calendar-day" id="day-7-mobile" onclick="openDay(7)">
+                <div class="door">
+                    <span class="day-number">7</span>
+                </div>
+                <div class="hidden-content" id="day-7-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_7.jpg?action=preview" alt="Gift for Day 7" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+                
+            <div class="calendar-day" id="day-16-mobile" onclick="openDay(16)">
+                <div class="door">
+                    <span class="day-number">16</span>
+                </div>
+                <div class="hidden-content" id="day-16-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_16.jpg?action=preview" alt="Gift for Day 16" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-11-mobile" onclick="openDay(11)">
+                <div class="door">
+                    <span class="day-number">11</span>
+                </div>
+                <div class="hidden-content" id="day-11-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_11.jpg?action=preview" alt="Gift for Day 11" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-18-mobile" onclick="openDay(18)">
+                <div class="door">
+                    <span class="day-number">18</span>
+                </div>
+                <div class="hidden-content" id="day-18-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_18.jpg?action=preview" alt="Gift for Day 18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-22-mobile" onclick="openDay(22)">
+                <div class="door">
+                    <span class="day-number">22</span>
+                </div>
+                <div class="hidden-content" id="day-22-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_22.jpg?action=preview" alt="Gift for Day 22" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+            
+            <div class="calendar-day" id="day-24-mobile" onclick="openDay(24)">
+                <div class="door">
+                    <span class="day-number">24</span>
+                </div>
+                <div class="hidden-content" id="day-24-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_24.jpg?action=preview" alt="Gift for Day 24" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-13-mobile" onclick="openDay(13)">
+                <div class="door">
+                    <span class="day-number">13</span>
+                </div>
+                <div class="hidden-content" id="day-13-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_13.jpg?action=preview" alt="Gift for Day 13" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+                        
+            <div class="calendar-day" id="day-14-mobile" onclick="openDay(14)">
+                <div class="door">
+                    <span class="day-number">14</span>
+                </div>
+                <div class="hidden-content" id="day-14-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_14.jpg?action=preview" alt="Gift for Day 14" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-9-mobile" onclick="openDay(9)">
+                <div class="door">
+                    <span class="day-number">9</span>
+                </div>
+                <div class="hidden-content" id="day-9-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_9.jpg?action=preview" alt="Gift for Day 9" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-20-mobile" onclick="openDay(20)">
+                <div class="door">
+                    <span class="day-number">20</span>
+                </div>
+                <div class="hidden-content" id="day-20-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_20.jpg?action=preview" alt="Gift for Day 20" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+                
+            <div class="calendar-day" id="day-10-mobile" onclick="openDay(10)">
+                <div class="door">
+                    <span class="day-number">10</span>
+                </div>
+                <div class="hidden-content" id="day-10-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_10.jpg?action=preview" alt="Gift for Day 10" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-12-mobile" onclick="openDay(12)">
+                <div class="door">
+                    <span class="day-number">12</span>
+                </div>
+                <div class="hidden-content" id="day-12-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_12.jpg?action=preview" alt="Gift for Day 12" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-17-mobile" onclick="openDay(17)">
+                <div class="door">
+                    <span class="day-number">17</span>
+                </div>
+                <div class="hidden-content" id="day-17-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_17.jpg?action=preview" alt="Gift for Day 17" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+            <div class="calendar-day" id="day-2-mobile" onclick="openDay(2)">
+                <div class="door">
+                    <span class="day-number">2</span>
+                </div>
+                <div class="hidden-content" id="day-2-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_2.jpg?action=preview" alt="Gift for Day 2" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-19-mobile" onclick="openDay(19)">
+                <div class="door">
+                    <span class="day-number">19</span>
+                </div>
+                <div class="hidden-content" id="day-19-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_19.jpg?action=preview" alt="Gift for Day 19" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-8-mobile" onclick="openDay(8)">
+                <div class="door">
+                    <span class="day-number">8</span>
+                </div>
+                <div class="hidden-content" id="day-8-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_8.jpg?action=preview" alt="Gift for Day 8" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+
+            <div class="calendar-day" id="day-15-mobile" onclick="openDay(15)">
+                <div class="door">
+                    <span class="day-number">15</span>
+                </div>
+                <div class="hidden-content" id="day-15-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_15.jpg?action=preview" alt="Gift for Day 15" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>
+            
+            <div class="calendar-day" id="day-21-mobile" onclick="openDay(21)">
+                <div class="door">
+                    <span class="day-number">21</span>
+                </div>
+                <div class="hidden-content" id="day-21-content-mobile">
+                    <img loading="lazy" src="/open/advent_calendar_21.jpg?action=preview" alt="Gift for Day 21" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <script>
+        function showError(message) {
+            window.scrollTo(0, 0);
+            $('#error-text').text(message);
+            $('#error').removeClass('animate__fadeOutUp');
+            $('#error').addClass('animate__fadeInDown');
+            $('#error').show();
+            setTimeout(() => {
+                $('#error').addClass('animate__fadeOutUp');
+                setTimeout(() => {
+                    $('#error').hide();
+                }, 1000);
+            }, 3000);
+        }
+
+        function openDay(day) {
+            const today = new Date();
+            const currentDay = today.getDate();
+            if (day > currentDay) {
+                showError('Dieses Türchen kannst Du noch nicht öffnen!');
+                return;
+            }
+
+
+
+            const dayElement = document.getElementById('day-' + day);
+            const contentElement = document.getElementById('day-' + day + '-content');
+            const dayElementMobile = document.getElementById('day-' + day + '-mobile');
+            const contentElementMobile = document.getElementById('day-' + day + '-content-mobile');
+            const dayNumberElement = dayElement.querySelector('.day-number');
+            const dayNumberElementMobile = dayElementMobile.querySelector('.day-number');
+            if (!dayElement.classList.contains('opened')) {
+                dayElement.classList.add('opened');
+                dayElementMobile.classList.add('opened');
+                contentElement.style.opacity = 1;
+                contentElementMobile.style.opacity = 1;
+                // time in milliseconds to wait before showing the content
+                setTimeout(() => {
+                    dayNumberElement.style.display = 'none';
+                    dayNumberElementMobile.style.display = 'none';
+                }, 250);
+            }
+        }
+
+        // on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const currentDay = today.getDate();
+            // open all doors where day is less than to current day without animation by hiding the door
+            for (let i = 1; i < currentDay; i++) {
+                const dayElement = document.getElementById('day-' + i);
+                const contentElement = document.getElementById('day-' + i + '-content');
+                const dayElementMobile = document.getElementById('day-' + i + '-mobile');
+                const contentElementMobile = document.getElementById('day-' + i + '-content-mobile');
+                const dayNumberElement = dayElement.querySelector('.day-number');
+                const dayNumberElementMobile = dayElementMobile.querySelector('.day-number');
+                const doorElement = dayElement.querySelector('.door');
+                const doorElementMobile = dayElementMobile.querySelector('.door');
+                dayElement.classList.add('opened');
+                dayElementMobile.classList.add('opened');
+                contentElement.style.transition = 'none';
+                contentElementMobile.style.transition = 'none';
+                dayNumberElement.style.display = 'none';
+                dayNumberElementMobile.style.display = 'none';
+                doorElement.style.display = 'none';
+                doorElementMobile.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

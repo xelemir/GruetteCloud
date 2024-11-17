@@ -12,4 +12,3 @@ flask_socketio
 eventlet
 flask_cors
 tgtg
-psutil
