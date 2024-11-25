@@ -754,7 +754,8 @@
     </script>
 
     <div class="desktop-only">
-        <div class="default-view" style="width: 900px; max-width: 90vw; text-align: center; display: flex; flex-direction: row; align-items: center; justify-content: center; min-height: calc(100svh - 50px); gap: 20px;">
+        <div class="default-view" style="width: 900px; max-width: 90vw; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 50px); gap: 20px;">
+            <span style="display: flex; width: 100%; gap: 20px;">
             <img class="hide-until-loaded" src="/nelly_media/neleUndJan.jpg" style="display: none; width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
             <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;"></div>
             <div style="background-color: #fff0f6; width: 50%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;">
@@ -770,6 +771,16 @@
                 <p class="blur-until-loaded" id="together-big-desktop" style="font-size: 5.5em; color: #ff8fa3; filter: blur(8px);"></p>
                 <p class="blur-until-loaded" id="together-small-desktop" style="font-size: 2em; color: #000000; font-weight: bold; filter: blur(8px);"></p>
             </div>
+            </span>
+            
+            {% if showAdventCalendar %}
+                <a href="/adventskalender" style="width: 100%; background-color: #fff0f6; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; color: #000000; text-decoration: none;">
+                    <p style="font-size: 1.2em; color: #000000; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        Adventskalender
+                        <span class="material-symbols-rounded align-icons-center" style="font-size: 1.5em; color: #ff8fa3; display: flex; align-items: center; justify-content: center;">arrow_forward</span>
+                    </p>
+                </a>
+            {% endif %}
         </div>
         <div class="default-view">
             <div style="display: flex; position: absolute; bottom: 0px; margin-bottom: 10px; left: 0; width: 100%; justify-content: center; align-items: center; padding: 1.5vh;">
@@ -1041,6 +1052,15 @@
                 <p class="blur-until-loaded" id="together-big" style="font-size: 2.5em; color: #ff8fa3;"></p>
                 <p class="blur-until-loaded" id="together-small" style="font-size: 1.2em; color: #000000; font-weight: bold;"></p>
             </div>
+
+            {% if showAdventCalendar %}
+                <a href="/adventskalender" style="width: 100%; background-color: #fff0f6; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; color: #000000; text-decoration: none; margin-top: 20px;">
+                    <p style="font-size: 1.2em; color: #000000; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        Adventskalender
+                        <span class="material-symbols-rounded align-icons-center" style="font-size: 1.5em; color: #ff8fa3; display: flex; align-items: center; justify-content: center;">arrow_forward</span>
+                    </p>
+                </a>
+            {% endif %}
 
             <script>
                 var date1 = new Date("2024-08-09");
