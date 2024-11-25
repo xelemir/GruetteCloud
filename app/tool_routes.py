@@ -508,7 +508,6 @@ def nelly_save_story():
         return jsonify({"message": "Error processing request"}), 400
     
 # Advent Calendar Routes
-
 @tool_route.route("/adventskalender", methods=["GET"])
 def adventskalender():
     if "user_id" not in session:
@@ -521,7 +520,18 @@ def adventskalender():
     
     sql = SQLHelper.SQLHelper()
     return render_template("advent_calendar.html", menu=th.user(session))
+
+@tool_route.route("/candlelight", methods=["GET"])
+def candlelight():
+    if "user_id" not in session:
+        return redirect("/")
+    elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3":
+        sql = SQLHelper.SQLHelper()
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+        if not is_admin:
+            return abort(401)
     
+    return render_template("bridgerton_render.html")
     
     
     

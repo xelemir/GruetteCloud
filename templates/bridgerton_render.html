@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <title>Bridgerton Candlelight Konzert</title>
+  <style>
+    body {
+      font-family: "DM Serif Text", serif;
+      background-color: #f3ebe2; /* sanfter cremefarbener Hintergrund */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: #ffffff;
+      width: 400px;
+      padding: 20px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      text-align: center;
+      border: 2px solid #d4c1ba; /* helles Beige für den Rand */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+    }
+
+    .banner-image {
+      min-width: 440px;
+      margin-top: -20px;
+    }
+
+    .card img {
+      width: 80%; /* passt die Bannergröße an */
+      border-radius: 10px;
+      margin-bottom: 15px; /* Abstand zum nächsten Element */
+    }
+
+    .header {
+      font-size: 1.3em;
+      color: #7f5f5b; /* gedecktes Dunkelrosa für den Titel */
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-size: 1em;
+      color: #b2938d; /* gedämpftes Pastellrosa für den Untertitel */
+      margin-bottom: 20px;
+    }
+
+    .qr-code-container {
+      padding: 0px;
+      border: 2px dashed #e2cdc6; /* leichtes Rosa für den Rahmen */
+      border-radius: 10px;
+      display: inline-block;
+      background-color: #fefaf7; /* sanftes Cremeweiß */
+    }
+
+    .qr-code {
+      width: 160px;
+      height: 160px;
+      background-image: url('/open/candlelight_qr_code.png?action=preview'); /* Hier den QR-Code als Bild einfügen */
+      background-size: cover;
+      background-position: center;
+      margin: 0px;
+      border-radius: 10px;
+    }
+
+    .description {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #8d6f68; /* gedecktes Rosa-Braun für die Beschreibung */
+      font-style: italic;
+    }
+
+    .material-symbols-rounded {
+      font-family: "Material Symbols Rounded", sans-serif;
+      color: #7f5f5b; /* gedämpftes Pastellrosa */
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="banner-image" style="border-radius: 13px 13px 0 0;" src="/open/bridgerton_banner.png?action=preview" alt="Candlelight Konzert Logo">
+    <div class="header">Candlelight: Best of Bridgerton on Strings</div>
+    <div class="subtitle">Ein Abend voller Kerzenschein und Musik</div>
+    <div style="display: flex; justify-content: space-between; gap: 20px; padding: 0;">
+      
+
+      <div class="description" style="display: flex; justify-content: space-evenly; align-items: start; gap: 0px; flex-direction: column; height: 164px; margin: 0;">
+        <span style="display: flex; jsonify-content: center; align-items: center; gap: 10px; padding: 0; margin: 0;">
+          <span class="material-symbols-rounded align-icons-center" style="padding: 0; margin: 0;">location_on</span>
+          <p style="padding: 0; margin: 0;">Musikhalle Ludwigsburg</p>
+        </span>
+        <span style="display: flex; jsonify-content: center; align-items: center; gap: 10px; padding: 0; margin: 0;">
+          <span class="material-symbols-rounded align-icons-center" style="padding: 0; margin: 0;">today</span>
+          <p style="padding: 0; margin: 0;">Samstag, 18. Januar 2025</p>
+        </span>
+        <span style="display: flex; jsonify-content: center; align-items: center; gap: 10px; padding: 0; margin: 0;">
+          <span class="material-symbols-rounded align-icons-center" style="padding: 0; margin: 0;">schedule</span>
+          <p style="padding: 0; margin: 0;">20:30 Uhr</p>
+        </span>
+        <span style="display: flex; jsonify-content: center; align-items: center; gap: 10px; padding: 0; margin: 0;">
+          <span class="material-symbols-rounded align-icons-center" style="padding: 0; margin: 0;">group</span>
+          <p style="padding: 0; margin: 0;">Nele & Jan</p>
+        </span>
+      </div>
+
+      <div class="qr-code-container" style="margin: 0;">
+        <div class="qr-code"></div>
+      </div>
+    </div>
+
+    <div class="description" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+      <p>Von Jan für Nele</p>
+      <span class="material-symbols-rounded align-icons-center">favorite</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -33,7 +33,7 @@ app.register_blueprint(job_route)
 eh = EncryptionHelper.EncryptionHelper()
 th = TemplateHelper.TemplateHelper()
 
-
+    
 #@app.before_request
 def maintenanceMode():
     if "user_id" not in session: return render_template('errors/maintenance.html'), 503
