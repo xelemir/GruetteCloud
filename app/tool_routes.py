@@ -521,7 +521,7 @@ def adventskalender():
     sql = SQLHelper.SQLHelper()
     return render_template("advent_calendar.html", menu=th.user(session))
 
-@tool_route.route("/candlelight", methods=["GET"])
+#@tool_route.route("/candlelight", methods=["GET"])
 def candlelight():
     if "user_id" not in session:
         return redirect("/")
