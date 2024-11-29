@@ -9,7 +9,6 @@
   <style>
     body {
       font-family: "DM Serif Text", serif;
-      background-color: #f3ebe2; /* sanfter cremefarbener Hintergrund */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -18,7 +17,7 @@
     }
 
     .card {
-      background-color: #ffffff;
+      background-color: #fdf9f4;;
       width: 400px;
       padding: 20px;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -92,7 +91,9 @@
     <div class="header">Candlelight: Best of Bridgerton on Strings</div>
     <div class="subtitle">Ein Abend voller Kerzenschein und Musik</div>
     <div style="display: flex; justify-content: space-between; gap: 20px; padding: 0;">
-      
+      <div class="qr-code-container" style="margin: 0;">
+        <div class="qr-code"></div>
+      </div>
 
       <div class="description" style="display: flex; justify-content: space-evenly; align-items: start; gap: 0px; flex-direction: column; height: 164px; margin: 0;">
         <span style="display: flex; jsonify-content: center; align-items: center; gap: 10px; padding: 0; margin: 0;">
@@ -113,15 +114,17 @@
         </span>
       </div>
 
-      <div class="qr-code-container" style="margin: 0;">
-        <div class="qr-code"></div>
-      </div>
+      
     </div>
 
-    <div class="description" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-      <p>Von Jan für Nele</p>
-      <span class="material-symbols-rounded align-icons-center">favorite</span>
+    <div class="description" style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 0; margin: 0; margin-top: 20px;">
+      <p style="margin: 0; padding: 0; font-size: 1.2em;">
+        Mit 
+        <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em; vertical-align: middle; margin: 0 3px;">favorite</span>
+        für Nele von Jan
+      </p>
     </div>
+    
   </div>
 </body>
 </html>

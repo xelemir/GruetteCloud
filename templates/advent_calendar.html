@@ -970,7 +970,13 @@
 
         function openDay(day) {
             const today = new Date();
-            const currentDay = today.getDate();
+            var currentDay = today.getDate();
+            if (today.getMonth() != 11) {
+                showError('Erst ab dem 1. Dezember kannst Du die Türchen öffnen!');
+                return;
+            }
+
+
             if (day > currentDay) {
                 showError('Dieses Türchen kannst Du noch nicht öffnen!');
                 return;
@@ -1000,8 +1006,12 @@
         // on page load
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date();
-            const currentDay = today.getDate();
-            // open all doors where day is less than to current day without animation by hiding the door
+            var currentDay = today.getDate();
+            if (today.getMonth() != 11) {
+                currentDay = 0;
+            }
+
+	    // open all doors where day is less than to current day without animation by hiding the door
             for (let i = 1; i < currentDay; i++) {
                 const dayElement = document.getElementById('day-' + i);
                 const contentElement = document.getElementById('day-' + i + '-content');
