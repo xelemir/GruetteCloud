@@ -132,6 +132,7 @@
                 {% elif selected_personality == "Taco" %}https://www.gruettecloud.com/static/Taco.jpg
                 {% elif selected_personality == "BattleDroid" %}https://www.gruettecloud.com/static/BattleDroid.jpg
                 {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
+                {% elif selected_personality == "Hertrampf" %}/profile_picture/ai.png
                 {% else %}/profile_picture/ai.png{% endif %}
             " class="centered-content" style="display: flex; align-items: center; color: var(--text-color); text-decoration: none;">
             <h1 style="display: flex; align-items: center;">
@@ -144,6 +145,7 @@
                     {% elif selected_personality == "Taco" %}https://www.gruettecloud.com/static/Taco.jpg
                     {% elif selected_personality == "BattleDroid" %}https://www.gruettecloud.com/static/BattleDroid.jpg
                     {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
+                    {% elif selected_personality == "Hertrampf" %}/profile_picture/ai.png
                     {% else %}/profile_picture/ai.png{% endif %}
                 " style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55vw;">
@@ -155,6 +157,7 @@
                     {% elif selected_personality == "Taco" %}Taco the otter
                     {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
                     {% elif selected_personality == "Anakin" %}Anakin Skywalker
+                    {% elif selected_personality == "Hertrampf" %}Prof. Ulrich Hertrampf
                     {% else %}MyAI{% endif %}
                 </span>
             </h1>
@@ -244,6 +247,7 @@
                 {% elif selected_personality == "Taco" %}Taco the otter
                 {% elif selected_personality == "Anakin" %}Anakin Skywalker
                 {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
+                {% elif selected_personality == "Hertrampf" %}Prof. Ulrich Hertrampf
                 {% endif %}
             </option>
             {% endif %}
@@ -271,6 +275,9 @@
             {% endif %}
             {% if selected_personality != 'BattleDroid'%}
                 <option value="/change_ai_personality/BattleDroid">B1 Battle Droid</option>
+            {% endif %}
+            {% if selected_personality != 'Hertrampf'%}
+                <option value="/change_ai_personality/Hertrampf">Prof. Ulrich Hertrampf</option>
             {% endif %}
         </select>
 
