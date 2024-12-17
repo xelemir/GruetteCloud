@@ -193,6 +193,7 @@
                             {% elif selected_personality == "Taco" %}https://www.gruettecloud.com/static/Taco.jpg
                             {% elif selected_personality == "BattleDroid" %}https://www.gruettecloud.com/static/BattleDroid.jpg
                             {% elif selected_personality == "Anakin" %}https://www.gruettecloud.com/static/Anakin.jpg
+                            {% elif selected_personality == "Hertrampf" %}https://www.f05.uni-stuttgart.de/informatik/img/personen/UlrichHertrampf-freigestellt.jpg?__scale=w:220,h:220,cx:413,cy:175,cw:1017,ch:1017
                             {% else %}/profile_picture/ai.png{% endif %}
                         " style="height: 40px; width: 40px; border-radius: 50%; margin-left: 10px; margin-right: 10px;">
                         <span id="ai-chat-indicator" style="margin-left: -20px; margin-top: -30px; background-color: var(--red); border-radius: 50%; width 20px; height: 20px; font-size: 0.6em; display: flex; align-items: center; justify-content: center; color: var(--white-color); padding: 3px;">&nbsp;1&nbsp;</span>
@@ -205,10 +206,11 @@
                             {% elif selected_personality == "Taco" %}Taco the otter
                             {% elif selected_personality == "BattleDroid" %}B1 Battle Droid
                             {% elif selected_personality == "Anakin" %}Anakin Skywalker
+                            {% elif selected_personality == "Hertrampf" %}Ulrich Hertrampf
                             {% else %}MyAI{% endif %}
                         </span>
                         <!--<span class="material-symbols-rounded dreamy-text" style="margin-left: 10px; align-self: center;">temp_preferences_custom</span>-->
-                        <a title="MyAI" style="text-decoration: none; color: white;"><span class="material-symbols-rounded dreamy-text" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">temp_preferences_custom</span></a>
+                        <a title="MyAI" style="text-decoration: none; color: white;"><span class="material-symbols-rounded dreamy-text" style="margin-right: 10px; display: flex; align-items: center; justify-content: center;">auto_awesome</span></a>
                     </button>
                 </a>
             </div>
@@ -348,6 +350,7 @@
             "https://www.gruettecloud.com/static/BattleDroid.jpg",
             "https://www.gruettecloud.com/static/Anakin.jpg",
             "https://www.gruettecloud.com/static/GamerGirl.jpeg",
+            "https://www.f05.uni-stuttgart.de/informatik/img/personen/UlrichHertrampf-freigestellt.jpg?__scale=w:220,h:220,cx:413,cy:175,cw:1017,ch:1017",
         ];
     
         const aiNames = [
@@ -360,6 +363,7 @@
             "B1 Battle Droid",
             "Anakin Skywalker",
             "Uwu Gamer Girl",
+            "Ulrich Hertrampf",
         ];
     
         let currentIndex = 0;
