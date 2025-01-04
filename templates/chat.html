@@ -85,12 +85,12 @@
 
                 // ![link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\!\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
-                    return `<img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;">`;// onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';">`;
+                    return `<img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';">`;
                 });
                 
                 // [link](url) -> <a href="url"><img src="url"></a>
                 content = content.replace(/\[(.*?)\]\((.*?)\)/g, function(match, p1, p2) {
-                    return `<img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;">`;// onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';">`;
+                    return `<img src="${p2}" style="margin: 0; border-radius: 10px; width: 100%; max-width: 500px;" onerror="this.onerror=null; this.src='https://www.gruettecloud.com/static/icons/folder-error.svg';">`;
                 });
                 
 
