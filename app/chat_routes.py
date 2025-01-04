@@ -6,7 +6,7 @@ import logging
 import requests
 from werkzeug.utils import secure_filename
 
-from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper, openai_https#, OpenAIWrapper 
+from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper, openai_https, decorators#, OpenAIWrapper 
 from config import templates_path, gruettedrive_path, recaptcha_secret_key
 
 chat_route = Blueprint("Chat", "Chat", template_folder=templates_path)
@@ -131,6 +131,7 @@ def delete_message(message_id):
     return redirect(f"/chat/{get_message[0]['recipient_id']}")
 
 @chat_route.route("/chat/<recipient_id>", methods=["GET", "POST"])
+@decorators.limit_content_length(15 * 1024 * 1024)  # Limit to 15 MB
 def chat_with(recipient_id):
     """ Route to chat with a user
 
@@ -178,6 +179,8 @@ def chat_with(recipient_id):
         if 'file' in request.files:
 
             file = request.files['file']
+            if file.mimetype.split("/")[0] != "image":
+                return jsonify({"error": "Invalid file type"}), 400
             
             file_extension = file.filename.split(".")[-1]
             
@@ -241,6 +244,7 @@ def chat_file(filename):
             return abort(404)
         
 @chat_route.route("/myai", methods=["POST", "GET"])
+@decorators.limit_content_length(1 * 1024 * 1024)  # Limit to 15 MB
 def myai():
     ai = openai_https.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()

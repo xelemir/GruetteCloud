@@ -575,7 +575,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    errorFs("Error", "An error occurred while sending the message. Please try again.");
+                    errorFs("Error", error);
                 }
             });
         }
