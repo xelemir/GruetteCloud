@@ -6,6 +6,7 @@ import time
 from flask import abort, jsonify, render_template, request, redirect, send_file, session, Blueprint, url_for
 from flask_socketio import SocketIO
 import requests
+from bs4 import BeautifulSoup
 import urllib3
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
@@ -537,6 +538,96 @@ def candlelight():
     
     return render_template("bridgerton_render.html")
     
+@tool_route.route("/instagram", methods=["GET", "POST"])
+def instagram():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    elif str(session["user_id"]) != "1" and str(session["user_id"]) != "3":
+        sql = SQLHelper.SQLHelper()
+        is_admin = bool(sql.readSQL(f"SELECT is_admin FROM users WHERE id = '{session['user_id']}'")[0]["is_admin"])
+        if not is_admin:
+            return abort(401)
+    
+    def scan_file(file_path, list_to_append):
+        with open(file_path) as html_file:
+            soup = BeautifulSoup(html_file, 'html.parser')
+            
+            username_span = soup.find('span', string="gruettecloud")["class"]
+            username_class = " ".join(username_span)
+            
+            for span in soup.find_all('span', class_=username_class):
+                list_to_append.append(span.text)
+    
+    if request.method == "POST":
+        if request.form.get("delete") == "true":
+            instagram_dir = os.path.join(gruettedrive_path, str(session["user_id"]), "instagram")
+            if os.path.exists(instagram_dir):
+                for file in os.listdir(instagram_dir):
+                    os.remove(os.path.join(instagram_dir, file))
+                os.rmdir(instagram_dir)
+            return redirect("/instagram")
+        
+        elif request.form.get("analyze") == "true":
+            followers = []
+            following = []
+            
+            instagram_dir = os.path.join(gruettedrive_path, str(session["user_id"]), "instagram")
+            if not os.path.exists(instagram_dir):
+                return jsonify({"success": False}), 400
+            
+            if os.path.exists(os.path.join(instagram_dir, "followers.html")):
+                scan_file(os.path.join(instagram_dir, "followers.html"), followers)
+            if os.path.exists(os.path.join(instagram_dir, "following.html")):
+                scan_file(os.path.join(instagram_dir, "following.html"), following)
+                
+            not_following_back = set(following) - set(followers)
+            not_following_back = list(not_following_back)
+            
+            im_not_following_back = set(followers) - set(following)
+            im_not_following_back = list(im_not_following_back)
+            
+            return jsonify({"success": True, "followers": followers, "following": following, "not_following_back": not_following_back, "im_not_following_back": im_not_following_back})
+            
+        
+        if "followers" in request.files:
+            file = request.files["followers"]
+            file.save(os.path.join(gruettedrive_path, str(session["user_id"]), "instagram", "followers.html"))
+            return jsonify({"success": True})
+        elif "following" in request.files:
+            file = request.files["following"]
+            file.save(os.path.join(gruettedrive_path, str(session["user_id"]), "instagram", "following.html"))
+            return jsonify({"success": True})
+        
+        return jsonify({"success": False}), 400
+        
+    
+    if request.method == "GET":
+        
+        instagram_dir = os.path.join(gruettedrive_path, str(session["user_id"]), "instagram")
+        if not os.path.exists(instagram_dir):
+            os.makedirs(instagram_dir)        
+        
+        files = {
+            "followers": {
+                "filename": None,
+                "date": None
+            },
+            "following": {
+                "filename": None,
+                "date": None
+            }
+        }
+        
+        if os.path.exists(os.path.join(instagram_dir, "followers.html")):
+            files["followers"]["filename"] = "followers.html"
+            files["followers"]["date"] = time.ctime(os.path.getmtime(os.path.join(instagram_dir, "followers.html")))
+        
+        if os.path.exists(os.path.join(instagram_dir, "following.html")):
+            files["following"]["filename"] = "following.html"
+            files["following"]["date"] = time.ctime(os.path.getmtime(os.path.join(instagram_dir, "following.html")))
+        
+        return render_template("instagram.html", files=files, menu=th.user(session))
     
     
     
