@@ -86,7 +86,10 @@
 
                 <span id="followers-completed" style="width: 100%; display: {% if files["followers"]["filename"] != None %}flex;{% else %}none;{% endif%} text-align: center; justify-content: start; align-items: center; gap: 10px;">
                     <span class="material-symbols-rounded" style="font-size: 1.5em; color: var(--green);">check_circle</span>
-                    followers.html
+                    <span style="display: flex; justify-content: center; align-items: start; gap: 0px; flex-direction: column;">
+                        <span>followers.html</span>
+                        <span style="font-size: 0.6em; color: var(--text-color);">{% if files["followers"]["date"] != None %}{{ files["followers"]["date"] }}{% else %}Just now{% endif %}</span>
+                    </span>
                 </span>
                 
                 <span id="followers-file" style="display: {% if files["followers"]["filename"] != None %}none;{% else %}flex;{% endif%} width: 100%; justify-content: start; align-items: center; gap: 10px;">
@@ -99,7 +102,10 @@
 
                 <span id="following-completed" style="width: 100%; display: {% if files["following"]["filename"] != None %}flex;{% else %}none;{% endif%} text-align: center; justify-content: start; align-items: center; gap: 10px;">
                     <span class="material-symbols-rounded" style="font-size: 1.5em; color: var(--green);">check_circle</span>
-                    following.html
+                    <span style="display: flex; justify-content: center; align-items: start; gap: 0px; flex-direction: column;">
+                        <span>following.html</span>
+                        <span style="font-size: 0.6em; color: var(--text-color);">{% if files["following"]["date"] != None %}{{ files["following"]["date"] }}{% else %}Just now{% endif %}</span>
+                    </span>
                 </span>
 
                 <span id="following-file" style="display: {% if files["following"]["filename"] != None %}none;{% else %}flex;{% endif%} width: 100%; justify-content: start; align-items: center; gap: 10px;">
@@ -126,7 +132,8 @@
             <span id="results" style"scroll-behavior: smooth; display: flex; justify-content: center; align-items: center; flex-direction: column;"></span>
             <div id="start-and-hint-area" style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-direction: column; height: 100%;">
                 <span id="start-and-hint-area-start" style="display: {% if files["followers"]["filename"] == None and files["following"]["filename"] == None %}none;{% else %}flex;{% endif%} justify-content: center; align-items: center; gap: 20px; flex-direction: column;">
-                    <span class="material-symbols-rounded" style="font-size: 2em; background-color: var(--primary-color); color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%; padding: 10px; cursor: pointer;" onclick="analyzeData();">play_arrow</span>
+                    <span class="material-symbols-rounded animate__animated animate__pulse animate__infinite
+                    " style="font-size: 2em; background-color: var(--primary-color); color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%; padding: 10px; cursor: pointer;" onclick="analyzeData();">play_arrow</span>
                     <h2>Start analysis</h2>
                 </span>
                 <p id="start-and-hint-area-upload" style="display: {% if files["followers"]["filename"] == None and files["following"]["filename"] == None %}flex;{% else %}none;{% endif%} justify-content: center; align-items: center; gap: 20px; flex-direction: column;">
@@ -205,7 +212,7 @@
                 document.getElementById("start-and-hint-area-upload").style.display = "none";
                 document.getElementById("start-and-hint-area").style.display = "none";
 
-                
+
                 
                 for (var i = 0; i < data["not_following_back"].length; i++) {
                     var notFollowingBack = data["not_following_back"][i];

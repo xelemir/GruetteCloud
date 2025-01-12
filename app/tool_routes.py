@@ -619,13 +619,15 @@ def instagram():
             }
         }
         
+        
         if os.path.exists(os.path.join(instagram_dir, "followers.html")):
             files["followers"]["filename"] = "followers.html"
-            files["followers"]["date"] = time.ctime(os.path.getmtime(os.path.join(instagram_dir, "followers.html")))
+            files["followers"]["date"] = datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(instagram_dir, "followers.html"))).strftime("%d.%m.%Y %H:%M")
         
         if os.path.exists(os.path.join(instagram_dir, "following.html")):
             files["following"]["filename"] = "following.html"
-            files["following"]["date"] = time.ctime(os.path.getmtime(os.path.join(instagram_dir, "following.html")))
+            files["following"]["date"] = datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(instagram_dir, "following.html"))).strftime("%d.%m.%Y %H:%M")
+            
         
         return render_template("instagram.html", files=files, menu=th.user(session))
     
