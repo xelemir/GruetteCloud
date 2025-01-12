@@ -550,7 +550,7 @@ def instagram():
             return abort(401)
     
     def scan_file(file_path, list_to_append):
-        with open(file_path) as html_file:
+        with open(file_path, 'r', encoding='utf-8') as html_file:
             soup = BeautifulSoup(html_file, 'html.parser')
             
             username_span = soup.find('span', string="gruettecloud")["class"]
