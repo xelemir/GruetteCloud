@@ -55,7 +55,6 @@ class OpenAIWrapper:
         copy_old_message = None
         # Check if user has an image to analyze
         if url is not None and has_premium:
-            copy_old_message = conversation_log[-1]["content"]
             conversation_log[-1]["content"] = [
                 {"type": "text", "text": str(conversation_log[-1]["content"])},
                 {
@@ -89,8 +88,6 @@ class OpenAIWrapper:
 
             # Extract the response from the assistant
             assistant_message = data['choices'][0]['message']['content']
-            if url is not None:
-                conversation_log[-1]["content"] = copy_old_message
             conversation_log.append({"role": "assistant", "content": assistant_message})
             
         except Exception as e:
