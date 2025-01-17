@@ -37,7 +37,7 @@ class MailHelper:
 
             # Create a multi-part email message
             email_message = MIMEMultipart()
-            email_message['From'] = self.sender_email
+            email_message['From'] = f'GrütteCloud <{self.sender_email}>'
             email_message['To'] = recipient_email
             email_message['Subject'] = subject
 
