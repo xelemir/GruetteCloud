@@ -1,13 +1,14 @@
 import logging
-from flask import abort, render_template, request, redirect, session, Blueprint, send_file, jsonify
+from flask import abort, json, render_template, request, redirect, session, Blueprint, send_file, jsonify
 from PIL import Image, ImageDraw, ImageOps
 import os
 import re
 import pyotp
+from pywebpush import webpush, WebPushException
 import requests
 
 from pythonHelper import EncryptionHelper, SQLHelper, MailHelper, IconHelper, TemplateHelper
-from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip
+from config import templates_path, admin_users, gruettedrive_path, logfiles_path, local_ip, vapid_private_key, aqsense_auth_key
     
 
 dashboard_route = Blueprint("Dashboard", "Dashboard", template_folder=templates_path)
@@ -516,3 +517,72 @@ def get_ticket_details():
     ticket[0]["created_at"] = ticket[0]["created_at"].strftime("%d.%m.%Y %H:%M:%S")
     
     return jsonify(ticket[0])
+
+@dashboard_route.route("/AQSense", methods=["GET"])
+def AQSense():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+    
+    return render_template("AQSense.html")
+
+@dashboard_route.route("/subscribe", methods=["POST"])
+def subscribe():
+    if "user_id" not in session:
+        return abort(401)
+    
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+
+    subscription_info = request.json["subscription"]
+    sql.writeSQL(f"INSERT INTO push_subscriptions (endpoint, p256dh, auth, user_id) VALUES ('{subscription_info['endpoint']}', '{subscription_info['keys']['p256dh']}', '{subscription_info['keys']['auth']}', {session['user_id']})")
+    
+    return jsonify({"message": "Subscribed successfully!"}), 201
+
+@dashboard_route.route("/unsubscribe", methods=["POST"])
+def unsubscribe():
+    if "user_id" not in session:
+        return abort(401)
+    
+    sql = SQLHelper.SQLHelper()
+    user = sql.readSQL(f"SELECT * FROM users WHERE id = '{session['user_id']}'")[0]
+    if not bool(user["is_admin"]):
+        return abort(401)
+
+    endpoint = request.json["endpoint"]
+    sql.writeSQL(f"DELETE FROM push_subscriptions WHERE endpoint = '{endpoint}'")
+    
+    return jsonify({"message": "Unsubscribed successfully!"}), 
+
+@dashboard_route.route("/sendpush", methods=["POST"])
+def send_push():
+    if "authenticity_key" not in request.json or request.json["authenticity_key"] != aqsense_auth_key:
+        return abort(401)
+    
+    sql = SQLHelper.SQLHelper()
+    subscription = sql.readSQL(f"SELECT * FROM push_subscriptions")
+    
+    for sub in subscription:
+        try:
+            webpush(
+                subscription_info={
+                    "endpoint": sub["endpoint"],
+                    "keys": {
+                        "p256dh": sub["p256dh"],
+                        "auth": sub["auth"]
+                    }
+                },
+                data=json.dumps({"title": f"{request.json['title']}", "message": f"{request.json['message']}"}),
+                vapid_private_key=vapid_private_key,
+                vapid_claims={"sub": "mailto:info@gruettecloud.com"},
+            )
+        except WebPushException as ex:
+            print("Error sending notification:", ex)                                                                             
+    
+    return jsonify({"message": "Push sent successfully!"}), 200

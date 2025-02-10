@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>AQSense</title>
+    <link rel="icon" href="https://www.gruettecloud.com/static/AQSense.png" type="image/png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/static//aqsense.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #22222a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100svh;
+        }
+
+        .blue-button {
+            font-family: 'Nunito', sans-serif;
+            background-color: #4e4ad9;
+            cursor: pointer;
+            border-radius: 15px;
+            display: flex;
+            padding: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .blue-button:hover {
+            background-color: #3c39b3;
+        }
+
+        .interval-button {
+            background-color: transparent;
+            color: #c7c7c7;
+            padding: 5px 0;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 40px;
+            transition: background-color 0.5s ease;
+        }
+
+        .desktop-only {
+            display: none;
+        }
+
+        .mobile-only {
+            display: flex;
+        }
+
+        @media(min-width: 768px) {
+            .desktop-only {
+                display: flex;
+            }
+
+            .mobile-only {
+                display: none;
+            }
+        }
+
+        input[type="datetime-local"]::-webkit-inner-spin-button,
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="datetime-local"]:focus {
+            outline: none;
+        }
+
+        .invisible-date {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none; /* Prevent user interaction */
+          }
+    </style>
+</head>
+<body>
+    <span style="text-decoration: none; position: absolute; top: 20px; left: 20px; color: #c7c7c7; display: flex; align-items: center; gap: 5px;">
+        <span class="material-symbols-rounded">public</span>
+        <span>Public</span>
+    </span>
+
+    
+    <h1 style="color: #fff; text-align: center; margin-bottom: -5px; max-width: 90vw; font-size: 1.7em;">Welcome to AQSense</h1>
+    <p style="color: #c7c7c7; text-align: center; font-size: 12px; max-width: 70vw;">If you're on the local network, access real-time air quality data below.</p>
+
+    <a id="local-link" href="http://raspi:1337" class="blue-button" style="display: flex; text-decoration: none; color: #fff; padding: 10px 30px; border-radius: 10px;">
+        <span class="material-symbols-rounded">bolt</span>
+        <span>Access AQSense</span>
+    </a>
+    <span id="activate-notifications" class="blue-button" style="display: none; text-decoration: none; color: #fff; padding: 10px 30px; border-radius: 10px;">
+        <span class="material-symbols-rounded">notifications</span>
+        <span>Activate Notifications</span>
+    </span>
+</body>
+</html>
+
+<script>
+
+// ✅ Function to register the service worker
+async function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+        console.log("Service Workers are not supported in this browser.");
+        return null;
+    }
+
+    try {
+        const registration = await navigator.serviceWorker.register('/static/aqsense_sw.js');
+        console.log("✅ Service Worker registered with scope:", registration.scope);
+        return registration;
+    } catch (error) {
+        console.error("❌ Service Worker registration failed:", error);
+        return null;
+    }
+}
+
+// ✅ Function to check subscription status
+async function checkSubscriptionStatus() {
+    if (!('serviceWorker' in navigator)) {
+        console.log("Service Workers are not supported in this browser.");
+        return false;
+    }
+
+    try {
+        console.log("Ensuring service worker is registered...");
+        
+        // Ensure service worker is registered
+        let registration = await navigator.serviceWorker.getRegistration();
+        if (!registration) {
+            console.log("No existing service worker found. Registering now...");
+            registration = await registerServiceWorker();
+        }
+
+        if (!registration) {
+            console.log("Service Worker registration failed.");
+            return false;
+        }
+
+        console.log("✅ Service worker is registered:", registration);
+
+        // Ensure pushManager is available
+        if (!registration.pushManager) {
+            console.log("❌ PushManager is not supported.");
+            return false;
+        }
+
+        // Get the current push subscription
+        const subscription = await registration.pushManager.getSubscription();
+        console.log("Checking subscription status...");
+
+        if (subscription) {
+            console.log("✅ Subscription is active:", subscription);
+            return subscription; // Return the actual subscription object
+        } else {
+            console.log("❌ No active subscription found.");
+            return false; // No subscription
+        }
+    } catch (error) {
+        console.error("❌ Error checking subscription status:", error);
+        return false;
+    }
+}
+
+// ✅ Function to subscribe the user to push notifications
+async function subscribeToPush() {
+    if (!window.matchMedia('(display-mode: standalone)').matches) return;
+
+    if (!('serviceWorker' in navigator)) return;
+
+    try {
+        // Ensure the service worker is registered
+        let registration = await navigator.serviceWorker.getRegistration();
+        if (!registration) {
+            console.log("No existing service worker found. Registering now...");
+            registration = await registerServiceWorker();
+        }
+
+        if (!registration) {
+            console.log("❌ Service Worker registration failed.");
+            return;
+        }
+
+        console.log("✅ Service worker is ready:", registration);
+
+        // Request notification permission
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+            console.log("❌ User denied notification permission.");
+            return;
+        }
+
+        // Convert VAPID public key to Uint8Array
+        const applicationServerKey = urlBase64ToUint8Array("BKsNFyWQJuAnkNC6A1_4iyd9NOW811a0Qy41w2pise0pYarIkphZVNOtuF7okYCVld9oZpYGnC0U5mqUHH0NJjg");
+
+        // Subscribe to push notifications
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey
+        });
+
+        console.log("✅ Subscribed to push:", subscription);
+
+        // Send subscription info to the backend
+        await fetch("/subscribe", {
+            method: "POST",
+            body: JSON.stringify({ subscription }),
+            headers: { "Content-Type": "application/json" }
+        });
+
+    } catch (error) {
+        console.error("❌ Error subscribing to push notifications:", error);
+    }
+}
+
+// ✅ Function to unsubscribe from push notifications
+async function unsubscribeFromPush() {
+    if (!('serviceWorker' in navigator)) return;
+
+    try {
+        console.log("Unsubscribing from push notifications...");
+
+        // Get service worker registration
+        const registration = await navigator.serviceWorker.ready;
+
+        // Get current subscription
+        const subscription = await registration.pushManager.getSubscription();
+        if (!subscription) {
+            console.log("❌ No active subscription found.");
+            return;
+        }
+
+        // Unsubscribe
+        const success = await subscription.unsubscribe();
+        if (success) {
+            console.log("✅ Successfully unsubscribed from push notifications.");
+
+            // Notify backend to remove the subscription
+            await fetch("/unsubscribe", {
+                method: "POST",
+                body: JSON.stringify({ endpoint: subscription.endpoint }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            console.log("✅ Unsubscription info sent to backend.");
+        } else {
+            console.log("❌ Failed to unsubscribe.");
+        }
+    } catch (error) {
+        console.error("❌ Error unsubscribing from push:", error);
+    }
+}
+
+// ✅ Helper function to convert VAPID key
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    return new Uint8Array([...rawData].map(char => char.charCodeAt(0)));
+}
+
+var subscription_status = false;
+
+// ✅ Check subscription status on page load
+document.addEventListener("DOMContentLoaded", async () => {
+    const subscription = await checkSubscriptionStatus();
+    if (subscription) {
+        console.log("🎉 User is already subscribed!");
+        subscription_status = true;
+
+    } else {
+        console.log("🚀 User is not subscribed, prompting to subscribe...");
+        subscription_status = false;
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            document.getElementById("local-link").style.display = "none";
+            document.getElementById("activate-notifications").style.display = "flex";
+            document.getElementById("activate-notifications").addEventListener("click", subscribeToPush);
+        }
+
+    }
+});
+</script>
