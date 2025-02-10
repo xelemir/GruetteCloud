@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
         console.log("🚀 User is not subscribed, prompting to subscribe...");
         subscription_status = false;
-        if (!window.matchMedia('(display-mode: standalone)').matches) {
+        if (window.matchMedia('(display-mode: standalone)').matches) {
             document.getElementById("local-link").style.display = "none";
             document.getElementById("activate-notifications").style.display = "flex";
             document.getElementById("activate-notifications").addEventListener("click", subscribeToPush);
