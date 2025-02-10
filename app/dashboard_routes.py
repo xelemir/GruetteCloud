@@ -578,7 +578,7 @@ def send_push():
                         "auth": sub["auth"]
                     }
                 },
-                data=json.dumps({"title": f"{request.json['title']}", "message": f"{request.json['message']}"}),
+                data=json.dumps({"title": f"{request.json['title']}", "body": f"{request.json['message']}"}),
                 vapid_private_key=vapid_private_key,
                 vapid_claims={"sub": "mailto:info@gruettecloud.com"},
             )
