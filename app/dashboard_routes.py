@@ -565,6 +565,8 @@ def send_push():
     if "authenticity_key" not in request.json or request.json["authenticity_key"] != aqsense_auth_key:
         return abort(401)
     
+    return jsonify({"message": "Push sent successfully!"}), 200
+    
     sql = SQLHelper.SQLHelper()
     subscription = sql.readSQL(f"SELECT * FROM push_subscriptions")
     

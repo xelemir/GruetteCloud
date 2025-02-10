@@ -230,7 +230,12 @@ async function subscribeToPush() {
             method: "POST",
             body: JSON.stringify({ subscription }),
             headers: { "Content-Type": "application/json" }
-        });
+        }.then(response => {
+            console.log("✅ Subscription info sent to backend.");
+            subscription_status = true;
+            document.getElementById("activate-notifications").style.display = "none";
+            document.getElementById("local-link").style.display = "flex";
+        }));
 
     } catch (error) {
         console.error("❌ Error subscribing to push notifications:", error);
@@ -264,7 +269,12 @@ async function unsubscribeFromPush() {
                 method: "POST",
                 body: JSON.stringify({ endpoint: subscription.endpoint }),
                 headers: { "Content-Type": "application/json" }
-            });
+            }.then(response => {
+                console.log("✅ Unsubscription info sent to backend.");
+                subscription_status = false;
+                document.getElementById("activate-notifications").style.display = "flex";
+                document.getElementById("local-link").style.display = "none";
+            }));
 
             console.log("✅ Unsubscription info sent to backend.");
         } else {
