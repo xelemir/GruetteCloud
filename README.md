@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
-    <img width=600px src="https://www.gruettecloud.com/static/renders/new/products.png" alt="GrütteCloud Render">
+    <img width=600px src="https://jan.gruettefien.com/GruetteCloud.png" alt="GrütteCloud">
   </a>
 </p>
 <br>
@@ -26,7 +26,6 @@ Learn more at <a href="https://www.gruettecloud.com/">www.gruettecloud.com</a>
 - [About](#about)
 - [ToDo](#todo)
 - [Authors](#authors)
-- [Screenshots](#screenshots)
 
 ## 🧐 About <a name = "about"></a>
 
@@ -44,25 +43,3 @@ GrütteCloud is a versatile web application featuring an array of services. Expl
 ## ✍️ Authors <a name = "authors"></a>
 
 - [@jan](https://github.com/xelemir) - Development and design
-
-## 🎉 Screenshots <a name = "screenshots"></a>
-<p align="center">
-  <img width=800px src="https://www.gruettecloud.com/static/renders/light/mobileAndDesktop.png" alt="GrütteCloud" style="padding:30px;">
-  <hr>
-</p>
-<p align="center">
-  <img width=200px src="https://www.gruettecloud.com/static/renders/light/chat4.png" alt="GrütteChat" style="padding:30px;">
-  <img width=200px src="https://www.gruettecloud.com/static/renders/light/ai1.png" alt="GrütteChat" style="padding:30px;">
-  <img width=200px src="https://www.gruettecloud.com/static/renders/light/id1.png" alt="GrütteID" style="padding:30px;">
-  <br><br>Chat view, MyAi with pirate personality, GrütteID settings (from left to right)</b><br><br>
-  <hr>
-</p>
-<p align="center">
-  <img width=800px src="https://www.gruettecloud.com/static/renders/light/drive1.png" alt="GrütteDrive" style="padding:30px;">
-  <br><b>GrütteDrive</b><br><br>
-  <hr>
-</p>
-<p align="center">
-  <img width=400px src="https://www.gruettecloud.com/static/renders/light/chat3.png" alt="GrütteChat" style="padding:30px;">
-  <br><b>GrütteChat</b><br><br>
-</p>
