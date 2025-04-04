@@ -6,7 +6,7 @@
     <link rel="icon" href="https://www.gruettecloud.com/static/AQSense.png" type="image/png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="/static//aqsense.webmanifest">
+    <link rel="manifest" href="/static/aqsense.webmanifest">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -230,12 +230,12 @@ async function subscribeToPush() {
             method: "POST",
             body: JSON.stringify({ subscription }),
             headers: { "Content-Type": "application/json" }
-        }.then(response => {
+        }).then(response => {
             console.log("✅ Subscription info sent to backend.");
             subscription_status = true;
             document.getElementById("activate-notifications").style.display = "none";
             document.getElementById("local-link").style.display = "flex";
-        }));
+        });
 
     } catch (error) {
         console.error("❌ Error subscribing to push notifications:", error);
@@ -269,12 +269,12 @@ async function unsubscribeFromPush() {
                 method: "POST",
                 body: JSON.stringify({ endpoint: subscription.endpoint }),
                 headers: { "Content-Type": "application/json" }
-            }.then(response => {
+            }).then(response => {
                 console.log("✅ Unsubscription info sent to backend.");
                 subscription_status = false;
                 document.getElementById("activate-notifications").style.display = "flex";
                 document.getElementById("local-link").style.display = "none";
-            }));
+            });
 
             console.log("✅ Unsubscription info sent to backend.");
         } else {
