@@ -241,7 +241,7 @@ def chat(error=None):
 
 
 
-@app.route("/static-gruette-styles.css", methods=["GET"])
+@app.route("/new-styles", methods=["GET"])
 def static_css():
     return send_from_directory("static", "gruette-styles.css")
 
