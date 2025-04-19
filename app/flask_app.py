@@ -239,12 +239,6 @@ def chat(error=None):
 
 
 
-
-
-@app.route("/new-styles", methods=["GET"])
-def static_css():
-    return send_from_directory("static", "gruette-styles.css")
-
 @app.route("/test", methods=["GET", "POST"])
 def test():
     return render_template('content-components.html', user=th.user(session), chat=[])
