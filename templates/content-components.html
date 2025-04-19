@@ -1,0 +1,266 @@
+{% extends "base-template.html" %}
+
+{% block title %}Content Components | GrütteCloud{% endblock %}
+
+{% block content %}
+<h1 style="font-size: 1.75rem; font-weight: 500; margin-bottom: 1.5rem;">GrütteCloud UI Components</h1>
+
+<!-- Cards Section -->
+<section class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">Cards</h2>
+    
+    <!-- Basic Card -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title">Basic Card</h3>
+            <button class="btn btn-icon">
+                <span class="material-symbols-rounded">more_horiz</span>
+            </button>
+        </div>
+        <div class="card-body">
+            <p>This is a basic card component that can be used for various content sections.</p>
+        </div>
+    </div>
+    
+    <!-- Content Card with Items -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title">Content Card with Items</h3>
+        </div>
+        <div>
+            <div class="tile">
+                <div class="tile-content">
+                    <div class="avatar tile-icon" style="background: linear-gradient(135deg, #0071e3, #76b9ed); display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-rounded" style="color: white;">cloud</span>
+                    </div>
+                    <div class="tile-details">
+                        <h3 class="tile-title">Item Title</h3>
+                        <p class="tile-subtitle">Item description or subtitle content</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tile">
+                <div class="tile-content">
+                    <div class="avatar tile-icon">
+                        <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="Item 2">
+                    </div>
+                    <div class="tile-details">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <h3 class="tile-title">Special Item</h3>
+                            <span class="badge badge-light">New</span>
+                        </div>
+                        <p class="tile-subtitle">Item with status indicator and custom icon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tiles Section -->
+<section class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">Tiles and Lists</h2>
+    
+    <!-- Basic Tiles -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title">Basic Tiles</h3>
+        </div>
+        <div>
+            <div class="tile">
+                <div class="tile-content">
+                    <div class="tile-details">
+                        <h3 class="tile-title">Simple Text Tile</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tile">
+                <div class="tile-content">
+                    <span class="material-symbols-rounded mr-2" style="color: var(--apple-blue);">settings</span>
+                    <div class="tile-details">
+                        <h3 class="tile-title">Settings</h3>
+                    </div>
+                    <span class="material-symbols-rounded" style="margin-left: auto; color: var(--apple-dark-gray);">chevron_right</span>
+                </div>
+            </div>
+            
+            <div class="tile">
+                <div class="tile-content">
+                    <span class="material-symbols-rounded mr-2" style="color: #ff3b30;">notifications</span>
+                    <div class="tile-details">
+                        <h3 class="tile-title">Notifications</h3>
+                        <p class="tile-subtitle">Manage your notification preferences</p>
+                    </div>
+                    <div style="background-color: #ff3b30; width: 10px; height: 10px; border-radius: 50%; margin-left: auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Banners Section -->
+<section class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">Banners</h2>
+    
+    <!-- Premium Banner -->
+    <div class="banner banner-gradient mb-4">
+        <div class="banner-text">
+            <h2><span class="premium-gradient">GrütteCloud+</span> <span class="badge badge-light">New</span></h2>
+            <p>Unlock premium features and more</p>
+        </div>
+        <button class="btn btn-primary">Upgrade Now</button>
+    </div>
+    
+    <!-- Info Banner -->
+    <div class="banner mb-4" style="background-color: rgba(0, 113, 227, 0.1);">
+        <div class="banner-text">
+            <h2 style="color: var(--apple-blue);">Information</h2>
+            <p>This is an informational banner for updates and announcements</p>
+        </div>
+        <button class="btn btn-secondary">Learn More</button>
+    </div>
+    
+    <!-- Warning Banner -->
+    <div class="banner" style="background-color: rgba(255, 149, 0, 0.1);">
+        <div class="banner-text">
+            <h2 style="color: #ff9500;">Warning</h2>
+            <p>This is a warning banner for important notices</p>
+        </div>
+        <button class="btn btn-secondary">Acknowledge</button>
+    </div>
+</section>
+
+<!-- Buttons Section -->
+<section class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">Buttons</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Button Styles</h3>
+        </div>
+        <div class="card-body">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-secondary">Secondary Button</button>
+                <button class="btn btn-primary" disabled style="opacity: 0.6;">Disabled Button</button>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                <button class="btn btn-primary" style="display: flex; align-items: center;">
+                    <span class="material-symbols-rounded mr-2">add</span>
+                    Button with Icon
+                </button>
+                <button class="btn btn-secondary" style="display: flex; align-items: center;">
+                    <span class="material-symbols-rounded mr-2">download</span>
+                    Download
+                </button>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                <button class="btn btn-icon" style="background-color: var(--apple-gray);">
+                    <span class="material-symbols-rounded">favorite</span>
+                </button>
+                <button class="btn btn-icon" style="background-color: var(--apple-gray);">
+                    <span class="material-symbols-rounded">share</span>
+                </button>
+                <button class="btn btn-icon" style="background-color: var(--apple-blue); color: white;">
+                    <span class="material-symbols-rounded">check</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slidable Areas -->
+<section class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">Slidable Areas</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Horizontal Scroll</h3>
+        </div>
+        <div style="padding: 1rem;">
+            <div style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem;" class="custom-scrollbar">
+                {% for i in range(1, 6) %}
+                <div style="min-width: 200px; height: 120px; background-color: var(--apple-gray); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span>Slide Item {{ i }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Accordion/Collapsible -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3 class="card-title">Collapsible Sections</h3>
+        </div>
+        <div>
+            <div class="accordion-item">
+                <div class="tile accordion-header" onclick="toggleAccordion('section1')">
+                    <div class="tile-content">
+                        <div class="tile-details">
+                            <h3 class="tile-title">Section 1</h3>
+                        </div>
+                        <span class="material-symbols-rounded accordion-icon" id="icon-section1">expand_more</span>
+                    </div>
+                </div>
+                <div class="accordion-content" id="content-section1" style="display: none; padding: 0 1rem 1rem 1rem;">
+                    <p>This is the content for section 1. Click on the header to toggle visibility.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="tile accordion-header" onclick="toggleAccordion('section2')">
+                    <div class="tile-content">
+                        <div class="tile-details">
+                            <h3 class="tile-title">Section 2</h3>
+                        </div>
+                        <span class="material-symbols-rounded accordion-icon" id="icon-section2">expand_more</span>
+                    </div>
+                </div>
+                <div class="accordion-content" id="content-section2" style="display: none; padding: 0 1rem 1rem 1rem;">
+                    <p>This is the content for section 2. Click on the header to toggle visibility.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Empty States -->
+<section class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">Empty States</h2>
+    
+    <div class="card">
+        <div class="empty-state">
+            <img src="https://www.gruettecloud.com/static/gruettechat.png" alt="Empty State" class="empty-state-icon">
+            <h2 class="empty-state-title">No Content Found</h2>
+            <p class="empty-state-text">There's nothing here yet. Get started by creating your first item.</p>
+            <div class="empty-state-actions">
+                <button class="btn btn-primary">Create New</button>
+                <button class="btn btn-secondary">Learn More</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleAccordion(sectionId) {
+        const content = document.getElementById('content-' + sectionId);
+        const icon = document.getElementById('icon-' + sectionId);
+        
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            icon.textContent = 'expand_less';
+        } else {
+            content.style.display = 'none';
+            icon.textContent = 'expand_more';
+        }
+    }
+</script>
+{% endblock %}
+                    

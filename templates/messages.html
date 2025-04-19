@@ -1,0 +1,231 @@
+{% extends "base-template.html" %}
+
+{% block title %}Messages | GrütteCloud{% endblock %}
+
+{% block content %}
+
+<!-- Search Bar (Hidden by default) -->
+<div id="searchContainer" class="container" style="display: none; padding: 0; padding-bottom: 1rem;">
+    <div class="input-container mt-4">
+        <input type="text" placeholder="Search..." class="input" id="searchInput" style="box-shadow: var(--shadow-md);">
+        <span class="material-symbols-rounded input-icon" id="closeSearch">close</span>
+    </div>
+    <div id="searchResults" class="card mt-2" style="display: none; box-shadow: var(--shadow-md);">
+        <!-- Search results will be populated here -->
+    </div>
+</div>
+
+<div class="flex gap-4" style="flex-direction: row; flex-wrap: wrap;">
+    <!-- Left Side: Chat List -->
+    <div style="flex: 1; min-width: 280px;">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Messages</h2>
+                <button id="searchToggle" class="btn btn-icon">
+                    <span class="material-symbols-rounded" style="color: var(--apple-black);">add</span>
+                </button>
+            </div>
+            
+            <div class="overflow-y-auto" style="max-height: 70vh;">
+                <!-- AI Chat Button -->
+                <a href="/myai" class="block">
+                    <div class="tile" style="{% if active_chats|length > 0 %}padding-bottom: 0;{% endif %}">
+                        <div class="tile-content">
+                            <div class="avatar tile-icon" style="position: relative;">
+                                <img id="ai-image" src="/profile_picture/ai.png" alt="GrütteAI">
+                            </div>
+                            <div class="tile-details">
+                                <div style="display: flex; align-items: center;">
+                                    <h3 class="tile-title" id="ai-name">GrütteAI</h3>
+                                    <span class="material-symbols-rounded dreamy-text" style="margin-left: 4px; font-size: 1.2rem;">auto_awesome</span>
+                                </div>
+                                <p class="tile-subtitle" style="margin: 0;">Ask me anything...</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Active Chats -->
+                {% for chat in active_chats %}
+                    <a href="/chat/{{ chat.user_id }}" class="block">
+                        <div class="tile" style="{% if not loop.last %}padding-bottom: 0;{% endif %}">
+                            <div class="tile-content">
+                                <div class="avatar tile-icon" style="position: relative; min-width: 40px; min-height: 40px;">
+                                    <img src="/profile_picture/{{ chat.pfp }}" alt="{{ chat.username }}">
+                                </div>
+                                <div class="tile-details" style="min-width: 0;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; min-width: 0;">
+                                        <span style="display: flex; align-items: center; min-width: 0;">
+                                            <h3 class="tile-title" style="margin: 0;">{{ chat.username }}</h3>
+                                            {% if chat.is_verified %}
+                                                <span class="material-symbols-rounded" style="color: var(--apple-blue); margin-left: 4px; font-size: 1.2rem;">verified</span>
+                                            {% endif %}
+                                        </span>
+                                        <span class="text-sm" style="color: var(--apple-dark-gray); white-space: nowrap;">{{ chat.last_message_time }}</span>
+                                    </div>
+                                    <p class="tile-subtitle" style="display: block; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">
+                                        {{ chat.last_message }}
+                                    </p>
+                                </div>                              
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+
+                <!-- Suggestions -->
+                {% if active_chats|length == 0 %}
+                    <div class="tile" style="padding-top: 0;">
+                        <div class="tile-content">
+                            <div class="tile-details">
+                                <p class="tile-subtitle">Suggested friends:</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% for suggestion in suggested %}
+                        <a href="/chat/{{ suggestion.user_id }}" class="block">
+                            <div class="tile" style="padding-top: 0;">
+                                <div class="tile-content">
+                                    <div class="avatar tile-icon" style="position: relative;">
+                                        <img src="/profile_picture/{{ suggestion.pfp }}" alt="{{ suggestion.username }}">
+                                    </div>
+                                    <div class="tile-details" style="min-width: 0;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; min-width: 0;">
+                                            <span style="display: flex; align-items: center; min-width: 0;">
+                                                <h3 class="tile-title" style="margin: 0;">{{ suggestion.username }}</h3>
+                                                {% if suggestion.is_verified %}
+                                                    <span class="material-symbols-rounded" style="color: var(--apple-blue); margin-left: 4px; font-size: 1.2rem;">verified</span>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Side: Welcome or Selected Chat -->
+    <div style="flex: 2; min-width: 280px;">
+        <div class="card" style="height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div class="empty-state">
+                <img src="https://www.gruettecloud.com/static/gruettechat.png" alt="GrütteChat Logo" class="empty-state-icon">
+                <h2 class="empty-state-title">Welcome to GrütteChat</h2>
+                <p class="empty-state-text">Select a conversation or start a new one</p>
+                
+                <div class="empty-state-actions">
+                    <button class="btn btn-primary" style="display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('searchToggle').click();">
+                        <span class="material-symbols-rounded mr-2">person_add</span>
+                        New Conversation
+                    </button>
+                    
+                    <a href="/myai" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-rounded mr-2">auto_awesome</span>
+                        Chat with MyAI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    // Search functionality
+    const searchToggle = document.getElementById('searchToggle');
+    const searchContainer = document.getElementById('searchContainer');
+    const closeSearch = document.getElementById('closeSearch');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    
+    searchToggle.addEventListener('click', () => {
+        searchContainer.style.display = 'block';
+        searchInput.focus();
+    });
+    
+    closeSearch.addEventListener('click', () => {
+        searchContainer.style.display = 'none';
+        searchResults.style.display = 'none';
+    });
+    
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.length > 0) {
+            searchResults.style.display = 'block';
+            $.ajax({
+                url: '/search_username/' + searchInput.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    searchResults.innerHTML = '';
+                    data.users.forEach(user => {
+                        searchResults.innerHTML += `
+                            <a href="/chat/${user.user_id}" class="block">
+                                <div class="tile" style="padding-bottom: 7px; padding-top: 7px;">
+                                    <div class="tile-content">
+                                        <div class="avatar tile-icon">
+                                            <img src="/profile_picture/${user.profile_picture}" alt="${user.username}">
+                                        </div>
+                                        <div class="tile-details">
+                                            <h3 class="tile-title">${user.username}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching search results:', error);
+                }
+            });
+        } else {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    
+    // AI Personality Rotation (demo functionality)
+    const personalities = [
+            { name: "MyAI", image: "/profile_picture/ai.png", id: "Default" },
+            { name: "Pirate", image: "https://www.gruettecloud.com/static/Pirate.jpeg", id: "Priate" },
+            { name: "John Backus", image: "https://www.gruettecloud.com/static/Backus.jpeg", id: "Backus" },
+            { name: "Lorde", image: "https://www.gruettecloud.com/static/Lorde.jpeg", id: "Lorde" },
+            { name: "Taylor Swift", image: "https://www.gruettecloud.com/static/taylorSwift.jpeg", id: "TaylorSwift" },
+            { name: "Taco the otter", image: "https://www.gruettecloud.com/static/Taco.jpg", id: "Taco" },
+            { name: "B1 Battle Droid", image: "https://www.gruettecloud.com/static/BattleDroid.jpg", id: "Anakin" },
+            { name: "Anakin Skywalker", image: "https://www.gruettecloud.com/static/Anakin.jpg", id: "BattleDroid" },
+            { name: "Uwu Gamer Girl", image: "https://www.gruettecloud.com/static/GamerGirl.jpeg", id: "Hertrampf" }
+        ];
+    
+    function rotateAIPersonalities() {
+        const aiImage = document.getElementById('ai-image');
+        const aiName = document.getElementById('ai-name');
+        
+        let currentIndex = 0;
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % personalities.length;
+            aiImage.src = personalities[currentIndex].image;
+            aiName.textContent = personalities[currentIndex].name;
+        }, 3000);
+    }
+
+    {% if selected_personality == "Default" %}
+        rotateAIPersonalities();
+    {% else %}
+        const selectedAI = "{{ selected_personality }}";
+        const personality = personalities.find(p => p.id === selectedAI);
+        console.log("Selected AI:", personality);
+        if (personality) {
+            document.getElementById('ai-image').src = personality.image;
+            document.getElementById('ai-name').textContent = personality.name;
+        }
+
+    {% endif %}
+</script>
+{% endblock %}

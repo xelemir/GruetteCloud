@@ -2,6 +2,7 @@ from flask import Flask, abort, render_template, request, session, redirect, jso
 import logging
 from threading import Thread
 from flask_cors import CORS
+from datetime import datetime
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
 from config import secret_key
@@ -157,7 +158,8 @@ def chat(error=None):
             u.is_verified,
             IFNULL(b.blocked_user_id IS NOT NULL, 0) AS blocked,
             COUNT(DISTINCT unread.id) AS unread_messages,
-            MAX(c.created_at) AS last_message_time
+            MAX(c.created_at) AS last_message_time,
+            MAX(c.message_content) AS last_message
         FROM 
             chats c
         JOIN 
@@ -180,6 +182,19 @@ def chat(error=None):
 
     # Execute the SQL query to get all active chats
     active_chats_database = sql.readSQL(active_chats_query)
+    
+    def last_message_time_ago(last_message_time):
+        """ Helper function to format the last message time """
+        time_now = datetime.now()
+        time_difference = time_now - last_message_time
+        if time_difference.days > 0:
+            return f"{time_difference.days}d ago"
+        elif time_difference.seconds // 3600 > 0:
+            return f"{time_difference.seconds // 3600}h ago"
+        elif time_difference.seconds // 60 > 0:
+            return f"{time_difference.seconds // 60}m ago"
+        else:
+            return "Just now"
 
     # Prepare the active chats list
     active_chats = [
@@ -190,6 +205,8 @@ def chat(error=None):
             "is_verified": chat["is_verified"],
             "blocked": bool(chat["blocked"]),
             "unread_messages": chat["unread_messages"],
+            "last_message_time": last_message_time_ago(chat["last_message_time"]),
+            "last_message": str(eh.decrypt_message(chat["last_message"])),
         }
         for chat in active_chats_database
     ]
@@ -218,7 +235,18 @@ def chat(error=None):
         suggested = None
     
     # Render the home page
-    return render_template('chathome.html', menu=th.user(session), active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png", selected_personality=user[0]["ai_personality"])
+    return render_template('messages.html', user=th.user(session), active_chats=active_chats, error=error, has_premium=user[0]["has_premium"], status_message=platform_message, verified=user[0]["is_verified"], is_admin=user[0]["is_admin"], suggested=suggested, pfp=f"{user[0]['profile_picture']}.png", selected_personality=user[0]["ai_personality"])
+
+
+
+
+
+
+
+@app.route("/test", methods=["GET", "POST"])
+def test():
+    return render_template('content-components.html', user=th.user(session), chat=[])
+
 
 if __name__ == '__main__':
     app.run(debug=True)

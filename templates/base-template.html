@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GrütteCloud{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/static/gruette-styles.css">
+    <link rel="icon" href="https://www.gruettecloud.com/static/gruettechat.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* only for apps menu */
+        .apps-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--apple-gray);
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 5px;
+        }
+
+        .apps-menu-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+        }
+
+        .apps-menu-item {
+            display: flex;
+            align-items: center;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--apple-black);
+            font-size: 16px;
+            gap: 10px;
+        }
+        
+        </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="/" class="logo-container">
+                <img src="https://www.gruettecloud.com/static/gruettecloud_logo.png" alt="GrütteCloud" class="logo">
+                <h1 class="brand-name">GrütteCloud</h1>
+            </a>
+            <div class="header-actions">
+                <button id="darkModeToggle" class="btn btn-icon">
+                    <span class="material-symbols-rounded" style="color: var(--apple-black);">dark_mode</span>
+                </button>
+                <button id="appsToggle" class="btn btn-icon">
+                    <span class="material-symbols-rounded" style="color: var(--apple-black);">apps</span>
+                </button>
+                <a href="/settings" class="avatar">
+                    <img src="/profile_picture/{{ user.pfp }}" alt="Profile" class="avatar-img">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Apps Menu -->
+    <div id="appsMenu" class="apps-menu" style="display: none;">
+        <div class="apps-menu-content">
+            <a href="/chat" class="apps-menu-item">
+                <span class="material-symbols-rounded">forum</span>
+                GrütteChat
+            </a>
+            <a href="/drive" class="apps-menu-item">
+                <span class="material-symbols-rounded">cloud_upload</span>
+                GrütteDrive
+            </a>
+            <a href="/maps" class="apps-menu-item">
+                <span class="material-symbols-rounded">map</span>
+                GrütteMaps
+            </a>
+            <a href="/finance" class="apps-menu-item">
+                <span class="material-symbols-rounded">payments</span>
+                GrütteFinance
+            </a>
+            {% if user["admin"] %}
+            <a href="/dashboard" class="apps-menu-item">
+                <span class="material-symbols-rounded">code</span>
+                Dashboard
+            </a>
+            {% endif %}
+        </div>
+        <button id="appsClose" class="btn btn-icon close-btn">
+            <span class="material-symbols-rounded">close</span>
+        </button>
+    </div>
+
+    {% if not user["premium"] and not user["platform_notifications"] %}
+
+        <!-- Optional Premium Banner -->
+        {% block premium_banner %}
+        <!-- Include this block where needed -->
+        <div class="container mt-4">
+            <div class="banner banner-gradient mb-4">
+                <div class="banner-text">
+                    <h2><span class="premium-gradient">GrütteCloud+</span> <span class="badge badge-light">New</span></h2>
+                    <p>Unlock premium features and more</p>
+                </div>
+                <a href="/premium" class="btn btn-primary">Upgrade Now</a>
+            </div>
+        </div>
+        {% endblock %}
+    {% endif %}
+
+    {% if user["platform_notifications"] %}
+        <!-- Optional Notifications Banner -->
+        {% block notifications_banner %}
+        {% if user["platform_notifications"][0]["decorator"] != "warning" %}
+            <!-- Info Banner -->
+            <div class="container mt-4">
+                <div class="banner mb-4" style="background-color: rgba(0, 113, 227, 0.1);">
+                    <div class="banner-text">
+                        <h2 style="color: var(--apple-blue);">{{ user["platform_notifications"][0]["subject"] }}</h2>
+                        <p>{{ user["platform_notifications"][0]["content"] }}</p>
+                    </div>
+                    {% if user["platform_notifications"][0]["link"] %}
+                    <a href="{{ user["platform_notifications"][0]["link"] }}" class="btn btn-secondary">Learn More</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <!-- Warning Banner -->
+            <div class="container mt-4">
+                <div class="banner" style="background-color: rgba(255, 149, 0, 0.1);">
+                    <div class="banner-text">
+                        <h2 style="color: #ff9500;">{{ user["platform_notifications"][0]["subject"] }}</h2>
+                        <p>T{{ user["platform_notifications"][0]["content"] }}</p>
+                    </div>
+                    {% if user["platform_notifications"][0]["link"] %}
+                    <a href="{{ user["platform_notifications"][0]["link"] }}" class="btn btn-secondary">Learn More</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        {% endblock %}
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="container mt-4">
+        {% block content %}
+        <!-- Main content goes here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="/about" class="footer-link">About</a>
+                <a href="/privacy" class="footer-link">Privacy</a>
+                <a href="/terms" class="footer-link">Terms</a>
+                <a href="/help" class="footer-link">Help</a>
+                <a href="/support" class="footer-link">Contact</a>
+            </div>
+            <p>© 2025 GrütteCloud. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script>
+        // Apps toggle
+        const appsToggle = document.getElementById('appsToggle');
+        const appsMenu = document.getElementById('appsMenu');
+        document.getElementById('appsToggle').addEventListener('click', () => {
+            if (appsMenu.style.display === 'none') {
+                appsMenu.style.display = 'flex';
+            } else {
+                appsMenu.style.display = 'none';
+            }
+        });
+
+        document.getElementById('appsClose').addEventListener('click', () => {
+            appsMenu.style.display = 'none';
+        });
+        
+
+        
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.body.classList.add('dark-mode');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = '<span class="material-symbols-rounded" style="color: var(--apple-black);">dark_mode</span>';
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeToggle.innerHTML = '<span class="material-symbols-rounded" style="color: var(--apple-black);">light_mode</span>';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                darkModeToggle.innerHTML = '<span class="material-symbols-rounded" style="color: var(--apple-black);">dark_mode</span>';
+            }
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>
