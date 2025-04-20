@@ -633,7 +633,7 @@ def instagram():
 
 @tool_route.route("/external_html/weather.html", methods=["GET"])
 def external_html_weather():
-    return send_file("templates/weather.html")
+    return send_file(os.path.join(gruettedrive_path, "external_html", "weather.html"))
 
 
     
