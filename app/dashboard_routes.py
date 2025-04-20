@@ -589,22 +589,17 @@ def send_push():
 
 @dashboard_route.route("/uploadWeatherGraphs", methods=["POST"])
 def upload_weather_graphs():
-    auth_key = request.headers.get('Authorization')
-    if not auth_key or auth_key != aqsense_auth_key:
-        return jsonify({'error': 'Unauthorized', 'provided_key': auth_key}), 401
+    if "auth_key" not in request.form or request.form["auth_key"] != aqsense_auth_key:
+        return abort(404)
     
     if len(request.files) != 3:
-            return jsonify({'error': 'Exactly three files must be uploaded'}), 400
+        return jsonify({'error': 'Exactly three files must be uploaded'}), 400
 
     uploaded_files = []
     
-    # Process each file
     for key, file in request.files.items():
-        # Check if file is empty
         if file.filename == '':
             return jsonify({'error': 'No selected file'}), 400
-        
-        # Check file extension
         if file and file.filename.endswith('.png'):
             filename = os.path.join(gruettedrive_path, "weather", file.filename)
             if os.path.exists(filename):
@@ -619,3 +614,15 @@ def upload_weather_graphs():
         'message': 'Files uploaded successfully',
         'files': uploaded_files
     }), 200
+
+@dashboard_route.route("/weather/<filename>")
+def get_weather_graph(filename):
+    if filename not in ["temperature.png", "humidity.png", "pressure.png"]:
+        return abort(404)
+    
+    file_path = os.path.join(gruettedrive_path, "weather", filename)
+    
+    if os.path.exists(file_path):
+        return send_file(file_path)
+    else:
+        return jsonify({"error": "File not found"}), 404
