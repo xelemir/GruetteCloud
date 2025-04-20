@@ -563,7 +563,7 @@ def unsubscribe():
 @dashboard_route.route("/sendpush", methods=["POST"])
 def send_push():
     if "authenticity_key" not in request.json or request.json["authenticity_key"] != aqsense_auth_key:
-        return abort(401)
+        return abort(404)
         
     sql = SQLHelper.SQLHelper()
     subscription = sql.readSQL(f"SELECT * FROM push_subscriptions")
@@ -586,3 +586,36 @@ def send_push():
             print("Error sending notification:", ex)                                                                             
     
     return jsonify({"message": "Push sent successfully!"}), 200
+
+@dashboard_route.route("/uploadWeatherGraphs", methods=["POST"])
+def upload_weather_graphs():
+    auth_key = request.headers.get('Authorization')
+    if not auth_key or auth_key != aqsense_auth_key:
+        return abort(404)
+    
+    if len(request.files) != 3:
+            return jsonify({'error': 'Exactly three files must be uploaded'}), 400
+
+    uploaded_files = []
+    
+    # Process each file
+    for key, file in request.files.items():
+        # Check if file is empty
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+        
+        # Check file extension
+        if file and file.filename.endswith('.png'):
+            filename = os.path.join(gruettedrive_path, "weather", file.filename)
+            if os.path.exists(filename):
+                os.remove(filename)
+            file.save(filename)
+            uploaded_files.append(file.filename)
+        else:
+            return jsonify({'error': f'Invalid file format for {file.filename}. Only PNG files are allowed'}), 400
+    
+    return jsonify({
+        'success': True,
+        'message': 'Files uploaded successfully',
+        'files': uploaded_files
+    }), 200
