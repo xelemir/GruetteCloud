@@ -629,9 +629,13 @@ def instagram():
             files["following"]["date"] = datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(instagram_dir, "following.html"))).strftime("%d.%m.%Y %H:%M")
             
         
-        return render_template("instagram.html", files=files, menu=th.user(session))
-    
-    
+        return render_template("instagram_old.html", files=files, user=th.user(session))
+
+@tool_route.route("/external_html/weather.html", methods=["GET"])
+def external_html_weather():
+    return send_file("templates/weather.html")
+
+
     
     
 # Endpoints for Flutter App
