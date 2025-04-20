@@ -633,6 +633,8 @@ def instagram():
 
 @tool_route.route("/external_html/weather.html", methods=["GET"])
 def external_html_weather():
+    if "python-requests/" not in request.headers.get("User-Agent"):
+        return abort(404)
     return send_file(os.path.join(gruettedrive_path, "external_html", "weather.html"))
 
 
