@@ -591,7 +591,7 @@ def send_push():
 def upload_weather_graphs():
     auth_key = request.headers.get('Authorization')
     if not auth_key or auth_key != aqsense_auth_key:
-        return abort(404)
+        return jsonify({'error': 'Unauthorized', 'provided_key': auth_key}), 401
     
     if len(request.files) != 3:
             return jsonify({'error': 'Exactly three files must be uploaded'}), 400
