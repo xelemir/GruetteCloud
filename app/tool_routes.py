@@ -637,6 +637,9 @@ def external_html_weather():
         return abort(404)
     return send_file(os.path.join(gruettedrive_path, "external_html", "weather.html"))
 
+@tool_route.route("/mensieren", methods=["GET"])
+def mensieren():
+    return "<h1>TEST ONLY</h1><a href='https://mensieren.de'>mensieren.de</a>"
 
     
     
