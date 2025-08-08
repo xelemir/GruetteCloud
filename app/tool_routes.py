@@ -358,7 +358,7 @@ def mapsRoute():
     else:
         abort(response.status_code)
         
-@tool_route.route("/maps", methods=["GET", "POST"])
+#@tool_route.route("/maps", methods=["GET", "POST"])
 def maps():
     return render_template("maps.html", menu=th.user(session))
 

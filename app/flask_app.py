@@ -57,6 +57,7 @@ def index():
     else:
         error = request.args.get("error")
         if error == "username_or_password_empty": error = "Please enter your username and password."
+        elif error == "no_new_signups": error = "No new signups are allowed at the moment."
         elif error == "invalid_credentials": error = "Invalid username or password."
         elif error == "passwords_not_matching": error = "Passwords do not match."
         elif error == "forbidden_characters": error = "Your username contains forbidden characters."

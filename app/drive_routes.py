@@ -140,7 +140,7 @@ def get_files(user_id, folder_dir=None):
         
     return {"file_list": file_list, "size_formatted": size_formatted, "size_percentage": size_percentage}
 
-@drive_route.route("/movefile")
+#@drive_route.route("/movefile")
 def move_file():
     if "user_id" not in session:
         return redirect("/")
@@ -258,6 +258,9 @@ def upload():
         if user == []:
             # Security check
             return redirect(f"/logout")
+        
+        if user[0]["username"] != "xelemir":
+            return abort(403)
 
         file = request.files['file']
         if file:
@@ -395,7 +398,7 @@ def shared(short_code):
         else:
             return redirect(f"/file/{file[0]['file_path']}")
     
-@drive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
+#@drive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
 def create_folder(folder_path):
     if "user_id" not in session:
         return redirect("/")

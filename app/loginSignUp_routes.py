@@ -108,6 +108,8 @@ def signup():
         HTML: Rendered HTML page
     """
     
+    return redirect("/?error=no_new_signups") 
+    
     if 'user_id' in session:
         return redirect(f'/')
     

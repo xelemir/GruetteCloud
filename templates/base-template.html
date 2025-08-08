@@ -37,6 +37,15 @@
             font-size: 16px;
             gap: 10px;
         }
+
+        .apps-menu-item:hover {
+            background-color: var(--apple-light-gray);
+            color: var(--apple-blue);
+        }
+
+        .close-btn {
+            color: var(--apple-black);
+        }
         
         </style>
     {% block extra_head %}{% endblock %}
@@ -66,6 +75,10 @@
     <!-- Apps Menu -->
     <div id="appsMenu" class="apps-menu" style="display: none;">
         <div class="apps-menu-content">
+            <a href="/settings" class="apps-menu-item">
+                <span class="material-symbols-rounded">settings</span>
+                My Account
+            </a>
             <a href="/chat" class="apps-menu-item">
                 <span class="material-symbols-rounded">forum</span>
                 GrütteChat
@@ -73,14 +86,6 @@
             <a href="/drive" class="apps-menu-item">
                 <span class="material-symbols-rounded">cloud_upload</span>
                 GrütteDrive
-            </a>
-            <a href="/maps" class="apps-menu-item">
-                <span class="material-symbols-rounded">map</span>
-                GrütteMaps
-            </a>
-            <a href="/finance" class="apps-menu-item">
-                <span class="material-symbols-rounded">payments</span>
-                GrütteFinance
             </a>
             {% if user["admin"] %}
             <a href="/dashboard" class="apps-menu-item">

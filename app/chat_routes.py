@@ -246,6 +246,9 @@ def chat_file(filename):
 @chat_route.route("/myai", methods=["POST", "GET"])
 @decorators.limit_content_length(15 * 1024 * 1024)  # Limit to 15 MB
 def myai():
+    if "user_id" not in session:
+        return redirect("/")
+    
     ai = openai_https.OpenAIWrapper()
     sql = SQLHelper.SQLHelper()
     
