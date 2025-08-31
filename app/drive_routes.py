@@ -259,7 +259,7 @@ def upload():
             # Security check
             return redirect(f"/logout")
         
-        if user[0]["username"] != "xelemir":
+        if user[0]["username"] != "jan":
             return abort(403)
 
         file = request.files['file']
@@ -398,9 +398,9 @@ def shared(short_code):
         else:
             return redirect(f"/file/{file[0]['file_path']}")
     
-#@drive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
+@drive_route.route("/create_folder/<path:folder_path>", methods=["POST", "GET"])
 def create_folder(folder_path):
-    if "user_id" not in session:
+    if "user_id" not in session or int(session["user_id"]) != 1:
         return redirect("/")
     
     folder_name = str(request.form["name"])
