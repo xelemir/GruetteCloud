@@ -1,0 +1,29 @@
+{
+  "name": "Mausmeister:in",
+  "short_name": "Mausmeister:in",
+  "start_url": "/nelly",
+  "scope": "/nelly",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ff8fa3",
+  "background_color": "#ff8fa3",
+  "display": "standalone",
+  "id": "nelly",
+  "lang": "de",
+  "orientation": "portrait"
+}

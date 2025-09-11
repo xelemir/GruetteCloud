@@ -3,10 +3,12 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 	<title>Nelly & Jan</title>
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#ffffff"/>
 	<meta name="google-site-verification" content="gEiw9Swqs11DLP3QTgR8Y6hHGjQnhSWWud7LivLEmHs" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 	<link rel="stylesheet" href="/static/stylesheet.css">
-    <link rel="icon" href="/nelly_media/icon.png">
+    <link rel="icon" href="/static/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -182,7 +184,6 @@
         <div id="loading-bar">
             <div id="loading-progress"></div>
         </div>
-        {% include "components/nav-element.html" %}
     </div>
     
     <script>
@@ -208,7 +209,6 @@
         
                 if (loadedMedia === totalMedia) {
                     document.getElementById('loading-bar').style.display = 'none';
-                    document.getElementById('scroll-hint').style.display = 'block';
 
                     let placeholders = document.getElementsByClassName('hide-when-loaded');
                     for (let i = 0; i < placeholders.length; i++) {
@@ -239,14 +239,6 @@
 
     <div class="default-view" style="position: fixed; bottom: 0; right: 0; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 20px; z-index: 100;">
         <div id="buttons" class="animate__animated animate__slideInRight" style="display: none;">
-            <span class="desktop-only" style="position: absolute; top: -20px; right: -10px; cursor: pointer; padding: 3px 10px; border-radius: 30px; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
-                <p style="font-size: 12px; margin: 0; color: #ffffff;">Beta</p>
-            </span>
-            <div class="desktop-only-flex" onclick="openStoryEditorMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
-                <p style="font-size: 16px; margin: 0; color: #000000;">Edit our story</p>
-                <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #000000;">brush</span>
-            </div>
-            
             <div onclick="openDateMenu()" style="cursor: pointer; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #fff0f6; margin-top: 10px;">
                 <p style="font-size: 16px; margin: 0; color: #000000;">Plan a date</p>
                 <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #000000;">heart_plus</span>
@@ -289,474 +281,10 @@
         </div>
     </div>
 
-    <div id="storyEditorMenu" style="text-align: center; display: none; align-items: center; justify-content: center; min-height: calc(100svh - 80px);">
-        <div style="display: flex; margin-top: 20px; flex-direction: column; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-            <h1>Edit our story</h1>
-            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 20px;">
-                <p>Choose a layout:</p>
-                <div onclick="toggleMobilePreview()" style="cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; flex-direction: row;">
-                    <p class="align-icons-center">iPhone layout</p>
-                    <span id="expand-mobile-layout-icon" class="material-symbols-rounded align-icons-center">expand_more</span>
-                </div>
-                <script>
-                    function toggleMobilePreview() {
-                        let mobileLayouts = document.getElementsByClassName('mobile-layout');
-                        let expandIcon = document.getElementById('expand-mobile-layout-icon');
-                        for (let i = 0; i < mobileLayouts.length; i++) {
-                            if (mobileLayouts[i].style.display === 'none') {
-                                mobileLayouts[i].style.display = 'flex';
-                                expandIcon.innerHTML = 'expand_less';
-                            } else {
-                                mobileLayouts[i].style.display = 'none';
-                                expandIcon.innerHTML = 'expand_more';
-                            }
-                        }
-                    }
-                </script>
-            </div>
-
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-                <!-- Layout 0 -->
-                <div class="layout-option" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 25px; border: 1px solid #ff8fa3; border-radius: 15px; padding: 10px; cursor: pointer;" onclick="selectLayout(0);">
-                    <!-- Desktop View -->
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                                    <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                                    <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
-                                </div>
-                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                                    <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
-                                    <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="background-color: transparent; width: 50px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mobile View -->
-                    <div class="mobile-layout" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                                    <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                                    <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
-                                </div>
-                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                                    <div style="background-color: transparent; width: 50px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Layout 1 -->
-                <div class="layout-option" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 25px; border: 1px solid transparent; border-radius: 15px; padding: 10px; cursor: pointer;" onclick="selectLayout(1);">
-                    <!-- Desktop View -->
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                            <div style="background-color: transparent; width: 100px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
-                                <span class="material-symbols-rounded align-icons-center">image</span>
-                            </div>
-                            <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-                                Text
-                            </div>
-                        </div>
-                        <div style="display: flex; flex-direction: row; gap: 5px;">
-                            <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
-                                <span class="material-symbols-rounded align-icons-center">image</span>
-                            </div>
-                            <div style="background-color: transparent; width: 100px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
-                                <span class="material-symbols-rounded align-icons-center">image</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mobile View -->
-                    <div class="mobile-layout" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                        <div style="background-color: transparent; width: 105px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
-                            <span class="material-symbols-rounded align-icons-center">image</span>
-                        </div>
-                        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                            <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
-                                <span class="material-symbols-rounded align-icons-center">image</span>
-                            </div>
-                            <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-                                Text
-                            </div>
-                        </div>
-                        <div style="background-color: transparent; width: 105px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;">
-                            <span class="material-symbols-rounded align-icons-center">image</span>
-                        </div>
-                    </div>
-                </div>
-                
-
-
-                <!-- Layout 2 -->
-                <div class="layout-option" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 25px; border: 1px solid transparent; border-radius: 15px; padding: 10px; cursor: pointer;" onclick="selectLayout(2);">
-                    <!-- Desktop View -->
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
-                            </div>
-                            <div style="background-color: transparent; width: 105px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                        </div>
-                    </div>
-                    <!-- Mobile View -->
-                    <div class="mobile-layout" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;">
-                            <div style="background-color: transparent; width: 105px; height: 105px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5px;">
-                                <div style="background-color: #ff8fa3; width: 50px; height: 50px; color: white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">Text</div>
-                                <div style="background-color: transparent; width: 50px; height: 50px; color: #ff8fa3; border-radius: 5px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center;"><span class="material-symbols-rounded align-icons-center">image</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                <div onclick="closeStoryEditorMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
-                    <p style="margin: 0; color: #000000;">Cancel</p>
-                </div>
-                <div onclick="editChosenLayout();" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
-                    <p style="margin: 0; color: #ffffff;">Next</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="story-editor" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px; min-height: calc(100svh - 80px);">
-        <!--<input type="file" id="image0" accept="image/*" style="display: none;">
-        <label for="image0">Upload Image</label>-->
-        <input autocomplete="off" type="text" id="story-title" placeholder="Story title..." style="font-size: 2em; border-radius: 10px; text-align: left; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-        
-        <div id="layout0" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                        <input class="image-upload" type="file" id="image00" accept="image/*" style="display: none;">
-                        <label for="image00" style="background-color: transparent; width: 200px; height: 200px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label>
-                        <div style="background-color: #fff0f6; width: 200px; height: 200px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px;">
-                            <input autocomplete="off" id="text000" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 1.5em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                            <input autocomplete="off" id="text001" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                        <div style="background-color: #fff0f6; width: 200px; height: 200px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <input autocomplete="off" id="text010" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 1.5em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                            <input autocomplete="off" id="text011" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                        </div>
-                        <input class="image-upload" type="file" id="image01" accept="image/*" style="display: none;">
-                        <label for="image01" style="background-color: transparent; width: 200px; height: 200px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label> 
-                    </div>
-                </div>
-                <div>
-                    <input class="image-upload" type="file" id="image02" accept="image/*" style="display: none;">
-                    <label for="image02" style="background-color: transparent; width: 200px; height: 420px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                        <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                        <p>Choose Image</p>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div id="layout1" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                        <input class="image-upload" type="file" id="image10" accept="image/*" style="display: none;">
-                        <label for="image10" style="background-color: transparent; width: 420px; height: 200px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label>
-                        <div style="background-color: #fff0f6; width: 200px; height: 200px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <input autocomplete="off" id="text100" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 1.5em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                            <input autocomplete="off" id="text101" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                        <input class="image-upload" type="file" id="image11" accept="image/*" style="display: none;">
-                        <label for="image11" style="background-color: transparent; width: 200px; height: 200px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label>
-                        <input class="image-upload" type="file" id="image12" accept="image/*" style="display: none;">
-                        <label for="image12" style="background-color: transparent; width: 420px; height: 200px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="layout2" style="display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
-                        <input class="image-upload" type="file" id="image20" accept="image/*" style="display: none;">
-                        <label for="image20" style="background-color: transparent; width: 200px; height: 200px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label>
-                        <div style="background-color: #fff0f6; width: 200px; height: 200px; color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <input autocomplete="off" id="text200" class="tile-content tile-title" type="text" placeholder="Tile title..." style="padding: 0; font-size: 1.5em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                            <input autocomplete="off" id="text201" class="tile-content tile-subtitle" type="text" placeholder="Subtitle..." style="padding: 0; font-size: 1em; text-align: center; color: #000000; border: none; background-color: transparent; box-shadow: none; appearance: none; -webkit-appearance: none; -moz-appearance: none;">
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;">
-                        <input class="image-upload" type="file" id="image21" accept="image/*" style="display: none;">
-                        <label for="image21" style="background-color: transparent; width: 420px; height: 420px; color: #ff8fa3; border-radius: 15px; border: 1px solid #ff8fa3; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 3em; margin-bottom: 10px;">image</span>
-                            <p>Choose Image</p>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="status-field" style="width: 100%; display: none; justify-content: center; align-items: center; padding: 20px; border-radius: 10px; background-color: #fff0f6; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-            
-        </div>
-        <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 10px;">
-           
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
-                <p style="font-size: 1.5em; color: #000000; padding: 0; margin: 0;">Title Color:</p>
-
-                <input type="radio" id="colorTitle0" name="color" value="#000000" style="margin-right: 10px; display: none;" checked>
-                <label for="colorTitle0" style="background-color: #000000; width: 20px; height: 20px; border-radius: 50%; padding: 0; display: flex; justify-content: center; align-items: center;"></label>
-            
-                <input type="radio" id="colorTitle1" name="color" value="#ff8fa3" style="margin-right: 10px; display: none;">
-                <label for="colorTitle1" style="background-color: #ff8fa3; width: 20px; height: 20px; border-radius: 50%; padding: 0; display: flex; justify-content: center; align-items: center;"></label>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
-                <div onclick="closeStoryEditorMenu()" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; margin-top: 10px;">
-                    <p style="margin: 0; color: #000000;">Cancel</p>
-                </div>
-                <div id="save-story-button" onclick="saveNewStory();" style="cursor: pointer; padding: 10px 25px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-direction: row; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); background-color: #ff8fa3; margin-top: 10px;">
-                    <p style="margin: 0; color: #ffffff;">Save</p>
-                </div>
-            </div>
-        </div>
-        <script>
-            const radios = document.querySelectorAll('input[name="color"]');
-            let tileTiles = document.getElementsByClassName('tile-title');
-
-            radios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    for (let i = 0; i < tileTiles.length; i++) {
-                        tileTiles[i].style.color = this.value;
-                    }
-                });
-            });
-        </script>
-    </div>
-
-    <script>
-        let chosenLayout = 0;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            //openStoryEditorMenu();
-            //editChosenLayout();
-        });
-
-        function selectLayout(layout) {
-            let layoutOptions = document.getElementsByClassName('layout-option');
-            chosenLayout = layout;
-            for (let i = 0; i < layoutOptions.length; i++) {
-                if (i === layout) {
-                    layoutOptions[i].style.border = '1px solid #ff8fa3';
-                } else {
-                    layoutOptions[i].style.border = '1px solid transparent';
-                }
-            }
-        }
-
-        function editChosenLayout() {
-            if (chosenLayout === -1) {
-                alert('Please select a layout first.');
-                return;
-            }
-
-            let layoutOptions = document.getElementsByClassName('layout-option');
-            for (let i = 0; i < layoutOptions.length; i++) {
-                if (i === 0) {
-                    layoutOptions[i].style.border = '1px solid #ff8fa3';
-                } else {
-                    layoutOptions[i].style.border = '1px solid transparent';
-                }
-            }
-            
-            document.getElementById('storyEditorMenu').style.display = 'none';
-
-            let storyEditor = document.getElementById('story-editor');
-            storyEditor.style.display = 'flex';
-            document.getElementById('story-title').focus();
-
-            let layout0 = document.getElementById('layout0');
-            let layout1 = document.getElementById('layout1');
-            let layout2 = document.getElementById('layout2');
-
-            let layoutList = [layout0, layout1, layout2];
-
-            for (let i = 0; i < layoutList.length; i++) {
-                if (i === chosenLayout) {
-                    layoutList[i].style.display = 'flex';
-                } else {
-                    layoutList[i].style.display = 'none';
-                }
-            }
-        }
-
-        function saveNewStory() {
-            document.getElementById('save-story-button').onclick = null;
-            document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Sending</p>';
-
-
-            let storyTitle = document.getElementById('story-title').value;
-            let tileTitles = document.getElementsByClassName('tile-title');
-            let tileSubtitles = document.getElementsByClassName('tile-subtitle');
-            let tileImages = document.getElementsByClassName('image-upload');
-
-            if (storyTitle === '') {
-                document.getElementById('status-field').style.display = 'flex';
-                document.getElementById('status-field').innerHTML = 'Please enter the story title';
-                setTimeout(() => {
-                    document.getElementById('status-field').style.display = 'none';
-                }, 3000);
-
-                document.getElementById('save-story-button').onclick = saveNewStory;
-                document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Save</p>';
-                return;
-            }
-
-            let story = {
-                title: storyTitle,
-                layout: chosenLayout,
-                tileTitleColor: document.querySelector('input[name="color"]:checked').value,
-                tiles: []
-            };
-
-            for (let i = 0; i < tileTitles.length; i++) {
-                if (tileTitles[i].id.startsWith('text' + chosenLayout)) {
-                    let tile = {
-                        title: tileTitles[i].value,
-                        subtitle: tileSubtitles[i].value
-                    };
-                    story.tiles.push(tile);
-                }
-            }
-
-            // check if correct amout of images and text tiles per layout is given
-            for (let i = 0; i < story.tiles.length; i++) {
-                if (story.tiles[i].title === '' && story.tiles[i].subtitle === '') {
-                    document.getElementById('status-field').style.display = 'flex';
-                    document.getElementById('status-field').innerHTML = 'Please fill in all tiles';
-                    setTimeout(() => {
-                        document.getElementById('status-field').style.display = 'none';
-                    }, 3000);
-
-
-                    document.getElementById('save-story-button').onclick = saveNewStory;
-                    document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Save</p>';
-                    return;
-                }
-            }
-            
-            
-
-            // Create a FormData object
-            let formData = new FormData();
-            
-            // Append story data
-            formData.append('story', JSON.stringify(story));
-            
-            // Append images
-            for (let i = 0; i < tileImages.length; i++) {
-                if (tileImages[i].id.startsWith('image' + chosenLayout)) {
-                    formData.append('images', tileImages[i].files[0]);
-                }
-            }
-
-            // Check if images are given
-            for (let i = 0; i < formData.getAll('images').length; i++) {
-                if (formData.getAll('images')[i] === "undefined") {
-                    document.getElementById('status-field').style.display = 'flex';
-                    document.getElementById('status-field').innerHTML = 'Please choose images for all tiles';
-                    setTimeout(() => {
-                        document.getElementById('status-field').style.display = 'none';
-                    }, 3000);
-
-                    document.getElementById('save-story-button').onclick = saveNewStory;
-                    document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Save</p>';
-                    return;
-                }
-            }
-                    
-            // Send story to server
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/nelly_save_story', true);
-            xhr.send(formData);
-            
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    console.log('Story saved successfully');
-                    document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Saved</p>';
-                    setTimeout(() => {
-                        closeStoryEditorMenu();
-                        document.getElementById('save-story-button').onclick = saveNewStory;
-                        document.getElementById('save-story-button').innerHTML = '<p style="margin: 0; color: #ffffff;">Save</p>';
-                    }, 1000);
-                } else {
-                    console.log('Error: ' + xhr.status);
-                }
-                let inputs = document.getElementsByClassName('image-upload');
-                for (let i = 0; i < inputs.length; i++) {
-                    inputs[i].value = '';
-                    inputs[i].nextElementSibling.style.backgroundImage = '';
-                }
-            };
-        }
-
-        let inputs = document.getElementsByClassName('image-upload');
-        for (let i = 0; i < inputs.length; i++) {
-            inputs[i].addEventListener('change', (event) => {
-                let label = event.target.nextElementSibling;
-                let image = event.target.files[0];
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    label.style.backgroundImage = `url(${e.target.result})`;
-                    label.style.backgroundSize = 'cover';
-                    label.style.backgroundPosition = 'center';
-                    label.style.color = 'transparent';
-                }
-                reader.readAsDataURL(image);
-                // remove border
-                label.style.border = 'none';
-            });
-        }
-
-
-        
-    </script>
-
     <div class="desktop-only">
         <div class="default-view" style="width: 900px; max-width: 90vw; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100svh - 50px); gap: 20px;">
             <span style="display: flex; width: 100%; gap: 20px;">
-            <img class="hide-until-loaded" src="/nelly_media/neleUndJan.jpg" style="display: none; width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <img class="hide-until-loaded" src="/nelly_media/24.png" style="object-fit: cover; display: none; width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
             <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;"></div>
             <div style="background-color: #fff0f6; width: 50%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 450px;">
                 <p id="together-for-desktop" style="font-size: 2em; color: #000000; font-weight: bold;">Together for</p>
@@ -782,262 +310,13 @@
                 </a>
             {% endif %}
         </div>
-        <div class="default-view">
-            <div style="display: flex; position: absolute; bottom: 0px; margin-bottom: 10px; left: 0; width: 100%; justify-content: center; align-items: center; padding: 1.5vh;">
-                <p id="scroll-hint" style="color: var(--text-color); text-decoration: none; display: none;">Scroll for more</p>
-            </div>
-        </div>
-
-        <div style="height: 30svh;"></div>
-
-        <div class="default-view" style="width: 900px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 20px; gap: 20px; padding-bottom: 20px;">
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">Our story</h1></div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div id="map11" style="width: 50%; height: 300px; border-radius: 15px; z-index: 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"></div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; height: 300px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 1.5em; color: #000000; font-weight: bold;">First date</p>
-                    <p style="font-size: 1em; color: #000000;">24.06.2024</p>
-                </div>
-            </div>
-            <div style="display: flex; height: 300px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Nelly & Jan</p>
-                    <p style="font-size: 1em; color: #000000;">Sounds cute together &#129325;</p>
-                </div>
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0001.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">Got together</h1></div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0003.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 620px;">
-                </div>
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
-                        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                            <p style="font-size: 1.8em; color: #ff8fa3;">August 9th, 2024</p>
-                            <p style="font-size: 1em; color: #000000;">Our day &#128152;</p>
-                        </div>
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                            <img src="/nelly_media/IMG_7634.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                        </div>
-                    </div>
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
-                        <div id="map22" style="width: 100%; height: 300px; border-radius: 15px; z-index: 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"></div>
-                        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">BF & GF &#128152;</p>
-                            <p style="font-size: 1em; color: #000000;">09.08.2024</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">TayTay</h1></div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 620px; gap: 20px;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                            <img id="cover-art-desktop" src="https://i.scdn.co/image/ab67616d00001e02bb54dde68cd23e2a268ae0f5" style="max-width: 100%; height: 180px; border-radius: 50%;">
-                        </div>
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">You're On Your Own, Kid</p>
-                            <p style="font-size: 1em; color: #000000; margin-top: 10px;">Midnights &#183; Taylor Swift</p>
-                            <div style="width: 70%; height: 10px; background-color: #ffffff; border-radius: 10px; margin-top: 30px;">
-                                <div style="width: 40%; height: 100%; background-color: #ff8fa3; border-radius: 10px;"></div>
-                            </div>
-                            <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; gap: 20px;">
-                                <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #ff8fa3; cursor: pointer;">skip_previous</span>
-                                <div style="width: 50px; height: 50px; background-color: #ff8fa3; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                    <span id="playback-mock-control" onclick="doPlaybackAction()" class="material-symbols-rounded align-icons-center" style="font-size: 35px; color: #ffffff; cursor: pointer;">pause</span>
-                                    <script>
-                                        function doPlaybackAction() {
-                                            let playbackState = document.getElementById("playback-mock-control").innerHTML;
-
-                                            if (playbackState === "pause") {
-                                                pauseImage();
-                                                document.getElementById("playback-mock-control").innerHTML = "play_arrow";
-                                                document.getElementById("playback-mock-control-mobile").innerHTML = "play_arrow";
-                                            } else {
-                                                spinImage();
-                                                document.getElementById("playback-mock-control").innerHTML = "pause";
-                                                document.getElementById("playback-mock-control-mobile").innerHTML = "pause";
-                                            }
-                                        }
-                                    </script>
-                                </div>
-                                <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #ff8fa3; cursor: pointer;">skip_next</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
-                        <img src="/nelly_media/IMG_8023.JPG" style="width: 50%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                        <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px; gap: 20px;">
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Made the friendship bracelets</p>
-                            <p style="font-size: 1em; color: #000000;">But are more than friends &#129782;</p>
-                        </div>
-                    </div>
-                </div>
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8129.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 620px;">
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">Two cuties</h1></div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8652.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 620px;">
-                </div>
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                            <img src="/nelly_media/IMG_8595.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                        </div>
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                            <p style="font-size: 3.5em; color: #ff8fa3; font-weight: bold;">21</p>
-                            <p style="font-size: 1em; color: #000000;">Our lucky number &#127775;</p>
-                        </div>
-                    </div>
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                            <p style="font-size: 3.5em; color: #000000; font-weight: bold;">&#128064;</p>
-                        </div>
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                            <img src="/nelly_media/IMG_8123.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">What we love</h1></div>
-            <div style="display: flex; height: 300px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                    <p style="font-size: 2.5em; color: #000000;">Tacooo &#127790;</p>
-                    <p style="font-size: 1.2em; color: #000000;">Our little otter friend</p>
-                    <a href="https://www.gruettecloud.com/change_ai_personality/Taco" style="font-size: 1em; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 15px; text-decoration: none; background-color: #ff8fa3; border-radius: 30px; color: #ffffff; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                        <span class="material-symbols-rounded align-icons-center">temp_preferences_custom</span>
-                        Start a chat
-                    </a>
-                </div>
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 300px;">
-                    <img src="https://www.gruettecloud.com/static/Taco.jpg" style="width: 100%; height: 300px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                </div>
-            </div>
-
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8024.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                </div>
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: row; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <div style="position: absolute; display: flex; margin-top: -230px; margin-right: -510px; align-items: center; justify-content: center; flex-direction: column;">
-                        <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_White.png" style="width: 25px;">
-                    </div>
-                    <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                        <img src="https://blend-playlist-covers.spotifycdn.com/v2/blend_DEFAULT-tangerine-red-en.jpg" style="height: 150px; width: 150px; border-radius: 10px;">
-                    </div>
-                    <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
-                        <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Jan + Nele = &#10084;&#65039;</p>
-                        <p style="font-size: 1em; color: #000000;">Our Spotify Blend</p>
-
-                        <div style="width: 70%; height: 10px; background-color: #ffffff; border-radius: 10px; margin-top: 30px;">
-                            <div style="width: 40%; height: 100%; background-color: #ff8fa3; border-radius: 10px;"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; gap: 20px;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #ff8fa3; cursor: pointer;">skip_previous</span>
-                            <a href="https://open.spotify.com/playlist/37i9dQZF1EJIepn9rDsakQ?si=64e0463162214dad" style="width: 50px; height: 50px; background-color: #ff8fa3; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                                <span class="material-symbols-rounded align-icons-center" style="font-size: 35px; color: #ffffff; cursor: pointer;">play_arrow</span>
-                            </a>
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 30px; color: #ff8fa3; cursor: pointer;">skip_next</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">Our dates</h1></div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 620px; gap: 20px;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                            <img onclick="openDateMenu()" src="/nelly_media/icon.png" style="width: 150px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); cursor: pointer;">
-                        </div>
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Plan a date &#128147;</p>
-                            <p style="font-size: 1em; color: #000000;">Click on the heart</p>
-                        </div>
-                    </div>
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; height: 300px; gap: 20px;">
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 300px;">
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Iced Matcha Latte</p>
-                            <p style="font-size: 1em; color: #000000; font-weight: bold;">+</p>
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Iced Brown Sugar Oat Shaken Espresso</p>
-                            <p style="font-size: 1em; color: #000000; font-weight: bold;">=</p>
-                            <p style="font-size: 1.5em; color: #000000; font-weight: bold;">&#128150;</p>
-                        </div>
-                        <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-                            <img src="/nelly_media/0004.jpg" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                        </div>
-                    </div>
-                </div>
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0002.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 620px;">
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 3.5em; color: #000000; font-weight: bold; text-align: left;">My crush</h1></div>
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div id="map44" style="width: 50%; height: 300px; border-radius: 15px; z-index: 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"></div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8671.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                </div>
-            </div>
-
-            <div style="display: flex; height: 300px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 33.333%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8678.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 300px;">
-                </div>
-                <div style="width: 66.667%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 2em; color: #000000;">Love youuu &#129782;&#129782;&#129782;</p>
-                </div>
-            </div>
-
-
-            {% for story in custom_stories %}
-                <div style="height: 30svh;"></div>
-                {{ story | safe }}
-            {% endfor %}
-        </div>
-
-        <div style="height: 30svh;"></div>
-
     </div>
-
 
     <div class="mobile-only">
         <div class="default-view" style="width: 400px; max-width: 60vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; min-height: calc(100svh - 50px); margin: 0 auto;">
 
-            <img class="hide-until-loaded" src="/nelly_media/neleUndJan.jpg" style="display: none; width: 100%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+            <img class="hide-until-loaded" src="/nelly_media/24.png" style="object-fit: cover; display: none; width: 100%; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
             <div class="hide-when-loaded" style="background-color: #efe7da; filter: blur(8px); margin-top: 20px; width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 200px;"></div>
-
-            <!--<div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 450px;">
-                <p id="together-for" style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
-                <div class="container">
-                    <div class="preloader">
-                       <span></span>
-                       <span></span>
-                       <span></span>
-                    </div>
-                    <div class="shadow"></div>
-                 </div>
-                <p id="together-big" class="blur-until-loaded" style="font-size: 2.5em; color: #ff8fa3; filter: blur(8px);"></p>
-                <p id="together-small" class="blur-until-loaded" style="font-size: 1.2em; color: #000000; font-weight: bold; filter: blur(8px);"></p>
-            </div>-->
 
             <div style="margin-top: 20px; background-color: #fff0f6; width: 100%; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
                 <p id="together-for" style="font-size: 1.2em; color: #000000; font-weight: bold;">Together for</p>
@@ -1184,388 +463,90 @@
                     
             </script>
         </div>
-        
-
-        <div class="default-view" style="width: 400px; max-width: 90vw; text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 20px; gap: 20px;">
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">Our story</h1></div>
-
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; height: 160px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 1.5em; color: #000000; font-weight: bold;">First date</p>
-                    <p style="font-size: 1em; color: #000000;">24.06.2024</p>
-                </div>
-                <div id="map1" style="width: 50%; height: 160px; border-radius: 15px; z-index: 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"></div>
-            </div>
-
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%; width: 100%;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0003.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8023.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-            </div>
-
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div id="map2" style="width: 50%; height: 160px; border-radius: 15px; z-index: 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"></div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 1.5em; color: #000000; font-weight: bold;">BF & GF &#128152;</p>
-                    <p style="font-size: 1em; color: #000000;">09.08.2024</p>
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">What we love</h1></div>
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <p style="font-size: 1.5em; color: #000000;">Tacooo &#127790;</p>
-                    <a href="https://www.gruettecloud.com/change_ai_personality/Taco" style="font-size: 1em; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; background-color: #ff8fa3; border-radius: 30px; color: #ffffff; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                        <span class="material-symbols-rounded align-icons-center">temp_preferences_custom</span>
-                        Chat
-                    </a>
-                </div>
-                <div style="width: 50%;">
-                    <img src="https://www.gruettecloud.com/static/Taco.jpg" style="max-width: 100%; height: 140px; border-radius: 50%; ">
-                </div>
-            </div>
-
-            <div style="display: flex; height: 340px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 160px;">
-                        <img src="/nelly_media/IMG_8595.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                    </div>
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 160px;">
-                        <p style="font-size: 1.5em; color: #000000; font-weight: bold;">Nelly & Jan</p>
-                        <p style="font-size: 1em; color: #000000;">Sounds cute &#129325;</p>
-                    </div>
-                </div>
-
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8652.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 340px;">
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">TayTay</h1></div>
-            <div style="display: flex; height: 340px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <div style="height: 50%; display: flex; align-items: center; justify-content: center;">
-                        <img id="cover-art" src="https://i.scdn.co/image/ab67616d00001e02bb54dde68cd23e2a268ae0f5" style="max-width: 100%; height: 140px; border-radius: 50%;">
-                        <script>
-                            let angle = 0;
-                            let animationFrameId;
-                            const img = document.getElementById('cover-art');
-                            const imgDesktop = document.getElementById('cover-art-desktop');
-
-                            function spinImage() {
-                                angle += 0.3;
-                                img.style.transform = `rotate(${angle}deg)`;
-                                imgDesktop.style.transform = `rotate(${angle}deg)`;
-                                animationFrameId = requestAnimationFrame(spinImage);
-                            }
-
-                            function pauseImage() {
-                                if (animationFrameId) {
-                                    cancelAnimationFrame(animationFrameId);
-                                    animationFrameId = null;
-                                }
-                            }
-
-                            spinImage();
-
-                        </script>
-                    </div>
-                    <div style="height: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                        <p style="font-size: 0.9em; color: #000000; font-weight: bold;">You're On Your Own, Kid</p>
-                        <p style="font-size: 0.7em; color: #000000;">Midnights &#183; Taylor Swift</p>
-                        <div style="width: 80%; height: 10px; background-color: #ffffff; border-radius: 10px; margin-top: 20px;">
-                            <div style="width: 40%; height: 100%; background-color: #ff8fa3; border-radius: 10px;"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; gap: 10px;">
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em; color: #ff8fa3; cursor: pointer;">skip_previous</span>
-                            <div style="width: 30px; height: 30px; background-color: #ff8fa3; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                                <span class="material-symbols-rounded align-icons-center" style="font-size: 1.4em; color: #ffffff; cursor: pointer;" onclick="doPlaybackAction()" id="playback-mock-control-mobile">pause</span>
-                            </div>
-                            <span class="material-symbols-rounded align-icons-center" style="font-size: 1.2em; color: #ff8fa3; cursor: pointer;">skip_next</span>
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                        <img src="/nelly_media/IMG_8641.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                    </div>
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                        <img src="/nelly_media/IMG_8671.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; flex-direction: row; gap: 20px; width: 100%;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8129.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: row; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
-                        <p style="font-size: 1.2em; color: #000000; font-weight: bold;">Jan + Nele = &#10084;&#65039;</p>
-                        <p style="font-size: 0.8em; color: #000000;">Our Spotify Blend</p>
-                        <a href="https://open.spotify.com/playlist/37i9dQZF1EJIepn9rDsakQ?si=64e0463162214dad" style="font-size: 1em; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; background-color: #ff8fa3; border-radius: 30px; color: #ffffff; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                            <span class="material-symbols-rounded align-icons-center">play_arrow</span>
-                            Listen
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">Cute dates</h1></div>
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div id="map4" style="width: 100%; height: 160px; border-radius: 15px; z-index: 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"></div>
-            </div>
-
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0004.jpg" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 160px; padding: 10px;">
-                    <p style="font-size: 1em; color: #000000; font-weight: bold;">Iced Matcha Latte</p>
-                    <p style="font-size: 1em; color: #000000; font-weight: bold;">+</p>
-                    <p style="font-size: 1em; color: #000000; font-weight: bold;">Iced Brown Sugar Oat Shaken Espresso</p>
-                    <p style="font-size: 1em; color: #000000; font-weight: bold;">= &#128150;</p>
-                </div>
-            </div>
-
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: row;">
-                    <img onclick="openDateMenu()" src="/nelly_media/icon.png" style="width: 100px; height: 100px; border-radius: 20px; cursor: pointer;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <p style="font-size: 1.5em; color: #000000;">Plan a date &#128150;</p>
-                    <p style="font-size: 1em; color: #000000;">Click the heart</p>
-                </div>
-            </div>
-
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">Two cuties</h1></div>
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 3.5em; color: #000000; font-weight: bold;">&#128064;</p>
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8123.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-            </div>
-
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0001.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_7634.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-            </div>
-
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8024.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); height: 160px; padding: 10px;">
-                    <p style="font-size: 3.5em; color: #ff8fa3; font-weight: bold;">21</p>
-                    <p style="font-size: 1em; color: #000000;">Lucky number &#127775;</p>
-                </div>
-            </div>
-            
-            <div style="height: 30svh;"></div>
-            <div style="width: 100%; display: flex; text-align: left;"><h1 style="font-size: 40px; color: #000000; font-weight: bold; text-align: left;">Much more to come</h1></div>
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                    <p style="font-size: 1.8em; color: #ff8fa3;">August 9th, 2024</p>
-                    <p style="font-size: 1em; color: #000000;">Our day &#128152;</p>
-                </div>
-            </div>
-            
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px;">
-                
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/0002.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-                <div style="width: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <img src="/nelly_media/IMG_8678.JPG" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); object-fit: cover; height: 160px;">
-                </div>
-            </div>
-
-            <div style="display: flex; height: 160px; flex-direction: row; width: 100%; gap: 20px; background-color: #fff0f6; border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-                <div style="width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <p style="font-size: 1.5em; color: #000000;">Love youuu &#129782;&#129782;&#129782;</p>
-                </div>
-
-            </div>
-
-            {% for story in custom_stories_mobile %}
-                <div style="height: 30svh;"></div>
-                {{ story | safe }}
-            {% endfor %}
-
-            <div style="height: 20svh;"></div>
-        </div>
     </div>
+
+    <script>
+        function toggleButtons() {
+            var buttons = document.getElementById('buttons');
+            if (buttons.style.display === 'none') {
+                document.getElementById('toggle-button').innerHTML = 'close';
+                buttons.classList.remove('animate__slideOutRight');
+                buttons.classList.add('animate__slideInRight');
+                buttons.style.display = 'block';
+            } else {
+                document.getElementById('toggle-button').innerHTML = 'favorite';
+                buttons.classList.remove('animate__slideInRight');
+                buttons.classList.add('animate__slideOutRight');
+                setTimeout(function() {
+                    buttons.style.display = 'none';
+                    buttons.classList.remove('animate__slideOutRight');
+                }, 750);
+            }
+        }
+        function closeDateMenu() {
+            document.getElementById('title').value = '';
+            document.getElementById('date').value = '';
+            document.getElementById('time').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('date-notification').style.display = 'none';
+            document.getElementById('dateMenu').style.display = 'none';
+            var defaultViews = document.getElementsByClassName('default-view');
+            for (var i = 0; i < defaultViews.length; i++) {
+                defaultViews[i].style.display = 'flex';
+            }
+        }
+        function openDateMenu() {
+            document.getElementById('dateMenu').style.display = 'flex';
+            var defaultViews = document.getElementsByClassName('default-view');
+            for (var i = 0; i < defaultViews.length; i++) {
+                defaultViews[i].style.display = 'none';
+            }
+        }
+
+        function sendDateMail() {
+            if (document.getElementById('date-notification').style.display === 'block' && document.getElementById('date-notification').innerHTML === 'Sending emails...') {
+                return;
+            }
+
+            var title = document.getElementById('title').value;
+            var date = document.getElementById('date').value;
+            var time = document.getElementById('time').value;
+            var description = document.getElementById('description').value;
+            if (title === '' || date === '' || time === '' || description === '') {
+                document.getElementById('date-notification').innerHTML = 'Please fill out all fields.';
+                document.getElementById('date-notification').style.display = 'block';
+            } else {
+                document.getElementById('date-notification').innerHTML = 'Sending emails...';
+                document.getElementById('date-notification').style.display = 'block';
+                // AJAX request to send mail
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/send-date-emails', true); //'https://api.gruettecloud.com/v1/send-date-email'
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    title: title,
+                    date: date,
+                    time: time,
+                    description: description,
+                    prod_mode: "true"
+                }));
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log('Mail sent');
+                        document.getElementById('title').value = '';
+                        document.getElementById('date').value = '';
+                        document.getElementById('time').value = '';
+                        document.getElementById('description').value = '';
+                        closeDateMenu();
+                    } else {
+                        document.getElementById('date-notification').innerHTML = 'Emails not sent. Please try again later.';
+                        document.getElementById('date-notification').style.display = 'block';
+                        console.log('Mail not sent');
+                    }
+                }
+            }
+        }
+    </script>
 
 	<div id="cookie-banner"></div>
 </body>
 </html>
-
-<script>
-    var customIcon = L.icon({
-        iconUrl: '/nelly_media/marker-icon.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    });
-
-    var map1 = new L.map('map1', {center: [48.799494, 9.171820], zoom: 15, zoomControl: false,});
-    var map11 = new L.map('map11', {center: [48.799494, 9.171820], zoom: 15, zoomControl: false,});
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19,}).addTo(map1);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19,}).addTo(map11);
-    L.marker([48.799494, 9.171820], {icon: customIcon}).addTo(map1);
-    L.marker([48.799494, 9.171820], {icon: customIcon}).addTo(map11);
-
-    var map2 = new L.map('map2', {center: [48.787070, 9.085165], zoom: 15, zoomControl: false,});
-    var map22 = new L.map('map22', {center: [48.787070, 9.085165], zoom: 15, zoomControl: false,});
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19,}).addTo(map2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19,}).addTo(map22);
-    L.marker([48.787070,9.085165], {icon: customIcon}).addTo(map2);
-    L.marker([48.787070,9.085165], {icon: customIcon}).addTo(map22);
-
-    var map4 = new L.map('map4', {center: [48.799494, 9.171820], zoom: 15, zoomControl: false,});
-    var map44 = new L.map('map44', {center: [48.799494, 9.171820], zoom: 15, zoomControl: false,});
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map4);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map44);
-
-    var route = '{"features":[{"bbox":[9.067327,48.797453,9.161706,48.852696],"geometry":{"coordinates":[[9.16079,48.837652],[9.160822,48.837653],[9.16116,48.837685],[9.161326,48.83772],[9.161706,48.83784],[9.16154,48.838],[9.161389,48.838101],[9.160612,48.838432],[9.160354,48.838572],[9.160132,48.838755],[9.160093,48.838858],[9.160086,48.838956],[9.160088,48.839032],[9.160092,48.83912],[9.160092,48.839302],[9.160091,48.839444],[9.160115,48.839716],[9.16017,48.840066],[9.16016,48.840477],[9.160095,48.840857],[9.159883,48.841487],[9.159838,48.841609],[9.159696,48.841949],[9.15943,48.841949],[9.159003,48.841878],[9.158819,48.841844],[9.15851,48.841735],[9.157082,48.8409],[9.156612,48.84069],[9.156175,48.840574],[9.155774,48.840554],[9.15557,48.840501],[9.153162,48.840517],[9.151454,48.840518],[9.150214,48.840492],[9.148756,48.840414],[9.147443,48.840291],[9.144737,48.839997],[9.143913,48.839941],[9.142922,48.839941],[9.142111,48.839998],[9.141508,48.840067],[9.14094,48.840175],[9.140437,48.840309],[9.139978,48.84044],[9.13946,48.840619],[9.138782,48.840902],[9.13817,48.841188],[9.137791,48.841374],[9.137402,48.84159],[9.135682,48.842648],[9.133884,48.843792],[9.132565,48.844612],[9.130913,48.84553],[9.1297,48.846149],[9.126147,48.847866],[9.125441,48.848239],[9.124226,48.848928],[9.122766,48.849825],[9.121504,48.850679],[9.121094,48.850954],[9.120594,48.851308],[9.120023,48.851717],[9.119755,48.852007],[9.119697,48.852111],[9.119692,48.852285],[9.119723,48.852369],[9.119819,48.852486],[9.120005,48.852607],[9.120192,48.852662],[9.120424,48.852696],[9.120747,48.852653],[9.120949,48.852582],[9.12107,48.852496],[9.121153,48.852392],[9.121193,48.852311],[9.1212,48.852192],[9.121147,48.852037],[9.12082,48.851472],[9.119967,48.850161],[9.119507,48.849518],[9.119271,48.849215],[9.118728,48.848561],[9.118386,48.848187],[9.118008,48.847783],[9.117935,48.847707],[9.117809,48.847576],[9.117297,48.846904],[9.116716,48.846396],[9.115697,48.845594],[9.114514,48.844764],[9.113516,48.844139],[9.113002,48.843838],[9.112415,48.843519],[9.111869,48.843235],[9.110761,48.842706],[9.101623,48.838782],[9.101349,48.838663],[9.097778,48.837131],[9.097426,48.836979],[9.096956,48.836778],[9.096071,48.836398],[9.093901,48.835465],[9.093767,48.83541],[9.092252,48.834757],[9.091539,48.834429],[9.090883,48.834105],[9.090203,48.833749],[9.089587,48.833403],[9.089182,48.833168],[9.088289,48.832608],[9.088087,48.832472],[9.087487,48.832058],[9.086739,48.831506],[9.085741,48.830683],[9.08508,48.830082],[9.084558,48.829568],[9.083945,48.82892],[9.082392,48.82719],[9.081655,48.826369],[9.081306,48.825978],[9.079189,48.823608],[9.078938,48.823343],[9.078434,48.822803],[9.077817,48.822124],[9.077455,48.821902],[9.077247,48.8218],[9.07712,48.821769],[9.076992,48.821757],[9.076711,48.82178],[9.076566,48.821829],[9.076363,48.821944],[9.076261,48.822087],[9.076263,48.822258],[9.076394,48.822681],[9.076495,48.823019],[9.076464,48.823177],[9.075963,48.823214],[9.075035,48.823276],[9.07492,48.823285],[9.074689,48.823296],[9.074175,48.823298],[9.073393,48.823228],[9.073179,48.823199],[9.072821,48.823159],[9.072601,48.823093],[9.071615,48.823049],[9.071136,48.823029],[9.070694,48.82301],[9.070123,48.822987],[9.069939,48.822978],[9.069753,48.822973],[9.069746,48.822778],[9.069715,48.822611],[9.069475,48.822066],[9.069471,48.821833],[9.069539,48.821663],[9.069888,48.821125],[9.070409,48.820532],[9.070793,48.820199],[9.069707,48.819572],[9.068665,48.818995],[9.068562,48.818946],[9.068332,48.818879],[9.067905,48.81878],[9.067958,48.818611],[9.068134,48.818066],[9.068363,48.817401],[9.068531,48.816713],[9.068945,48.814719],[9.069192,48.813352],[9.069299,48.812452],[9.069478,48.810837],[9.069481,48.810639],[9.069444,48.81028],[9.069392,48.810061],[9.069261,48.80972],[9.069043,48.809346],[9.068902,48.809153],[9.068166,48.808254],[9.067645,48.807598],[9.067566,48.807615],[9.067482,48.807611],[9.067407,48.807586],[9.067353,48.807544],[9.067327,48.807491],[9.067334,48.807436],[9.067372,48.807387],[9.067436,48.807351],[9.067513,48.807335],[9.067593,48.807338],[9.067666,48.807361],[9.067721,48.807399],[9.067751,48.807448],[9.067872,48.807424],[9.070794,48.807001],[9.071069,48.806935],[9.071829,48.806535],[9.072742,48.805967],[9.072857,48.805873],[9.073537,48.805278],[9.073759,48.805043],[9.074073,48.804707],[9.073428,48.804401],[9.073351,48.804362],[9.072751,48.804035],[9.072479,48.803879],[9.071744,48.803408],[9.070898,48.802698],[9.070507,48.802357],[9.070377,48.802245],[9.069908,48.801943],[9.069187,48.801496],[9.068976,48.80135],[9.06889,48.801231],[9.06887,48.801145],[9.067786,48.80105],[9.068067,48.800174],[9.068302,48.799356],[9.068669,48.798129],[9.06875,48.797888],[9.068854,48.79748],[9.068659,48.797453]],"type":"LineString"},"properties":{"segments":[{"distance":"13.3 km","duration":"19 min","steps":[{"distance":"71.0m","duration":6.4,"instruction":"Head east on Porschestraße","name":"Porschestraße","type":11,"way_points":[0,4]},{"distance":"515.0m","duration":93.6,"instruction":"Turn left onto Stammheimer Straße","name":"Stammheimer Straße","type":0,"way_points":[4,22]},{"distance":"3.4km","duration":246.3,"instruction":"Turn left","name":"-","type":0,"way_points":[22,62]},{"distance":"5.0km","duration":257.4,"instruction":"Keep right","name":"-","type":13,"way_points":[62,124]},{"distance":"211.4m","duration":43.3,"instruction":"Keep right","name":"-","type":13,"way_points":[124,134]},{"distance":"56.0m","duration":15.6,"instruction":"Keep left onto A 81","name":"A 81","type":12,"way_points":[134,136]},{"distance":"286.3m","duration":51.8,"instruction":"Turn left onto L 1137","name":"L 1137","type":0,"way_points":[136,145]},{"distance":"208.9m","duration":19.7,"instruction":"Turn slight right onto Siemensstraße","name":"Siemensstraße","type":5,"way_points":[145,151]},{"distance":"336.6m","duration":40.4,"instruction":"Turn left onto Schuckertstraße","name":"Schuckertstraße","type":0,"way_points":[151,159]},{"distance":"266.3m","duration":32.0,"instruction":"Turn right onto Johann-Maus-Straße","name":"Johann-Maus-Straße","type":1,"way_points":[159,164]},{"distance":"1.3km","duration":109.9,"instruction":"Turn left onto Gerlinger Straße, L 1141","name":"Gerlinger Straße, L 1141","type":0,"way_points":[164,180]},{"distance":"662.5m","duration":63.3,"exit_number":2,"instruction":"Enter the roundabout and take the 2nd exit onto Dieselstraße","name":"Dieselstraße","type":7,"way_points":[180,202]},{"distance":"554.8m","duration":59.4,"instruction":"Turn right onto Weilimdorfer Straße","name":"Weilimdorfer Straße","type":1,"way_points":[202,215]},{"distance":"80.1m","duration":11.5,"instruction":"Turn right onto Weilimdorfer Straße, L 2255","name":"Weilimdorfer Straße, L 2255","type":1,"way_points":[215,216]},{"distance":"404.6m","duration":97.1,"instruction":"Turn left onto Goethestraße","name":"Goethestraße","type":0,"way_points":[216,221]},{"distance":"14.7m","duration":3.5,"instruction":"Turn right onto Brennerstraße","name":"Brennerstraße","type":1,"way_points":[221,222]},{"distance":"0.0m","duration":0.0,"instruction":"Arrive at Brennerstraße, on the left","name":"-","type":10,"way_points":[222,222]}]}],"summary":{"distance":13341.6,"duration":1151.2},"way_points":[0,222]},"type":"Feature"}],"type":"FeatureCollection"}';
-    var route = JSON.parse(route);
-    L.geoJSON(route, {
-        style: function (feature) {
-            return {color: '#ff8fa3', weight: 5, opacity: 0.7};}
-    }).addTo(map4);
-    L.geoJSON(route, {
-        style: function (feature) {
-            return {color: '#ff8fa3', weight: 5, opacity: 0.7};}
-    }).addTo(map44);
-    L.marker([48.837652, 9.16079], {icon: customIcon}).addTo(map4);
-    L.marker([48.797453, 9.068659], {icon: customIcon}).addTo(map4);
-    L.marker([48.837652, 9.16079], {icon: customIcon}).addTo(map44);
-    L.marker([48.797453, 9.068659], {icon: customIcon}).addTo(map44);
-    map4.fitBounds(L.geoJSON(route).getBounds());
-    map44.fitBounds(L.geoJSON(route).getBounds());
-
-</script>
-
-<script>
-    function toggleButtons() {
-        var buttons = document.getElementById('buttons');
-        if (buttons.style.display === 'none') {
-            document.getElementById('toggle-button').innerHTML = 'close';
-            buttons.classList.remove('animate__slideOutRight');
-            buttons.classList.add('animate__slideInRight');
-            buttons.style.display = 'block';
-        } else {
-            document.getElementById('toggle-button').innerHTML = 'favorite';
-            buttons.classList.remove('animate__slideInRight');
-            buttons.classList.add('animate__slideOutRight');
-            setTimeout(function() {
-                buttons.style.display = 'none';
-                buttons.classList.remove('animate__slideOutRight');
-            }, 750);
-        }
-    }
-    function closeDateMenu() {
-        document.getElementById('title').value = '';
-        document.getElementById('date').value = '';
-        document.getElementById('time').value = '';
-        document.getElementById('description').value = '';
-        document.getElementById('date-notification').style.display = 'none';
-        document.getElementById('dateMenu').style.display = 'none';
-        var defaultViews = document.getElementsByClassName('default-view');
-        for (var i = 0; i < defaultViews.length; i++) {
-            defaultViews[i].style.display = 'flex';
-        }
-    }
-    function openDateMenu() {
-        document.getElementById('dateMenu').style.display = 'flex';
-        var defaultViews = document.getElementsByClassName('default-view');
-        for (var i = 0; i < defaultViews.length; i++) {
-            defaultViews[i].style.display = 'none';
-        }
-    }
-
-    function closeStoryEditorMenu() {
-        //document.getElementById('story-title').value = '';
-        //document.getElementById('story-content').value = '';
-        //document.getElementById('story-notification').style.display = 'none';
-        document.getElementById('storyEditorMenu').style.display = 'none';
-        var defaultViews = document.getElementsByClassName('default-view');
-        for (var i = 0; i < defaultViews.length; i++) {
-            defaultViews[i].style.display = 'flex';
-        }
-        document.getElementById('story-editor').style.display = 'none';
-
-    }
-    function openStoryEditorMenu() {
-        document.getElementById('storyEditorMenu').style.display = 'flex';
-        var defaultViews = document.getElementsByClassName('default-view');
-        for (var i = 0; i < defaultViews.length; i++) {
-            defaultViews[i].style.display = 'none';
-        }
-        chosenLayout = 0;
-    }
-
-    function sendDateMail() {
-        if (document.getElementById('date-notification').style.display === 'block' && document.getElementById('date-notification').innerHTML === 'Sending emails...') {
-            return;
-        }
-
-        var title = document.getElementById('title').value;
-        var date = document.getElementById('date').value;
-        var time = document.getElementById('time').value;
-        var description = document.getElementById('description').value;
-        if (title === '' || date === '' || time === '' || description === '') {
-            document.getElementById('date-notification').innerHTML = 'Please fill out all fields.';
-            document.getElementById('date-notification').style.display = 'block';
-        } else {
-            document.getElementById('date-notification').innerHTML = 'Sending emails...';
-            document.getElementById('date-notification').style.display = 'block';
-            // AJAX request to send mail
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/send-date-emails', true); //'https://api.gruettecloud.com/v1/send-date-email'
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                title: title,
-                date: date,
-                time: time,
-                description: description,
-                prod_mode: "true"
-            }));
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log('Mail sent');
-                    document.getElementById('title').value = '';
-                    document.getElementById('date').value = '';
-                    document.getElementById('time').value = '';
-                    document.getElementById('description').value = '';
-                    closeDateMenu();
-                } else {
-                    document.getElementById('date-notification').innerHTML = 'Emails not sent. Please try again later.';
-                    document.getElementById('date-notification').style.display = 'block';
-                    console.log('Mail not sent');
-                }
-            }
-        }
-    }
-</script>
-
-<script src="https://www.gruettecloud.com/static/cookies.js"></script>

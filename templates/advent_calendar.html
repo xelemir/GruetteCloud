@@ -3,11 +3,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Nele's Adventskalender</title>
+    <meta name="theme-color" content="#AEDBF0"/>
+    <link rel="manifest" href="/static/site.webmanifest">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Montserrat:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="icon" href="/nelly_media/icon.png">
+    <link rel="icon" href="/static/icon.png">
     <style>
         :root {
             --sage-green-1: #cad4c3;;
@@ -33,9 +35,7 @@
             font-size: 1em;
             color: #333;
             min-height: 100vh;
-            overflow: hidden;
             position: relative;
-
         }
 
         #error {
@@ -138,14 +138,73 @@
             z-index: 2; /* Bring content on top after the door opens */
         }
 
-        @media (max-width: 600px) {
-            .calendar-day, .door, .hidden-content {
-                width: 60px;
-                height: 60px;
+        /* Mobile-specific styles */
+        .mobile-day {
+            width: 70px;
+            height: 70px;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .mobile-door {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #cad4c3;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            position: absolute;
+            transition: transform 0.6s ease;
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        @media (max-width: 1000px) {
+            .mobile-day {
+                width: 70px;
+                height: 70px;
             }
 
-            .calendar {
-                gap: 10px;
+            .mobile-door {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.8em;
+                font-weight: bold;
+                color: #fff;
+                background-color: #cad4c3;
+                border-radius: 10px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+                cursor: pointer;
+                position: absolute;
+                transition: transform 0.6s ease;
+                transform-origin: left center;
+                z-index: 1;
+            }
+
+            body {
+                overflow-y: auto;
+                overflow-x: hidden;
+                align-items: flex-start;
+                padding: 20px 0;
+            }
+            
+            #app-container-mobile {
+                margin-top: 80px;
+                max-height: calc(100vh - 160px);
+                margin-bottom: 20px;
+                width: 340px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
         }
 
@@ -195,11 +254,20 @@
         
         .fa-snowflake {
             color: #ecf2f8;
+            font-size: 20px;
+            display: inline-block;
+        }
+
+        .snowflake-char {
+            color: #ecf2f8;
+            font-size: 20px;
+            display: inline-block;
+            font-family: serif;
         }
         
         .snow {
             width: 100%;
-            height: 100%;
+            height: 90vh;
             position: absolute;
         }
         
@@ -430,21 +498,21 @@
     </div>
 
     <section class="snow">
-        <div class="snowflake"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake1"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake2"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake3"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake4"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake5"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake6"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake7"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake8"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake9"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake10"><i class="fa-solid fa-snowflake"></i></div>
-        <div class="snowflake11"><i class="fa-solid fa-snowflake"></i></div>
-        <div class="snowflake12"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake13"><i class="fa-regular fa-snowflake"></i></div>
-        <div class="snowflake14"><i class="fa-regular fa-snowflake"></i></div>
+        <div class="snowflake"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake1"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake2"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake3"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake4"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake5"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake6"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake7"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake8"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake9"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake10"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake11"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake12"><span class="snowflake-char">❄</span></div>
+        <div class="snowflake13"><span class="snowflake-char">❅</span></div>
+        <div class="snowflake14"><span class="snowflake-char">❄</span></div>
     </section>
 
     <span class="desktop" style="flex-direction: column; justify-content: center; align-items: center;">
@@ -462,7 +530,7 @@
                                 <span class="day-number">1</span>
                             </div>
                             <div class="hidden-content" id="day-1-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_1.JPG" alt="Gift for Day 1" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-1" src="" alt="Gift for Day 1" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
 
@@ -471,7 +539,7 @@
                                 <span class="day-number">5</span>
                             </div>
                             <div class="hidden-content" id="day-5-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_5.JPG" alt="Gift for Day 5" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-5" src="" alt="Gift for Day 5" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
                     </span>
@@ -483,7 +551,7 @@
                                     <span class="day-number">23</span>
                                 </div>
                                 <div class="hidden-content" id="day-23-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_23.JPG" alt="Gift for Day 23" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-23" src="" alt="Gift for Day 23" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
                         
@@ -492,7 +560,7 @@
                                     <span class="day-number">3</span>
                                 </div>
                                 <div class="hidden-content" id="day-3-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_3.JPG" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-3" src="" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
                         </span>
@@ -503,7 +571,7 @@
                                 <span class="day-number">6</span>
                             </div>
                             <div class="hidden-content" id="day-6-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_6.JPG" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-6" src="" alt="Gift for Day 6" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
                     </span>
@@ -514,7 +582,7 @@
                                 <span class="day-number">4</span>
                             </div>
                             <div class="hidden-content" id="day-4-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_4.JPG" alt="Gift for Day 4" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-4" src="" alt="Gift for Day 4" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
                     </span>
@@ -525,7 +593,7 @@
                                 <span class="day-number">7</span>
                             </div>
                             <div class="hidden-content" id="day-7-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_7.JPG" alt="Gift for Day 7" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-7" src="" alt="Gift for Day 7" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
                     
@@ -534,7 +602,7 @@
                                 <span class="day-number">16</span>
                             </div>
                             <div class="hidden-content" id="day-16-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_16.JPG" alt="Gift for Day 16" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-16" src="" alt="Gift for Day 16" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
                     </span>
@@ -545,7 +613,7 @@
                                 <span class="day-number">11</span>
                             </div>
                             <div class="hidden-content" id="day-11-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_11.JPG" alt="Gift for Day 11" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-11" src="" alt="Gift for Day 11" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
 
@@ -554,7 +622,7 @@
                                 <span class="day-number">18</span>
                             </div>
                             <div class="hidden-content" id="day-18-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_18.JPG" alt="Gift for Day 18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-18" src="" alt="Gift for Day 18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
                     </span>
@@ -564,7 +632,7 @@
                             <span class="day-number">22</span>
                         </div>
                         <div class="hidden-content" id="day-22-content">
-                            <img loading="lazy" src="/nelly_media/advent_calendar_22.JPG" alt="Gift for Day 22" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            <img loading="lazy" id="img-22" src="" alt="Gift for Day 22" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                         </div>
                     </div>
                 </span>
@@ -578,7 +646,7 @@
                                     <span class="day-number">24</span>
                                 </div>
                                 <div class="hidden-content" id="day-24-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_24.JPG" alt="Gift for Day 24" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-24" src="" alt="Gift for Day 24" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
 
@@ -588,7 +656,7 @@
                                         <span class="day-number">13</span>
                                     </div>
                                     <div class="hidden-content" id="day-13-content">
-                                        <img loading="lazy" src="/nelly_media/advent_calendar_13.JPG" alt="Gift for Day 13" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                        <img loading="lazy" id="img-13" src="" alt="Gift for Day 13" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                     </div>
                                 </div>
                             
@@ -597,7 +665,7 @@
                                         <span class="day-number">14</span>
                                     </div>
                                     <div class="hidden-content" id="day-14-content">
-                                        <img loading="lazy" src="/nelly_media/advent_calendar_14.JPG" alt="Gift for Day 14" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                        <img loading="lazy" id="img-14" src="" alt="Gift for Day 14" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                     </div>
                                 </div>
                             </span>
@@ -609,7 +677,7 @@
                                     <span class="day-number">9</span>
                                 </div>
                                 <div class="hidden-content" id="day-9-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_9.JPG" alt="Gift for Day 9" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-9" src="" alt="Gift for Day 9" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
 
@@ -618,7 +686,7 @@
                                     <span class="day-number">20</span>
                                 </div>
                                 <div class="hidden-content" id="day-20-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_20.JPG" alt="Gift for Day 20" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-20" src="" alt="Gift for Day 20" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
                         </span>
@@ -629,7 +697,7 @@
                                 <span class="day-number">10</span>
                             </div>
                             <div class="hidden-content" id="day-10-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_10.JPG" alt="Gift for Day 10" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-10" src="" alt="Gift for Day 10" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
 
@@ -639,7 +707,7 @@
                                     <span class="day-number">12</span>
                                 </div>
                                 <div class="hidden-content" id="day-12-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_12.JPG" alt="Gift for Day 12" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-12" src="" alt="Gift for Day 12" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
 
@@ -649,7 +717,7 @@
                                     <span class="day-number">17</span>
                                 </div>
                                 <div class="hidden-content" id="day-17-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_17.JPG" alt="Gift for Day 17" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-17" src="" alt="Gift for Day 17" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
                             <div class="calendar-day" id="day-2" onclick="openDay(2)">
@@ -657,7 +725,7 @@
                                     <span class="day-number">2</span>
                                 </div>
                                 <div class="hidden-content" id="day-2-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_2.JPG" alt="Gift for Day 2" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-2" src="" alt="Gift for Day 2" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
                         </span>
@@ -671,7 +739,7 @@
                                 <span class="day-number">19</span>
                             </div>
                             <div class="hidden-content" id="day-19-content">
-                                <img loading="lazy" src="/nelly_media/advent_calendar_19.JPG" alt="Gift for Day 19" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                <img loading="lazy" id="img-19" src="" alt="Gift for Day 19" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                             </div>
                         </div>
 
@@ -681,7 +749,7 @@
                                     <span class="day-number">8</span>
                                 </div>
                                 <div class="hidden-content" id="day-8-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_8.JPG" alt="Gift for Day 8" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-8" src="" alt="Gift for Day 8" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
 
@@ -690,7 +758,7 @@
                                     <span class="day-number">15</span>
                                 </div>
                                 <div class="hidden-content" id="day-15-content">
-                                    <img loading="lazy" src="/nelly_media/advent_calendar_15.JPG" alt="Gift for Day 15" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                    <img loading="lazy" id="img-15" src="" alt="Gift for Day 15" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                 </div>
                             </div>
                         </span>
@@ -701,7 +769,7 @@
                             <span class="day-number">21</span>
                         </div>
                         <div class="hidden-content" id="day-21-content">
-                            <img loading="lazy" src="/nelly_media/advent_calendar_21.JPG" alt="Gift for Day 21" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                            <img loading="lazy" id="img-21" src="" alt="Gift for Day 21" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                         </div>
                     </div>            
                 </span>
@@ -749,13 +817,326 @@
     <div class="desktop" style="position: fixed; bottom: 0; z-index: 10; width: 100%; justify-content: center; background-color: #ecf2f8; margin: 0; height: 20px;"></div>
 
 
-    <div class="mobile" style="align-items: center; justify-content: center; width: 100%; height: 100%; text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.2em; color: white; margin: 40px; text-wrap: balance;">
-        Aus<br>TECHNISCHEN GRÜNDEN<br>(meiner Faulheit) ist der Adventskalender nur auf Desktop-Geräten verfügbar. Bitte öffne die Seite auf Deinem Mac.
+    <div class="mobile" style="flex-direction: column; justify-content: center; align-items: center; width: 100%; padding: 10px;">
+        <div id="app-bar-mobile" style="width: 100%; max-width: 400px; display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 20px; text-align: center;">
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8em; color: #ebe9f5;">Für meine wundervolle Freundin:</span>
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 1.6em; color: #ebe9f5; font-weight: bold;">Nele's Adventskalender</span>
+        </div>
+        
+        <div id="app-container-mobile" style="padding: 15px; text-align: center; background-color: #fdf9f4; border-radius: 20px; box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4); overflow-y: auto; max-height: 80vh;">
+            <div class="calendar-mobile" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-content: center;">
+                <!-- Mobile calendar grid - 6 rows x 4 columns -->
+                <div class="calendar-day mobile-day" id="mobile-day-1" onclick="openDay(1)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-3);">
+                        <span class="day-number">1</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-1-content">
+                        <img loading="lazy" id="mobile-img-1" src="" alt="Gift for Day 1" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-2" onclick="openDay(2)">
+                    <div class="door mobile-door">
+                        <span class="day-number">2</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-2-content">
+                        <img loading="lazy" id="mobile-img-2" src="" alt="Gift for Day 2" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-3" onclick="openDay(3)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-4);">
+                        <span class="day-number">3</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-3-content">
+                        <img loading="lazy" id="mobile-img-3" src="" alt="Gift for Day 3" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-4" onclick="openDay(4)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-2);">
+                        <span class="day-number">4</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-4-content">
+                        <img loading="lazy" id="mobile-img-4" src="" alt="Gift for Day 4" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-5" onclick="openDay(5)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-2);">
+                        <span class="day-number">5</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-5-content">
+                        <img loading="lazy" id="mobile-img-5" src="" alt="Gift for Day 5" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-6" onclick="openDay(6)">
+                    <div class="door mobile-door">
+                        <span class="day-number">6</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-6-content">
+                        <img loading="lazy" id="mobile-img-6" src="" alt="Gift for Day 6" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-7" onclick="openDay(7)">
+                    <div class="door mobile-door">
+                        <span class="day-number">7</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-7-content">
+                        <img loading="lazy" id="mobile-img-7" src="" alt="Gift for Day 7" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-8" onclick="openDay(8)">
+                    <div class="door mobile-door">
+                        <span class="day-number">8</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-8-content">
+                        <img loading="lazy" id="mobile-img-8" src="" alt="Gift for Day 8" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-9" onclick="openDay(9)">
+                    <div class="door mobile-door">
+                        <span class="day-number">9</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-9-content">
+                        <img loading="lazy" id="mobile-img-9" src="" alt="Gift for Day 9" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-10" onclick="openDay(10)">
+                    <div class="door mobile-door">
+                        <span class="day-number">10</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-10-content">
+                        <img loading="lazy" id="mobile-img-10" src="" alt="Gift for Day 10" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-11" onclick="openDay(11)">
+                    <div class="door mobile-door">
+                        <span class="day-number">11</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-11-content">
+                        <img loading="lazy" id="mobile-img-11" src="" alt="Gift for Day 11" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-12" onclick="openDay(12)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-4);">
+                        <span class="day-number">12</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-12-content">
+                        <img loading="lazy" id="mobile-img-12" src="" alt="Gift for Day 12" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-13" onclick="openDay(13)">
+                    <div class="door mobile-door">
+                        <span class="day-number">13</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-13-content">
+                        <img loading="lazy" id="mobile-img-13" src="" alt="Gift for Day 13" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-14" onclick="openDay(14)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-2);">
+                        <span class="day-number">14</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-14-content">
+                        <img loading="lazy" id="mobile-img-14" src="" alt="Gift for Day 14" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-15" onclick="openDay(15)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-2);">
+                        <span class="day-number">15</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-15-content">
+                        <img loading="lazy" id="mobile-img-15" src="" alt="Gift for Day 15" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-16" onclick="openDay(16)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-4);">
+                        <span class="day-number">16</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-16-content">
+                        <img loading="lazy" id="mobile-img-16" src="" alt="Gift for Day 16" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-17" onclick="openDay(17)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-2);">
+                        <span class="day-number">17</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-17-content">
+                        <img loading="lazy" id="mobile-img-17" src="" alt="Gift for Day 17" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-18" onclick="openDay(18)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-2);">
+                        <span class="day-number">18</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-18-content">
+                        <img loading="lazy" id="mobile-img-18" src="" alt="Gift for Day 18" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-19" onclick="openDay(19)">
+                    <div class="door mobile-door">
+                        <span class="day-number">19</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-19-content">
+                        <img loading="lazy" id="mobile-img-19" src="" alt="Gift for Day 19" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-20" onclick="openDay(20)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-3);">
+                        <span class="day-number">20</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-20-content">
+                        <img loading="lazy" id="mobile-img-20" src="" alt="Gift for Day 20" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-21" onclick="openDay(21)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-3);">
+                        <span class="day-number">21</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-21-content">
+                        <img loading="lazy" id="mobile-img-21" src="" alt="Gift for Day 21" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-22" onclick="openDay(22)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-3);">
+                        <span class="day-number">22</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-22-content">
+                        <img loading="lazy" id="mobile-img-22" src="" alt="Gift for Day 22" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-23" onclick="openDay(23)">
+                    <div class="door mobile-door">
+                        <span class="day-number">23</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-23-content">
+                        <img loading="lazy" id="mobile-img-23" src="" alt="Gift for Day 23" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="calendar-day mobile-day" id="mobile-day-24" onclick="openDay(24)">
+                    <div class="door mobile-door" style="background-color: var(--sage-green-4);">
+                        <span class="day-number">24</span>
+                    </div>
+                    <div class="hidden-content" id="mobile-day-24-content">
+                        <img loading="lazy" id="mobile-img-24" src="" alt="Gift for Day 24" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="width: 100%; max-width: 400px; display: flex; justify-content: center; align-items: end; flex-direction: column; margin-top: 15px; padding-right: 15px;">
+            <span style="font-family: 'Montserrat', sans-serif; font-size: 0.7em; color: #ebe9f5;">von Jan</span>
+        </div>
     </div>
+
+    <!-- Mobile Christmas decorations -->
+    <div class="mobile" style="position: fixed; bottom: 0; z-index: 5; width: 100%; justify-content: start; margin: 0; margin-left: 20px; pointer-events: none;">
+        <div style="text-align: center; position: relative; transform: scale(0.7);">
+            <!-- Head -->
+            <div style="width: 40px; height: 40px; background-color: white; border-radius: 50%; margin: 0 auto;"></div>
+            <!-- Eyes -->
+            <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px;">
+                <div style="width: 6px; height: 6px; background-color: black; border-radius: 50%;"></div>
+                <div style="width: 6px; height: 6px; background-color: black; border-radius: 50%;"></div>
+            </div>
+            <!-- Nose -->
+            <div style="position: absolute; top: 18px; left: calc(50% + 7px); transform: translateX(-50%);">
+                <div style="width: 0; height: 0; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 15px solid orange;"></div>
+            </div>            
+            <!-- Body -->
+            <div style="width: 60px; height: 60px; background-color: white; border-radius: 50%;  margin: -10px auto 0;"></div>
+            <!-- Buttons -->
+            <div style="position: relative; margin-top: -50px;">
+                <div style="width: 8px; height: 8px; background-color: black; border-radius: 50%; margin: 8px auto;"></div>
+                <div style="width: 8px; height: 8px; background-color: black; border-radius: 50%; margin: 8px auto;"></div>
+            </div>
+            <!-- Base -->
+            <div style="width: 80px; height: 80px; background-color: white; border-radius: 50%; margin: -15px auto 0;"></div>
+        </div>
+    </div>
+    
+    <div class="mobile" style="position: fixed; bottom: -12px; z-index: 5; width: 100%; justify-content: start; margin: 0; margin-left: 120px; align-items: center; pointer-events: none;">
+        <h1 style="font-size: 60px; margin: 0; padding: 0; margin-bottom: -10px;">🎄</h1>
+        <h1 style="font-size: 70px; margin: 0; padding: 0; margin-left: -35px;">🌲</h1>
+        <h1 style="font-size: 65px; margin: 0; padding: 0; margin-bottom: -5px; margin-left: -35px;">🎄</h1>
+        <h1 style="font-size: 25px; margin: 0; padding: 0; margin-bottom: -50px; margin-left: 20px;">🎁</h1>
+    </div>
+    
+    <div class="mobile" style="position: fixed; bottom: -12px; z-index: 5; width: 100%; justify-content: end; margin: 0; right: 0px; align-items: center; pointer-events: none;">
+        <h1 style="font-size: 60px; margin: 0; padding: 0; margin-bottom: -10px; margin-left: -35px;">🌲</h1>
+        <h1 style="font-size: 70px; margin: 0; padding: 0; margin-left: -35px;">🎄</h1>
+    </div>
+    
+    <div class="mobile" style="position: fixed; bottom: 0; z-index: 4; width: 100%; justify-content: center; background-color: #ecf2f8; margin: 0; height: 20px; pointer-events: none;"></div>
 
 
 
     <script>
+        // Array of image sources - easy to maintain
+        const adventImages = {
+            1: '/nelly_media/1.PNG',
+            2: '/nelly_media/2.PNG',
+            3: '/nelly_media/3.PNG',
+            4: '/nelly_media/4.PNG',
+            5: '/nelly_media/5.PNG',
+            6: '/nelly_media/6.PNG',
+            7: '/nelly_media/7.PNG',
+            8: '/nelly_media/8.PNG',
+            9: '/nelly_media/9.PNG',
+            10: '/nelly_media/10.PNG',
+            11: '/nelly_media/11.PNG',
+            12: '/nelly_media/12.PNG',
+            13: '/nelly_media/13.PNG',
+            14: '/nelly_media/14.PNG',
+            15: '/nelly_media/15.PNG',
+            16: '/nelly_media/16.PNG',
+            17: '/nelly_media/17.PNG',
+            18: '/nelly_media/18.PNG',
+            19: '/nelly_media/19.PNG',
+            20: '/nelly_media/20.PNG',
+            21: '/nelly_media/21.PNG',
+            22: '/nelly_media/22.PNG',
+            23: '/nelly_media/23.PNG',
+            24: '/nelly_media/24.PNG'
+        };
+
+        // Function to load all images from the array
+        function loadAdventImages() {
+            for (let day = 1; day <= 24; day++) {
+                // Load desktop images
+                const imgElement = document.getElementById(`img-${day}`);
+                if (imgElement && adventImages[day]) {
+                    imgElement.src = adventImages[day];
+                }
+                
+                // Load mobile images
+                const mobileImgElement = document.getElementById(`mobile-img-${day}`);
+                if (mobileImgElement && adventImages[day]) {
+                    mobileImgElement.src = adventImages[day];
+                }
+            }
+        }
+
         function showError(message) {
             window.scrollTo(0, 0);
             $('#error-text').text(message);
@@ -778,45 +1159,76 @@
                 return;
             }
 
-
             if (day > currentDay && !force) {
                 showError('Dieses Türchen kannst Du noch nicht öffnen!');
                 return;
             }
 
-
-
+            // Handle desktop version
             const dayElement = document.getElementById('day-' + day);
-            const contentElement = document.getElementById('day-' + day + '-content');
-            const dayNumberElement = dayElement.querySelector('.day-number');
-            if (!dayElement.classList.contains('opened')) {
-                dayElement.classList.add('opened');
-                contentElement.style.opacity = 1;
-                // time in milliseconds to wait before showing the content
-                setTimeout(() => {
-                    dayNumberElement.style.display = 'none';
-                }, 250);
+            if (dayElement) {
+                const contentElement = document.getElementById('day-' + day + '-content');
+                const dayNumberElement = dayElement.querySelector('.day-number');
+                if (!dayElement.classList.contains('opened')) {
+                    dayElement.classList.add('opened');
+                    contentElement.style.opacity = 1;
+                    setTimeout(() => {
+                        dayNumberElement.style.display = 'none';
+                    }, 250);
+                }
+            }
+
+            // Handle mobile version
+            const mobileDayElement = document.getElementById('mobile-day-' + day);
+            if (mobileDayElement) {
+                const mobileContentElement = document.getElementById('mobile-day-' + day + '-content');
+                const mobileDayNumberElement = mobileDayElement.querySelector('.day-number');
+                if (!mobileDayElement.classList.contains('opened')) {
+                    mobileDayElement.classList.add('opened');
+                    mobileContentElement.style.opacity = 1;
+                    setTimeout(() => {
+                        mobileDayNumberElement.style.display = 'none';
+                    }, 250);
+                }
             }
         }
 
         // on page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Load all advent images
+            loadAdventImages();
+            
             const today = new Date();
             var currentDay = today.getDate();
             if (today.getMonth() != 11) {
                 currentDay = 0;
             }
 
-	    // open all doors where day is less than to current day without animation by hiding the door
+            // open all doors where day is less than to current day without animation by hiding the door
             for (let i = 1; i < currentDay; i++) {
+                // Handle desktop version
                 const dayElement = document.getElementById('day-' + i);
-                const contentElement = document.getElementById('day-' + i + '-content');
-                const dayNumberElement = dayElement.querySelector('.day-number');
-                const doorElement = dayElement.querySelector('.door');
-                dayElement.classList.add('opened');
-                contentElement.style.transition = 'none';
-                dayNumberElement.style.display = 'none';
-                doorElement.style.display = 'none';
+                if (dayElement) {
+                    const contentElement = document.getElementById('day-' + i + '-content');
+                    const dayNumberElement = dayElement.querySelector('.day-number');
+                    const doorElement = dayElement.querySelector('.door');
+                    dayElement.classList.add('opened');
+                    contentElement.style.transition = 'none';
+                    dayNumberElement.style.display = 'none';
+                    doorElement.style.display = 'none';
+                }
+
+                // Handle mobile version
+                const mobileDayElement = document.getElementById('mobile-day-' + i);
+                if (mobileDayElement) {
+                    const mobileContentElement = document.getElementById('mobile-day-' + i + '-content');
+                    const mobileDayNumberElement = mobileDayElement.querySelector('.day-number');
+                    const mobileDoorElement = mobileDayElement.querySelector('.door');
+                    mobileDayElement.classList.add('opened');
+                    mobileContentElement.style.transition = 'none';
+                    mobileDayNumberElement.style.display = 'none';
+                    mobileDoorElement.style.display = 'none';
+                }
             }
         });
 
