@@ -2,7 +2,7 @@
   "name": "Mausmeister:in",
   "short_name": "Mausmeister:in",
   "start_url": "/nelly",
-  "scope": "/nelly",
+  "scope": "/",
   "icons": [
     {
       "src": "https://www.gruettecloud.com/static/icon.png",
