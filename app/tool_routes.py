@@ -641,7 +641,10 @@ def external_html_weather():
 def mensieren():
     return "<h1>TEST ONLY</h1><a href='https://mensieren.de'>mensieren.de</a>"
 
-    
+@tool_route.route('/safeFLY', methods=['GET'])
+def safeFLY():
+    return render_template("safefly.html", menu=th.user(session))
+
     
 # Endpoints for Flutter App
 
@@ -653,7 +656,7 @@ from pythonHelper import EncryptionHelper
 from urllib.parse import unquote
 
 
-@tool_route.route('/api/v1/login', methods=['POST'])
+#@tool_route.route('/api/v1/login', methods=['POST'])
 def api_v1_login():
     data = request.form
     username = str(data.get('username').lower())

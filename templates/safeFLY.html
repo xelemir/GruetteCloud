@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">safeFLY - German Drone Map</title>
+    <meta name="description" content="safeFLY is the essential iOS companion for drone pilots in Germany. Check official air traffic control zones, visualize airspace restrictions, and fly with confidence.">
+    <link rel="icon" type="image/png" href="/static/Drone-iOS-Default-64x64@2x.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+
+    <div id="content-en" class="content-lang">
+        <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                        <img src="/static/Drone-iOS-Default-64x64@2x.png" alt="safeFLY Logo" class="h-8 w-8 mr-4">
+                        <span class="font-bold text-2xl tracking-tight text-slate-900">safe<span class="text-blue-600">FLY</span></span>
+                    </div>
+
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <a href="#features-en" class="text-slate-600 hover:text-blue-600 font-medium transition text-sm">Features</a>
+                        <a href="#map-preview" class="text-slate-600 hover:text-blue-600 font-medium transition text-sm">Map</a>
+                        <a href="#privacy-en" class="text-slate-600 hover:text-blue-600 font-medium transition text-sm">Privacy</a>
+                        <a href="/support" class="text-slate-600 hover:text-blue-600 font-medium transition flex items-center text-sm">
+                            Support <i data-lucide="life-buoy" class="w-3.5 h-3.5 ml-1"></i>
+                        </a>
+                        <button class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-semibold transition shadow-lg shadow-slate-900/20 transform hover:-translate-y-0.5 text-sm flex items-center">
+                            <i data-lucide="apple" class="w-4 h-4 mr-2"></i> App Store
+                        </button>
+                    </div>
+
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn-en" class="text-slate-600 hover:text-slate-900 focus:outline-none">
+                            <i data-lucide="menu" class="h-6 w-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobile-menu-en" class="hidden md:hidden bg-white border-t border-slate-100">
+                <div class="px-4 pt-2 pb-6 space-y-2">
+                    <a href="#features-en" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Features</a>
+                    <a href="#privacy-en" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Privacy Policy</a>
+                    <a href="/support" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Support</a>
+                    <div class="pt-4">
+                        <button class="w-full flex items-center justify-center bg-slate-900 text-white px-4 py-3 rounded-lg font-semibold shadow-md">
+                            <i data-lucide="apple" class="w-5 h-5 mr-2"></i> Download on iOS
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full border border-blue-100 bg-blue-50 text-blue-600 text-xs font-semibold uppercase tracking-wide mb-6">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span> Live Geo Zone Data
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 leading-tight mb-6">
+                        Fly Drones Legally in <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">Germany</span>.
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                        The essential iOS companion for every pilot. Check official German air traffic control zones, visualize airspace restrictions, and fly with confidence.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button class="flex items-center justify-center bg-slate-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-slate-800 transition shadow-xl shadow-slate-900/20 group">
+                            <i data-lucide="apple" class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"></i> Download on App Store
+                        </button>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-400">Requires iOS 18.6 or later.</p>
+                </div>
+            </div>
+            
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+                <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-100/80 rounded-full blur-3xl opacity-50"></div>
+                <div class="absolute top-40 -left-20 w-72 h-72 bg-sky-100/80 rounded-full blur-3xl opacity-50"></div>
+            </div>
+        </section>
+
+        <section id="map-preview" class="py-20 bg-white relative">
+            <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    
+                    <div class="relative mx-auto order-last md:order-first">
+                        <div class="relative border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl shadow-slate-400/50 mx-auto z-10">
+                            <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute z-20"></div>
+                            <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
+                            <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
+                            <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
+                            <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
+                            
+                            <div class="rounded-[2rem] overflow-hidden w-full h-full bg-slate-100 relative">
+                                <div class="w-full h-full relative overflow-hidden bg-slate-200">
+                                    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#475569 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
+                                    
+                                    <div class="absolute -top-10 left-1/3 w-32 h-[120%] bg-blue-300/40 transform -skew-x-12 border-x border-blue-400/20"></div>
+                                    
+                                    <div class="absolute top-24 right-[-20px] w-40 h-40 bg-red-500/10 border border-red-500/50 rounded-full flex items-center justify-center backdrop-blur-[1px]">
+                                        <div class="bg-red-50 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-red-100">Restricted</div>
+                                    </div>
+
+                                    <div class="absolute bottom-32 -left-10 w-48 h-48 bg-orange-400/10 border border-orange-400/50 rounded-full flex items-center justify-center backdrop-blur-[1px]"></div>
+
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                                        <span class="absolute inline-flex h-12 w-12 rounded-full bg-blue-500 opacity-30 animate-ping"></span>
+                                        <span class="relative inline-flex rounded-full h-5 w-5 bg-blue-600/30"></span>
+                                        <span class="absolute inline-flex rounded-full h-3 w-3 bg-blue-600 border-2 border-white shadow-md z-20"></span>
+                                    </div>
+                                    
+                                    <div class="absolute top-12 left-4 right-4 flex justify-between items-start">
+                                        <div class="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm border border-slate-100 flex items-center gap-2">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                                            <span class="text-[10px] font-semibold text-slate-700 uppercase tracking-wide">GPS Good</span>
+                                        </div>
+                                        <div class="bg-slate-900/90 backdrop-blur-md p-1.5 rounded-lg shadow-sm">
+                                            <i data-lucide="layers" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="absolute bottom-8 left-4 right-4 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-lg border border-slate-100/50">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-bold text-slate-800 text-sm">Stuttgart</h4>
+                                                <p class="text-[10px] text-slate-500 mt-0.5">Coordinates:<br>48.7758° N, 9.1829° E</p>
+                                            </div>
+                                            <div class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold uppercase">Fly Safe</div>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-center">
+                                            <div>
+                                                <div class="text-[9px] text-slate-400 uppercase font-bold">Max Alt</div>
+                                                <div class="text-xs font-semibold text-slate-700">120m</div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[9px] text-slate-400 uppercase font-bold">Class</div>
+                                                <div class="text-xs font-semibold text-slate-700">Open</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[500px] bg-blue-400/20 blur-[100px] -z-10 rounded-full"></div>
+                    </div>
+
+                    <div class="space-y-10 md:pl-10" id="features-en">
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
+                                <i data-lucide="map" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Official German Air Traffic Control Data</h3>
+                                <p class="text-slate-600 mt-2 leading-relaxed">We aggregate data directly from official sources to ensure you have the most up-to-date restrictions for German airspace.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center text-orange-600 shrink-0 shadow-sm">
+                                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Instant Zone Validation</h3>
+                                <p class="text-slate-600 mt-2 leading-relaxed">Know immediately if you are in a No-Fly Zone (NFZ), near an airport, or in a nature reserve before you takeoff.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-green-50 border border-green-100 rounded-xl flex items-center justify-center text-green-600 shrink-0 shadow-sm">
+                                <i data-lucide="battery-charging" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Efficient Performance</h3>
+                                <p class="text-slate-600 mt-2 leading-relaxed">Optimized for long sessions in the field. Minimal battery drain so you can focus on flying, not your phone's charge.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy-en" class="py-24 bg-slate-900 text-slate-300 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+            
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">Privacy & Data Security</h2>
+                    <p class="mt-4 text-slate-400">Your flight path is your business. We keep it that way.</p>
+                </div>
+                
+                <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 shadow-2xl backdrop-blur-sm">
+                    <div class="flex items-start mb-8">
+                        <div class="bg-blue-500/10 p-3 rounded-lg mr-5 border border-blue-500/20">
+                            <i data-lucide="lock" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-2">Local Processing</h3>
+                            <p class="leading-relaxed text-slate-400">
+                                <strong class="text-blue-200">We do not collect or store personal data.</strong> 
+                                Your location data is processed locally on your device for map positioning only and is never sent to safeFLY servers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700/50 my-6"></div>
+
+                    <div class="flex items-start">
+                        <div class="bg-orange-500/10 p-3 rounded-lg mr-5 border border-orange-500/20">
+                            <i data-lucide="server" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-2">DFS Integration</h3>
+                            <p class="leading-relaxed text-slate-400 text-sm">
+                                Map tiles are retrieved directly from the <strong class="text-slate-200">Digitale Plattform unbemannte Luftfahrt (DIPUL), operated by German Air Traffic Control (DFS)</strong>.
+                                While we don't log your data, direct connections to map providers may result in standard technical access logs (e.g., IP addresses) on their end.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <img src="/static/Drone-iOS-Default-64x64@2x.png" alt="safeFLY Logo" class="h-8 w-8 mr-4 opacity-90">
+                            <span class="font-bold text-xl text-white tracking-tight">safeFLY</span>
+                        </div>
+                        <p class="text-sm leading-relaxed max-w-xs text-slate-500">
+                            The trusted iOS utility for drone pilots across Germany. Visualize zones, stay compliant, and fly responsibly.
+                        </p>
+                        <div class="pt-4">
+                            <a href="#" class="inline-flex items-center justify-center px-4 py-2 border border-slate-700 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                                <i data-lucide="apple" class="w-3 h-3 mr-2"></i> Download for iOS
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-slate-200 font-semibold text-sm uppercase tracking-wider mb-6">Navigation</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="#features-en" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 bg-slate-700 rounded-full mr-2"></span>Features</a></li>
+                            <li><a href="#map-preview" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 bg-slate-700 rounded-full mr-2"></span>Map Preview</a></li>
+                            <li><a href="#privacy-en" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 bg-slate-700 rounded-full mr-2"></span>Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-slate-200 font-semibold text-sm uppercase tracking-wider mb-6">Trust & Support</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="/support" class="hover:text-blue-400 transition flex items-center">Help Center</a></li>
+                            <li><a href="/about" class="hover:text-blue-400 transition flex items-center">Imprint (Impressum)</a></li>
+                            <li><a href="/terms" class="hover:text-blue-400 transition flex items-center">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600">
+                    <p>&copy; 2025 safeFLY Germany. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <span>Another cool project by Jan Grüttefien</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <div id="content-de" class="content-lang hidden">
+        <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                        <img src="/static/Drone-iOS-Default-64x64@2x.png" alt="safeFLY Logo" class="h-8 w-8 mr-4">
+                        <span class="font-bold text-2xl tracking-tight text-slate-900">safe<span class="text-blue-600">FLY</span></span>
+                    </div>
+
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <a href="#features-de" class="text-slate-600 hover:text-blue-600 font-medium transition text-sm">Funktionen</a>
+                        <a href="#map-preview" class="text-slate-600 hover:text-blue-600 font-medium transition text-sm">Karte</a>
+                        <a href="#privacy-de" class="text-slate-600 hover:text-blue-600 font-medium transition text-sm">Datenschutz</a>
+                        <a href="/support" class="text-slate-600 hover:text-blue-600 font-medium transition flex items-center text-sm">
+                            Support <i data-lucide="life-buoy" class="w-3.5 h-3.5 ml-1"></i>
+                        </a>
+                        <button class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-semibold transition shadow-lg shadow-slate-900/20 transform hover:-translate-y-0.5 text-sm flex items-center">
+                            <i data-lucide="apple" class="w-4 h-4 mr-2"></i> App Store
+                        </button>
+                    </div>
+
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn-de" class="text-slate-600 hover:text-slate-900 focus:outline-none">
+                            <i data-lucide="menu" class="h-6 w-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobile-menu-de" class="hidden md:hidden bg-white border-t border-slate-100">
+                <div class="px-4 pt-2 pb-6 space-y-2">
+                    <a href="#features-de" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Funktionen</a>
+                    <a href="#privacy-de" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Datenschutzrichtlinie</a>
+                    <a href="/support" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Support</a>
+                    <div class="pt-4">
+                        <button class="w-full flex items-center justify-center bg-slate-900 text-white px-4 py-3 rounded-lg font-semibold shadow-md">
+                            <i data-lucide="apple" class="w-5 h-5 mr-2"></i> Jetzt im App Store laden
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full border border-blue-100 bg-blue-50 text-blue-600 text-xs font-semibold uppercase tracking-wide mb-6">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span> Live Geozonen-Daten
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 leading-tight mb-6">
+                        Drohnenflüge Legal in <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-400">Deutschland</span>.
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                        Der unverzichtbare iOS-Begleiter für jeden Piloten. Offizielle DFS-Zonen prüfen, Luftraumbeschränkungen visualisieren und sicher fliegen.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button class="flex items-center justify-center bg-slate-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-slate-800 transition shadow-xl shadow-slate-900/20 group">
+                            <i data-lucide="apple" class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"></i> Jetzt im App Store laden
+                        </button>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-400">Benötigt iOS 18.6 oder neuer.</p>
+                </div>
+            </div>
+            
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+                <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-100/80 rounded-full blur-3xl opacity-50"></div>
+                <div class="absolute top-40 -left-20 w-72 h-72 bg-sky-100/80 rounded-full blur-3xl opacity-50"></div>
+            </div>
+        </section>
+
+        <section id="map-preview" class="py-20 bg-white relative">
+            <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    
+                    <div class="relative mx-auto order-last md:order-first">
+                        <div class="relative border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl shadow-slate-400/50 mx-auto z-10">
+                            <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute z-20"></div>
+                            <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
+                            <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
+                            <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
+                            <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
+                            
+                            <div class="rounded-[2rem] overflow-hidden w-full h-full bg-slate-100 relative">
+                                <div class="w-full h-full relative overflow-hidden bg-slate-200">
+                                    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#475569 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
+                                    
+                                    <div class="absolute -top-10 left-1/3 w-32 h-[120%] bg-blue-300/40 transform -skew-x-12 border-x border-blue-400/20"></div>
+                                    
+                                    <div class="absolute top-24 right-[-20px] w-40 h-40 bg-red-500/10 border border-red-500/50 rounded-full flex items-center justify-center backdrop-blur-[1px]">
+                                        <div class="bg-red-50 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-red-100">Restricted</div>
+                                    </div>
+
+                                    <div class="absolute bottom-32 -left-10 w-48 h-48 bg-orange-400/10 border border-orange-400/50 rounded-full flex items-center justify-center backdrop-blur-[1px]"></div>
+
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                                        <span class="absolute inline-flex h-12 w-12 rounded-full bg-blue-500 opacity-30 animate-ping"></span>
+                                        <span class="relative inline-flex rounded-full h-5 w-5 bg-blue-600/30"></span>
+                                        <span class="absolute inline-flex rounded-full h-3 w-3 bg-blue-600 border-2 border-white shadow-md z-20"></span>
+                                    </div>
+                                    
+                                    <div class="absolute top-12 left-4 right-4 flex justify-between items-start">
+                                        <div class="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm border border-slate-100 flex items-center gap-2">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                                            <span class="text-[10px] font-semibold text-slate-700 uppercase tracking-wide">GPS Stabil</span>
+                                        </div>
+                                        <div class="bg-slate-900/90 backdrop-blur-md p-1.5 rounded-lg shadow-sm">
+                                            <i data-lucide="layers" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="absolute bottom-8 left-4 right-4 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-lg border border-slate-100/50">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-bold text-slate-800 text-sm">Stuttgart</h4>
+                                                <p class="text-[10px] text-slate-500 mt-0.5">Koordinaten:<br>48.7758° N, 9.1829° E</p>
+                                            </div>
+                                            <div class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold uppercase">Erlaubt</div>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-center">
+                                            <div>
+                                                <div class="text-[9px] text-slate-400 uppercase font-bold">Max. Höhe</div>
+                                                <div class="text-xs font-semibold text-slate-700">120m</div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[9px] text-slate-400 uppercase font-bold">Klasse</div>
+                                                <div class="text-xs font-semibold text-slate-700">Offen</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[500px] bg-blue-400/20 blur-[100px] -z-10 rounded-full"></div>
+                    </div>
+
+                    <div class="space-y-10 md:pl-10" id="features-de">
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-600 shrink-0 shadow-sm">
+                                <i data-lucide="map" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Offizielle DFS-Daten</h3>
+                                <p class="text-slate-600 mt-2 leading-relaxed">Wir aggregieren Daten direkt aus offiziellen Quellen, um Dir stets die aktuellsten Beschränkungen für den deutschen Luftraum zu gewährleisten.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center text-orange-600 shrink-0 shadow-sm">
+                                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Sofortige Zonenprüfung</h3>
+                                <p class="text-slate-600 mt-2 leading-relaxed">Erfahre sofort, ob Du Dich in einer Flugverbotszone (NFZ), in der Nähe eines Flughafens oder in einem Naturschutzgebiet befindest, bevor Du abhebst.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-green-50 border border-green-100 rounded-xl flex items-center justify-center text-green-600 shrink-0 shadow-sm">
+                                <i data-lucide="battery-charging" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Effiziente Leistung</h3>
+                                <p class="text-slate-600 mt-2 leading-relaxed">Optimiert für lange Einsätze im Feld. Minimaler Akkuverbrauch, damit Du Dich auf das Fliegen konzentrieren kannst und nicht auf den Ladezustand Deines Telefons.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy-de" class="py-24 bg-slate-900 text-slate-300 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+            
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">Datenschutz & Datensicherheit</h2>
+                    <p class="mt-4 text-slate-400">Ihre Flugroute ist Ihre Sache. Das bleibt auch so.</p>
+                </div>
+                
+                <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 shadow-2xl backdrop-blur-sm">
+                    <div class="flex items-start mb-8">
+                        <div class="bg-blue-500/10 p-3 rounded-lg mr-5 border border-blue-500/20">
+                            <i data-lucide="lock" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-2">Lokale Verarbeitung</h3>
+                            <p class="leading-relaxed text-slate-400">
+                                <strong class="text-blue-200">Wir sammeln oder speichern keine persönlichen Daten.</strong> 
+                                Ihre Standortdaten werden ausschließlich lokal auf Ihrem Gerät für die Kartenpositionierung verarbeitet und niemals an safeFLY-Server gesendet.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700/50 my-6"></div>
+
+                    <div class="flex items-start">
+                        <div class="bg-orange-500/10 p-3 rounded-lg mr-5 border border-orange-500/20">
+                            <i data-lucide="server" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-2">DFS-Integration</h3>
+                            <p class="leading-relaxed text-slate-400 text-sm">
+                                Kartendaten werden direkt von der <strong class="text-slate-200">Digitalen Plattform unbemannte Luftfahrt (DIPUL), betrieben von der Deutschen Flugsicherung (DFS)</strong> abgerufen. 
+                                Obwohl wir keine Daten protokollieren, können direkte Verbindungen zu Kartendienstanbietern zu standardmäßigen technischen Zugriffsprotokollen (z.B. IP-Adressen) auf deren Seite führen.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <img src="/static/Drone-iOS-Default-64x64@2x.png" alt="safeFLY Logo" class="h-8 w-8 mr-4 opacity-90">
+                            <span class="font-bold text-xl text-white tracking-tight">safeFLY</span>
+                        </div>
+                        <p class="text-sm leading-relaxed max-w-xs text-slate-500">
+                            Das bewährte iOS-Tool für Drohnenpiloten in ganz Deutschland. Zonen visualisieren, Vorschriften einhalten und verantwortungsvoll fliegen.
+                        </p>
+                        <div class="pt-4">
+                            <a href="#" class="inline-flex items-center justify-center px-4 py-2 border border-slate-700 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                                <i data-lucide="apple" class="w-3 h-3 mr-2"></i> Jetzt im App Store laden
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-slate-200 font-semibold text-sm uppercase tracking-wider mb-6">Navigation</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="#features-de" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 bg-slate-700 rounded-full mr-2"></span>Funktionen</a></li>
+                            <li><a href="#map-preview" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 bg-slate-700 rounded-full mr-2"></span>Kartenansicht</a></li>
+                            <li><a href="#privacy-de" class="hover:text-blue-400 transition flex items-center"><span class="w-1.5 h-1.5 bg-slate-700 rounded-full mr-2"></span>Datenschutzrichtlinie</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-slate-200 font-semibold text-sm uppercase tracking-wider mb-6">Vertrauen & Support</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="/support" class="hover:text-blue-400 transition flex items-center">Hilfe-Center</a></li>
+                            <li><a href="/about" class="hover:text-blue-400 transition flex items-center">Impressum</a></li>
+                            <li><a href="/terms" class="hover:text-blue-400 transition flex items-center">Nutzungsbedingungen</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600">
+                    <p>&copy; 2025 safeFLY Deutschland. Alle Rechte vorbehalten.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <span>Ein weiteres cooles Projekt von Jan Grüttefien</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- Language Detection Logic ---
+        function checkLanguage() {
+            // Get the preferred browser language (e.g., "en-US", "de", "de-DE")
+            const browserLang = navigator.language || navigator.userLanguage;
+
+            // Check if the language starts with "de" (German)
+            let isGerman = browserLang.toLowerCase().startsWith('de');
+            
+            const contentEn = document.getElementById('content-en');
+            const contentDe = document.getElementById('content-de');
+            const pageTitle = document.getElementById('page-title');
+
+            if (isGerman) {
+                // Display German content
+                contentDe.classList.remove('hidden');
+                contentEn.classList.add('hidden');
+                pageTitle.textContent = 'safeFLY - Deutsche Drohnenkarte';
+                // Update HTML language attribute
+                document.documentElement.lang = 'de'; 
+                // Initialize mobile menu for German
+                initMobileMenu('mobile-menu-btn-de', 'mobile-menu-de');
+            } else {
+                // Display English content (Default)
+                contentEn.classList.remove('hidden');
+                contentDe.classList.add('hidden');
+                pageTitle.textContent = 'safeFLY - German Drone Map';
+                document.documentElement.lang = 'en';
+                // Initialize mobile menu for English
+                initMobileMenu('mobile-menu-btn-en', 'mobile-menu-en');
+            }
+        }
+
+        // --- Mobile Menu Initialization Function ---
+        function initMobileMenu(btnId, menuId) {
+            const btn = document.getElementById(btnId);
+            const menu = document.getElementById(menuId);
+
+            if (!btn || !menu) return;
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when clicking a link
+            document.querySelectorAll(`#${menuId} a`).forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                });
+            });
+        }
+
+        // Run the language check when the page loads
+        checkLanguage();
+    </script>
+</body>
+</html>
