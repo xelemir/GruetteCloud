@@ -643,7 +643,7 @@ def mensieren():
 
 @tool_route.route('/safeFLY', methods=['GET'])
 def safeFLY():
-    return render_template("safefly.html", menu=th.user(session))
+    return render_template("safeFLY.html", menu=th.user(session))
 
     
 # Endpoints for Flutter App
