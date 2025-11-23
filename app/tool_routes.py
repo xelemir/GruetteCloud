@@ -641,9 +641,13 @@ def external_html_weather():
 def mensieren():
     return "<h1>TEST ONLY</h1><a href='https://mensieren.de'>mensieren.de</a>"
 
-@tool_route.route('/safeFLY', methods=['GET'])
+@tool_route.route('/safefly', methods=['GET'])
 def safeFLY():
     return render_template("safeFLY.html", menu=th.user(session))
+
+@tool_route.route('/safeFLY', methods=['GET'])
+def safeFLY_redirect():
+    return redirect("/safefly")
 
     
 # Endpoints for Flutter App
