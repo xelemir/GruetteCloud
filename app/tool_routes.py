@@ -405,7 +405,8 @@ def nelly():
             custom_stories_mobile.append(render_template("nelly_templates/template_2_mobile.html", title=story["title"], tile_title_color=story["tile_title_color"], title0=story["tiles"][0]["title"], subtitle0=story["tiles"][0]["subtitle"], image0=story["tiles"][1]["filename"], image1=story["tiles"][2]["filename"]))    
 
     today = datetime.datetime.now()
-    showAdventCalendar = True if today.month == 12 else False
+    showAdventCalendar = True if (today.month == 12 or (today.month == 11 and today.day >= 25)) else False
+    
     
     
     return render_template("nelly.html", menu=th.user(session), custom_stories=custom_stories, custom_stories_mobile=custom_stories_mobile, showAdventCalendar=showAdventCalendar)
