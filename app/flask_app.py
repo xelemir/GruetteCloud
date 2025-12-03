@@ -111,7 +111,10 @@ def error401page():
 
 @app.route("/sitemap.xml", methods=["GET"])
 def sitemap():
+    return app.static_folder
+    
     return send_from_directory(app.static_folder, "sitemap.xml")
+
 @app.route("/maintenance")
 def maintenance():
     return render_template("errors/maintenance.html", menu=th.user(session))
