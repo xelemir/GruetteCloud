@@ -109,6 +109,9 @@ def error500page():
 def error401page():
     return abort(401)
 
+@app.route("/sitemap.xml", methods=["GET"])
+def sitemap():
+    return send_from_directory(app.static_folder, "sitemap.xml")
 @app.route("/maintenance")
 def maintenance():
     return render_template("errors/maintenance.html", menu=th.user(session))
