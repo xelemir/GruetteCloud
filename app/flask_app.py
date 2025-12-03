@@ -111,7 +111,6 @@ def error401page():
 
 @app.route("/sitemap.xml", methods=["GET"])
 def sitemap():    
-    return static_path + "/sitemap.xml"
     return send_from_directory(static_path, "sitemap.xml")
 
 @app.route("/maintenance")
