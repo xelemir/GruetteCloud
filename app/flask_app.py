@@ -5,7 +5,7 @@ from flask_cors import CORS
 from datetime import datetime
 
 from pythonHelper import EncryptionHelper, SQLHelper, TemplateHelper
-from config import secret_key
+from config import secret_key, static_path
 
 from loginSignUp_routes import loginSignUp_route
 from settings_routes import settings_route
@@ -110,10 +110,8 @@ def error401page():
     return abort(401)
 
 @app.route("/sitemap.xml", methods=["GET"])
-def sitemap():
-    return app.static_folder
-    
-    return send_from_directory(app.static_folder, "sitemap.xml")
+def sitemap():    
+    return send_from_directory(static_path, "sitemap.xml")
 
 @app.route("/maintenance")
 def maintenance():
