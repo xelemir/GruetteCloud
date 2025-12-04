@@ -1,0 +1,90 @@
+{% extends "toolshare/base.html" %}
+{% block content %}
+
+<!-- Back Button -->
+<a href="/toolshare" class="absolute top-5 left-5 z-20 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-md cursor-pointer">
+    <i class="fas fa-arrow-left text-gray-700 text-sm"></i>
+</a>
+
+<!-- Hero Image -->
+<div class="h-80 bg-gray-800 relative">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+    <div class="absolute bottom-12 left-5 right-5 text-white">
+        <h2 class="text-2xl font-bold">Kärcher K7 Premium</h2>
+        <div class="flex items-center gap-2 text-sm mt-1 opacity-90">
+            <i class="fas fa-map-marker-alt text-orange-400"></i>
+            <span>Stuttgart West (0.8km)</span>
+        </div>
+    </div>
+        <div class="absolute inset-0 flex items-center justify-center text-white opacity-20">
+        <i class="fas fa-tools text-6xl"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="bg-white rounded-t-3xl -mt-6 relative z-10 px-6 py-6 h-full">
+    
+    <!-- Owner Info -->
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600">SM</div>
+            <div>
+                <p class="text-sm font-bold text-gray-800">Stefan M.</p>
+                <p class="text-[10px] text-gray-500 flex items-center gap-1">
+                    <i class="fas fa-shield-alt text-green-500"></i> ID Verified
+                </p>
+            </div>
+        </div>
+        <div class="flex gap-1">
+            <i class="fas fa-star text-yellow-400 text-xs"></i>
+            <span class="text-xs font-bold">4.9</span>
+            <span class="text-xs text-gray-400">(24)</span>
+        </div>
+    </div>
+
+    <hr class="border-gray-100 mb-6">
+
+    <!-- THE CORE FEATURE: TOGGLE -->
+    <div class="bg-blue-50 rounded-xl p-4 mb-6 border border-blue-100">
+        <h3 class="text-sm font-bold text-gray-700 mb-3">How do you want to rent?</h3>
+        
+        <!-- Option 1: Tool Only -->
+        <div class="flex justify-between items-center mb-4 opacity-50">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-full border-2 border-gray-300"></div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Device Only</p>
+                    <p class="text-[10px] text-gray-500">You do the work</p>
+                </div>
+            </div>
+            <span class="font-bold text-gray-600">€25<span class="text-[10px] font-normal">/day</span></span>
+        </div>
+
+        <!-- Option 2: Service (Selected) -->
+        <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-blue-500">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-full border-[5px] border-blue-600"></div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Hire Stefan too</p>
+                    <p class="text-[10px] text-green-600 font-medium">✨ Includes labor & tool</p>
+                </div>
+            </div>
+            <span class="font-bold text-blue-600">€45<span class="text-[10px] font-normal">/hr</span></span>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <h4 class="font-bold text-sm mb-2">Description</h4>
+    <p class="text-xs text-gray-500 leading-relaxed mb-24">
+        Powerful high-pressure cleaner. Perfect for patios, cars, and fences. I can also come by and do the cleaning for you on weekends! I have 5 years of experience in facade cleaning.
+    </p>
+    
+        <!-- Sticky Book Button -->
+    <div class="fixed bottom-6 left-0 w-full px-6 z-30">
+        <a href="/toolshare/booking" class="block w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-transform flex justify-between px-6 items-center">
+            <span>Book Service</span>
+            <span>€90 <span class="text-xs font-normal opacity-80">(est. 2hrs)</span></span>
+        </a>
+    </div>
+</div>
+{% endblock %}

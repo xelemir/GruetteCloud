@@ -1,0 +1,76 @@
+{% extends "toolshare/base.html" %}
+{% block content %}
+<!-- Header -->
+<div class="bg-white pt-5 pb-4 px-6 border-b border-gray-100 shadow-sm z-10 relative">
+    <div class="flex items-center gap-3">
+        <a href="/toolshare" class="fas fa-chevron-left text-gray-400 mr-2"></a>
+        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600 relative">
+            SM
+            <div class="w-3 h-3 bg-green-500 border-2 border-white rounded-full absolute bottom-0 right-0"></div>
+        </div>
+        <div>
+            <h3 class="font-bold text-sm">Stefan M.</h3>
+            <p class="text-[10px] text-gray-400">Online now • Kärcher K7</p>
+        </div>
+        <i class="fas fa-phone-alt ml-auto text-gray-300"></i>
+    </div>
+</div>
+
+<!-- Chat Area -->
+<div class="h-full bg-slate-50 overflow-y-auto px-4 py-4 pb-24 no-scrollbar">
+    <div class="text-center text-[10px] text-gray-400 mb-4">Today 09:41</div>
+
+    <!-- Msg Left -->
+    <div class="flex gap-2 mb-4">
+        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[80%] text-xs text-gray-700 leading-relaxed">
+            Hi Stefan! Is the Kärcher available this Saturday? My patio is a mess 😅
+        </div>
+    </div>
+
+    <!-- Msg Right -->
+    <div class="flex flex-col items-end mb-4">
+        <div class="bg-blue-600 p-3 rounded-2xl rounded-tr-none shadow-md max-w-[80%] text-xs text-white leading-relaxed">
+            Hey! Yes, it's free. Are you picking it up, or did you need the cleaning service too?
+        </div>
+        <span class="text-[9px] text-gray-400 mt-1">Read 09:43</span>
+    </div>
+
+    <!-- Msg Left -->
+        <div class="flex gap-2 mb-4">
+        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[80%] text-xs text-gray-700 leading-relaxed">
+            Actually, I'd love the service. It's about 40sqm.
+        </div>
+    </div>
+
+    <!-- Custom Offer System Message -->
+    <div class="flex justify-center mb-4">
+        <div class="bg-gray-200 rounded-lg p-1 px-3 text-[9px] font-bold text-gray-500">
+            Stefan sent an offer
+        </div>
+    </div>
+
+    <!-- Offer Card -->
+    <div class="flex flex-col items-end mb-4 w-full pl-10">
+        <div class="bg-white border border-blue-200 p-4 rounded-xl shadow-sm w-full">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h4 class="font-bold text-sm text-gray-800">Custom Offer</h4>
+                    <p class="text-[10px] text-gray-500">Rental + 2hrs Labor</p>
+                </div>
+                <span class="font-bold text-blue-600 text-lg">€90</span>
+            </div>
+            <div class="flex gap-2">
+                <button class="flex-1 bg-gray-100 text-gray-600 text-xs font-bold py-2 rounded-lg">Decline</button>
+                <a href="/toolshare/booking" class="block text-center flex-1 bg-blue-600 text-white text-xs font-bold py-2 rounded-lg shadow-blue-200 shadow-md">Accept</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Input Area -->
+<div class="absolute bottom-0 w-full bg-white border-t border-gray-100 px-4 py-4 pb-8 flex items-center gap-3">
+    <i class="fas fa-plus-circle text-gray-400 text-xl"></i>
+    <input type="text" placeholder="Type a message..." class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-xs focus:outline-none">
+    <i class="fas fa-paper-plane text-blue-600 text-lg"></i>
+</div>
+{% endblock %}

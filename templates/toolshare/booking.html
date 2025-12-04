@@ -1,0 +1,73 @@
+{% extends "toolshare/base.html" %}
+{% block content %}
+
+<div class="pt-6 px-6 pb-6 bg-slate-50 h-screen overflow-y-auto no-scrollbar">
+    <div class="flex items-center gap-3 mb-8 mt-2">
+            <a href="/toolshare/details" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer">
+            <i class="fas fa-chevron-left text-xs"></i>
+        </a>
+        <h2 class="font-bold text-lg">Booking Review</h2>
+    </div>
+
+    <!-- Product Summary -->
+    <div class="bg-white p-4 rounded-xl shadow-sm flex gap-4 mb-6">
+        <div class="w-16 h-16 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center">
+                <i class="fas fa-tools text-gray-400"></i>
+        </div>
+        <div>
+            <h3 class="font-bold text-sm text-gray-800">Kärcher K7 Premium</h3>
+            <p class="text-xs text-gray-500 mb-1">Sat, 14 Oct • 10:00 - 12:00</p>
+            <span class="inline-block bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Service: Cleaning</span>
+        </div>
+    </div>
+
+    <!-- Trust Badge Section -->
+    <div class="bg-green-50 border border-green-100 rounded-xl p-4 mb-6 relative overflow-hidden">
+        <div class="absolute -right-4 -top-4 w-16 h-16 bg-green-100 rounded-full opacity-50"></div>
+        
+        <div class="flex items-start gap-3 relative z-10">
+            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-green-600 shadow-sm">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm text-green-800">ToolShare Guarantee™</h4>
+                <p class="text-[10px] text-green-700 mt-1 leading-tight">
+                    This rental is insured up to €2,000 against damage and theft. Liability coverage included.
+                </p>
+                <div class="mt-2 text-[10px] text-green-600 underline font-semibold">View Policy Details</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Price Breakdown -->
+    <div class="space-y-3 mb-8">
+        <div class="flex justify-between text-sm text-gray-600">
+            <span>Service (2 hrs x €45)</span>
+            <span>€90.00</span>
+        </div>
+        <div class="flex justify-between text-sm text-gray-600">
+            <span>Service Fee</span>
+            <span>€4.50</span>
+        </div>
+        <div class="flex justify-between text-sm text-green-600 font-medium">
+            <span class="flex items-center gap-1"><i class="fas fa-check-circle text-xs"></i> Insurance</span>
+            <span>Free</span>
+        </div>
+        <div class="border-t border-gray-200 pt-3 flex justify-between font-bold text-gray-800">
+            <span>Total</span>
+            <span>€94.50</span>
+        </div>
+    </div>
+
+    <!-- Slider -->
+        <button class="w-full bg-black text-white font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-3">
+        <span>Confirm & Pay</span>
+        <i class="fas fa-arrow-right"></i>
+    </button>
+    
+    <p class="text-center text-[10px] text-gray-400 mt-4">
+        <i class="fas fa-lock text-[8px]"></i> Payments are secure and encrypted.
+    </p>
+
+</div>
+{% endblock %}

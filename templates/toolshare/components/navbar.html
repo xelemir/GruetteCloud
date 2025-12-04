@@ -1,0 +1,38 @@
+<div class="absolute bottom-0 w-full bg-white border-t border-gray-100 px-6 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] flex justify-between items-center text-xs text-gray-400 z-40">
+    <a href="/toolshare" class="nav-item flex flex-col items-center hover:text-gray-600" data-path="/">
+        <i class="fas fa-search text-lg mb-1"></i>
+        <span>Explore</span>
+    </a>
+    <a href="/toolshare/map" class="nav-item flex flex-col items-center hover:text-gray-600" data-path="/map">
+        <i class="fas fa-map-marked-alt text-lg mb-1"></i>
+        <span>Map</span>
+    </a>
+    <div class="flex flex-col items-center hover:text-gray-600 cursor-pointer">
+        <i class="fas fa-plus-circle text-lg mb-1 text-orange-500"></i>
+        <span class="text-gray-800">List Item</span>
+    </div>
+    <a href="/toolshare/chat" class="nav-item flex flex-col items-center hover:text-gray-600" data-path="/chat">
+        <i class="far fa-comment text-lg mb-1"></i>
+        <span>Inbox</span>
+    </a>
+    <a href="/toolshare/dashboard" class="nav-item flex flex-col items-center hover:text-gray-600" data-path="/dashboard">
+        <i class="far fa-user text-lg mb-1"></i>
+        <span>Profile</span>
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const path = window.location.pathname;
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach(item => {
+            const itemPath = item.getAttribute('data-path');
+            // Simple check: exact match or if path is just '/'
+            if (path === itemPath || (path === '' && itemPath === '/')) {
+                item.classList.remove('hover:text-gray-600');
+                item.classList.add('text-blue-600');
+            }
+        });
+    });
+</script>

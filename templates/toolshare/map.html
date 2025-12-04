@@ -1,0 +1,93 @@
+{% extends "toolshare/base.html" %}
+{% block content %}
+<!-- Floating Header -->
+<div class="absolute top-4 left-4 right-4 z-[1000]">
+        <div class="bg-white rounded-xl shadow-md p-3 flex gap-3 items-center">
+        <a href="/toolshare" class="fas fa-bars text-gray-400 text-lg cursor-pointer"></a>
+        <input type="text" value="Stuttgart, Mitte" class="flex-1 text-sm font-bold text-gray-700 outline-none">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-sm">
+            <i class="fas fa-filter text-xs"></i>
+        </div>
+        </div>
+        <!-- Tags -->
+        <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar">
+        <span class="bg-gray-800 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">Tools</span>
+        <span class="bg-white text-gray-600 px-3 py-1 rounded-full text-xs font-bold shadow-lg">Services</span>
+        </div>
+</div>
+
+<!-- Map Container -->
+<div id="map" class="h-screen w-full relative z-0"></div>
+
+<!-- Bottom Sheet -->
+<div class="absolute bottom-20 left-4 right-4 bg-white rounded-2xl p-4 shadow-xl z-[1000]">
+    <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-3"></div>
+    <div class="flex gap-4">
+        <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-tools text-2xl text-gray-400"></i>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm">Kärcher K7</h4>
+            <p class="text-xs text-gray-500">0.4 km • Stefan M.</p>
+            <div class="flex items-center gap-1 mt-2">
+                <i class="fas fa-star text-yellow-400 text-xs"></i>
+                <span class="text-xs font-bold">4.9</span>
+            </div>
+            <a href="/toolshare/details" class="block text-center mt-2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-lg w-full">View Details</a>
+        </div>
+    </div>
+</div>
+
+{% include "toolshare/components/navbar.html" %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize map centered on Stuttgart
+        const map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([48.7758, 9.1829], 13);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        // Custom Icon
+        const toolIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div class="flex flex-col items-center">
+                    <div class="bg-white px-2 py-1 rounded-md shadow-lg text-[10px] font-bold mb-1">€25</div>
+                    <i class="fas fa-map-marker-alt text-3xl text-orange-500 drop-shadow-md"></i>
+                   </div>`,
+            iconSize: [40, 60],
+            iconAnchor: [20, 60]
+        });
+
+        const serviceIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div class="flex flex-col items-center">
+                    <div class="bg-white px-2 py-1 rounded-md shadow-lg text-[10px] font-bold mb-1">€45</div>
+                    <i class="fas fa-map-marker-alt text-3xl text-blue-500 drop-shadow-md"></i>
+                   </div>`,
+            iconSize: [40, 60],
+            iconAnchor: [20, 60]
+        });
+
+        // Add markers
+        L.marker([48.7758, 9.1829], {icon: toolIcon}).addTo(map);
+        L.marker([48.7790, 9.1750], {icon: serviceIcon}).addTo(map);
+        
+        // User location
+        const userIcon = L.divIcon({
+            className: 'user-location',
+            html: `<div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center">
+                    <div class="w-4 h-4 bg-blue-600 border-2 border-white rounded-full shadow-lg"></div>
+                   </div>`,
+            iconSize: [64, 64],
+            iconAnchor: [32, 32]
+        });
+        
+        L.marker([48.7730, 9.1800], {icon: userIcon}).addTo(map);
+    });
+</script>
+{% endblock %}

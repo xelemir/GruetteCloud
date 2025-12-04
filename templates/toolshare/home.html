@@ -1,0 +1,99 @@
+{% extends "toolshare/base.html" %}
+{% block content %}
+
+<!-- App Content -->
+<div class="h-full overflow-y-auto no-scrollbar bg-slate-50 pb-24">
+    <!-- Search Header -->
+    <div class="bg-white pt-5 px-5 pb-5 sticky top-0 z-10 shadow-sm">
+        <p class="text-gray-400 text-xs mb-1">Current Location</p>
+        <div class="flex items-center text-blue-600 font-semibold text-sm mb-4">
+            <i class="fas fa-map-marker-alt mr-1"></i> Stuttgart, Mitte <i class="fas fa-chevron-down ml-1 text-xs"></i>
+        </div>
+        <div class="relative">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            <input type="text" placeholder="Search 'Drill', 'Camera'..." class="w-full bg-slate-100 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="p-5">
+        <h2 class="font-bold text-lg mb-3">Categories</h2>
+        <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            <div class="flex flex-col items-center gap-2 min-w-[70px]">
+                <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600">
+                    <i class="fas fa-tools text-xl"></i>
+                </div>
+                <span class="text-xs font-medium">DIY</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 min-w-[70px]">
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
+                    <i class="fas fa-camera text-xl"></i>
+                </div>
+                <span class="text-xs font-medium">Photo</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 min-w-[70px]">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600">
+                    <i class="fas fa-leaf text-xl"></i>
+                </div>
+                <span class="text-xs font-medium">Garden</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 min-w-[70px]">
+                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600">
+                    <i class="fas fa-music text-xl"></i>
+                </div>
+                <span class="text-xs font-medium">Audio</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Items -->
+    <div class="px-5 pb-5">
+        <h2 class="font-bold text-lg mb-3">Nearby Today</h2>
+        
+        <!-- Card 1 -->
+        <a href="/toolshare/details" class="block bg-white rounded-2xl p-3 shadow-sm mb-4">
+            <div class="h-32 bg-gray-200 rounded-xl mb-3 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-yellow-400 opacity-20"></div> <!-- Placeholder color -->
+                <div class="absolute top-2 right-2 bg-white px-2 py-1 rounded-lg text-xs font-bold shadow-sm">
+                    <i class="fas fa-star text-yellow-400 text-[10px]"></i> 4.9
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-gray-500">
+                    <i class="fas fa-image text-3xl opacity-30"></i>
+                </div>
+            </div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="font-bold text-gray-800">Kärcher K7 Premium</h3>
+                    <p class="text-xs text-gray-500">0.8 km away • Owner: Stefan</p>
+                </div>
+                <div class="text-right">
+                    <span class="block font-bold text-blue-600">€25</span>
+                    <span class="text-[10px] text-gray-400">/day</span>
+                </div>
+            </div>
+        </a>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-2xl p-3 shadow-sm mb-4">
+            <div class="h-32 bg-gray-200 rounded-xl mb-3 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gray-800 opacity-10"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-gray-500">
+                    <i class="fas fa-camera text-3xl opacity-30"></i>
+                </div>
+            </div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="font-bold text-gray-800">Sony Alpha a7 III</h3>
+                    <p class="text-xs text-gray-500">2.1 km away • Owner: Julia</p>
+                </div>
+                <div class="text-right">
+                    <span class="block font-bold text-blue-600">€45</span>
+                    <span class="text-[10px] text-gray-400">/day</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "toolshare/components/navbar.html" %}
+{% endblock %}

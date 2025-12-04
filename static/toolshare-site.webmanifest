@@ -1,0 +1,29 @@
+{
+  "name": "ToolShare",
+  "short_name": "ToolShare",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "https://www.gruettecloud.com/static/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://www.gruettecloud.com/static/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "https://www.gruettecloud.com/static/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#4285f4",
+  "background_color": "#f8fafc",
+  "display": "standalone",
+  "id": "toolshare",
+  "lang": "en",
+  "orientation": "portrait"
+}

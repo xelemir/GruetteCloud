@@ -1,0 +1,83 @@
+{% extends "toolshare/base.html" %}
+{% block content %}
+<!-- Header -->
+<div class="bg-gray-900 text-white pt-5 pb-6 px-6 rounded-b-[2rem]">
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                <i class="fas fa-user text-xs"></i>
+            </div>
+            <span class="font-bold text-sm">My Business</span>
+        </div>
+        <i class="fas fa-bell"></i>
+    </div>
+    <h2 class="text-3xl font-bold mb-1">€450.50</h2>
+    <p class="text-xs text-gray-400 mb-4">Total Earnings (October)</p>
+    
+    <!-- Mini Graph -->
+    <div class="flex items-end gap-2 h-16 w-full pb-2">
+        <div class="bg-gray-700 w-1/7 h-[30%] rounded-t-sm flex-1"></div>
+        <div class="bg-gray-700 w-1/7 h-[50%] rounded-t-sm flex-1"></div>
+        <div class="bg-gray-700 w-1/7 h-[40%] rounded-t-sm flex-1"></div>
+        <div class="bg-blue-500 w-1/7 h-[80%] rounded-t-sm flex-1 shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
+        <div class="bg-gray-700 w-1/7 h-[60%] rounded-t-sm flex-1"></div>
+        <div class="bg-gray-700 w-1/7 h-[45%] rounded-t-sm flex-1"></div>
+        <div class="bg-gray-700 w-1/7 h-[30%] rounded-t-sm flex-1"></div>
+    </div>
+</div>
+
+<!-- Scrollable Content -->
+<div class="h-full overflow-y-auto px-6 py-6 pb-24 no-scrollbar -mt-4 relative z-10">
+    
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <i class="fas fa-eye text-blue-500 mb-2"></i>
+            <h4 class="font-bold text-lg text-gray-800">1.2k</h4>
+            <p class="text-[10px] text-gray-400">Profile Views</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <i class="fas fa-check-circle text-green-500 mb-2"></i>
+            <h4 class="font-bold text-lg text-gray-800">100%</h4>
+            <p class="text-[10px] text-gray-400">Response Rate</p>
+        </div>
+    </div>
+
+    <h3 class="font-bold text-sm text-gray-800 mb-3">Active Listings</h3>
+    
+    <!-- Listing Item 1 -->
+    <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex gap-3 mb-3 items-center">
+        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-tools text-orange-500"></i>
+        </div>
+        <div class="flex-1">
+            <div class="flex justify-between">
+                <h4 class="font-bold text-xs">Kärcher K7</h4>
+                <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Active</span>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-0.5">2 bookings this week</p>
+        </div>
+    </div>
+
+        <!-- Listing Item 2 -->
+    <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex gap-3 mb-3 items-center">
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-user-clock text-blue-500"></i>
+        </div>
+        <div class="flex-1">
+            <div class="flex justify-between">
+                <h4 class="font-bold text-xs">Cleaning Service</h4>
+                <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Active</span>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-0.5">€45/hr • Available Sat/Sun</p>
+        </div>
+    </div>
+    
+        <button class="w-full mt-2 border-2 border-dashed border-gray-300 rounded-xl py-3 text-gray-400 text-xs font-bold hover:bg-gray-50 hover:border-gray-400 transition-colors">
+        + Add New Tool
+    </button>
+
+</div>
+
+{% include "toolshare/components/navbar.html" %}
+{% endblock %}
