@@ -20,7 +20,7 @@
 <div id="map" class="h-screen w-full relative z-0"></div>
 
 <!-- Bottom Sheet -->
-<div class="absolute bottom-20 left-4 right-4 bg-white rounded-2xl p-4 shadow-xl z-[1000]">
+<div class="absolute bottom-24 left-4 right-4 bg-white rounded-2xl p-4 shadow-xl z-[1000]">
     <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-3"></div>
     <div class="flex gap-4">
         <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -88,6 +88,10 @@
         });
         
         L.marker([48.7730, 9.1800], {icon: userIcon}).addTo(map);
+
+        setInterval(function(){
+            document.querySelector("meta[name='theme-color']").setAttribute("content", "#111827");
+        }, 1000);
     });
 </script>
 {% endblock %}
