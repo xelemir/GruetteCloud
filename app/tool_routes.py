@@ -1056,7 +1056,3 @@ def toolshare_chat():
 @tool_route.route('/toolshare/dashboard')
 def toolshare_dashboard():
     return render_template('toolshare/dashboard.html', title="Owner Dashboard")
-
-@tool_route.route('/toolshare/site.webmanifest')
-def toolshare_manifest():
-    return send_file('static/toolshare-site.webmanifest')
