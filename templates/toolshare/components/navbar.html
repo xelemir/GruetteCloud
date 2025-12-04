@@ -28,8 +28,7 @@
         
         navItems.forEach(item => {
             const itemPath = item.getAttribute('data-path');
-            // Simple check: exact match or if path is just '/'
-            if (path === itemPath || (path === '' && itemPath === '/')) {
+            if (itemPath === path) {
                 item.classList.remove('hover:text-gray-600');
                 item.classList.add('text-blue-600');
             }
