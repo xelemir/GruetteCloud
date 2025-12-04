@@ -1,8 +1,8 @@
 {
   "name": "ToolShare",
   "short_name": "ToolShare",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/toolshare",
+  "scope": "/toolshare/",
   "icons": [
     {
       "src": "https://www.gruettecloud.com/static/icon.png",
