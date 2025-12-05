@@ -1031,28 +1031,3 @@ def api_v1_add_transaction():
     sql.writeSQL(f"INSERT INTO gruettecloud_receipts (username, merchant_name, total, date, receipt_id, payment_method, is_income, add_to_budget) VALUES ('{str(data['username'])}', '{merchant_name}', '{abs(total)}', NOW(), '{secrets.token_hex(8)}', '{payment_method}', {is_income}, {add_to_budget})")
     
     return jsonify({'message': 'Transaction added'}), 200
-
-
-@tool_route.route('/toolshare')
-def toolshare_home():
-    return render_template('toolshare/home.html', title="Discover")
-
-@tool_route.route('/toolshare/details')
-def toolshare_details():
-    return render_template('toolshare/details.html', title="Item Details")
-
-@tool_route.route('/toolshare/booking')
-def toolshare_booking():
-    return render_template('toolshare/booking.html', title="Booking & Trust")
-
-@tool_route.route('/toolshare/map')
-def toolshare_map_view():
-    return render_template('toolshare/map.html', title="Neighborhood Map")
-
-@tool_route.route('/toolshare/chat')
-def toolshare_chat():
-    return render_template('toolshare/chat.html', title="Chat & Negotiate")
-
-@tool_route.route('/toolshare/dashboard')
-def toolshare_dashboard():
-    return render_template('toolshare/dashboard.html', title="Owner Dashboard")
